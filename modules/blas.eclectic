@@ -1,0 +1,229 @@
+# Copyright 1999-2005 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+DESCRIPTION="Manage installed BLAS implementations. (virtual/blas)"
+VERSION="1.0"
+MAINTAINER="Danny van Dyk <kugelfang@gentoo.org>"
+
+BLAS_IMPLEMENTATIONS="ACML ATLAS reference"
+BLAS_PROFILES="C F77"
+
+# check_* $libdir
+# implementation specific check functions
+check_ACML() {
+	# libacml.so provides C/C++ and FORTRAN 77 support
+	[[ -f ${1}/libacml.so ]] && echo "C F77"
+}
+
+check_ATLAS() {
+	[[ -d ${1}/blas/atlas ]] || return
+	local ret
+	# libblas.so provides FORTRAN 77 support
+	[[ -f ${1}/blas/atlas/libblas.so ]] && ret="F77"
+	# libcblas.so provides C/C++ support
+	[[ -f ${1}/blas/atlas/libcblas.so ]] && ret="${ret} C"
+	echo "${ret}"
+}
+
+check_reference() {
+	[[ -d ${1}/blas/reference ]] || return
+	local ret
+	[[ -f ${1}/blas/reference/libblas.so ]] && ret="F77"
+	[[ -f ${1}/blas/reference/libcblas.so ]] && ret="${ret} C"
+	echo "${ret}"
+}
+
+# is_active_* $lib
+# return 0 if $lib points to an active BLAS implementation of profile *
+is_active_ACML() {
+	[[ -L ${1} ]] || return 1
+	local lib=$(/bin/readlink -sn ${1})
+	[[ $(basename ${lib}) == libacml.so ]] \
+		&& return 0
+	return 1
+}
+
+is_active_ATLAS() {
+	[[ -L ${1} ]] || return 1
+	local lib=$(/bin/readlink -sn ${1})
+	local dir=${lib%/*}
+	[[ ${dir##*/} == atlas ]] \
+		&& return 0
+	return 1
+}
+
+is_active_reference() {
+	[[ -L ${1} ]] || return 1
+	local lib=$(/bin/readlink -sn ${1})
+	local dir=${lib%/*}
+	[[ ${dir##*/} == reference ]] \
+		&& return 0
+	return 1
+}
+
+# setup_* $libdir $profile
+# Implementation specific activation/setup functions
+setup_ACML() {
+	if [[ ${2} == C ]] ; then
+		ln -sf ${1}/libacml.so ${1}/libcblas.so
+		ln -sf ${1}/libacml.so ${1}/libcblas.so.0
+		ln -sf ${1}/libacml.a  ${1}/libcbls.a
+	elif [[ ${2} == F77 ]] ; then
+		ln -sf ${1}/libacml.so ${1}/libblas.so
+		ln -sf ${1}/libacml.so ${1}/libblas.so.0
+		ln -sf ${1}/libacml.a  ${1}/libblas.a
+	else
+		die "Illegal profile: ${2}"
+	fi
+}
+
+setup_ATLAS() {
+	if [[ ${2} == C ]] ; then
+		ln -sf ${1}/atlas/libblas.so ${1}/libcblas.so
+		ln -sf ${1}/atlas/libblas.so ${1}/libcblas.so.0
+		ln -sf ${1}/atlas/libblas.a  ${1}/libcbls.a
+	elif [[ ${2} == F77 ]] ; then
+		ln -sf ${1}/atlas/libblas.so ${1}/libblas.so
+		ln -sf ${1}/atlas/libblas.so ${1}/libblas.so.0
+		ln -sf ${1}/atlas/libblas.a  ${1}/libblas.a
+	else
+		die "Illegal profile: ${2}"
+	fi
+}
+
+setup_reference() {
+	if [[ ${2} == F77 ]] ; then
+		ln -sf ${1}/reference/libblas.so ${1}/libblas.so
+		ln -sf ${1}/reference/libblas.so ${1}/libblas.so.0
+		ln -sf ${1}/reference/libblas.a  ${1}/libblas.a
+	else
+		die "Illegal profile: ${2}"
+	fi
+}
+
+### list action ###
+
+describe_list() {
+	echo "List all installed BLAS implementations."
+}
+
+do_list() {
+	local libdirs libdir
+	[[ -z "$@" ]] \
+		&& libdirs="$(list_libdirs)" \
+		|| libdirs="$@"
+		
+	for libdir in ${libdirs} ; do
+		C_PROFILES=$(load_config blas C_${libdir})
+		F77_PROFILES=$(load_config blas F77_${libdir})
+		if [[ -n ${C_PROFILES} ]] || [[ -n ${F77_PROFILES} ]] ; then
+			echo "--- Installed in ${ROOT}/usr/${libdir} ---"
+			if [[ -n ${C_PROFILES} ]] ; then
+				write_list_start "C/C++ profiles"
+				write_numbered_list ${C_PROFILES}
+				echo
+			fi
+			if [[ -n ${F77_PROFILES} ]] ; then
+				write_list_start "FORTRAN 77 profiles"
+				write_numbered_list ${F77_PROFILES}
+				echo
+			fi
+		fi
+	done
+}
+
+### select action ###
+
+describe_setup() {
+	echo "Setup one of the installed BLAS implementations as the active implementation."
+}
+
+do_setup() {
+	local libdirs=$(list_libdirs) profiles=${BLAS_PROFILES} impl libdir prof
+	[[ ${#1} == 0 ]] && die -q "Please specify the implementation to setup as active."
+	impl=${1}
+	shift
+	
+	has "BLAS_IMPLEMENTATIONS" ${impl} \
+		|| die -q "Illegal implementation: ${impl}"
+
+	for param in ${@} ; do
+		echo "param: ${param}"
+		if has "libdirs" ${param} ; then
+			mylibdirs=(${mylibdirs[@]} ${param})
+		elif has "BLAS_PROFILES" ${param} ; then
+			myprofiles=(${myprofiles[@]} ${param})
+		else
+			die -q "Illegal parameter: ${param}."
+		fi
+	done
+	[[ -n ${mylibdirs[@]} ]] && libdirs=${mylibdirs[@]}
+	[[ -n ${myprofiles[@]} ]] && profiles=${myprofiles[@]}
+
+	echo "libdirs: ${libdirs}"
+	echo "profiles: ${profiles}"
+	for libdir in ${libdirs} ; do
+		for prof in ${profiles} ; do
+			setup_${impl} ${ROOT}/usr/${libdir} ${prof}
+			store_config blas "${prof}_${libdir}_CURRENT" ${impl}
+		done
+	done
+}
+
+### show action ###
+
+describe_show() {
+	echo "Show the currently active BLAS implementations."
+}
+
+do_show() {
+	local libdirs=$(list_libdirs) profile=${BLAS_PROFILES} libdir lib prefix
+	[[ -n ${1} ]] && has "libdirs" ${1} && libdirs=${1}
+	[[ -n ${2} ]] && has "profiles" ${1} && profiles=${1}
+	for libdir in ${libdirs} ; do
+		[[ ${#libdirs} -eq 1 ]] || prefix="${ROOT}/usr/${libdir}"
+		for prof in ${profiles} ; do
+			[[ ${#profiles} -eq 1 ]] || prefix="${prefix}:${prof}"
+			[[ ${prof} == C ]] && lib=libcblas.so
+			[[ ${prof} == F77 ]] && lib=libblas.so
+			impl=$(load_config blas "${prof}_${libdir}_CURRENT")
+			[[ -z ${impl} ]] && die -q "Configuration file is broken. Please run update."
+			if is_active_${impl} ${ROOT}/usr/${libdir}/${lib} ; then
+				echo "${prefix} Active BLAS is ${impl}."
+			else
+				die -q "Configuration file is out of date. Please run update."
+			fi
+		done
+	done
+}
+
+### update action ###
+
+describe_update() {
+	echo "Update the configuration file with data about all installed BLAS implementations."
+}
+
+do_update() {
+	local lib libdir impl prof
+	[[ -e ${ROOT}/etc/eclectic/blas/blas.config ]] \
+		&& rm ${ROOT}/etc/eclectic/blas/blas.config
+	for libdir in $(list_libdirs) ; do
+		[[ -e ${ROOT}/usr/${libdir}/ ]] || continue
+		for impl in ${BLAS_IMPLEMENTATIONS} ; do
+			for prof in $(check_${impl} ${ROOT}/usr/${libdir}/) ; do
+				if has "BLAS_PROFILES" ${prof} ; then
+					add_config blas "${prof}_${libdir}" ${impl}
+					[[ ${prof} == C ]] && lib=${ROOT}/usr/${libdir}/libcblas.so
+					[[ ${prof} == F77 ]] && lib=${ROOT}/usr/${libdir}/libblas.so
+					is_active_${impl} ${lib} \
+						&& store_config blas "${prof}_${libdir}_CURRENT" ${impl}
+				else
+					die -q "Unknown profile: \"${prof}\". Valid profiles: ${BLAS_PROFILES}"
+				fi
+			done
+		done
+	done
+}
+
+# vim: set ft=ebuild
