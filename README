@@ -12,6 +12,9 @@ Ciaran McCreesh <ciaranm@gentoo.org>
 Danny van Dyk <kugelfang@gentoo.org>
     Libraries:  config
 
+Aaron Walker <ka0ttic@gentoo.org>
+    Modules:	bashcomp
+
 Copyright
 ---------
 
