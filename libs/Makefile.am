@@ -13,4 +13,4 @@ CLEANFILES = $(noinst_SCRIPTS)
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(datadir)/@PACKAGE_NAME@/libs/
-	$(INSTALL_DATA) $(noinst_SCRIPTS) $(datadir)/@PACKAGE_NAME@/libs/
+	$(INSTALL_DATA) $(noinst_SCRIPTS) $(DESTDIR)$(datadir)/@PACKAGE_NAME@/libs/
