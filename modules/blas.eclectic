@@ -80,13 +80,13 @@ setup_ACML() {
 
 setup_ATLAS() {
 	if [[ ${2} == C ]] ; then
-		ln -sf ${1}/atlas/libblas.so ${1}/libcblas.so
-		ln -sf ${1}/atlas/libblas.so ${1}/libcblas.so.0
-		ln -sf ${1}/atlas/libblas.a  ${1}/libcbls.a
+		ln -sf ${1}/blas/atlas/libblas.so ${1}/libcblas.so
+		ln -sf ${1}/blas/atlas/libblas.so ${1}/libcblas.so.0
+		ln -sf ${1}/blas/atlas/libblas.a  ${1}/libcbls.a
 	elif [[ ${2} == F77 ]] ; then
-		ln -sf ${1}/atlas/libblas.so ${1}/libblas.so
-		ln -sf ${1}/atlas/libblas.so ${1}/libblas.so.0
-		ln -sf ${1}/atlas/libblas.a  ${1}/libblas.a
+		ln -sf ${1}/blas/atlas/libblas.so ${1}/libblas.so
+		ln -sf ${1}/blas/atlas/libblas.so ${1}/libblas.so.0
+		ln -sf ${1}/blas/atlas/libblas.a  ${1}/libblas.a
 	else
 		die "Illegal profile: ${2}"
 	fi
@@ -94,9 +94,9 @@ setup_ATLAS() {
 
 setup_reference() {
 	if [[ ${2} == F77 ]] ; then
-		ln -sf ${1}/reference/libblas.so ${1}/libblas.so
-		ln -sf ${1}/reference/libblas.so ${1}/libblas.so.0
-		ln -sf ${1}/reference/libblas.a  ${1}/libblas.a
+		ln -sf ${1}/blas/reference/libblas.so ${1}/libblas.so
+		ln -sf ${1}/blas/reference/libblas.so ${1}/libblas.so.0
+		ln -sf ${1}/blas/reference/libblas.a  ${1}/libblas.a
 	else
 		die "Illegal profile: ${2}"
 	fi
@@ -178,19 +178,19 @@ describe_show() {
 }
 
 do_show() {
-	local libdirs=$(list_libdirs) profile=${BLAS_PROFILES} libdir lib prefix
+	local libdirs=$(list_libdirs) profiles=${BLAS_PROFILES} libdir lib prefix
 	[[ -n ${1} ]] && has "libdirs" ${1} && libdirs=${1}
-	[[ -n ${2} ]] && has "profiles" ${1} && profiles=${1}
+	[[ -n ${2} ]] && has "profiles" ${2} && profiles=${2}
 	for libdir in ${libdirs} ; do
 		[[ ${#libdirs} -eq 1 ]] || prefix="${ROOT}/usr/${libdir}"
 		for prof in ${profiles} ; do
-			[[ ${#profiles} -eq 1 ]] || prefix="${prefix}:${prof}"
+			[[ ${#profiles} -eq 1 ]] || myprefix="${prefix}\t${prof}"
 			[[ ${prof} == C ]] && lib=libcblas.so
 			[[ ${prof} == F77 ]] && lib=libblas.so
 			impl=$(load_config blas "${prof}_${libdir}_CURRENT")
 			[[ -z ${impl} ]] && die -q "Configuration file is broken. Please run update."
 			if is_active_${impl} ${ROOT}/usr/${libdir}/${lib} ; then
-				echo "${prefix} Active BLAS is ${impl}."
+				echo -e "${myprefix}\tActive BLAS is ${impl}."
 			else
 				die -q "Configuration file is out of date. Please run update."
 			fi

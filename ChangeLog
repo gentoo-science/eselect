@@ -1,5 +1,9 @@
 ChangeLog for eclectic
 
+2005-04-04 Danny van Dyk <kugelfang@gentoo.org>
+
+	* man/eclectic.1: Added a rudimental manpage.
+
 2005-03-24 Danny van Dyk <kugelfang@gentoo.org>
 
 	* libs/config.bash.in: Fixed store_config(), added add_config().
