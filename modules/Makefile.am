@@ -1,7 +1,8 @@
-noinst_SCRIPTS = cow.eclectic \
+noinst_SCRIPTS = bashcomp.eclectic \
+                 blas.eclectic \
+                 cow.eclectic \
 		 kernel-symlink.eclectic \
-		 vi-symlink.eclectic \
-		 bashcomp.eclectic
+		 vi-symlink.eclectic
 
 EXTRA_DIST = $(noinst_SCRIPTS)
 

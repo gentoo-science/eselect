@@ -17,46 +17,97 @@
 # Eclectic; if not, write to the Free Software Foundation, Inc., 59 Temple
 # Place, Suite 330, Boston, MA  02111-1307  USA
 
-# store_config function "module" "key" "value" PUBLIC
-# Stores a key/value pair for given module in /etc/eclectic/${module}
+# store_config module key value PUBLIC
+# Stores a $key/$value pair for given module in /etc/eclectic/$module
 store_config() {
-	# we need at least "module" and "key"
-	[[ ${#@} -gt 2 ]] || die
-	local module key value content line newcontent
-	
-	module=${1}
-	key=${2}
-	shift 2
-	value=${@}
+    # we need at least "module" and "key"
+    [[ ${#@} -gt 2 ]] || die
+    local module=${1} key=${2} value content vars line="" changed=0
+    shift 2
+    value=${@}
 
-	content=()
-	[[ -f "${ROOT}/etc/eclectic/${module}" ]] && content=$(<${ROOT}/etc/eclectic/${module})
-	newcontent=()
-	
-	for line in ${content[@]} ; do
-		if [[ -z ${line%%${key}=*} ]] ; then
-			newcontent=( ${newcontent[@]} "${key}=\"${value}\"" )
-		else
-			newcontent=( ${newcontent[@]} "${line}" )
-		fi
-	done
+    if [[ ! -e ${ROOT}/etc/eclectic/${module} ]] ; then
+        mkdir -p ${ROOT}/etc/eclectic/${module} \
+            || die -q \
+            "Couldn't create directory ${ROOT}/etc/eclectic/${module}"
+    fi
+    
+    store_config_header() {
+        echo "# Configuration file for eclectic's '${module}' module" \
+            > ${ROOT}/etc/eclectic/${module}/${module}.config
+        echo "# This file has been automatically generated." \
+            >> ${ROOT}/etc/eclectic/${module}/${module}.config
+    }
 
-	echo ${newcontent[@]} > ${ROOT}/etc/eclectic/${module}
+    if [[ ! -f ${ROOT}/etc/eclectic/${module}/${module}.config ]] ; then
+        store_config_header
+        echo "${key}=\"${value}\"" \
+	    >> ${ROOT}/etc/eclectic/${module}/${module}.config
+        return
+    fi
+        
+    content=$(<${ROOT}/etc/eclectic/${module}/${module}.config)
+
+    if [[ -z ${content[@]} ]] ; then
+        store_config_header
+        echo "${key}=\"${value}\"" \
+	    >> ${ROOT}/etc/eclectic/${module}/${module}.config
+        return
+    fi
+
+    # parse the names of all settings in the file
+    for line in ${content[@]} ; do
+        [[ ${line/=/} != ${line} ]] || continue
+        line=${line/=*/}
+        local ${line}=""
+        vars=(${vars[@]} ${line})
+    done
+
+    source ${ROOT}/etc/eclectic/${module}/${module}.config
+
+    store_config_header
+    for var in ${vars[@]} ; do
+	if [[ ${var} == ${key} ]] ; then
+            echo "${var}=\"${value}\"" \
+                >> ${ROOT}/etc/eclectic/${module}/${module}.config
+	    changed=1
+	else
+            echo "${var}=\"${!var}\"" \
+                >> ${ROOT}/etc/eclectic/${module}/${module}.config
+	fi
+    done
+    [[ ${changed} == 1 ]] \
+    	|| echo "${key}=\"${value}\"" \
+        >> ${ROOT}/etc/eclectic/${module}/${module}.config
 }
 
-# load_config function "module" "key" PUBLIC
-# Loads ${key}'s value from /etc/eclectic/${module}
+# load_config module key PUBLIC
+# Loads $key value from /etc/eclectic/$module
 load_config() {
-	[[ ${#@} -eq 2 ]] || die
-	local module key value
+    [[ ${#@} -eq 2 ]] || die
+    local module key value
 
-	module=${1}
-	key=${2}
-	value=$(
-		source ${ROOT}/etc/eclectic/${module}
-		echo ${!key}
-	)
-	echo ${value}
+    module=${1}
+    key=${2}
+    [[ ! -e ${ROOT}/etc/eclectic/${module}/${module}.config ]] \
+        && return 1
+    value=$(
+        source ${ROOT}/etc/eclectic/${module}/${module}.config
+    	echo ${!key}
+    )
+    echo ${value}
+}
+
+# add_config module key item ... PUBLIC
+# Adds $item to already stored value of $key in /etc/eclectic/$module
+add_config() {
+    [[ ${#@} -gt 2 ]] || die
+    local module=${1} key=${2} item oldvalue newvalue
+    shift 2
+    item="$@"
+    oldvalue=$(load_config ${module} ${key})
+    newvalue=( ${oldvalue[@]} ${item} )
+    store_config ${module} ${key} ${newvalue[@]}
 }
 
 # vim: set sw=4 et sts=4 tw=80 :

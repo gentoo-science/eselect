@@ -1,5 +1,12 @@
 ChangeLog for eclectic
 
+2005-03-24 Danny van Dyk <kugelfang@gentoo.org>
+
+	* libs/config.bash.in: Fixed store_config(), added add_config().
+	* libs/core.bash.in: Added function has().
+	* libs/multilib.bash.in: Added multilib library.
+	* modules/blas.eclectic: Added blas module.
+
 2005-02-22 Aaron Walker <ka0ttic@gentoo.org>
 
 	* modules/bashcomp.eclectic: Added bashcomp module.

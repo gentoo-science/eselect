@@ -10,10 +10,11 @@ Ciaran McCreesh <ciaranm@gentoo.org>
     Libraries:  core, output
 
 Danny van Dyk <kugelfang@gentoo.org>
-    Libraries:  config
+    Modules:    blas
+    Libraries:  config, multilib
 
 Aaron Walker <ka0ttic@gentoo.org>
-    Modules:	bashcomp
+    Modules:    bashcomp
 
 Copyright
 ---------
