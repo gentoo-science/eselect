@@ -1,4 +1,8 @@
-noinst_SCRIPTS = cow.eclectic kernel-symlink.eclectic vi-symlink.eclectic
+noinst_SCRIPTS = cow.eclectic \
+		 kernel-symlink.eclectic \
+		 vi-symlink.eclectic \
+		 bashcomp.eclectic
+
 EXTRA_DIST = $(noinst_SCRIPTS)
 
 MAINTAINERCLEANFILES = Makefile.in
