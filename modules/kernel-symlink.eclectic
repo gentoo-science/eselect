@@ -1,0 +1,94 @@
+# Copyright 1999-2005 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+DESCRIPTION="Manage the /usr/src/linux symlink"
+VERSION="1.0"
+MAINTAINER="ciaranm@gentoo.org"
+
+# find a list of kernel symlink targets
+find_targets() {
+	for f in ${ROOT}/usr/src/linux-* ; do
+		echo $(basename ${f} )
+	done
+}
+
+# try to remove the kernel symlink
+remove_symlink() {
+	rm "${ROOT}/usr/src/linux"
+}
+
+# set the kernel symlink
+set_symlink() {
+	target=${1}
+	if [[ -z "${target//[[:digit:]]}" ]] ; then
+		targets=( $(find_targets ) )
+		target=${targets[$(( ${target} - 1 ))]}
+	fi
+	if [[ -z ${target} ]] ; then
+		die -q "Target \"${1}\" doesn't appear to be valid!"
+	elif [[ -d "${ROOT}/usr/src/${target}" ]] ; then
+		pushd "${ROOT}/usr/src" 1>/dev/null
+		ln -s "${target}" "linux"
+		popd 1>/dev/null
+	else
+		die -q "Target \"${1}\" doesn't appear to be valid!"
+	fi
+}
+
+### show action ###
+
+describe_show() {
+	echo "Show the current kernel symlink"
+}
+
+do_show() {
+	write_list_start "Current kernel symlink:"
+	if [[ -L "${ROOT}/usr/src/linux" ]] ; then
+		write_kv_list_entry "$(readlink ${ROOT}/usr/src/linux )" ""
+	else
+		write_kv_list_entry "(unset)" ""
+	fi
+}
+
+### list action ###
+
+describe_list() {
+	echo "List available kernel symlink targets"
+}
+
+do_list() {
+	targets=( $(find_targets ) )
+	write_list_start "Available kernel symlink targets:"
+	write_numbered_list "${targets[@]}"
+}
+
+### set action ###
+
+describe_set() {
+	echo "Set a new kernel symlink target"
+}
+
+do_set() {
+	if [[ -z ${1} ]] ; then
+		# no parameter
+		die -q "You didn't tell me what to set the symlink to"
+
+	elif [[ -L "${ROOT}/usr/src/linux" ]] ; then
+		# existing symlink
+		if ! remove_symlink ; then
+			die -q "Couldn't remove existing symlink"
+		elif ! set_symlink "${1}" ; then
+			die -q "Couldn't set a new symlink"
+		fi
+
+	elif [[ -e "${ROOT}/usr/src/linux" ]] ; then
+		# we have something strange
+		die -q "Sorry, ${ROOT}/usr/src/linux confuses me"
+
+	else
+		set_symlink "${1}" || die -q "Couldn't set a new symlink"
+	fi
+}
+
+# vim: set ft=ebuild :

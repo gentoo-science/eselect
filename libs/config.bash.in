@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# Copyright (c) 2005 Gentoo Foundation.
+#
+# This file is part of the 'Eclectic' tools framework.
+#
+# Eclectic is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 2 of the License, or (at your option) any later
+# version.
+#
+# Eclectic is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# Eclectic; if not, write to the Free Software Foundation, Inc., 59 Temple
+# Place, Suite 330, Boston, MA  02111-1307  USA
+
+# store_config function "module" "key" "value" PUBLIC
+# Stores a key/value pair for given module in /etc/eclectic/${module}
+store_config() {
+	# we need at least "module" and "key"
+	[[ ${#@} -gt 2 ]] || die
+	local module key value content line newcontent
+	
+	module=${1}
+	key=${2}
+	shift 2
+	value=${@}
+
+	content=()
+	[[ -f "${ROOT}/etc/eclectic/${module}" ]] && content=$(<${ROOT}/etc/eclectic/${module})
+	newcontent=()
+	
+	for line in ${content[@]} ; do
+		if [[ -z ${line%%${key}=*} ]] ; then
+			newcontent=( ${newcontent[@]} "${key}=\"${value}\"" )
+		else
+			newcontent=( ${newcontent[@]} "${line}" )
+		fi
+	done
+
+	echo ${newcontent[@]} > ${ROOT}/etc/eclectic/${module}
+}
+
+# load_config function "module" "key" PUBLIC
+# Loads ${key}'s value from /etc/eclectic/${module}
+load_config() {
+	[[ ${#@} -eq 2 ]] || die
+	local module key value
+
+	module=${1}
+	key=${2}
+	value=$(
+		source ${ROOT}/etc/eclectic/${module}
+		echo ${!key}
+	)
+	echo ${value}
+}
+
+# vim: set sw=4 et sts=4 tw=80 :

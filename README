@@ -1,0 +1,30 @@
+README for eclectic
+===================
+
+Authors
+-------
+
+Ciaran McCreesh <ciaranm@gentoo.org>
+    Main code
+    Modules:    cow, kernel-symlink, vi-symlink
+    Libraries:  core, output
+
+Danny van Dyk <kugelfang@gentoo.org>
+    Libraries:  config
+
+Copyright
+---------
+
+eclectic is Copyright (c) 2005 Gentoo Foundation. This code is distributed
+under the terms of the GNU General Public License v2.
+
+Style Notes
+-----------
+
+* Always use ``[[ brackets ]]``, never `[ brackets ]`.
+* Use quotes on variables where necessary.
+* For the main source, indent is four spaces, no tabs, text width of 80.
+* For .eclectic files, the same indenting rules apply as for ebuilds.
+* Public functions don't get the ``ec_`` prefix, private functions do.
+
+ vim: set tw=78 ft=glep :

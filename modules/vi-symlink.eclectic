@@ -1,0 +1,114 @@
+# Copyright 1999-2005 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+DESCRIPTION="Manage /usr/bin/vi providers"
+VERSION="1.0"
+MAINTAINER="ciaranm@gentoo.org"
+
+# find a list of vi symlink targets, best first
+find_targets() {
+	for f in \
+			${ROOT}/usr/bin/vim \
+			${ROOT}/usr/bin/nvi \
+			${ROOT}/usr/bin/gvim \
+		; do
+		if [[ -f ${f} ]] ; then
+			echo $(basename ${f} )
+		fi
+	done
+}
+
+# try to remove the vi symlink
+remove_symlink() {
+	rm "${ROOT}/usr/bin/vi"
+}
+
+# set the vi symlink
+set_symlink() {
+	target=${1}
+	if [[ -z "${target//[[:digit:]]}" ]] ; then
+		targets=( $(find_targets ) )
+		target=${targets[$(( ${target} - 1 ))]}
+	fi
+	if [[ -f "${ROOT}/usr/bin/${target}" ]] ; then
+		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/vi"
+	else
+		die -q  "Target \"${1}\" doesn't appear to be valid!"
+	fi
+}
+
+### show action ###
+
+describe_show() {
+	echo "Show the current vi symlink"
+}
+
+do_show() {
+	write_list_start "Current vi symlink:"
+	if [[ -L "${ROOT}/usr/bin/vi" ]] ; then
+		write_kv_list_entry "$(readlink ${ROOT}/usr/bin/vi )" ""
+	elif [[ -e "${ROOT}/usr/bin/vi" ]] ; then
+		write_kv_list_entry "(not a symlink)" ""
+	else
+		write_kv_list_entry "(unset)" ""
+	fi
+}
+
+### list action ###
+
+describe_list() {
+	echo "List available vi providers"
+}
+
+do_list() {
+	targets=( $(find_targets ) )
+	write_list_start "Available vi providers:"
+	write_numbered_list "${targets[@]}"
+}
+
+### set action ###
+
+describe_set() {
+	echo "Set a new vi provider"
+}
+
+do_set() {
+	if [[ -z ${1} ]] ; then
+		die -q "You didn't tell me what to set the provider to"
+
+	elif [[ -L "${ROOT}/usr/bin/vi" ]] ; then
+		if ! remove_symlink ; then
+			die -q "Can't remove existing provider"
+		elif ! set_symlink "${1}" ; then
+			die -q "Can't set new provider"
+		fi
+
+	elif [[ -e "${ROOT}/usr/bin/vi" ]] ; then
+		die -q "Sorry, ${ROOT}/usr/bin/vi confuses me"
+
+	else
+		set_symlink "${1}" || die -q "Can't set a new provider"
+	fi
+}
+
+### update action ###
+
+describe_update() {
+	echo "Automatically update the vi provider"
+}
+
+do_update() {
+	if [[ -L "${ROOT}/usr/bin/vi" ]] ; then
+		remove_symlink || die -q "Can't remove existing link"
+	fi
+	if [[ -e "${ROOT}/usr/bin/vi" ]] ; then
+		die -q "Can't set a new provider"
+	else
+		set_symlink 1 || die -q "Can't set a new provider"
+	fi
+}
+
+
+# vim: set ft=ebuild :
+

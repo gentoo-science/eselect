@@ -1,0 +1,5 @@
+ChangeLog for eclectic
+
+2005-02-22 Ciaran McCreesh <ciaranm@gentoo.org>
+
+	* ChangeLog: Start keeping a ChangeLog. GNU format.

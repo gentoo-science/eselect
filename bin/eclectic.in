@@ -1,0 +1,159 @@
+#!/bin/bash
+
+# Copyright (c) 2005 Gentoo Foundation.
+#
+# This file is part of the 'Eclectic' tools framework.
+#
+# Eclectic is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 2 of the License, or (at your option) any later
+# version.
+#
+# Eclectic is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# Eclectic; if not, write to the Free Software Foundation, Inc., 59 Temple
+# Place, Suite 330, Boston, MA  02111-1307  USA
+
+# Where is our data?
+ECLECTIC_DATA_PATH="%DATADIR%/eclectic/"
+
+# Look in these places for modules
+ECLECTIC_MODULES_PATH=( \
+    "${HOME}/.eclectic/modules" \
+    "${ECLECTIC_DATA_PATH}/modules" )
+
+# Look in this place for libraries
+ECLECTIC_CORE_PATH="${ECLECTIC_DATA_PATH}/libs"
+
+# Look here for the default contents of a module
+ECLECTIC_DEFAULT_ACTIONS="${ECLECTIC_CORE_PATH}/default.eclectic"
+
+# Our program name and version
+ECLECTIC_VERSION="0.1"
+ECLECTIC_PROGRAM_NAME="eclectic"
+
+# Invokation information
+ECLECTIC_BINARY_NAME="${0}"
+ECLECTIC_KILL_TARGET="$$"
+
+shopt -s extglob
+shopt -s expand_aliases
+
+# Load core and output functions
+source "${ECLECTIC_CORE_PATH}/core.bash" || exit 255
+source "${ECLECTIC_CORE_PATH}/output.bash" || die "Couldn't source output.bash"
+source "${ECLECTIC_CORE_PATH}/config.bash" || die "Couldn't source config.bash"
+
+# Sneaky trick to make die in subshells work. If you don't get
+# it, don't ask...
+trap 'echo "exiting." ; exit 250' 15
+
+# ec_find_module foo
+# Find and echo the filename of the foo module. If there's no foo module,
+# die.
+ec_find_module() {
+    local modname="$1" modpath="" modfile=""
+    [[ -z ${modname} ]] && die "Usage: ${FUNCNAME} <module>"
+    for modpath in "${ECLECTIC_MODULES_PATH[@]}" ; do
+        [[ -f ${modpath}/${modname}.eclectic ]] && break
+    done
+
+    modfile="${modpath}/${modname}.eclectic"
+    [[ -r ${modfile} ]] || die -q "Can't load module ${modname}"
+    echo ${modfile}
+}
+
+# ec_do_usage
+# Display eclectic usage
+ec_do_usage() {
+    echo "Usage: eclectic <module name> <options>"
+}
+
+# ec_do_help
+# Display eclectic help
+ec_do_help() {
+    ec_do_usage
+    echo
+    ec_do_list-modules
+}
+
+# ec_do_version
+# Display eclectic version
+ec_do_version() {
+    echo "eclectic ${ECLECTIC_VERSION}"
+    echo
+    echo "Copyright (c) 2005 Gentoo Foundation. Distributed under the"
+    echo "terms of the GNU General Public License v2."
+}
+
+# ec_do_list-modules
+# Display all available eclectic modules
+ec_do_list-modules() {
+    local path file module name desc
+
+    write_list_start "Built-in modules:"
+    write_kv_list_entry "help"          "Display a help message"
+    write_kv_list_entry "list-modules"  "Find and display available modules"
+    write_kv_list_entry "usage"         "Display a usage message"
+    write_kv_list_entry "version"       "Display version information"
+
+    extra_modules=()
+    for path in "${ECLECTIC_MODULES_PATH[@]}" ; do
+        [[ -d ${path} ]] || continue
+        for file in ${path}/*.eclectic ; do
+            [[ -f ${file} ]] || continue
+            extra_modules=( ${extra_modules[@]} "${file}" )
+        done
+    done
+
+    if [[ ${#extra_modules[@]} -gt 0 ]] ; then
+        echo
+        write_list_start "Extra modules:"
+        for module in ${extra_modules[@]} ; do
+            name=${module##*/}
+            name=${name%%.eclectic}
+            desc=$(
+                source "$ECLECTIC_DEFAULT_ACTIONS" 2>/dev/null \
+                    || die "Couldn't source ${ECLECTIC_DEFAULT_ACTIONS}"
+                source "${module}" 2>/dev/null \
+                    || die "Couldn't source ${module}"
+                echo "${DESCRIPTION}"
+            )
+            write_kv_list_entry "${name}" "${desc}"
+        done
+    fi
+}
+
+### main code ###
+
+# figure out what the action is. we need to know whether we're
+# invoked as a something-config/something-update.
+action=""
+if [[ ${0%%-config} != ${0} ]] ; then
+    action=$(basename "${0}" )
+    action=${action%%-config}
+elif [[ ${0%%-update} != ${0} ]] ; then
+    action=$(basename "${0}" )
+    action=${action%%-update}
+elif [[ -n ${1##--} ]] ; then
+    action=${1##--}
+    shift
+elif [[ -n ${1} ]] ; then
+    action=$1
+    shift
+fi
+
+if [[ -n "${action}" ]] ; then
+    if is_function "ec_do_${action}" ; then
+        ec_do_${action} "${@}"
+    else
+        do_action "${action}" "${@}"
+    fi
+else
+    ec_do_help
+fi
+
+# vim: set sw=4 et sts=4 tw=80 :
