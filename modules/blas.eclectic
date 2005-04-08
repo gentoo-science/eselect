@@ -34,6 +34,18 @@ check_reference() {
 	echo "${ret}"
 }
 
+# package $impl
+# Prints the name of the package providing $impl
+package() {
+	case ${1} in
+		ACML)		echo "sci-libs/ACML";;
+		ATLAS)		echo "sci-libs/blas-atlas";;
+		MKL)		echo "sci-libs/mkl";;
+		reference)	echo "sci-libs/blas-reference";;
+		*) ;;
+	esac
+}
+
 # is_active_* $lib
 # return 0 if $lib points to an active BLAS implementation of profile *
 is_active_ACML() {
@@ -51,6 +63,12 @@ is_active_ATLAS() {
 	[[ ${dir##*/} == atlas ]] \
 		&& return 0
 	return 1
+}
+
+is_active_MKL() {
+	[[ -L ${1} ]] || return 1
+	local lib=$(/bin/readlink -sn ${1})
+	
 }
 
 is_active_reference() {
@@ -115,18 +133,24 @@ do_list() {
 		|| libdirs="$@"
 		
 	for libdir in ${libdirs} ; do
-		C_PROFILES=$(load_config blas C_${libdir})
-		F77_PROFILES=$(load_config blas F77_${libdir})
+		C_PROFILES=()
+		for x in $(load_config blas C_${libdir}) ; do
+			C_PROFILES=("${C_PROFILES[@]}" "${x}\t($(package ${x}))")
+		done
+		F77_PROFILES=()
+		for x in $(load_config blas F77_${libdir}) ; do
+			F77_PROFILES=("${F77_PROFILES[@]}" "${x}\t($(package ${x}))")
+		done
 		if [[ -n ${C_PROFILES} ]] || [[ -n ${F77_PROFILES} ]] ; then
 			echo "--- Installed in ${ROOT}/usr/${libdir} ---"
 			if [[ -n ${C_PROFILES} ]] ; then
 				write_list_start "C/C++ profiles"
-				write_numbered_list ${C_PROFILES}
+				write_numbered_list ${C_PROFILES[@]}
 				echo
 			fi
 			if [[ -n ${F77_PROFILES} ]] ; then
 				write_list_start "FORTRAN 77 profiles"
-				write_numbered_list ${F77_PROFILES}
+				write_numbered_list ${F77_PROFILES[@]}
 				echo
 			fi
 		fi
@@ -190,7 +214,7 @@ do_show() {
 			impl=$(load_config blas "${prof}_${libdir}_CURRENT")
 			[[ -z ${impl} ]] && die -q "Configuration file is broken. Please run update."
 			if is_active_${impl} ${ROOT}/usr/${libdir}/${lib} ; then
-				echo -e "${myprefix}\tActive BLAS is ${impl}."
+				echo -e "${myprefix}\tActive BLAS is ${impl} ($(package ${impl}))."
 			else
 				die -q "Configuration file is out of date. Please run update."
 			fi

@@ -1,5 +1,10 @@
 ChangeLog for eclectic
 
+2005-04-07 Danny van Dyk <kugelfang@gentoo.org>
+
+	* modules/blas.eclectic: Added package information to outputs.
+	* man/blas.eclectic.1: Added a manpage for the blas module.
+
 2005-04-04 Danny van Dyk <kugelfang@gentoo.org>
 
 	* man/eclectic.1: Added a rudimental manpage.
