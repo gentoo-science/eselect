@@ -24,6 +24,7 @@ fi
 
 AC_OUTPUT(Makefile
 	  man/Makefile
+	  misc/Makefile
 	  bin/Makefile
 	  libs/Makefile
 	  modules/Makefile)
