@@ -22,5 +22,9 @@ if test x$SED = "x"; then
     AC_MSG_ERROR([sed is required])
 fi
 
-AC_OUTPUT(Makefile bin/Makefile libs/Makefile modules/Makefile)
+AC_OUTPUT(Makefile
+	  man/Makefile
+	  bin/Makefile
+	  libs/Makefile
+	  modules/Makefile)
 
