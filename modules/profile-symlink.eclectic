@@ -1,0 +1,107 @@
+# Copyright 1999-2005 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+DESCRIPTION="Manage the /etc/make.profile symlink"
+VERSION="1.0"
+MAINTAINER="ka0ttic@gentoo.org"
+
+# get a list of valid profiles
+find_targets() {
+	arch=$(portageq envvar ARCH 2>/dev/null)
+
+	# $arch will be null if there's no current make.profile symlink
+	# we cannot get a list of valid profiles without it.
+	if [[ -z ${arch} ]] ; then
+		die -q "Failed to determine \${ARCH}. Is your make.profile symlink valid?"
+	fi
+
+	portdir=$(portageq portdir 2>/dev/null)
+
+	for p in $(sed -n -e "s|^${arch}[[:space:]]\+\([^[:space:]].*\)$|\1|p" \
+		${ROOT}/${portdir}/profiles/profiles.desc)
+	do
+		echo ${p}
+	done
+}
+
+# remove make.profile symlink
+remove_symlink() {
+	rm "${ROOT}/etc/make.profile"
+}
+
+# set the make.profile symlink
+set_symlink() {
+	portdir=$(portageq portdir 2>/dev/null)
+	target=${1}
+	if [[ -z "${target//[[:digit:]]}" ]] ; then
+		targets=( $(find_targets) )
+		target=${targets[$(( ${target} - 1 ))]}
+	fi
+	if [[ -z ${target} ]] ; then
+		die -q "Target \"${1}\" doesn't appear to be valid!"
+	elif [[ -d "${ROOT}/${portdir}/profiles/${target}" ]] ; then
+		# we must call remove_symlink() here instead of calling
+		# it from do_set(), since if the link is removed, we
+		# cannot determine $ARCH in find_targets()
+		if [[ -L "${ROOT}/etc/make.profile" ]] ; then
+			remove_symlink || \
+				die -q "Couldn't remove current make.profile symlink"
+		fi
+
+		pushd "${ROOT}/etc" 1>/dev/null
+		ln -s "../${portdir}/profiles/${target}" "make.profile"
+		popd 1>/dev/null
+	else
+		die -q "Target \"${1}\" doesn't appear to be valid!"
+	fi
+}
+
+### show action ###
+
+describe_show() {
+	echo "Show the current make.profile symlink"
+}
+
+do_show() {
+	write_list_start "Current make.profile symlink:"
+	if [[ -L "${ROOT}/etc/make.profile" ]] ; then
+		link=$(readlink ${ROOT}/etc/make.profile)
+		portdir=$(portageq portdir 2>/dev/null)
+		link=${link##..${ROOT}/${portdir}/profiles/}
+		write_kv_list_entry "${link}" ""
+	else
+		write_kv_list_entry "(unset)" ""
+	fi
+}
+
+### list action ###
+
+describe_list() {
+	echo "List available profile symlink targets"
+}
+
+do_list() {
+	targets=( $(find_targets) )
+	write_list_start "Available profile symlink targets:"
+	write_numbered_list "${targets[@]}"
+}
+
+### set action ###
+
+describe_set() {
+	echo "Set a new profile symlink target"
+}
+
+do_set() {
+	if [[ -z ${1} ]] ; then
+		die -q "You didn't tell me what to set the symlink to"
+	elif [[ -e "${ROOT}/etc/make.profile" ]] &&
+		[[ ! -L "${ROOT}/etc/make.profile" ]] ; then
+		die -q "${ROOT}/etc/make.profile isn't a symlink"
+	else
+		set_symlink "${1}" || die -q "Couldn't set a new symlink"
+	fi
+}
+
+# vim: set ft=ebuild :

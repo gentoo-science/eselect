@@ -1,5 +1,17 @@
 ChangeLog for eclectic
 
+2005-04-11 Aaron Walker <ka0ttic@gentoo.org>
+
+	* man/Makefile.am: forgot to add $(man_MANS) to EXTRA_DIST.
+	* modules/profile-symlink.eclectic: Added make.profile symlink module.
+	* modules/bashcomp.eclectic: Fixed do_list to ignore *~.
+	* misc/Makefile.am: Added Makefile.am.
+	* misc/eclectic.bashcomp: Added eclectic command-line completion.
+
+2005-04-10 Aaron Walker <ka0ttic@gentoo.org>
+
+	* man/Makefile.am: Added Makefile.am.
+
 2005-04-07 Danny van Dyk <kugelfang@gentoo.org>
 
 	* modules/blas.eclectic: Added package information to outputs.
