@@ -1,0 +1,26 @@
+# Copyright 1999-2005 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+# bash command-line completion for eclectic
+# Author: Aaron Walker <ka0ttic@gentoo.org>
+
+_eclectic() {
+    local cur prev preprev sedcmd possibles
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    sedcmd='sed -n -e s/^[[:space:]]\+.*1m\([^[:space:]][[:alnum:]-]\+\).*[[:space:]]\+.*$/\1/p'
+
+    if [[ ${COMP_CWORD} -eq 1 ]] ; then
+        possibles=$(eclectic | ${sedcmd})
+    elif [[ ${COMP_CWORD} -eq 2 ]] ; then
+        possibles=$(eclectic ${prev} | ${sedcmd})
+    fi
+
+    COMPREPLY=($(compgen -W "${possibles}" -- ${cur}))
+    return 0
+}
+complete -F _eclectic eclectic
+
+# vim: set ft=sh tw=80 sw=4 et :
