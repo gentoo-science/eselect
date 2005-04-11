@@ -42,7 +42,6 @@ do_list() {
 
 	# get a list of enabled completions, so we can exclude them
 	for bc in ${bcdir}/* ; do
-		[[ -e ${bc} ]] || continue
 		enabled_bcs[((n++))]="${bc##*/}"
 	done
 
@@ -50,7 +49,8 @@ do_list() {
 
 	n=0
 	for bc in ${ROOT}/usr/share/bash-completion/* ; do
-		[[ -e ${bc} ]] || continue
+		[[ ${bc} == *~ || ! -e ${bc} ]] && continue
+
 		bc="${bc##*/}"
 
 		# skip completions that are already enabled
