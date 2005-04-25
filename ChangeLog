@@ -1,5 +1,9 @@
 ChangeLog for eclectic
 
+2005-04-25 Tom Martin <slarti@gentoo.org>
+
+	* modules/mailer-symlink.eclectic: Added mailwrapper symlink module.
+
 2005-04-11 Aaron Walker <ka0ttic@gentoo.org>
 
 	* man/Makefile.am: forgot to add $(man_MANS) to EXTRA_DIST.
