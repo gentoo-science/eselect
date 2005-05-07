@@ -1,5 +1,9 @@
 ChangeLog for eclectic
 
+2005-05-07 Tom Martin <slarti@gentoo.org>
+	* modules/mailer.eclectic: Add a check_dirs() function for
+	sanity checking /etc/mail/.
+
 2005-05-07 Danny van Dyk <kugelfang@gentoo.org>
 
 	* man/profile.eclectic.5: Fixed typos.
