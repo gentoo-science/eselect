@@ -1,5 +1,11 @@
 ChangeLog for eclectic
 
+2005-05-07 Danny van Dyk <kugelfang@gentoo.org>
+
+	* man/profile.eclectic.5: Fixed typos.
+	* doc/developer-guide.txt: Added descriptions for the multilib.bash
+	and config.bash functions.
+
 2005-05-07 Ciaran McCreesh <ciaranm@gentoo.org>
 
 	* doc/: Add initial developer docs.

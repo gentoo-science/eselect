@@ -2,34 +2,34 @@
 .SH "NAME"
 profile\.eclectic \- The profile management module for Gentoo's eclectic
 .SH "SYNOPSIS"
-\fBeclectic profile\\fR [\fBhelp\fR|\fBusage\fR]
+\fBeclectic profile\fR [\fBhelp\fR|\fBusage\fR]
 .br 
-\fBeclectic profile\\fR \fBlist\fR
+\fBeclectic profile\fR \fBlist\fR
 .br 
-\fBeclectic profile\\fR \fBset\fR \fIprofile\fR
+\fBeclectic profile\fR \fBset\fR \fIprofile\fR
 .br 
-\fBeclectic profile\\fR \fBshow\fR
+\fBeclectic profile\fR \fBshow\fR
 
 .SH "DESCRIPTION"
 \fBeclectic\fR is Gentoo's configuration and management tool. It features
 modules that care for the individual administrative tasks.
 .SH "ACTION: LIST"
-\fBeclectic profile\ list\fR
+\fBeclectic profile list\fR
 .br 
 Displays an orderd list of available and (for your architecture) valid profiles. 
 
-phi / # eclectic profile\ list
+phi / # eclectic profile list
 .br 
 Available profile symlink targets:
   [1]   default\-linux/amd64/2005.0
 .SH "ACTION: SET"
-\fBeclectic profile\ setup\fR [.fi profile\fR]
+\fBeclectic profile\ setup\fR [\fIprofile\fR]
 .br 
 Select a valid \fIprofile\fR for future use with portage.
 .SH "ACTION: SHOW"
 \fBeclectic profile\ show\fR
 .br 
-Shows your system's currently active BLAS implementations.
+Shows your system's currently active profile.
 
 phi / # eclectic profile\ show
 Current make.profile symlink:

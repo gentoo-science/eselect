@@ -107,7 +107,8 @@ disable
 update
         Used to automatically select a new provider for a symlink (as opposed to
         ``set``, which generally takes a parameter manually selecting the
-        provider).
+        provider) or to gather system information that is vital to further
+        actions.
 
 .. Note:: You can override the ``help``, ``usage`` and ``version`` actions. They
   are provided by default by ``lib/default.eclectic``. You should only do this
@@ -198,5 +199,44 @@ The ``space`` Utility Function
 
 The ``space`` utility function takes a single integer parameter. It displays
 that many space characters.
+
+Configuration Functions
+'''''''''''''''''''''''
+
+These are implemented in ``libs/config.bash``.
+
+The ``store_config`` Function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``store_config`` function saves a key/value pair in the module's
+configuration file (/etc/eclectic/${module}/${module}.config). This file
+is a bash script consisting only off key/value pairs and should not be altered
+manually. Comments in the file will be deleted each time ``store_config`` is
+called. The function is invoked as ``store_config modulename key value``.
+
+The ``load_config`` Function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``load_config`` function loads a stored value from the module's
+configuration file. It is invoked as ``load_config modulename key``
+and prints the associated value.
+
+The ``add_config`` Function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``add_config`` function adds an item to an already stored value in the
+modules configuration file. It uses ``load_config``/``store_config``
+internally and should be invoked as ``add_config modulename key item``.
+
+Multilib Functions
+''''''''''''''''''
+
+These are implemented in ``libs/multilib.bash``.
+
+The ``list_libdirs`` Function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``list_libdirs`` function returns a set of valid libdirs for the used
+architecure. It uses ``uname`` to determine the architecture.
 
 .. vim: set ft=glep tw=80 sw=4 et spell spelllang=en : ..
