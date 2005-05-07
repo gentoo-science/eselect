@@ -1,9 +1,12 @@
 ChangeLog for eclectic
 
-2005-05-07 Tom Martin <slarti@gentoo.org>
-	* man/mailer.eclectic.5: Add a man page for mailer.eclectic.
+2005-05-07 Ciaran McCreesh <ciaranm@gentoo.org>
+
+	* doc/developer-guide.txt: Fix formatting, typos.
 
 2005-05-07 Tom Martin <slarti@gentoo.org>
+
+	* man/mailer.eclectic.5: Add a man page for mailer.eclectic.
 	* modules/mailer.eclectic: Add a check_dirs() function for
 	sanity checking /etc/mail/.
 

@@ -209,8 +209,8 @@ The ``store_config`` Function
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``store_config`` function saves a key/value pair in the module's
-configuration file (/etc/eclectic/${module}/${module}.config). This file
-is a bash script consisting only off key/value pairs and should not be altered
+configuration file (``/etc/eclectic/${module}/${module}.config``). This file
+is a bash script consisting only of key/value pairs and should not be altered
 manually. Comments in the file will be deleted each time ``store_config`` is
 called. The function is invoked as ``store_config modulename key value``.
 
@@ -225,7 +225,7 @@ The ``add_config`` Function
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``add_config`` function adds an item to an already stored value in the
-modules configuration file. It uses ``load_config``/``store_config``
+modules configuration file. It uses ``load_config`` / ``store_config``
 internally and should be invoked as ``add_config modulename key item``.
 
 Multilib Functions
@@ -237,6 +237,6 @@ The ``list_libdirs`` Function
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``list_libdirs`` function returns a set of valid libdirs for the used
-architecure. It uses ``uname`` to determine the architecture.
+architecture. It uses ``uname`` to determine the architecture.
 
 .. vim: set ft=glep tw=80 sw=4 et spell spelllang=en : ..
