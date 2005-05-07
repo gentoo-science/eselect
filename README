@@ -6,7 +6,7 @@ Authors
 
 Ciaran McCreesh <ciaranm@gentoo.org>
     Main code
-    Modules:    cow, kernel-symlink, vi-symlink
+    Modules:    cow, kernel, vi
     Libraries:  core, output
 
 Danny van Dyk <kugelfang@gentoo.org>
@@ -15,10 +15,10 @@ Danny van Dyk <kugelfang@gentoo.org>
     Libraries:  config, multilib
 
 Aaron Walker <ka0ttic@gentoo.org>
-    Modules:    bashcomp, profile-symlink
+    Modules:    bashcomp, profile
 
 Tom Martin <slarti@gentoo.org>
-    Modules:    mailer-symlink
+    Modules:    mailer
 
 Copyright
 ---------

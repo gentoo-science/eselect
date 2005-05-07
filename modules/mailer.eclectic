@@ -62,6 +62,7 @@ describe_list() {
 
 do_list() {
 	targets=( $(find_targets ) )
+	echo ${targets[@]}
 	targets=( ${targets[@]%.mailer} )
 	write_list_start "Available mailer.conf profiles:"
 	write_numbered_list "${targets[@]}"
