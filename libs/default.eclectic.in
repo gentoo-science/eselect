@@ -42,6 +42,7 @@ do_usage() {
     # FIXME: can we do this using expansion somehow?
     for action in $(set | \
             sed -n -e '/^do_\S\+ ()\s*$/s/^do_\(\S\+\).*/\1/p' | \
+            grep -v 'action' | \
             sort ) ; do
         case "${action}" in
             help|usage|version)

@@ -63,4 +63,14 @@ write_numbered_list() {
     done
 }
 
+# space PUBLIC
+# Write $1 numbers of spaces
+space() {
+    local n=${1}
+    while [[ ${n} -gt 0 ]] ; do
+        echo -ne " "
+        n=$(( ${n} - 1))
+    done
+}
+
 # vim: set sw=4 et sts=4 tw=80 :

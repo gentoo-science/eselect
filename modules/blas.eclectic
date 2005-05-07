@@ -127,30 +127,36 @@ describe_list() {
 }
 
 do_list() {
-	local libdirs libdir
+	local libdirs libdir n
 	[[ -z "$@" ]] \
 		&& libdirs="$(list_libdirs)" \
 		|| libdirs="$@"
 		
 	for libdir in ${libdirs} ; do
-		C_PROFILES=()
-		for x in $(load_config blas C_${libdir}) ; do
-			C_PROFILES=("${C_PROFILES[@]}" "${x}\t($(package ${x}))")
-		done
-		F77_PROFILES=()
-		for x in $(load_config blas F77_${libdir}) ; do
-			F77_PROFILES=("${F77_PROFILES[@]}" "${x}\t($(package ${x}))")
-		done
+		C_PROFILES=$(load_config blas C_${libdir})
+		F77_PROFILES=$(load_config blas F77_${libdir})
 		if [[ -n ${C_PROFILES} ]] || [[ -n ${F77_PROFILES} ]] ; then
 			echo "--- Installed in ${ROOT}/usr/${libdir} ---"
 			if [[ -n ${C_PROFILES} ]] ; then
 				write_list_start "C/C++ profiles"
-				write_numbered_list ${C_PROFILES[@]}
+				n=1
+				for x in ${C_PROFILES} ; do
+					write_numbered_list_entry \
+						$n \
+						"${x}$(space $((12 - ${#x})))($(package ${x}))"
+					n=$(( n + 1))
+				done
 				echo
 			fi
 			if [[ -n ${F77_PROFILES} ]] ; then
 				write_list_start "FORTRAN 77 profiles"
-				write_numbered_list ${F77_PROFILES[@]}
+				n=1
+				for x in ${F77_PROFILES} ; do
+					write_numbered_list_entry \
+						$n \
+						"${x}$(space $((12 - ${#x})))($(package ${x}))"
+					n=$(( n + 1))
+				done
 				echo
 			fi
 		fi
@@ -159,11 +165,11 @@ do_list() {
 
 ### select action ###
 
-describe_setup() {
+describe_set() {
 	echo "Setup one of the installed BLAS implementations as the active implementation."
 }
 
-do_setup() {
+do_set() {
 	local libdirs=$(list_libdirs) profiles=${BLAS_PROFILES} impl libdir prof
 	[[ ${#1} == 0 ]] && die -q "Please specify the implementation to setup as active."
 	impl=${1}
@@ -185,8 +191,10 @@ do_setup() {
 	[[ -n ${mylibdirs[@]} ]] && libdirs=${mylibdirs[@]}
 	[[ -n ${myprofiles[@]} ]] && profiles=${myprofiles[@]}
 
-	echo "libdirs: ${libdirs}"
-	echo "profiles: ${profiles}"
+	write_list_start "Changing BLAS implementation to ${impl} in"
+	echo "  ${libdirs}"
+	write_list_start "Affected language interfaces"
+	echo "  ${profiles}"
 	for libdir in ${libdirs} ; do
 		for prof in ${profiles} ; do
 			setup_${impl} ${ROOT}/usr/${libdir} ${prof}
@@ -205,18 +213,22 @@ do_show() {
 	local libdirs=$(list_libdirs) profiles=${BLAS_PROFILES} libdir lib prefix
 	[[ -n ${1} ]] && has "libdirs" ${1} && libdirs=${1}
 	[[ -n ${2} ]] && has "profiles" ${2} && profiles=${2}
+	write_list_start "Active BLAS implementations"
 	for libdir in ${libdirs} ; do
 		[[ ${#libdirs} -eq 1 ]] || prefix="${ROOT}/usr/${libdir}"
 		for prof in ${profiles} ; do
-			[[ ${#profiles} -eq 1 ]] || myprefix="${prefix}\t${prof}"
 			[[ ${prof} == C ]] && lib=libcblas.so
 			[[ ${prof} == F77 ]] && lib=libblas.so
 			impl=$(load_config blas "${prof}_${libdir}_CURRENT")
-			[[ -z ${impl} ]] && die -q "Configuration file is broken. Please run update."
-			if is_active_${impl} ${ROOT}/usr/${libdir}/${lib} ; then
-				echo -e "${myprefix}\tActive BLAS is ${impl} ($(package ${impl}))."
+			if [[ -z ${impl} ]] ; then
+				[[ -n $(load_config lapack "${prof}_${libdir}") ]] \
+					&& die -q "Configuration file is broken. Please run update."
 			else
-				die -q "Configuration file is out of date. Please run update."
+				if is_active_${impl} ${ROOT}/usr/${libdir}/${lib} ; then
+					write_kv_list_entry "${prefix} (${prof})" "${impl} ($(package ${impl}))"
+				else
+					die -q "Configuration file is out of date. Please run update."
+				fi
 			fi
 		done
 	done

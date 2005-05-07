@@ -1,0 +1,226 @@
+# Copyright 1999-2005 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+DESCRIPTION="Manage installed LAPACK implementations. (virtual/lapack)"
+VERSION="1.0"
+MAINTAINER="Danny van Dyk <kugelfang@gentoo.org>"
+
+LAPACK_IMPLEMENTATIONS="ACML ATLAS reference"
+LAPACK_PROFILES="F77"
+
+# check_* $libdir
+# implementation specific check functions
+check_ACML() {
+	# libacml.so provides FORTRAN 77 support
+	[[ -f ${1}/libacml.so ]] && echo "F77"
+}
+
+check_ATLAS() {
+	[[ -d ${1}/lapack/atlas ]] || return
+	[[ -f ${1}/lapack/atlas/liblapack.so ]] && echo "F77"
+}
+
+check_reference() {
+	[[ -d ${1}/lapack/reference ]] || return
+	[[ -f ${1}/lapack/reference/liblapack.so ]] && echo "F77"
+}
+
+# package $impl
+# Prints the name of the package providing $impl
+package() {
+	case ${1} in
+		ACML)		echo "sci-libs/ACML";;
+		ATLAS)		echo "sci-libs/lapack-atlas";;
+		MKL)		echo "sci-libs/mkl";;
+		reference)	echo "sci-libs/lapack-reference";;
+		*) ;;
+	esac
+}
+
+# is_active_* $lib
+# return 0 if $lib points to an active LAPACK implementation of profile *
+is_active_ACML() {
+	[[ -L ${1} ]] || return 1
+	local lib=$(/bin/readlink -sn ${1})
+	[[ $(basename ${lib}) == libacml.so ]] \
+		&& return 0
+	return 1
+}
+
+is_active_ATLAS() {
+	[[ -L ${1} ]] || return 1
+	local lib=$(/bin/readlink -sn ${1})
+	local dir=${lib%/*}
+	[[ ${dir##*/} == atlas ]] \
+		&& return 0
+	return 1
+}
+
+is_active_reference() {
+	[[ -L ${1} ]] || return 1
+	local lib=$(/bin/readlink -sn ${1})
+	local dir=${lib%/*}
+	[[ ${dir##*/} == reference ]] \
+		&& return 0
+	return 1
+}
+
+# setup_* $libdir $profile
+# Implementation specific activation/setup functions
+setup_ACML() {
+	if [[ ${2} == F77 ]] ; then
+		ln -sf ${1}/libacml.so ${1}/liblapack.so
+		ln -sf ${1}/libacml.so ${1}/liblapack.so.0
+		ln -sf ${1}/libacml.a  ${1}/liblapack.a
+	else
+		die "Illegal profile: ${2}"
+	fi
+}
+
+setup_ATLAS() {
+	if [[ ${2} == F77 ]] ; then
+		ln -sf ${1}/atlas/liblapack.so ${1}/liblapack.so
+		ln -sf ${1}/atlas/liblapack.so ${1}/liblapack.so.0
+		ln -sf ${1}/atlas/liblapack.a  ${1}/liblapack.a
+	else
+		die "Illegal profile: ${2}"
+	fi
+}
+
+setup_reference() {
+	if [[ ${2} == F77 ]] ; then
+		ln -sf ${1}/reference/liblapack.so ${1}/liblapack.so
+		ln -sf ${1}/reference/liblapack.so ${1}/liblapack.so.0
+		ln -sf ${1}/reference/liblapack.a  ${1}/liblapack.a
+	else
+		die "Illegal profile: ${2}"
+	fi
+}
+
+### list action ###
+
+describe_list() {
+	echo "List all installed LAPACK implementations."
+}
+
+do_list() {
+	local libdirs libdir n
+	[[ -z "$@" ]] \
+		&& libdirs="$(list_libdirs)" \
+		|| libdirs="$@"
+		
+	for libdir in ${libdirs} ; do
+		F77_PROFILES=$(load_config lapack F77_${libdir})
+		if [[ -n ${F77_PROFILES} ]] ; then
+			echo "--- Installed in ${ROOT}/usr/${libdir} ---"
+			write_list_start "FORTRAN 77 profiles"
+			n=1
+			for x in ${F77_PROFILES} ; do
+					write_numbered_list_entry $n "${x}$(space $(( 12 - ${#x})))($(package ${x}))"
+					n=$(( n + 1))
+			done
+			echo
+		fi
+	done
+}
+
+### select action ###
+
+describe_set() {
+	echo "Setup one of the installed LAPACK implementations as the active implementation."
+}
+
+do_set() {
+	local libdirs=$(list_libdirs) profiles=${LAPACK_PROFILES} impl libdir prof
+	[[ ${#1} == 0 ]] && die -q "Please specify the implementation to setup as active."
+	impl=${1}
+	shift
+	
+	has "LAPACK_IMPLEMENTATIONS" ${impl} \
+		|| die -q "Illegal implementation: ${impl}"
+
+	for param in ${@} ; do
+		echo "param: ${param}"
+		if has "libdirs" ${param} ; then
+			mylibdirs=(${mylibdirs[@]} ${param})
+		elif has "LAPACK_PROFILES" ${param} ; then
+			myprofiles=(${myprofiles[@]} ${param})
+		else
+			die -q "Illegal parameter: ${param}."
+		fi
+	done
+	[[ -n ${mylibdirs[@]} ]] && libdirs=${mylibdirs[@]}
+	[[ -n ${myprofiles[@]} ]] && profiles=${myprofiles[@]}
+
+	write_list_start "Changing LAPACK implementations to ${impl} in"
+	echo "  ${libdirs}"
+	write_list_start "Affected language interfaces"
+	echo "  ${profiles}"
+	for libdir in ${libdirs} ; do
+		for prof in ${profiles} ; do
+			setup_${impl} ${ROOT}/usr/${libdir} ${prof}
+			store_config lapack "${prof}_${libdir}_CURRENT" ${impl}
+		done
+	done
+}
+
+### show action ###
+
+describe_show() {
+	echo "Show the currently active LAPACK implementations."
+}
+
+do_show() {
+	local libdirs=$(list_libdirs) profiles=${LAPACK_PROFILES} libdir lib prefix
+	[[ -n ${1} ]] && has "libdirs" ${1} && libdirs=${1}
+	[[ -n ${2} ]] && has "profiles" ${1} && profiles=${1}
+	write_list_start "Active LAPACK implementations"
+	for libdir in ${libdirs} ; do
+		[[ ${#libdirs} -eq 1 ]] || prefix="${ROOT}/usr/${libdir}"
+		for prof in ${profiles} ; do
+			[[ ${#profiles} -eq 1 ]] || prefix="${prefix}:${prof}"
+			[[ ${prof} == F77 ]] && lib=liblapack.so
+			impl=$(load_config lapack "${prof}_${libdir}_CURRENT")
+			if [[ -z ${impl} ]] ; then
+				[[ -n $(load_config lapack "${prof}_${libdir}") ]] \
+					&& die -q "Configuration file is broken. Please run update."
+			else
+				if is_active_${impl} ${ROOT}/usr/${libdir}/${lib} ; then
+					write_kv_list_entry "${prefix} (${prof})" "${impl} ($(package ${impl}))"
+				else
+					die -q "Configuration file is out of date. Please run update."
+				fi
+			fi
+		done
+	done
+}
+
+### update action ###
+
+describe_update() {
+	echo "Update the configuration file with data about all installed LAPACK implementations."
+}
+
+do_update() {
+	local lib libdir impl prof
+	[[ -e ${ROOT}/etc/eclectic/lapack/lapack.config ]] \
+		&& rm ${ROOT}/etc/eclectic/lapack/lapack.config
+	for libdir in $(list_libdirs) ; do
+		[[ -e ${ROOT}/usr/${libdir}/ ]] || continue
+		for impl in ${LAPACK_IMPLEMENTATIONS} ; do
+			for prof in $(check_${impl} ${ROOT}/usr/${libdir}/) ; do
+				if has "LAPACK_PROFILES" ${prof} ; then
+					add_config lapack "${prof}_${libdir}" ${impl}
+					[[ ${prof} == F77 ]] && lib=${ROOT}/usr/${libdir}/liblapack.so
+					is_active_${impl} ${lib} \
+						&& store_config lapack "${prof}_${libdir}_CURRENT" ${impl}
+				else
+					die -q "Unknown profile: \"${prof}\". Valid profiles: ${LAPACK_PROFILES}"
+				fi
+			done
+		done
+	done
+}
+
+# vim: set ft=ebuild

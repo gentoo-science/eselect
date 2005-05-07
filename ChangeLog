@@ -1,5 +1,15 @@
 ChangeLog for eclectic
 
+2005-05-07 Danny van Dyk <kugelfang@gentoo.org>
+
+	* libs/output.bash.in: Added funciton 'space'.
+	* libs/default.eclectic.in: Fixed do_usage to filter 'action'.
+	* man/blas.eclectic: Added missing Section 'ACTION: SET'.
+	* man/lapack.eclectic: Added a manpage for the lapack module.
+	* man/profile-symlink.eclectic: Addeda manpage for profile-symlink.
+	* modules/blas.eclectic: Finalized this module.
+	* modules/lapack.eclectic: Added lapack module.
+
 2005-04-25 Tom Martin <slarti@gentoo.org>
 
 	* modules/mailer-symlink.eclectic: Added mailwrapper symlink module.
