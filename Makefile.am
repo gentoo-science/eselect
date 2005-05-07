@@ -2,7 +2,7 @@
 
 AUTOMAKE_OPTIONS = foreign dist-bzip2 no-dist-gzip
 
-SUBDIRS = man misc bin libs modules
+SUBDIRS = doc man misc bin libs modules
 MAINTAINERCLEANFILES = aclocal.m4 \
 		       configure \
 		       Makefile.in \

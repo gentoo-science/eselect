@@ -23,6 +23,7 @@ if test x$SED = "x"; then
 fi
 
 AC_OUTPUT(Makefile
+	  doc/Makefile
 	  man/Makefile
 	  misc/Makefile
 	  bin/Makefile
