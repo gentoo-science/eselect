@@ -1,5 +1,11 @@
 ChangeLog for eclectic
 
+2005-05-07 Aaron Walker <ka0ttic@gentoo.org>
+
+	* modules/profile-symlink.eclectic: Fix sed to use current
+	profiles.desc format. Also, ensure that explicitly specified profiles
+	are actually valid for the host arch.
+
 2005-05-07 Danny van Dyk <kugelfang@gentoo.org>
 
 	* libs/output.bash.in: Added funciton 'space'.

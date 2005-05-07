@@ -12,13 +12,13 @@ find_targets() {
 
 	# $arch will be null if there's no current make.profile symlink
 	# we cannot get a list of valid profiles without it.
-	if [[ -z ${arch} ]] ; then
+	if [[ -z "${arch}" ]] ; then
 		die -q "Failed to determine \${ARCH}. Is your make.profile symlink valid?"
 	fi
 
 	portdir=$(portageq portdir 2>/dev/null)
 
-	for p in $(sed -n -e "s|^${arch}[[:space:]]\+\([^[:space:]].*\)$|\1|p" \
+	for p in $(sed -n -e "s|^${arch}[[:space:]]\+\([^[:space:]]\+\).*$|\1|p" \
 		${ROOT}/${portdir}/profiles/profiles.desc)
 	do
 		echo ${p}
@@ -37,7 +37,23 @@ set_symlink() {
 	if [[ -z "${target//[[:digit:]]}" ]] ; then
 		targets=( $(find_targets) )
 		target=${targets[$(( ${target} - 1 ))]}
+	elif [[ -n "${target}" && -d "${ROOT}/${portdir}/profiles/${target}" ]]
+	then
+		# user specifed explicit profile, not a list number, so
+		# double check and make sure it's valid
+		arch=$(portageq envvar ARCH 2>/dev/null)
+		if [[ -z "${arch}" ]] ; then
+			die -q "Failed to determine \${ARCH}. Is your make.profile symlink valid?"
+		fi
+
+		parch=$(sed -n -e "s|^\([[:alnum:]]\+\)[[:space:]]\+${target}.*$|\1|p" \
+			${ROOT}/${portdir}/profiles/profiles.desc)
+
+		if [[ ${arch} != "${parch}" ]] ; then
+			die -q "${target} is not a valid profile for ${arch}."
+		fi
 	fi
+
 	if [[ -z ${target} ]] ; then
 		die -q "Target \"${1}\" doesn't appear to be valid!"
 	elif [[ -d "${ROOT}/${portdir}/profiles/${target}" ]] ; then
