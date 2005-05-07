@@ -1,0 +1,202 @@
+Eclectic Developer Reference
+============================
+
+About Eclectic
+--------------
+
+Eclectic is a framework for simplifying and introducing consistency to the
+various Gentoo ``foo-config`` and ``update-blah`` tools. It is an option for
+developers who don't like reinventing the wheel, not a mandatory tool.
+
+You can obtain the latest version of Eclectic from:
+
+        https://developer.berlios.de/svn/?group_id=3165
+
+This document assumes some basic familiarity with the user-side of Eclectic.
+
+How Eclectic Works
+------------------
+
+Eclectic provides a script named ``eclectic``. This script is invoked as
+``eclectic <module> <action> <parameters>``. Eclectic will try to find the
+module requested, and then call the relevant action function in that module.
+Additional handling is available for help parameters and listing available
+modules.
+
+A Simple Module
+---------------
+
+It's easiest to illustrate by example. Here's a simple module, named
+``cow.eclectic``. It has two actions, ``moo`` and ``think``, plus the standard
+``help``, ``usage`` and ``version`` actions, and is installed to
+``$(datadir)/eclectic/modules/`` ::
+
+    # Copyright 1999-2005 Gentoo Foundation
+    # Distributed under the terms of the GNU General Public License v2
+    # $Header: $
+
+    DESCRIPTION="Do things to a cow"
+    VERSION="1.0"
+
+    ### moo action
+
+    describe_moo() {
+            echo "Say moo"
+    }
+
+    do_moo() {
+            echo "${@:-I am a cow}" | cowsay
+    }
+
+    ### think action
+
+    describe_think() {
+            echo "Show a pensive cow"
+    }
+
+    do_think() {
+            echo "${@:-Am I a cow?}" | cowthink
+    }
+
+As you can see, the format is fairly similar to that of an ebuild -- it is a
+bash script which is run in a special environment. This is intentional. There
+are ``DESCRIPTION`` and ``VERSION`` variables globally which are used by
+``eclectic`` and some of the default action handlers, and a series of functions.
+
+.. Warning:: In ebuilds, global scope code can cause problems. In eclectic
+  modules, global scope code is **absolutely forbidden**. Your module *will* be
+  sourced for tasks other than running your actions. For example, if
+  ``eclectic list-modules`` is executed, your module will be sourced to obtain
+  the description. Any code being run here would be a very bad thing.
+
+Unlike ebuilds, the function names are not fixed. Any function whose name starts
+with ``do_`` is considered to be an action implementation. It is conventional to
+have a ``describe_`` function for every ``do_`` function that gives a short
+description of the function -- this is used for ``eclectic modulename help``,
+for example.
+
+.. Note:: If Eclectic is invoked as ``cow-config`` or ``cow-update`` (for
+  example, via a symlink), it will automatically select the cow module.
+
+Standard Action Names
+---------------------
+
+The following list contains suggested allowed names for actions. If there is no
+suitable name on the list for your task, it is best to ask for the list to be
+updated -- for consistency, it would be nice to have a standardised list of
+action names.
+
+help
+        Display a help message. Automatic.
+usage
+        Display a usage message. Automatic.
+version
+        Display the current version. Automatic.
+show
+        Used to display the current provider of a symlink, or the currently
+        installed module, or the current status.
+list
+        Used to display all available providers of a symlink, or all available
+        modules.
+set
+        Used to set a new provider or a symlink.
+enable
+        Used to enable an optional feature.
+disable
+        Used to disable an optional feature.
+update
+        Used to automatically select a new provider for a symlink (as opposed to
+        ``set``, which generally takes a parameter manually selecting the
+        provider).
+
+.. Note:: You can override the ``help``, ``usage`` and ``version`` actions. They
+  are provided by default by ``lib/default.eclectic``. You should only do this
+  with a good reason. Removing them is not a good idea, ``eclectic`` assumes
+  that they exist.
+
+Utility Functions
+-----------------
+
+Eclectic provides many utility functions. These are useful for standardised
+output formatting. Where possible, these should be used, especially for output.
+If a standard function is not available for the output format required, consider
+implementing one.
+
+General Utility Functions
+'''''''''''''''''''''''''
+
+These are implemented in ``libs/core.bash``.
+
+The ``die`` Utility Function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``die`` function (which, unlike its ebuild counterpart, *can* be called from
+within subshells) is used to exit with a fatal error. It should be invoked as
+``die -q "Message to display"``. If the ``-q`` is not provided, a stacktrace
+will be displayed -- this should never happen because of user input error, only
+abnormal conditions.
+
+The ``is_function`` Utility Function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``is_function`` utility function returns true if and only if its parameter
+exists and is a function. This is mostly used internally, but may have some use
+for modules.
+
+The ``check_do`` Utility Function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``check_do`` utility function checks that the first parameter is a function,
+and then calls it with any additional parameters as its arguments. If the
+function does not exist, ``die`` is called. Again, this is mostly internal.
+
+The ``do_action`` Utility Function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``do_action`` utility function is the correct way to call a utility function
+which is defined in another module. The first parameter is the action,
+additional parameters are passed as arguments.
+
+The ``has`` Utility Function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``has`` utility function is like portage's ``hasq``. It returns true if and
+only if the first parameter is equal to any of the remaining parameters.
+
+Output Utility Functions
+''''''''''''''''''''''''
+
+These are implemented in ``libs/output.bash``.
+
+The ``write_error_msg`` Utility Function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``write_error_msg`` function displays an error message in the standard
+format. It is similar to ``eerror``.
+
+The ``write_list_`` Utility Functions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To display a list, the ``write_list_`` family of functions should be used. Lists
+should always start with a header, which can be displayed using
+``write_list_start The Header``.
+
+To display a numbered list, the ``write_numbered_list_entry`` function should be
+used for each item. The first parameter is the list item number, the second is
+the list item text (remember to quote this).
+
+To display a keyword/value list, the ``write_kv_list_entry`` function should be
+used. The first parameter is the key, the second the value.
+
+The ``write_numbered_list`` function is a wrapper around
+``write_numbered_list_entry`` that handles the numbering automatically. Each
+parameter passed is displayed as a numbered list item, the first with index 1,
+the second with index 2 and so on.
+
+The ``space`` Utility Function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``space`` utility function takes a single integer parameter. It displays
+that many space characters.
+
+.. vim: set ft=glep tw=80 sw=4 et spell spelllang=en : ..

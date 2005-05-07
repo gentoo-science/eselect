@@ -1,6 +1,7 @@
 ChangeLog for eclectic
 
 2005-05-07 Ciaran McCreesh <ciaranm@gentoo.org>
+	* doc/: Add initial developer docs.
 	* libs/core.bash.in: Fix bug in has so that it is consistent with
 	portage syntax.
 	* modules/blas.eclectic, modules/lapack.eclectic: Update to new has

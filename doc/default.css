@@ -1,0 +1,61 @@
+a:link, a:visited {
+    color: #660099;
+    text-decoration: none;
+}
+
+a[href]:hover {
+    color: #660099;
+    text-decoration: underline;
+}
+
+code, tt {
+    color: #993333;
+}
+
+
+div.main p, div.main dd {
+    text-align: justify;
+}
+
+pre {
+    background-color: #1e1e27;
+    color: #cfbfad;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+div.main h1 {
+    text-align: center;
+}
+
+div.main h2 {
+    text-align: left;
+    border-bottom: 1px dashed #330066;
+}
+
+dt {
+    font-weight: bold;
+}
+
+code, pre, tt {
+    font-family: "Terminus", monospace;
+}
+
+div.warning p.admonition-title, div.note p.admonition-title {
+    font-weight: bold;
+    display: inline;
+}
+
+div.warning p, div.note p {
+    display: inline;
+}
+
+div.warning p.admonition-title:after, div.note p.admonition-title:after {
+    content: ":";
+}
+
+/* vim: set ts=4 tw=80 et : */
+
+
