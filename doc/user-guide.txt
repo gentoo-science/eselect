@@ -1,0 +1,63 @@
+Eclectic User Guide
+===================
+
+Introduction
+------------
+
+Eclectic is a tool for administration and configuration on Gentoo systems. It
+_will_ modify the systems behaviour and should be used with care and by the
+system's administrator only.
+
+Terminology
+-----------
+
+Eclectic consists of a framework and many small bash scripts that do the
+actual work, their names end in ``.eclectic``. These files are called
+``modules``. Every module provides a set of functions that can be called via
+the main eclectic tool. These functions are called ``actions``.
+
+Usage
+-----
+
+Eclectic should be called as
+
+	eclectic <module> <action> <options>
+
+Eclectic features uniform actions among all its modules. The following are its
+default actions:
+
+* help
+  Print the modules help screen.
+* usage
+  Print information on how to invoke the modules actions.
+* version
+  Print the modules version and other useful information.
+* list
+  Prints a set of selectable options.
+* show
+  Prints the currently active configuration(s).
+* set
+  Select one of the options offered by ``list``.
+* enable
+   Enable one of the module specific features.
+* disable
+  Disable one of the module specific features.
+* update
+  Gather information about the system and store it for future usage by the
+  module.
+
+A fictive default session will look like the following for most of the
+modules:
+
+    / # eclectic <module> update	(optional)
+    / # eclectic <module> list
+    These selections are available
+      [1] <item1>
+      [2] <item2>
+  
+    / # eclectic <module> set <item1>
+    / # eclectic <module> show
+    Active selection:
+      <item1>
+
+.. vim: set ft=glep tw=80 sw=4 et spell spelllang=en : ..

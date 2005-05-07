@@ -1,5 +1,9 @@
 ChangeLog for eclectic
 
+2005-05-07 Danny van Dyk <kugelfang@gentoo.org>
+
+	* doc/user-guide.txt: Added a first draft of the user docs.
+
 2005-05-07 Ciaran McCreesh <ciaranm@gentoo.org>
 
 	* doc/developer-guide.txt: Fix formatting, typos. Add a bit more about
