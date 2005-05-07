@@ -84,7 +84,7 @@ Standard Action Names
 The following list contains suggested allowed names for actions. If there is no
 suitable name on the list for your task, it is best to ask for the list to be
 updated -- for consistency, it would be nice to have a standardised list of
-action names.
+action names. (The cow module, being a silly demonstration module, is exempt.)
 
 help
         Display a help message. Automatic.
