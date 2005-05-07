@@ -137,14 +137,14 @@ do_set() {
 	impl=${1}
 	shift
 	
-	has "LAPACK_IMPLEMENTATIONS" ${impl} \
+	has "${LAPACK_IMPLEMENTATIONS}" ${impl} \
 		|| die -q "Illegal implementation: ${impl}"
 
 	for param in ${@} ; do
 		echo "param: ${param}"
-		if has "libdirs" ${param} ; then
+		if has "${libdirs}" ${param} ; then
 			mylibdirs=(${mylibdirs[@]} ${param})
-		elif has "LAPACK_PROFILES" ${param} ; then
+		elif has "${LAPACK_PROFILES}" ${param} ; then
 			myprofiles=(${myprofiles[@]} ${param})
 		else
 			die -q "Illegal parameter: ${param}."
@@ -173,8 +173,8 @@ describe_show() {
 
 do_show() {
 	local libdirs=$(list_libdirs) profiles=${LAPACK_PROFILES} libdir lib prefix
-	[[ -n ${1} ]] && has "libdirs" ${1} && libdirs=${1}
-	[[ -n ${2} ]] && has "profiles" ${1} && profiles=${1}
+	[[ -n ${1} ]] && has "${libdirs}" ${1} && libdirs=${1}
+	[[ -n ${2} ]] && has "${profiles}" ${1} && profiles=${1}
 	write_list_start "Active LAPACK implementations"
 	for libdir in ${libdirs} ; do
 		[[ ${#libdirs} -eq 1 ]] || prefix="${ROOT}/usr/${libdir}"
@@ -210,7 +210,7 @@ do_update() {
 		[[ -e ${ROOT}/usr/${libdir}/ ]] || continue
 		for impl in ${LAPACK_IMPLEMENTATIONS} ; do
 			for prof in $(check_${impl} ${ROOT}/usr/${libdir}/) ; do
-				if has "LAPACK_PROFILES" ${prof} ; then
+				if has "${LAPACK_PROFILES}" ${prof} ; then
 					add_config lapack "${prof}_${libdir}" ${impl}
 					[[ ${prof} == F77 ]] && lib=${ROOT}/usr/${libdir}/liblapack.so
 					is_active_${impl} ${lib} \

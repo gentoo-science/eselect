@@ -175,14 +175,14 @@ do_set() {
 	impl=${1}
 	shift
 	
-	has "BLAS_IMPLEMENTATIONS" ${impl} \
+	has "${BLAS_IMPLEMENTATIONS}" ${impl} \
 		|| die -q "Illegal implementation: ${impl}"
 
 	for param in ${@} ; do
 		echo "param: ${param}"
-		if has "libdirs" ${param} ; then
+		if has "${libdirs}" ${param} ; then
 			mylibdirs=(${mylibdirs[@]} ${param})
-		elif has "BLAS_PROFILES" ${param} ; then
+		elif has "${BLAS_PROFILES}" ${param} ; then
 			myprofiles=(${myprofiles[@]} ${param})
 		else
 			die -q "Illegal parameter: ${param}."
@@ -211,8 +211,8 @@ describe_show() {
 
 do_show() {
 	local libdirs=$(list_libdirs) profiles=${BLAS_PROFILES} libdir lib prefix
-	[[ -n ${1} ]] && has "libdirs" ${1} && libdirs=${1}
-	[[ -n ${2} ]] && has "profiles" ${2} && profiles=${2}
+	[[ -n ${1} ]] && has "${libdirs}" ${1} && libdirs=${1}
+	[[ -n ${2} ]] && has "${profiles}" ${2} && profiles=${2}
 	write_list_start "Active BLAS implementations"
 	for libdir in ${libdirs} ; do
 		[[ ${#libdirs} -eq 1 ]] || prefix="${ROOT}/usr/${libdir}"
@@ -248,7 +248,7 @@ do_update() {
 		[[ -e ${ROOT}/usr/${libdir}/ ]] || continue
 		for impl in ${BLAS_IMPLEMENTATIONS} ; do
 			for prof in $(check_${impl} ${ROOT}/usr/${libdir}/) ; do
-				if has "BLAS_PROFILES" ${prof} ; then
+				if has "${BLAS_PROFILES}" ${prof} ; then
 					add_config blas "${prof}_${libdir}" ${impl}
 					[[ ${prof} == C ]] && lib=${ROOT}/usr/${libdir}/libcblas.so
 					[[ ${prof} == F77 ]] && lib=${ROOT}/usr/${libdir}/libblas.so
