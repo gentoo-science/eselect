@@ -1,2 +1,2 @@
 EXTRA_DIST = eclectic.bashcomp
-MAINTAINERCLEANFILES = *~
+MAINTAINERCLEANFILES = *~ Makefile.in
