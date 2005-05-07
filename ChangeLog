@@ -4,6 +4,7 @@ ChangeLog for eclectic
 
 	* doc/developer-guide.txt: Fix formatting, typos. Add a bit more about
 	how eclectic works.
+	* doc/Makefile.am: Make this much more generic.
 
 2005-05-07 Tom Martin <slarti@gentoo.org>
 

@@ -1,6 +1,12 @@
-noinst_DATA = developer-guide.txt
+doc_files = developer-guide
 
-html:
-	for x in $(noinst_DATA) ; do \
-		rst2html.py $${x} $${x%.*}.html ; \
-	done
+noinst_DATA = $(foreach f, $(doc_files), $(f).txt)
+
+html: $(foreach f, $(doc_files), $(f).html )
+
+%.html : %.txt
+	rst2html.py < $? > $@
+
+CLEANFILES = $(foreach f, $(doc_files), $(f).html)
+MAINTAINERCLEANFILES = Makefile.in
+EXTRA_DIST = default.css $(noinst_DATA)
