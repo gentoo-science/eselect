@@ -5,59 +5,65 @@ Introduction
 ------------
 
 Eclectic is a tool for administration and configuration on Gentoo systems. It
-_will_ modify the systems behaviour and should be used with care and by the
-system's administrator only.
+_will_ modify the system's behaviour and should be used with care by the system
+administrator.
 
 Terminology
 -----------
 
-Eclectic consists of a framework and many small bash scripts that do the
-actual work, their names end in ``.eclectic``. These files are called
-``modules``. Every module provides a set of functions that can be called via
-the main eclectic tool. These functions are called ``actions``.
+Eclectic is a framework providing a program named ``eclectic`` and many small
+bash scripts that do the actual work. These are known as ``modules``, and can be
+identified by their ``.eclectic`` file extension.
+
+Every module provides a set of functions that can be called via the main
+eclectic tool. These functions are called ``actions``.
 
 Usage
 -----
 
-Eclectic should be called as
+Eclectic should be called as: ::
 
 	eclectic <module> <action> <options>
 
-Eclectic features uniform actions among all its modules. The following are its
-default actions:
+Eclectic features consistently named actions among most of its modules. The
+following are standard action names -- each module may provide a subset of these
+actions:
 
-* help
+help
   Print the modules help screen.
-* usage
+usage
   Print information on how to invoke the modules actions.
-* version
+version
   Print the modules version and other useful information.
-* list
+list
   Prints a set of selectable options.
-* show
+show
   Prints the currently active configuration(s).
-* set
+set
   Select one of the options offered by ``list``.
-* enable
+enable
    Enable one of the module specific features.
-* disable
+disable
   Disable one of the module specific features.
-* update
+update
+  Like ``set``, but automatically selects an option rather than taking a
+  parameter.
+scan
   Gather information about the system and store it for future usage by the
   module.
 
-A fictive default session will look like the following for most of the
-modules:
+A typical session will look like the following for most modules: ::
 
-    / # eclectic <module> update	(optional)
     / # eclectic <module> list
-    These selections are available
-      [1] <item1>
-      [2] <item2>
+    These selections are available:
+      [1] <first>
+      [2] <second>
   
-    / # eclectic <module> set <item1>
+    / # eclectic <module> set <first>
     / # eclectic <module> show
     Active selection:
       <item1>
+
+You can usually set items either by name or by number.
 
 .. vim: set ft=glep tw=80 sw=4 et spell spelllang=en : ..

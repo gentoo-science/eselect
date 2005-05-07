@@ -117,6 +117,8 @@ enable
         Used to enable an optional feature.
 disable
         Used to disable an optional feature.
+scan
+        Read information off the current filesystem.
 update
         Used to automatically select a new provider for a symlink (as opposed to
         ``set``, which generally takes a parameter manually selecting the
