@@ -24,6 +24,7 @@ ChangeLog for eclectic
 	profiles.desc format. Also, ensure that explicitly specified profiles
 	are actually valid for the host arch.
 	* man/Makefile.am: Add missing manual pages.
+	* man/profile.eclectic.5: Add missing '.br'.
 	* configure.in, Makefile.am, doc/Makefile.am: Added Makefile.am for
 	doc/ with html target.
 
