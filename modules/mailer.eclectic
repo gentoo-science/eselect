@@ -8,7 +8,7 @@ MAINTAINER="slarti@gentoo.org"
 
 # check we have /etc/mail
 check_dirs() {
-	if [[ ! -d ${ROOT}/etc/mail ]]
+	if [[ ! -d ${ROOT}/etc/mail ]] ; then
 		die -q "/etc/mail does not exist, or is not a directory. Please fix."
 	fi
 }
