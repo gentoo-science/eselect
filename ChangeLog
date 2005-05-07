@@ -12,6 +12,7 @@ ChangeLog for eclectic
 	* modules/profile-symlink.eclectic: Fix sed to use current
 	profiles.desc format. Also, ensure that explicitly specified profiles
 	are actually valid for the host arch.
+	* man/Makefile.am: Add missing manual pages.
 
 2005-05-07 Danny van Dyk <kugelfang@gentoo.org>
 
