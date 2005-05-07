@@ -4,8 +4,7 @@ noinst_SCRIPTS = bashcomp.eclectic \
 		 kernel-symlink.eclectic \
 		 lapack.eclectic \
 		 mailer-symlink.eclectic \
-		 profile-symlink.eclectic \
-		 vi-symlink.eclectic
+		 profile-symlink.eclectic
 
 EXTRA_DIST = $(noinst_SCRIPTS)
 
