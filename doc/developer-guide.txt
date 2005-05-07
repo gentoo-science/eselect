@@ -23,6 +23,19 @@ module requested, and then call the relevant action function in that module.
 Additional handling is available for help parameters and listing available
 modules.
 
+Eclectic consists of several components:
+
+* The main ``eclectic`` script.
+* Various library scripts which provide functions which can be used in modules
+  (and the main ``eclectic`` script).
+* A collection of modules for performing different tasks.
+
+When porting your application to use the Eclectic framework, you will generally
+need to create a module. Often this can be heavily based upon an existing
+module, so check to see whether there is something that does almost what you
+need first (symlink handling is a good example of something that can be copied
+rather than reinvented).
+
 A Simple Module
 ---------------
 

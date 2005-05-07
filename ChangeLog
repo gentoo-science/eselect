@@ -2,7 +2,8 @@ ChangeLog for eclectic
 
 2005-05-07 Ciaran McCreesh <ciaranm@gentoo.org>
 
-	* doc/developer-guide.txt: Fix formatting, typos.
+	* doc/developer-guide.txt: Fix formatting, typos. Add a bit more about
+	how eclectic works.
 
 2005-05-07 Tom Martin <slarti@gentoo.org>
 
