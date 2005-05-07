@@ -1,6 +1,5 @@
 noinst_SCRIPTS = bashcomp.eclectic \
-                 blas.eclectic \
-                 cow.eclectic \
+		 blas.eclectic \
 		 kernel-symlink.eclectic \
 		 lapack.eclectic \
 		 mailer-symlink.eclectic \
