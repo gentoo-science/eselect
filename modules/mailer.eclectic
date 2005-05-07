@@ -6,8 +6,16 @@ DESCRIPTION="Manage the mailwrapper profiles in /etc/mail"
 VERSION="1.0"
 MAINTAINER="slarti@gentoo.org"
 
+# check we have /etc/mail
+check_dirs() {
+	if [[ ! -d ${ROOT}/etc/mail ]]
+		die -q "/etc/mail does not exist, or is not a directory. Please fix."
+	fi
+}
+
 # find a list of mailer.conf symlink targets
-find_targets() {
+findi_targets() {
+	check_dirs
 	for f in ${ROOT}/etc/mail/*.mailer ; do
 		echo $(basename ${f} )
 	done
@@ -15,11 +23,13 @@ find_targets() {
 
 # try to remove the mailer.conf symlink
 remove_symlink() {
+	check_dirs
 	rm "${ROOT}/etc/mail/mailer.conf"
 }
 
 # set the mailer.conf symlink
 set_symlink() {
+	check_dirs
 	target=${1}
 	if [[ -z "${target//[[:digit:]]}" ]] ; then
 		targets=( $(find_targets ) )
@@ -43,6 +53,7 @@ describe_show() {
 }
 
 do_show() {
+	check_dirs
 	write_list_start "Current mailer.conf profile:"
 	if [[ -L "${ROOT}/etc/mail/mailer.conf" ]] ; then
 		profile="$(readlink ${ROOT}/etc/mail/mailer.conf )"
@@ -61,6 +72,7 @@ describe_list() {
 }
 
 do_list() {
+	check_dirs
 	targets=( $(find_targets ) )
 	echo ${targets[@]}
 	targets=( ${targets[@]%.mailer} )
@@ -75,6 +87,7 @@ describe_set() {
 }
 
 do_set() {
+	check_dirs
 	if [[ -z ${1} ]] ; then
 		die -q "You didn't tell me what to set the profile to"
 
