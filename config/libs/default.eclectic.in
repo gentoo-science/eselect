@@ -72,6 +72,8 @@ describe_help() {
 do_help() {
     echo "${DESCRIPTION}"
     do_usage
+    is_function show_extra_help_text && show_extra_help_text
+    true
 }
 
 # vim: set sw=4 et sts=4 tw=80 :

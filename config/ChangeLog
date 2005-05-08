@@ -2,5 +2,10 @@ ChangeLog for eclectic (ciaranm/config branch)
 
 2005-05-08 Ciaran McCreesh <ciaranm@gentoo.org>
 
+	* libs/default.eclectic.in: Allow show_extra_help_text as part of
+	the default help action.
+
+2005-05-08 Ciaran McCreesh <ciaranm@gentoo.org>
+
 	* branches/ciaranm/config: Create a branch for playing around with an
 	etc-update style module.
