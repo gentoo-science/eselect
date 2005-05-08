@@ -84,6 +84,7 @@ write_numbered_list() {
 apply_text_highlights() {
     local restore=${1} text=${2}
     text="${text//\%%%HI%%%/${COLOUR_HI}}"
+    text="${text//\%%%WA%%%/${COLOUR_WARN}}"
     text="${text//\%%%RE%%%/${restore}}"
     echo -n "${text}"
 }
@@ -93,6 +94,13 @@ apply_text_highlights() {
 highlight() {
     echo -n -e "%%%HI%%%${*}%%%RE%%%"
 }
+
+# highlight_warning PUBLIC
+# Highlight all arguments as a warning (red). Text highlighting function.
+highlight_warning() {
+    echo -n -e "%%%WA%%%${*}%%%RE%%%"
+}
+
 
 # space PUBLIC
 # Write $1 numbers of spaces

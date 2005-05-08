@@ -2,6 +2,8 @@ ChangeLog for eclectic (ciaranm/config branch)
 
 2005-05-08 Ciaran McCreesh <ciaranm@gentoo.org>
 
+	* libs/output.bash.in, libs/core.bash.in: Add highlight_warning
+	function.
 	* modules/Makefile.am, modules/config.eclectic: Initial version of the
 	config module. Not ready for use yet.
 	* bin/eclectic.in, libs/tests.bash.in, libs/Makefile.am: Add tests
