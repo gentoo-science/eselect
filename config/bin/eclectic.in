@@ -47,6 +47,7 @@ source "${ECLECTIC_CORE_PATH}/core.bash" || exit 255
 source "${ECLECTIC_CORE_PATH}/output.bash" || die "Couldn't source output.bash"
 source "${ECLECTIC_CORE_PATH}/config.bash" || die "Couldn't source config.bash"
 source "${ECLECTIC_CORE_PATH}/multilib.bash" || die "Couldn't source multilib.bash"
+source "${ECLECTIC_CORE_PATH}/tests.bash" || die "Couldn't source tests.bash"
 
 # Sneaky trick to make die in subshells work. If you don't get
 # it, don't ask...
