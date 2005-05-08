@@ -1,0 +1,6 @@
+ChangeLog for eclectic (ciaranm/config branch)
+
+2005-05-08 Ciaran McCreesh <ciaranm@gentoo.org>
+
+	* branches/ciaranm/config: Create a branch for playing around with an
+	etc-update style module.

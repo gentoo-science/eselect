@@ -1,0 +1,45 @@
+# Copyright 1999-2005 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+DESCRIPTION="Handle configuration file merges"
+VERSION="1.0"
+MAINTAINER="ciaranm@gentoo.org"
+DEFAULT_ACTION="interactive"
+
+config_protect_dirs() {
+	[[ -z "${CONFIG_PROTECT}" ]] && \
+		export CONFIG_PROTECT=$(portageq envvar CONFIG_PROTECT)
+	echo ${CONFIG_PROTECT}
+}
+
+find_targets() {
+	find $(config_protect_dirs ) -iname '._cfg????_*'
+}
+
+### list action ###
+
+describe_list() {
+	echo "List files which need merging"
+}
+
+do_list() {
+	targets=( $(find_targets ) )
+	write_list_start "Available kernel symlink targets:"
+	write_numbered_list "${targets[@]}"
+}
+
+### discard action ###
+
+### accept action ###
+
+### discard-all action ###
+
+### accept-all action ###
+
+### merge action ###
+
+### interactive action ###
+
+# vim: set ft=ebuild :
+
