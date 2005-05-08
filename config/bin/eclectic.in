@@ -134,13 +134,29 @@ ec_do_list-modules() {
 # figure out what the action is. we need to know whether we're
 # invoked as a something-config/something-update.
 action=""
-if [[ ${0%%-config} != ${0} ]] ; then
-    action=$(basename "${0}" )
-    action=${action%%-config}
-elif [[ ${0%%-update} != ${0} ]] ; then
-    action=$(basename "${0}" )
-    action=${action%%-update}
-elif [[ -n ${1##--} ]] ; then
+
+for suffix in config update tool manager ; do
+    if [[ ${0%%-${suffix}} != ${0} ]] ; then
+        action=$(basename "${0}" )
+        action=${action%%-${suffix}}
+        break
+    fi
+done
+unset suffix
+
+if [[ -z ${action} ]] ; then
+    binname=$(basename "${0}" )
+    for prefix in config update manage ; do
+        if [[ ${binname##${prefix}-} != ${binname} ]] ; then
+            action=$(basename "${0}" )
+            action=${action##${prefix}-}
+            break
+        fi
+    done
+    unset binname prefix
+fi
+
+[[ -z ${action} ]] && if [[ -n ${1##--} ]] ; then
     action=${1##--}
     shift
 elif [[ -n ${1} ]] ; then

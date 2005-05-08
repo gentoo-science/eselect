@@ -2,6 +2,9 @@ ChangeLog for eclectic (ciaranm/config branch)
 
 2005-05-08 Ciaran McCreesh <ciaranm@gentoo.org>
 
+	* bin/eclectic.in: Better prefix/suffix support. Now recognises
+	prefixes config-, update-, manage- and suffixes -config, -update,
+	-tool, -manager.
 	* libs/output.bash.in, libs/core.bash.in: Add highlight_warning
 	function.
 	* modules/Makefile.am, modules/config.eclectic: Initial version of the
