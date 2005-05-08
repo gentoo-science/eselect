@@ -2,6 +2,8 @@ ChangeLog for eclectic (ciaranm/config branch)
 
 2005-05-08 Ciaran McCreesh <ciaranm@gentoo.org>
 
+	* modules/Makefile.am, modules/config.eclectic: Initial version of the
+	config module. Not ready for use yet.
 	* bin/eclectic.in, libs/tests.bash.in, libs/Makefile.am: Add tests
 	library. Currently one function, is_number.
 	* libs/default.eclectic.in: Allow show_extra_help_text as part of

@@ -5,16 +5,22 @@
 DESCRIPTION="Handle configuration file merges"
 VERSION="1.0"
 MAINTAINER="ciaranm@gentoo.org"
-DEFAULT_ACTION="interactive"
 
 config_protect_dirs() {
-	[[ -z "${CONFIG_PROTECT}" ]] && \
-		export CONFIG_PROTECT=$(portageq envvar CONFIG_PROTECT)
-	echo ${CONFIG_PROTECT}
+	if [[ -z ${CONFIG_UPDATE_DIRS} ]] ; then
+		portageq envvar CONFIG_PROTECT
+	else
+		echo ${CONFIG_UPDATE_DIRS}
+	fi
 }
 
 find_targets() {
-	find $(config_protect_dirs ) -iname '._cfg????_*'
+	local dir targets
+	for dir in $(config_protect_dirs ) ; do
+		[[ -d ${dir} ]] || continue
+		find ${dir} -iname '._cfg????_*' | \
+			sed -e 's,^\(.*\)\._cfg...._\(.*\),\1\2,g' | sort -u
+	done
 }
 
 ### list action ###
@@ -25,15 +31,150 @@ describe_list() {
 
 do_list() {
 	targets=( $(find_targets ) )
-	write_list_start "Available kernel symlink targets:"
-	write_numbered_list "${targets[@]}"
+	write_list_start "Configuration files needing action:"
+	if [[ ${#targets[@]} > 0 ]] ; then
+		write_numbered_list "${targets[@]}"
+	else
+		write_kv_list_entry "No out of date files found"
+	fi
 }
 
 ### discard action ###
 
+describe_discard() {
+	echo "Discard all updates to the specified files"
+}
+
+do_discard() {
+	local targets=( ) has_targets=0
+
+	# check whether we've been given any parameters
+	if [[ ${#@} < 1 ]] ; then
+		die -q "You should give me at least one file to work with"
+	else
+		local file_raw file
+
+		# for each parameter...
+		for file_raw in "$@" ; do
+			[[ -z ${file_raw} ]] && continue
+
+			# do we have a number or a name?
+			if [[ -z ${file_raw//[[:digit:]]} ]] ; then
+				# number. decode
+				if [[ ${has_targets} == 0 ]] ; then
+					targets=( $(find_targets ) )
+					has_targets=1
+				fi
+				file=${targets[${file_raw} - 1]}
+			else
+				# name. don't decode
+				file=${file_raw}
+			fi
+
+			# sanity checks
+			[[ -z ${file} ]] && die -q "Sorry, ${file_raw} seems to be invalid"
+			[[ -e ${file} ]] || die -q "Sorry, ${file} doesn't seem to exist"
+
+			# find the files to discard
+			local cfgname="._cfg????_$(basename "${file}")"
+			local dirname="$(readlink -f $(dirname ${file} ))"
+			local kfiles=$(find "${dirname}" -maxdepth 1 -type f -iname "${cfgname}")
+
+			if [[ -n ${kfiles//[[:space:]]} ]] ; then
+				# files found. kill them
+				local kfile
+				for kfile in "${kfiles}" ; do
+					rm --interactive "${kfile}"
+				done
+			else
+				# no files found
+				write_error_msg "Couldn't find any files to discard."
+				write_error_msg "I was looking in: ${dirname}"
+				write_error_msg "For files named:  ${cfgname}"
+				die -q "Can't discard ${file_raw}"
+			fi
+		done
+	fi
+}
+
 ### accept action ###
 
+describe_accept() {
+	echo "Accept changes to the specified files"
+}
+
+do_accept() {
+	local targets=( ) has_targets=0
+
+	# check whether we've been given any parameters
+	if [[ ${#@} < 1 ]] ; then
+		die -q "You should give me at least one file to work with"
+	else
+		local file_raw file
+
+		# for each parameter...
+		for file_raw in "$@" ; do
+			[[ -z ${file_raw} ]] && continue
+
+			# do we have a number or a name?
+			if [[ -z ${file_raw//[[:digit:]]} ]] ; then
+				# number. decode
+				if [[ ${has_targets} == 0 ]] ; then
+					targets=( $(find_targets ) )
+					has_targets=1
+				fi
+				file=${targets[${file_raw} - 1]}
+			else
+				# name. don't decode
+				file=${file_raw}
+			fi
+
+			# sanity checks
+			[[ -z ${file} ]] && die -q "Sorry, ${file_raw} seems to be invalid"
+			[[ -e ${file} ]] || die -q "Sorry, ${file} doesn't seem to exist"
+
+			# find the files to accept
+			local cfgname="._cfg????_$(basename "${file}")"
+			local dirname="$(readlink -f $(dirname ${file} ))"
+			local mfiles=$(find "${dirname}" -maxdepth 1 -type f -iname "${cfgname}")
+
+			if [[ -n ${mfiles//[[:space:]]} ]] ; then
+				# files found. kill them
+				local mfile
+				for mfile in "${mfiles}" ; do
+					echo "Accept ${mfile}"
+				done
+			else
+				# no files found
+				write_error_msg "Couldn't find any files to accept."
+				write_error_msg "I was looking in: ${dirname}"
+				write_error_msg "For files named:  ${cfgname}"
+				die -q "Can't accept ${file_raw}"
+			fi
+		done
+	fi
+
+}
+
 ### discard-all action ###
+
+describe_discard-all() {
+	echo "Discard all updates (use with caution)"
+}
+
+do_discard-all() {
+	local targets target
+	write_list_start "Discarding changes to configuration files:"
+	targets=( $(find_targets ) )
+	if [[ ${#targets[@]} > 0 ]] ; then
+		for target in ${targets[@]} ; do
+			write_kv_list_entry "${target}" ""
+			do_action config discard "${target}"
+		done
+	else
+		write_kv_list_entry "No out of date files found"
+	fi
+}
 
 ### accept-all action ###
 
