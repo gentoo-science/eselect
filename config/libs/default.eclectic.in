@@ -55,6 +55,10 @@ do_usage() {
                 ;;
         esac
     done
+    if is_function show_extra_help_text ; then
+        echo
+        echo "Additional help is available via the 'help' action."
+    fi
 }
 
 describe_version() {
@@ -72,7 +76,10 @@ describe_help() {
 do_help() {
     echo "${DESCRIPTION}"
     do_usage
-    is_function show_extra_help_text && show_extra_help_text
+    if is_function show_extra_help_text ; then
+        echo
+        show_extra_help_text
+    fi
     true
 }
 
