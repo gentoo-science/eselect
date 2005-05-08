@@ -1,5 +1,9 @@
 ChangeLog for eclectic
 
+2005-05-08 Tom Martin <slarti@gentoo.org>
+	* modules/eclectic.mailer: Fix a stupid typo (findi_targets ->
+	find_targets).
+
 2005-05-07 Ciaran McCreesh <ciaranm@gentoo.org>
 
 	* Tag for release 0.9.1
