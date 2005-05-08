@@ -11,6 +11,8 @@ show_extra_help_text() {
 This tool can be used to automatically or manually merge configuration files
 which have been created by portage.
 
+The 'interactive' action will enter interactive mode.
+
 The 'list' action will show all configuration files which need updating.
 
 The 'accept' action will accept the proposed changes to one or more
@@ -19,23 +21,22 @@ be the names of files to overwrite, a number corresponding to the value shown by
 the 'list' action, or two numbers separated by a hyphen -- for example, "3-7" --
 which is treated as a range.
 
-The 'discard' action will discard (reject) the proposed changes to one or more
+The 'reject' action will discard (reject) the proposed changes to one or more
 configuration files. It takes parameters in the same way as 'accept'.
 
 The 'display' action shows (as a unified diff) the proposed update for one or
 more files.
 
 The 'accept-all' action accepts all proposed changes to all configuration files.
-Similarly, 'discard-all' rejects all changes. Use with caution.
+Similarly, 'reject-all' rejects all changes. Use with caution.
 ENDOFTEXT
 }
 
 config_protect_dirs() {
 	if [[ -z ${CONFIG_UPDATE_DIRS} ]] ; then
-		portageq envvar CONFIG_PROTECT
-	else
-		echo ${CONFIG_UPDATE_DIRS}
+		export CONFIG_UPDATE_DIRS=$(portageq envvar CONFIG_PROTECT )
 	fi
+	echo ${CONFIG_UPDATE_DIRS}
 }
 
 find_targets() {
@@ -134,17 +135,17 @@ do_list() {
 	fi
 }
 
-### discard action ###
+### reject action ###
 
-describe_discard() {
-	echo "Discard updates to the specified files"
+describe_reject() {
+	echo "Reject updates to the specified files"
 }
 
-do_discard() {
-	generic_handle_one_file "discard" "discard_handler" "$@"
+do_reject() {
+	generic_handle_one_file "reject" "reject_handler" "$@"
 }
 
-discard_handler() {
+reject_handler() {
 	rm --interactive "$@"
 }
 
@@ -155,7 +156,7 @@ describe_accept() {
 }
 
 do_accept() {
-	generic_handle_one_file "discard" "accept_handler" "$@"
+	generic_handle_one_file "accept" "accept_handler" "$@"
 }
 
 accept_handler() {
@@ -167,14 +168,14 @@ accept_handler() {
 	done
 }
 
-### discard-all action ###
+### reject-all action ###
 
-describe_discard-all() {
-	echo "Discard all updates ($(highlight_warning dangerous))"
+describe_reject-all() {
+	echo "Reject all updates ($(highlight_warning dangerous))"
 }
 
-do_discard-all() {
-	generic_handle_all "Discarding" "discard"
+do_reject-all() {
+	generic_handle_all "Rejecting" "reject"
 }
 
 ### accept-all action ###
@@ -202,7 +203,20 @@ merge_handler() {
 	for file in "$@" ; do
 		local sfile="${file}" dfile="${file/._cfg????_}"
 		echo "Merging ${dfile} with ${sfile}..."
+		merge_prog ${dfile} ${sfile}
 	done
+}
+
+merge_prog() {
+	if type vimdiff &>/dev/null ; then
+		vimdiff "$@"
+	else
+		write_error_msg "Couldn't find a suitable merge program."
+		write_error_msg "Currently I know how to use 'vimdiff', which you can"
+		write_error_msg "get by installing app-editors/vim."
+		die -q "No merge program found"
+	fi
+
 }
 
 ### merge-all action ###
@@ -236,9 +250,9 @@ display_handler() {
 
 diff_prog() {
 	if type colordiff &>/dev/null ; then
-		colordiff -u "$@"
+		colordiff "$@"
 	else
-		diff -u "$@"
+		diff "$@"
 	fi
 }
 ### display-all action ###
@@ -252,6 +266,168 @@ do_display-all() {
 }
 
 ### interactive action ###
+
+describe_interactive() {
+	echo "Enter interactive mode"
+}
+
+do_interactive() {
+	local targets command show_menu=yes show_list=yes
+
+	config_protect_dirs 1>/dev/null
+	while true ; do
+		targets=( $(find_targets) )
+
+		# Are we finished?
+		if [[ ${#targets[@]} == 0 ]] ; then
+			write_list_start "Nothing left to do."
+			break
+		fi
+
+		# Should we show a file list?
+		if [[ -n ${show_list} ]] ; then
+			show_list=
+			write_list_start "Configuration files needing action:"
+			write_numbered_list "${targets[@]}"
+			echo
+		fi
+
+		# Should we show a menu?
+		if [[ -n ${show_menu} ]] ; then
+			show_menu=
+			write_list_start "Enter command:"
+			write_kv_list_entry "<number>" "Work with the specified file"
+			write_kv_list_entry "$(highlight d)isplay <number>" "Display proposed change"
+			write_kv_list_entry "$(highlight a)ccept <number>"  "Accept proposed change"
+			write_kv_list_entry "$(highlight r)eject <number>"  "Reject proposed change"
+			write_kv_list_entry "$(highlight m)erge <number>"   "Merge proposed change"
+			echo
+			write_kv_list_entry "accept-all" \
+				"Accept all changes ($(highlight_warning dangerous))"
+			write_kv_list_entry "reject-all" \
+				"Reject all changes ($(highlight_warning dangerous))"
+			echo
+			write_kv_list_entry "$(highlight l)ist" "Show file list"
+			write_kv_list_entry "$(highlight h)elp" "Show this menu again"
+			write_kv_list_entry "$(highlight q)uit" "Exit the program"
+			echo
+		else
+			write_list_start "Enter command ($(highlight h)elp to show menu)"
+		fi
+		echo -n "> "
+		read command
+
+		case ${command%%[[:space:]]*} in
+			q|qu|qui|quit)
+				break;
+				;;
+			h|he|hel|help)
+				show_menu=yes
+				;;
+			l|li|lis|list)
+				show_list=yes
+				;;
+			d|di|dis|disp|displ|displa|display)
+				local args=${command#*[[:space:]]}
+				if [[ -z ${command//[^[:space:]]} ]] ; then
+					write_error_msg "You didn't tell me which file to display"
+				else
+					do_action config display ${command#*[[:space:]]}
+				fi
+				;;
+			a|ac|acc|acce|accep|accept)
+				local args=${command#*[[:space:]]}
+				if [[ -z ${command//[^[:space:]]} ]] ; then
+					write_error_msg "You didn't tell me which file to accept"
+				else
+					do_action config accept ${command#*[[:space:]]}
+				fi
+				show_list=yes
+				;;
+			r|re|rej|reje|rejec|reject)
+				local args=${command#*[[:space:]]}
+				if [[ -z ${command//[^[:space:]]} ]] ; then
+					write_error_msg "You didn't tell me which file to reject"
+				else
+					do_action config reject ${command#*[[:space:]]}
+				fi
+				show_list=yes
+				;;
+			m|me|mer|merg|merge)
+				local args=${command#*[[:space:]]}
+				if [[ -z ${command//[^[:space:]]} ]] ; then
+					write_error_msg "You didn't tell me which file to merge"
+				else
+					do_action config merge ${command#*[[:space:]]}
+				fi
+				show_list=yes
+				;;
+			accept-all)
+				do_action config accept-all
+				show_list=yes
+				;;
+			reject-all)
+				do_action config reject-all
+				show_list=yes
+				;;
+			+([[:digit:]])*(+([[:space:]])+([[:digit:]])))
+				while true ; do
+					local item ok=
+					for item in ${command} ; do
+						[[ -z ${targets[${item}-1]} ]] && continue
+						[[ -z ${ok} ]] && write_list_start "Selected files:"
+						ok=yes
+						write_numbered_list_entry ${item} ${targets[${item}-1]}
+					done
+					if [[ -z ${ok} ]] ; then
+						write_error_msg "Sorry, ${command} not valid"
+						show_list=yes
+					else
+						echo
+						write_list_start "Enter subcommand:"
+						write_kv_list_entry "$(highlight d)isplay" "Display proposed change"
+						write_kv_list_entry "$(highlight a)ccept"  "Accept proposed change"
+						write_kv_list_entry "$(highlight r)eject"  "Reject proposed change"
+						write_kv_list_entry "$(highlight m)erge"   "Merge proposed change"
+						write_kv_list_entry "$(highlight q)uit"    "Return to parent menu"
+						echo
+						echo -n "> "
+						read subcommand
+						case ${subcommand} in
+							q|qu|qui|quit)
+								break;
+								;;
+							d|di|dis|disp|displ|displa|display)
+								do_action config display ${command}
+								;;
+							a|ac|acc|acce|accep|accept)
+								do_action config accept ${command}
+								show_list=yes
+								break
+								;;
+							r|re|rej|reje|rejec|reject)
+								do_action config reject ${command}
+								show_list=yes
+								break
+								;;
+							m|me|mer|merg|merge)
+								do_action config reject ${command}
+								show_list=yes
+								break
+								;;
+							*)
+								write_error_msg "Sorry, ${subcommand} not understood"
+								;;
+						esac
+					fi
+				done
+				;;
+			*)
+				write_error_msg "Sorry, ${command} not understood"
+				;;
+		esac
+	done
+}
 
 # vim: set ft=ebuild :
 
