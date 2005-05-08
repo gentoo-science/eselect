@@ -191,7 +191,7 @@ do_set() {
 	[[ -n ${mylibdirs[@]} ]] && libdirs=${mylibdirs[@]}
 	[[ -n ${myprofiles[@]} ]] && profiles=${myprofiles[@]}
 
-	write_list_start "Changing BLAS implementation to ${impl} in"
+	write_list_start "Changing BLAS implementation to $(highlight ${impl}) in"
 	echo "  ${libdirs}"
 	write_list_start "Affected language interfaces"
 	echo "  ${profiles}"
@@ -222,12 +222,12 @@ do_show() {
 			impl=$(load_config blas "${prof}_${libdir}_CURRENT")
 			if [[ -z ${impl} ]] ; then
 				[[ -n $(load_config lapack "${prof}_${libdir}") ]] \
-					&& die -q "Configuration file is broken. Please run update."
+					&& die -q "Configuration file is broken. Please run scan."
 			else
 				if is_active_${impl} ${ROOT}/usr/${libdir}/${lib} ; then
 					write_kv_list_entry "${prefix} (${prof})" "${impl} ($(package ${impl}))"
 				else
-					die -q "Configuration file is out of date. Please run update."
+					die -q "Configuration file is out of date. Please run scan."
 				fi
 			fi
 		done
