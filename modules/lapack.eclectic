@@ -80,9 +80,9 @@ setup_ACML() {
 
 setup_ATLAS() {
 	if [[ ${2} == F77 ]] ; then
-		ln -sf ${1}/atlas/liblapack.so ${1}/liblapack.so
-		ln -sf ${1}/atlas/liblapack.so ${1}/liblapack.so.0
-		ln -sf ${1}/atlas/liblapack.a  ${1}/liblapack.a
+		ln -sf ${1}/lapack/atlas/liblapack.so ${1}/liblapack.so
+		ln -sf ${1}/lapack/atlas/liblapack.so ${1}/liblapack.so.0
+		ln -sf ${1}/lapack/atlas/liblapack.a  ${1}/liblapack.a
 	else
 		die "Illegal profile: ${2}"
 	fi
@@ -90,9 +90,9 @@ setup_ATLAS() {
 
 setup_reference() {
 	if [[ ${2} == F77 ]] ; then
-		ln -sf ${1}/reference/liblapack.so ${1}/liblapack.so
-		ln -sf ${1}/reference/liblapack.so ${1}/liblapack.so.0
-		ln -sf ${1}/reference/liblapack.a  ${1}/liblapack.a
+		ln -sf ${1}/lapack/reference/liblapack.so ${1}/liblapack.so
+		ln -sf ${1}/lapack/reference/liblapack.so ${1}/liblapack.so.0
+		ln -sf ${1}/lapack/reference/liblapack.a  ${1}/liblapack.a
 	else
 		die "Illegal profile: ${2}"
 	fi
@@ -101,7 +101,7 @@ setup_reference() {
 ### list action ###
 
 describe_list() {
-	echo "List all installed LAPACK implementations."
+	echo "List all installed LAPACK implementations"
 }
 
 do_list() {
@@ -128,7 +128,7 @@ do_list() {
 ### select action ###
 
 describe_set() {
-	echo "Setup one of the installed LAPACK implementations as the active implementation."
+	echo "Setup one of the installed LAPACK implementations as the active implementation"
 }
 
 do_set() {
@@ -168,7 +168,7 @@ do_set() {
 ### show action ###
 
 describe_show() {
-	echo "Show the currently active LAPACK implementations."
+	echo "Show the currently active LAPACK implementations"
 }
 
 do_show() {
@@ -198,11 +198,11 @@ do_show() {
 
 ### update action ###
 
-describe_update() {
-	echo "Update the configuration file with data about all installed LAPACK implementations."
+describe_scan() {
+	echo "Scans the system for data about all installed LAPACK implementations"
 }
 
-do_update() {
+do_scan() {
 	local lib libdir impl prof
 	[[ -e ${ROOT}/etc/eclectic/lapack/lapack.config ]] \
 		&& rm ${ROOT}/etc/eclectic/lapack/lapack.config

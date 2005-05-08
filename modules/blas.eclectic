@@ -123,7 +123,7 @@ setup_reference() {
 ### list action ###
 
 describe_list() {
-	echo "List all installed BLAS implementations."
+	echo "List all installed BLAS implementations"
 }
 
 do_list() {
@@ -166,7 +166,7 @@ do_list() {
 ### select action ###
 
 describe_set() {
-	echo "Setup one of the installed BLAS implementations as the active implementation."
+	echo "Setup one of the installed BLAS implementations as the active implementation"
 }
 
 do_set() {
@@ -206,7 +206,7 @@ do_set() {
 ### show action ###
 
 describe_show() {
-	echo "Show the currently active BLAS implementations."
+	echo "Show the currently active BLAS implementations"
 }
 
 do_show() {
@@ -236,11 +236,11 @@ do_show() {
 
 ### update action ###
 
-describe_update() {
-	echo "Update the configuration file with data about all installed BLAS implementations."
+describe_scan() {
+	echo "Scans the system for data about all installed BLAS implementations"
 }
 
-do_update() {
+do_scan() {
 	local lib libdir impl prof
 	[[ -e ${ROOT}/etc/eclectic/blas/blas.config ]] \
 		&& rm ${ROOT}/etc/eclectic/blas/blas.config

@@ -1,5 +1,11 @@
 ChangeLog for eclectic
 
+2005-05-08 Danny van Dyk <kugelfang@gentoo.org>
+
+	* modules/blas.eclectic: update -> scan transition complete.
+	* modules/lapack.eclectic: update -> scan. Fixed directory settings
+	for lapack-atlas and lapack-reference.
+
 2005-05-08 Tom Martin <slarti@gentoo.org>
 	* modules/mailer.eclectic: Fix find_targets. If the glob didn't
 	match, it was interpreted as a literal string.
