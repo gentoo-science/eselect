@@ -32,7 +32,7 @@ ECLECTIC_CORE_PATH="${ECLECTIC_DATA_PATH}/libs"
 ECLECTIC_DEFAULT_ACTIONS="${ECLECTIC_CORE_PATH}/default.eclectic"
 
 # Our program name and version
-ECLECTIC_VERSION="0.1"
+ECLECTIC_VERSION="%VERSION%"
 ECLECTIC_PROGRAM_NAME="eclectic"
 
 # Invokation information
