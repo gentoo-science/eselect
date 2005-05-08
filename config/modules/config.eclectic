@@ -6,6 +6,30 @@ DESCRIPTION="Handle configuration file merges"
 VERSION="1.0"
 MAINTAINER="ciaranm@gentoo.org"
 
+show_extra_help_text() {
+	cat <<ENDOFTEXT
+This tool can be used to automatically or manually merge configuration files
+which have been created by portage.
+
+The 'list' action will show all configuration files which need updating.
+
+The 'accept' action will accept the proposed changes to one or more
+configuration files. It accepts one or more parameters, each of which can either
+be the names of files to overwrite, a number corresponding to the value shown by
+the 'list' action, or two numbers separated by a hyphen -- for example, "3-7" --
+which is treated as a range.
+
+The 'discard' action will discard (reject) the proposed changes to one or more
+configuration files. It takes parameters in the same way as 'accept'.
+
+The 'display' action shows (as a unified diff) the proposed update for one or
+more files.
+
+The 'accept-all' action accepts all proposed changes to all configuration files.
+Similarly, 'discard-all' rejects all changes. Use with caution.
+ENDOFTEXT
+}
+
 config_protect_dirs() {
 	if [[ -z ${CONFIG_UPDATE_DIRS} ]] ; then
 		portageq envvar CONFIG_PROTECT
@@ -21,6 +45,77 @@ find_targets() {
 		find ${dir} -iname '._cfg????_*' | \
 			sed -e 's,^\(.*\)\._cfg...._\(.*\),\1\2,g' | sort -u
 	done
+}
+
+generic_handle_one_file() {
+	local action_name="${1}" apply_cmd="${2}"
+	shift 2
+
+	local targets=( ) has_targets=0
+
+	# check whether we've been given any parameters
+	if [[ ${#@} < 1 ]] ; then
+		die -q "You should give me at least one file to work with"
+	else
+		local file_raw file
+
+		# for each parameter...
+		for file_raw in "$@" ; do
+			[[ -z ${file_raw} ]] && continue
+
+			# do we have a number or a name?
+			if is_number "${file_raw}" ; then
+				# number. decode
+				if [[ ${has_targets} == 0 ]] ; then
+					targets=( $(find_targets ) )
+					has_targets=1
+				fi
+				file=${targets[${file_raw} - 1]}
+			else
+				# name. don't decode
+				file=${file_raw}
+			fi
+
+			# sanity checks
+			[[ -z ${file} ]] && die -q "Sorry, ${file_raw} seems to be invalid"
+			[[ -e ${file} ]] || die -q "Sorry, ${file} doesn't seem to exist"
+
+			# find the files to discard
+			local cfgname="._cfg????_$(basename "${file}")"
+			local dirname="$(readlink -f $(dirname ${file} ))"
+			local kfiles
+			kfiles=( $(find "${dirname}" -maxdepth 1 -type f \
+					-iname "${cfgname}") )
+
+			if [[ -n ${kfiles[@]//[[:space:]]} ]] ; then
+				# files found. work on them
+				${apply_cmd} "${kfiles}"
+			else
+				# no files found
+				write_error_msg "Couldn't find any files to ${action_name}."
+				write_error_msg "I was looking in: ${dirname}"
+				write_error_msg "For files named:  ${cfgname}"
+				die -q "Can't ${action_name} ${file_raw}"
+			fi
+		done
+	fi
+}
+
+generic_handle_all() {
+	local verb="${1}" action="${2}"
+	shift 2
+
+	local targets target
+	write_list_start "${verb} changes to configuration files:"
+	targets=( $(find_targets ) )
+	if [[ ${#targets[@]} > 0 ]] ; then
+		for target in ${targets[@]} ; do
+			write_kv_list_entry "${target}" ""
+			do_action config "${action}" "${target}"
+		done
+	else
+		write_kv_list_entry "No out of date files found"
+	fi
 }
 
 ### list action ###
@@ -42,59 +137,15 @@ do_list() {
 ### discard action ###
 
 describe_discard() {
-	echo "Discard all updates to the specified files"
+	echo "Discard updates to the specified files"
 }
 
 do_discard() {
-	local targets=( ) has_targets=0
+	generic_handle_one_file "discard" "discard_handler" "$@"
+}
 
-	# check whether we've been given any parameters
-	if [[ ${#@} < 1 ]] ; then
-		die -q "You should give me at least one file to work with"
-	else
-		local file_raw file
-
-		# for each parameter...
-		for file_raw in "$@" ; do
-			[[ -z ${file_raw} ]] && continue
-
-			# do we have a number or a name?
-			if [[ -z ${file_raw//[[:digit:]]} ]] ; then
-				# number. decode
-				if [[ ${has_targets} == 0 ]] ; then
-					targets=( $(find_targets ) )
-					has_targets=1
-				fi
-				file=${targets[${file_raw} - 1]}
-			else
-				# name. don't decode
-				file=${file_raw}
-			fi
-
-			# sanity checks
-			[[ -z ${file} ]] && die -q "Sorry, ${file_raw} seems to be invalid"
-			[[ -e ${file} ]] || die -q "Sorry, ${file} doesn't seem to exist"
-
-			# find the files to discard
-			local cfgname="._cfg????_$(basename "${file}")"
-			local dirname="$(readlink -f $(dirname ${file} ))"
-			local kfiles=$(find "${dirname}" -maxdepth 1 -type f -iname "${cfgname}")
-
-			if [[ -n ${kfiles//[[:space:]]} ]] ; then
-				# files found. kill them
-				local kfile
-				for kfile in "${kfiles}" ; do
-					rm --interactive "${kfile}"
-				done
-			else
-				# no files found
-				write_error_msg "Couldn't find any files to discard."
-				write_error_msg "I was looking in: ${dirname}"
-				write_error_msg "For files named:  ${cfgname}"
-				die -q "Can't discard ${file_raw}"
-			fi
-		done
-	fi
+discard_handler() {
+	rm --interactive "$@"
 }
 
 ### accept action ###
@@ -104,81 +155,101 @@ describe_accept() {
 }
 
 do_accept() {
-	local targets=( ) has_targets=0
+	generic_handle_one_file "discard" "accept_handler" "$@"
+}
 
-	# check whether we've been given any parameters
-	if [[ ${#@} < 1 ]] ; then
-		die -q "You should give me at least one file to work with"
-	else
-		local file_raw file
-
-		# for each parameter...
-		for file_raw in "$@" ; do
-			[[ -z ${file_raw} ]] && continue
-
-			# do we have a number or a name?
-			if [[ -z ${file_raw//[[:digit:]]} ]] ; then
-				# number. decode
-				if [[ ${has_targets} == 0 ]] ; then
-					targets=( $(find_targets ) )
-					has_targets=1
-				fi
-				file=${targets[${file_raw} - 1]}
-			else
-				# name. don't decode
-				file=${file_raw}
-			fi
-
-			# sanity checks
-			[[ -z ${file} ]] && die -q "Sorry, ${file_raw} seems to be invalid"
-			[[ -e ${file} ]] || die -q "Sorry, ${file} doesn't seem to exist"
-
-			# find the files to accept
-			local cfgname="._cfg????_$(basename "${file}")"
-			local dirname="$(readlink -f $(dirname ${file} ))"
-			local mfiles=$(find "${dirname}" -maxdepth 1 -type f -iname "${cfgname}")
-
-			if [[ -n ${mfiles//[[:space:]]} ]] ; then
-				# files found. kill them
-				local mfile
-				for mfile in "${mfiles}" ; do
-					echo "Accept ${mfile}"
-				done
-			else
-				# no files found
-				write_error_msg "Couldn't find any files to accept."
-				write_error_msg "I was looking in: ${dirname}"
-				write_error_msg "For files named:  ${cfgname}"
-				die -q "Can't accept ${file_raw}"
-			fi
-		done
-	fi
-
+accept_handler() {
+	local file
+	for file in "$@" ; do
+		local sfile="${file}" dfile="${file/._cfg????_}"
+		echo "Replacing ${dfile} with ${sfile}..."
+		mv --interactive "${sfile}" "${dfile}"
+	done
 }
 
 ### discard-all action ###
 
 describe_discard-all() {
-	echo "Discard all updates (use with caution)"
+	echo "Discard all updates ($(highlight_warning dangerous))"
 }
 
 do_discard-all() {
-	local targets target
-	write_list_start "Discarding changes to configuration files:"
-	targets=( $(find_targets ) )
-	if [[ ${#targets[@]} > 0 ]] ; then
-		for target in ${targets[@]} ; do
-			write_kv_list_entry "${target}" ""
-			do_action config discard "${target}"
-		done
-	else
-		write_kv_list_entry "No out of date files found"
-	fi
+	generic_handle_all "Discarding" "discard"
 }
 
 ### accept-all action ###
 
+describe_accept-all() {
+	echo "Accept all updates ($(highlight_warning dangerous))"
+}
+
+do_accept-all() {
+	generic_handle_all "Accepting" "accept"
+}
+
 ### merge action ###
+
+describe_merge() {
+	echo "Interactively merge changes to the specified files"
+}
+
+do_merge() {
+	generic_handle_one_file "merge" "merge_handler" "$@"
+}
+
+merge_handler() {
+	local file
+	for file in "$@" ; do
+		local sfile="${file}" dfile="${file/._cfg????_}"
+		echo "Merging ${dfile} with ${sfile}..."
+	done
+}
+
+### merge-all action ###
+
+describe_merge-all() {
+	echo "Interactively merge all changes"
+}
+
+do_merge-all() {
+	generic_handle_all "Merging" "merge"
+}
+
+### display action ###
+
+describe_display() {
+	echo "Display the proposed changes to the specified files"
+}
+
+do_display() {
+	generic_handle_one_file "display" "display_handler" "$@"
+}
+
+display_handler() {
+	local file
+	for file in "$@" ; do
+		local sfile="${file}" dfile="${file/._cfg????_}"
+		echo "Proposed changes to ${dfile}:"
+		diff_prog -u ${dfile} ${sfile}
+	done
+}
+
+diff_prog() {
+	if type colordiff &>/dev/null ; then
+		colordiff -u "$@"
+	else
+		diff -u "$@"
+	fi
+}
+### display-all action ###
+
+describe_display-all() {
+	echo "Display all proposed updates"
+}
+
+do_display-all() {
+	generic_handle_all "Displaying" "display"
+}
 
 ### interactive action ###
 
