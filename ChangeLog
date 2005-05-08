@@ -1,5 +1,9 @@
 ChangeLog for eclectic
 
+2005-05-08 Tom Martin <slarti@gentoo.org>
+	* modules/mailer.eclectic: Fix find_targets. If the glob didn't
+	match, it was interpreted as a literal string.
+
 2005-05-08 Aaron Walker <ka0ttic@gentoo.org>
 
 	* modules/profile.module: Re-fix profile module since the
@@ -7,7 +11,7 @@ ChangeLog for eclectic
 	* bin/eclectic.in, bin/Makefile.am: Use %VERSION%.
 
 2005-05-08 Tom Martin <slarti@gentoo.org>
-	* modules/eclectic.mailer: Fix a stupid typo (findi_targets ->
+	* modules/mailer.eclectic: Fix a stupid typo (findi_targets ->
 	find_targets).
 
 2005-05-07 Ciaran McCreesh <ciaranm@gentoo.org>

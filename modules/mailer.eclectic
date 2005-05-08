@@ -17,7 +17,8 @@ check_dirs() {
 find_targets() {
 	check_dirs
 	for f in ${ROOT}/etc/mail/*.mailer ; do
-		echo $(basename ${f} )
+		[[ -e ${f} ]] || continue
+		echo ${f##*/}
 	done
 }
 
