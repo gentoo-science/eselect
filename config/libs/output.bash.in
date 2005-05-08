@@ -36,11 +36,12 @@ write_list_start() {
 # Write a key/value list entry with $1 on the left and $2 on the right.
 # Args may include text highlighting.
 write_kv_list_entry() {
-    local n
+    local n text
     echo -n -e "  ${COLOUR_LIST_LEFT}"
     echo -n -e $(apply_text_highlights "${COLOUR_LIST_LEFT}" "$1")
     echo -n -e "${COLOUR_NORMAL} "
-    for (( n = 1 ; n <= $(( 25 - ${#1} )) ; ++n )) ; do
+    text=${1//\%%%??%%%}
+    for (( n = 1 ; n <= $(( 25 - ${#text} )) ; ++n )) ; do
         echo -n " "
     done
     echo -n -e "${COLOUR_LIST_RIGHT}"
