@@ -26,6 +26,8 @@ do_show() {
 
 	[[ ${n} -eq 0 ]] && \
 		write_kv_list_entry "No completions currently enabled" ""
+
+	return 0
 }
 
 ### list action ###

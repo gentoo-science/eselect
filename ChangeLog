@@ -19,8 +19,9 @@ ChangeLog for eclectic
 
 2005-05-08 Aaron Walker <ka0ttic@gentoo.org>
 
-	* modules/profile.module: Re-fix profile module since the
+	* modules/profile.eclectic: Re-fix profile module since the
 	profile-symlink -> profile move reverted the changes.
+	* modules/bashcomp.eclectic: do_show should return 0.
 	* bin/eclectic.in, bin/Makefile.am: Use %VERSION%.
 
 2005-05-08 Tom Martin <slarti@gentoo.org>
