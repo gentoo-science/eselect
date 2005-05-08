@@ -7,6 +7,7 @@ ChangeLog for eclectic
 	for lapack-atlas and lapack-reference.
 
 2005-05-08 Tom Martin <slarti@gentoo.org>
+	
 	* modules/mailer.eclectic: Fix find_targets. If the glob didn't
 	match, it was interpreted as a literal string.
 
@@ -17,6 +18,7 @@ ChangeLog for eclectic
 	* bin/eclectic.in, bin/Makefile.am: Use %VERSION%.
 
 2005-05-08 Tom Martin <slarti@gentoo.org>
+	
 	* modules/mailer.eclectic: Fix a stupid typo (findi_targets ->
 	find_targets).
 
