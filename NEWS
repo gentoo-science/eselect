@@ -1,0 +1,10 @@
+This file contains a summary of changes in released versions.  Please read the
+ChangeLog file for a more detailed listing of changes/bug fixes.
+
+0.9.2:
+    Bug Fixes:
+    - blas/lapack modules now use 'scan' subcommand over 'update'.
+    - profile module now works with current profiles.desc format.
+    - mailer module now works (previously broken due to typo and
+      missing test in find_targets glob loop).
+    - bashcomp module's show sub-command no longer returns 1.
