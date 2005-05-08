@@ -24,35 +24,50 @@ write_error_msg() {
 }
 
 # write_list_start PUBLIC
-# Write a list heading
+# Write a list heading. Args may include text highlighting.
 write_list_start() {
-    echo -e "${COLOUR_LIST_HEADER}${*}${COLOUR_NORMAL}"
+    echo -n -e "${COLOUR_LIST_HEADER}"
+    echo -n -e $(apply_text_highlights "${COLOUR_LIST_HEADER}" "$*")
+    echo -n -e "${COLOUR_NORMAL}"
+    echo
 }
 
 # write_kv_list_entry PUBLIC
-# Write a key/value list entry with $1 on the left and $2 on the right
+# Write a key/value list entry with $1 on the left and $2 on the right.
+# Args may include text highlighting.
 write_kv_list_entry() {
     local n
-    echo -n -e "  ${COLOUR_LIST_LEFT}${1}${COLOUR_NORMAL} "
+    echo -n -e "  ${COLOUR_LIST_LEFT}"
+    echo -n -e $(apply_text_highlights "${COLOUR_LIST_LEFT}" "$1")
+    echo -n -e "${COLOUR_NORMAL} "
     for (( n = 1 ; n <= $(( 25 - ${#1} )) ; ++n )) ; do
         echo -n " "
     done
-    echo -e "${COLOUR_LIST_RIGHT}${2}${COLOUR_NORMAL}"
+    echo -n -e "${COLOUR_LIST_RIGHT}"
+    echo -n -e $(apply_text_highlights "${COLOUR_LIST_RIGHT}" "$2")
+    echo -n -e "${COLOUR_NORMAL}"
+    echo
 }
 
 # write_numbered_list_entry PUBLIC
-# Write out a numbered list entry with index $1 and text $2
+# Write out a numbered list entry with index $1 and text $2. Args may
+# include text highlighting.
 write_numbered_list_entry() {
     local n
-    echo -n -e "  ${COLOUR_LIST_LEFT}[${1}]${COLOUR_NORMAL}"
+    echo -n -e "  ${COLOUR_LIST_LEFT}"
+    echo -n -e $(apply_text_highlights "${COLOUR_LIST_LEFT}" "[$1]")
+    echo -n -e "${COLOUR_NORMAL}"
     for (( n = 1 ; n <= $(( 4 - ${#1} )) ; ++n )) ; do
         echo -n " "
     done
-    echo -e "${COLOUR_LIST_RIGHT}${2}${COLOUR_NORMAL}"
+    echo -n -e "${COLOUR_LIST_RIGHT}"
+    echo -n -e $(apply_text_highlights "${COLOUR_LIST_RIGHT}" "$2")
+    echo -n -e "${COLOUR_NORMAL}"
+    echo
 }
 
 # write_numbered_list PUBLIC
-# Write out a numbered list
+# Write out a numbered list. Args may include text highlighting.
 write_numbered_list() {
     local n=1
     while [[ ${#@} -gt 0 ]] ; do
@@ -61,6 +76,22 @@ write_numbered_list() {
         write_numbered_list_entry "${n}" "${item}"
         n=$((  ${n} + 1 ))
     done
+}
+
+# apply_text_highlights INTERNAL
+# Apply text highlights. First arg is the 'restore' colour, second arg
+# is the text.
+apply_text_highlights() {
+    local restore=${1} text=${2}
+    text="${text//\%%%HI%%%/${COLOUR_HI}}"
+    text="${text//\%%%RE%%%/${restore}}"
+    echo -n "${text}"
+}
+
+# highlight PUBLIC
+# Highlight all arguments. Text highlighting function.
+highlight() {
+    echo -n -e "%%%HI%%%${*}%%%RE%%%"
 }
 
 # space PUBLIC

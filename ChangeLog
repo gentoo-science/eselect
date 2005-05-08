@@ -1,5 +1,11 @@
 ChangeLog for eclectic
 
+2005-05-08 Ciaran McCreesh <ciaranm@gentoo.org>
+
+	* libs/output.bash.in, libs/core.bash.in: Add in somewhat experimental
+	text highlighting functionality.
+	* doc/developer-guide.txt: Document highlight function.
+
 2005-05-08 Danny van Dyk <kugelfang@gentoo.org>
 
 	* modules/blas.eclectic: update -> scan transition complete.
