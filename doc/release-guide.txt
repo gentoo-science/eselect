@@ -1,0 +1,63 @@
+Eclectic Release Guide
+======================
+
+.. Note:: This guide is intended for people who do ``eclectic`` releases. It is
+  probably of no interest to the rest of you.
+
+Make sure ChangeLog is tidy.  Add ChangeLog entry for updating configure.in
+and tagging the release.
+
+Update NEWS file with a summary of changes mentioned in ChangeLog since the
+last release.
+
+Do a test run in trunk/. ::
+
+    $ ./autogen.sh
+    $ ./configure
+    $ make dist
+    $ mv ${P}.tar.bz2 ${DISTDIR}
+    
+Test with an ebuild and make sure everything builds and everything that
+should be included in the tarball is.
+
+Test eclectic itself and as many modules as you can.
+
+Commit any changes you may have made in the previous steps.
+
+Tag release. ::
+
+    $ make maintainer-clean
+    $ svn copy trunk tags/release-${PV}
+    $ svn commit -m "Tagged ${PV} release."
+
+Build the final tarball. ::
+
+    $ cd tags/release-${PV}
+    $ ./autogen.sh
+    $ ./configure
+    $ make dist-bzip2
+
+Sign it (there may be a dist-sign target in the future). ::
+
+    $ gpg --armor --detach-sign ${P}.tar.bz2
+
+Release.
+
+1) Log into your berlios account.
+2) Go to the Admin section of eclectic project page.
+3) Go to Edit/Add File Releases
+4) Scroll to bottom and find eclectic project. click on 'Add Release'.
+5) Upload tarball and gpg signature to ftp.berlios.de/incoming (login
+   as anonymous) via your favorite ftp client.
+6) In 'New release name:' text box, put ${PV}. 'Of which package' should
+   be eclectic. Click on Create This Release.
+7) Paste the summary you added to NEWS in the ChangeLog box and select
+   'Preserve my pre-formatted text'
+8) Scroll down and find the two files you uploaded and select them. Click
+   'Add files and/or Refresh View'.
+9) Scroll down to Step 3 and select 'Any' Processor and 'Text' for the
+   signature and 'Any' Processor 'Source .bz2' for the tarball (can only
+   do one at a time though inbetween updating).
+10) If you're doing the ebuild, then follow normal version bump steps from here.
+
+.. vim: set ft=glep tw=80 sw=4 et spell spelllang=en : ..

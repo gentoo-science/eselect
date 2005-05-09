@@ -3,6 +3,8 @@ ChangeLog for eclectic
 2005-05-09 Ciaran McCreesh <ciaranm@gentoo.org>
 
 	* doc/developer-guide.txt: Update with new functions.
+	* doc/release-guide.txt: Add in an RST version of Aaron's "how to do
+	releases" document.
 
 	* Merge from branches/ciaranm/config:
 	* bin/eclectic.in: Better prefix/suffix support. Now recognises
