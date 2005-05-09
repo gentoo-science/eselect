@@ -2,7 +2,7 @@ AC_INIT(eclectic, 0.9.2, ciaranm@gentoo.org, eclectic)
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(bin/eclectic.in)
 AC_CONFIG_AUX_DIR(config)
-AM_INIT_AUTOMAKE(1.6)
+AM_INIT_AUTOMAKE(1.9)
 
 test x$prefix = "xNONE" && prefix="$ac_default_prefix"
 test x$datadir = "xNONE" && datadir="$ac_default_datadir"

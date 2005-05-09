@@ -2,6 +2,7 @@ ChangeLog for eclectic
 
 2005-05-09 Ciaran McCreesh <ciaranm@gentoo.org>
 
+	* configure.in -> configure.ac, autogen.sh: Switch to automake 1.9.
 	* TODO: Add TODO file. Future changes to this file won't go in to this
 	ChangeLog.
 	* AUTHORS, README: Move authors into the AUTHORS file.
