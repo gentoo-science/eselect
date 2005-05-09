@@ -1,5 +1,20 @@
 ChangeLog for eclectic
 
+2005-05-09 Ciaran McCreesh <ciaranm@gentoo.org>
+
+	* Merge from branches/ciaranm/config:
+	* bin/eclectic.in: Better prefix/suffix support. Now recognises
+	prefixes config-, update-, manage- and suffixes -config, -update,
+	-tool, -manager.
+	* libs/output.bash.in, libs/core.bash.in: Add highlight_warning
+	function.
+	* bin/eclectic.in, libs/tests.bash.in, libs/Makefile.am: Add tests
+	library. Currently one function, is_number.
+	* libs/default.eclectic.in: Allow show_extra_help_text as part of
+	the default help action. Show extra usage message if appropriate.
+	* modules/config.eclectic, modules/Makefile.am: Add initial version of
+	the config plugin. Not production ready.
+
 2005-05-08 Aaron Walker <ka0ttic@gentoo.org>
 
 	* Makefile.am: no foreign.

@@ -26,6 +26,15 @@ describe_usage() {
 }
 
 do_usage() {
+    show_usage_message
+    if is_function show_extra_help_text ; then
+        echo
+        echo "Additional help is available via the 'help' action."
+    fi
+    true
+}
+
+show_usage_message() {
     echo "Usage: ${ECLECTIC_COMMAND} <action> <options>"
     echo
 
@@ -55,6 +64,7 @@ do_usage() {
                 ;;
         esac
     done
+    true
 }
 
 describe_version() {
@@ -71,7 +81,12 @@ describe_help() {
 
 do_help() {
     echo "${DESCRIPTION}"
-    do_usage
+    show_usage_message
+    if is_function show_extra_help_text ; then
+        echo
+        show_extra_help_text
+    fi
+    true
 }
 
 # vim: set sw=4 et sts=4 tw=80 :

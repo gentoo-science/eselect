@@ -1,5 +1,12 @@
-noinst_SCRIPTS = config.bash core.bash default.eclectic multilib.bash output.bash
-EXTRA_DIST = config.bash.in core.bash.in default.eclectic.in multilib.bash.in output.bash.in
+noinst_SCRIPTS = \
+		 config.bash \
+		 core.bash \
+		 default.eclectic \
+		 multilib.bash \
+		 output.bash \
+		 tests.bash
+
+EXTRA_DIST = $(foreach f, $(noinst_SCRIPTS), $(f).in)
 
 %.bash : %.bash.in
 	cp $? $@

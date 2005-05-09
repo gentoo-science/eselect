@@ -24,6 +24,7 @@ COLOUR_LIST_RIGHT="\033[00m"
 COLOUR_ERROR="\033[1;31m"
 COLOUR_NORMAL="\033[00m"
 COLOUR_HI="\033[1;34m"
+COLOUR_WARN="\033[1;31m"
 
 # die [-q] "Message" PUBLIC
 # Display "Message" as an error. If -q is not provided, gives a stacktrace.
