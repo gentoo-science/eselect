@@ -13,9 +13,9 @@ _eclectic() {
     sedcmd='sed -n -e s/^[[:space:]]\+.*1m\([^[:space:]][[:alnum:]-]\+\).*[[:space:]]\+.*$/\1/p'
 
     if [[ ${COMP_CWORD} -eq 1 ]] ; then
-        possibles=$(eclectic | ${sedcmd})
+        possibles=$(eclectic list-modules | ${sedcmd})
     elif [[ ${COMP_CWORD} -eq 2 ]] ; then
-        possibles=$(eclectic ${prev} | ${sedcmd})
+        possibles=$(eclectic ${prev} usage | ${sedcmd})
     fi
 
     COMPREPLY=($(compgen -W "${possibles}" -- ${cur}))
