@@ -4,21 +4,7 @@ README for eclectic
 Authors
 -------
 
-Ciaran McCreesh <ciaranm@gentoo.org>
-    Main code
-    Modules:    cow, kernel, vi
-    Libraries:  core, output
-
-Danny van Dyk <kugelfang@gentoo.org>
-    Manpages
-    Modules:    blas, lapack
-    Libraries:  config, multilib
-
-Aaron Walker <ka0ttic@gentoo.org>
-    Modules:    bashcomp, profile
-
-Tom Martin <slarti@gentoo.org>
-    Modules:    mailer
+See the AUTHORS file.
 
 Copyright
 ---------

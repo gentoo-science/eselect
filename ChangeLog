@@ -2,6 +2,10 @@ ChangeLog for eclectic
 
 2005-05-09 Ciaran McCreesh <ciaranm@gentoo.org>
 
+	* TODO: Add TODO file. Future changes to this file won't go in to this
+	ChangeLog.
+	* AUTHORS, README: Move authors into the AUTHORS file.
+	* INSTALL: Add INSTALL file as per GNU rules.
 	* doc/developer-guide.txt: Update with new functions.
 	* doc/release-guide.txt: Add in an RST version of Aaron's "how to do
 	releases" document.

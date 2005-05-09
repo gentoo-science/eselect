@@ -1,0 +1,14 @@
+Possible TODO list. Not complete, just a collection of random thoughts for
+things we might otherwise forget. More for core ideas than ideas for new
+modules... Don't bother using the ChangeLog for this file.
+
+* inherit / import functionality -- we could use some way of having a set of
+  common actions for, for example, alternatives-style plugins. Probably just a
+  wrapper around source and a few variables. Should be dead easy to do once we
+  figure out interface details. (ciaranm)
+
+* figure out interactive mode -- interactive should only be allowed for
+  certain designated actions. We'll also need library functions for menus and
+  so on. See code in config module for a rough demo. (ciaranm)
+
+* test suite (ciaranm)
