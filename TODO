@@ -12,3 +12,8 @@ modules... Don't bother using the ChangeLog for this file.
   so on. See code in config module for a rough demo. (ciaranm)
 
 * test suite (ciaranm)
+
+* add in 'no colour' mode. We probably want some standard recognised options
+  that get automatically stripped before passing control to the main app. Is
+  --nocolo(u)r the only one? (ciaranm)
+
