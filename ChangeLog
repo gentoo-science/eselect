@@ -2,6 +2,7 @@ ChangeLog for eclectic
 
 2005-05-10 Ciaran McCreesh <ciaranm@gentoo.org>
 
+	* man/eclectic.1: Include note about full docs.
 	* doc/developer-guide.txt: Document manip functions.
 	* modules/config.eclectic, modules/cow.eclectic, modules/vi.eclectic,
 	modules/kernel.eclectic: Update to use SVN date as the version number.
