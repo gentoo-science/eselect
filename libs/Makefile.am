@@ -2,6 +2,7 @@ noinst_SCRIPTS = \
 		 config.bash \
 		 core.bash \
 		 default.eclectic \
+		 manip.bash \
 		 multilib.bash \
 		 output.bash \
 		 tests.bash

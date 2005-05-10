@@ -1,5 +1,11 @@
 ChangeLog for eclectic
 
+2005-05-10 Ciaran McCreesh <ciaranm@gentoo.org>
+
+	* libs/manip.bash.in, libs/Makefile.am, bin/eclectic.in: Add manip
+	library for text manipulation functions. svn_date_to_version will
+	convert an SVN date string into a nice VERSION number.
+
 2005-05-09 Aaron Walker <ka0ttic@gentoo.org>
 
 	* misc/eclectic.bashcomp: Parse list-modules/usage instead of relying
