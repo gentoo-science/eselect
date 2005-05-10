@@ -243,6 +243,25 @@ The ``is_number`` Utility Function
 
 Returns true if and only if the parameter is a positive whole number.
 
+Manipulation Functions
+''''''''''''''''''''''
+
+These are implemented in ``libs/manip.bash``.
+
+The ``svn_date_to_version`` Utility Function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``svn_date_to_version`` function can be used instead of manually keeping
+track of ``VERSION``. It is safe to use in global scope. The canonical usage is
+as follows: ::
+
+    SVN_DATE='$Date: $'
+    VERSION=$(svn_date_to_version "${SVN_DATE}" )
+
+Then turn on SVN keyword expansion for the module: ::
+
+    svn propset svn:keywords "Date" modules/foo.eclectic
+
 Configuration Functions
 '''''''''''''''''''''''
 
