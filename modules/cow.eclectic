@@ -3,7 +3,9 @@
 # $Header: $
 
 DESCRIPTION="Do things to a cow"
-VERSION="1.0"
+MAINTAINER="ciaranm@gentoo.org"
+SVN_DATE='$Date$'
+VERSION=$(svn_date_to_version "${SVN_DATE}" )
 
 ### moo action
 

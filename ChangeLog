@@ -2,6 +2,8 @@ ChangeLog for eclectic
 
 2005-05-10 Ciaran McCreesh <ciaranm@gentoo.org>
 
+	* modules/config.eclectic, modules/cow.eclectic, modules/vi.eclectic,
+	modules/kernel.eclectic: Update to use SVN date as the version number.
 	* libs/manip.bash.in, libs/Makefile.am, bin/eclectic.in: Add manip
 	library for text manipulation functions. svn_date_to_version will
 	convert an SVN date string into a nice VERSION number.

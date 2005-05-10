@@ -3,8 +3,9 @@
 # $Header: $
 
 DESCRIPTION="Handle configuration file merges"
-VERSION="1.0"
 MAINTAINER="ciaranm@gentoo.org"
+SVN_DATE='$Date$'
+VERSION=$(svn_date_to_version "${SVN_DATE}" )
 
 show_extra_help_text() {
 	cat <<ENDOFTEXT
