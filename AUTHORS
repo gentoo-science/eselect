@@ -5,7 +5,7 @@ Ciaran McCreesh <ciaranm@gentoo.org>
 
 Danny van Dyk <kugelfang@gentoo.org>
     Manpages
-    Modules:    blas, lapack
+    Modules:    blas, lapack, rc
     Libraries:  config, multilib
 
 Aaron Walker <ka0ttic@gentoo.org>

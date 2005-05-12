@@ -3,11 +3,16 @@
 # $Header: $
 
 DESCRIPTION="Manage installed BLAS implementations."
-VERSION="1.0"
 MAINTAINER="Danny van Dyk <kugelfang@gentoo.org>"
+SVN_DATE='$Date$'
+VERSION=$(svn_date_to_version "${SVN_DATE}")
 
-BLAS_IMPLEMENTATIONS="ACML ATLAS reference"
+BLAS_IMPLEMENTATIONS="ACML ATLAS threaded-ATLAS reference"
 BLAS_PROFILES="C F77"
+
+# TODO
+# * make compatible with threaded-atlas target
+
 
 # check_* $libdir
 # implementation specific check functions
@@ -23,6 +28,16 @@ check_ATLAS() {
 	[[ -f ${1}/blas/atlas/libblas.so ]] && ret="F77"
 	# libcblas.so provides C/C++ support
 	[[ -f ${1}/blas/atlas/libcblas.so ]] && ret="${ret} C"
+	echo "${ret}"
+}
+
+check_threaded-ATLAS() {
+	[[ -d ${1}/blas/threaded-atlas ]] || return
+	local ret
+	# libblas.so provides FORTRAN 77 support
+	[[ -f ${1}/blas/threaded-atlas/libblas.so ]] && ret="F77"
+	# libcblas.so provides C/C++ support
+	[[ -f ${1}/blas/threaded-atlas/libcblas.so ]] && ret="${ret} C"
 	echo "${ret}"
 }
 
@@ -65,11 +80,19 @@ is_active_ATLAS() {
 	return 1
 }
 
-is_active_MKL() {
+is_active_threaded-ATLAS() {
 	[[ -L ${1} ]] || return 1
 	local lib=$(/bin/readlink -sn ${1})
-	
+	local dir=${lib%/*}
+	[[ ${dir##*/} == threaded-atlas ]] \
+		&& return 0
+	return 1
 }
+
+#is_active_MKL() {
+#	[[ -L ${1} ]] || return 1
+#	local lib=$(/bin/readlink -sn ${1})
+#}
 
 is_active_reference() {
 	[[ -L ${1} ]] || return 1
@@ -86,7 +109,7 @@ setup_ACML() {
 	if [[ ${2} == C ]] ; then
 		ln -sf ${1}/libacml.so ${1}/libcblas.so
 		ln -sf ${1}/libacml.so ${1}/libcblas.so.0
-		ln -sf ${1}/libacml.a  ${1}/libcbls.a
+		ln -sf ${1}/libacml.a  ${1}/libcblas.a
 	elif [[ ${2} == F77 ]] ; then
 		ln -sf ${1}/libacml.so ${1}/libblas.so
 		ln -sf ${1}/libacml.so ${1}/libblas.so.0
@@ -100,11 +123,25 @@ setup_ATLAS() {
 	if [[ ${2} == C ]] ; then
 		ln -sf ${1}/blas/atlas/libblas.so ${1}/libcblas.so
 		ln -sf ${1}/blas/atlas/libblas.so ${1}/libcblas.so.0
-		ln -sf ${1}/blas/atlas/libblas.a  ${1}/libcbls.a
+		ln -sf ${1}/blas/atlas/libblas.a  ${1}/libcblas.a
 	elif [[ ${2} == F77 ]] ; then
 		ln -sf ${1}/blas/atlas/libblas.so ${1}/libblas.so
 		ln -sf ${1}/blas/atlas/libblas.so ${1}/libblas.so.0
 		ln -sf ${1}/blas/atlas/libblas.a  ${1}/libblas.a
+	else
+		die "Illegal profile: ${2}"
+	fi
+}
+
+setup_threaded-ATLAS() {
+	if [[ ${2} == C ]] ; then
+		ln -sf ${1}/blas/threaded-atlas/libblas.so ${1}/libcblas.so
+		ln -sf ${1}/blas/threaded-atlas/libblas.so ${1}/libcblas.so.0
+		ln -sf ${1}/blas/threaded-atlas/libblas.a  ${1}/libcblas.a
+	elif [[ ${2} == F77 ]] ; then
+		ln -sf ${1}/blas/threaded-atlas/libblas.so ${1}/libblas.so
+		ln -sf ${1}/blas/threaded-atlas/libblas.so ${1}/libblas.so.0
+		ln -sf ${1}/blas/threaded-atlas/libblas.a  ${1}/libblas.a
 	else
 		die "Illegal profile: ${2}"
 	fi
@@ -166,7 +203,7 @@ do_list() {
 ### select action ###
 
 describe_set() {
-	echo "Setup one of the installed BLAS implementations as the active implementation"
+	echo "Activate one of the installed BLAS implementations"
 }
 
 do_set() {

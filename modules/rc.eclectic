@@ -1,0 +1,148 @@
+# Copyright 1999-2005 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+DESCRIPTION="Manage /etc/init.d scripts in runlevels"
+MAINTAINER="Danny van Dyk <kugelfang@gentoo.org>"
+SVN_DATE='$Date$'
+VERSION=$(svn_date_to_version "${SVN_DATE}")
+
+# global setting
+RC_SOFTLEVEL=/var/lib/init.d/softlevel
+
+# list_runlevels PRIVATE
+# list runlevels for file $1
+list_runlevels() {
+	[[ ${#@} -eq 1 ]] || return
+	local runlevels
+	for x in ${ROOT}/etc/runlevels/* ; do
+		[[ -d ${x} ]] || continue
+		[[ -L ${ROOT}/etc/runlevels/${x##*/}/${file} ]] \
+			&& runlevels=(${runlevels[@]} "${x##*/}")
+	done
+	echo -ne "${runlevels[@]}"
+}
+
+# find_scripts PRIVATE
+# browse directory $1 for init scripts and return a list
+find_scripts() {
+	local ret
+	for file in ${1}/* ; do
+		[[ ${file%%.sh} == ${file} ]] && ret=(${ret[@]} "${file##*/}")
+	done
+	echo -ne ${ret[@]}
+}
+
+### add action
+
+describe_add() {
+	echo "Add script to existing runlevel(s)"
+}
+
+do_add() {
+	[[ ${#@} -gt 0 ]] \
+		|| die -q "Please specify the init script to be added!"
+	local script=${1##*/}
+	[[ -e ${ROOT}/etc/init.d/${script} ]] \
+		|| die -q "Please specify a valid init script!"
+	shift 1
+	local runlevels=${@:-default}
+	write_list_start "Adding $(highlight ${script}) to following runlevels"
+	for runlevel in ${runlevels} ; do
+		if [[ ! -d ${ROOT}/etc/runlevels/${runlevel} ]] ; then
+			write_kv_list_entry ${runlevel} "[invalid]"
+			continue
+		else
+			if [[ -L ${ROOT}/etc/runlevels/${runlevel}/${script} ]] ; then
+				write_kv_list_entry ${runlevel} "[skipped]"
+			else
+				/usr/bin/ln -sf \
+					${ROOT}/etc/init.d/${script} \
+					${ROOTi}/etc/runlevels/${runlevel}/${script} \
+					&& write_kv_list_entry ${runlevel} "[done]" \
+					|| write_kv_list_entry ${runlevel} "[failed]"
+			fi
+		fi
+	done
+}
+
+### delete action
+
+describe_delete() {
+	echo "Delete script from existing runlevel(s)"
+}
+
+do_delete() {
+	[[ ${#@} -gt 0 ]] \
+		|| die -q "Please specify the init script to be deleted!"
+	local script=${1##*/}
+	[[ -e ${ROOT}/etc/init.d/${script} ]] \
+		|| die -q "Please specify a valid init script!"
+	shift 1
+	local runlevels=${@:-default}
+	write_list_start "Deleting $(highlight ${script}) from following runlevels"
+	for runlevel  in ${runlevels} ; do
+		if [[ ! -d ${ROOT}/etc/runlevels/${runlevel} ]] ; then
+			write_kv_list_entry ${runlevel} "[invalid]"
+			continue
+		else
+			if [[ -L ${ROOT}/etc/runlevels/${runlevel}/${script} ]] ; then
+				rm ${ROOT}/etc/runlevels/${runlevel}/${script} \
+					&& write_kv_list_entry ${runlevel} "[done]" \
+					|| write_kv_list_entry ${runlevel} "[failed]"
+			else
+				write_kv_list_entry ${runlevel} "[skipped]"
+			fi
+		fi
+	done
+}
+
+### list action
+
+describe_list() {
+	echo "List all available init scripts"
+}
+
+do_list() {
+	local dir file item
+	if [[ -n ${1} ]] && [[ -d ${ROOT}/etc/runlevels/${1} ]] ; then
+		dir=${ROOT}/etc/runlevels/${1}
+		write_list_start "Init scripts to be started by runlevel $(highlight ${1})"
+	elif [[ -z ${1} ]] ; then
+		dir=${ROOT}/etc/init.d
+		write_list_start "Available init scripts"
+	else
+		die -q "${1} is no valid runlevel!"
+	fi
+	
+	for file in $(find_scripts ${dir}) ; do
+			[[ ${dir##*/} = init.d ]] \
+				&& write_kv_list_entry ${file} "$(list_runlevels ${file})" \
+				|| echo "  ${file}"
+#				&& echo "  ${file} $(space $((20 - ${#file}))) | $(list_runlevels ${file})" \
+#				|| echo "  ${file}"
+	done
+}
+
+### show action
+
+describe_show() {
+	echo "Show init script status for current runlevel"
+}
+
+do_show() {
+	local runlevel=$(< ${RC_SOFTLEVEL}) script stopped
+	write_list_start "Status of init scripts in runlevel $(highlight ${runlevel})"
+	for script in $(find_scripts ${ROOT}/etc/runlevels/${runlevel}) ; do
+		stopped=true
+		for x in started starting stopping failed broken ; do
+			if [[ -L ${ROOT}/var/lib/init.d/${x}/${script} ]] ; then
+				write_kv_list_entry ${script} "[${x}]"
+				stopped=false
+			fi
+		done
+		[[ ${stopped} == true ]] && write_kv_list_entry ${script} "[stopped]"
+	done
+}
+
+# vim: set ft=ebuild :

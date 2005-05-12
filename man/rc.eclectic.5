@@ -1,0 +1,127 @@
+.TH "ECLECTIC" "5" "April 2005" "Gentoo Linux" "eclectic"
+.SH "NAME"
+rc.eclectic \- Runlevel configuration module
+.SH "SYNOPSIS"
+\fBeclectic rc\fR [\fBhelp\fR|\fBusage\fR]
+.br 
+\fBeclectic rc\fR \fBadd\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
+.br 
+\fBeclectic rc\fR \fBdelete\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
+.br 
+\fBeclectic rc\fR \fBlist\fR [\fIrunlevel\fR]
+.br 
+\fBeclectic rc\fR \fBshow\fR
+.SH "DESCRIPTION"
+\fBeclectic\fR is Gentoo's configuration and management tool. It features
+modules that care for the individual administrative tasks.
+.SH "ACTION: ADD"
+\fBeclectic rc add\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
+.br 
+Add \fIscript\fR to given \fIrunlevels\fR. If no \fIrunlevel\fR is given,
+this action will add \fIscript\fR to the \fBdefault\fR runlevel.
+
+phi ~ # eclectic rc add local default nonetwork notexisting
+.br 
+Adding local to following runlevels
+  default                   [done]
+  nonetwork                 [skipped]
+  notexisting               [invalid]
+
+The result\-tags are as following
+.TP 
+\fB[done]\fR
+.br 
+\fIscript\fR succesfully added to \fIrunlevel\fR
+.TP 
+\fB[failed]\fR
+\fIscript\fR couldnot be added to \fIrunlevel\fR
+.TP 
+\fB[skipped]\fR
+\fIscript\fR already part of \fIrunlevel\fR
+.TP 
+\fB[invalid]\fR
+\fIrunlevel\fR is not existing
+.SH "ACTION: DELETE"
+\fBeclectic rc delete\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
+.br 
+Delete \fIscript\fR to given \fIrunlevels\fR. If no \fIrunlevel\fR is given,
+this action will delete \fIscript\fR from the \fBdefault\fR runlevel.
+
+phi ~ # eclectic rc delete local nonetwork notexisting
+.br 
+Adding local to following runlevels
+  nonetwork                 [done]
+  notexisting               [invalid]
+
+The result\-tags are as following
+.TP 
+\fB[done]\fR
+.br 
+\fIscript\fR succesfully deleted to \fIrunlevel\fR
+.TP 
+\fB[failed]\fR
+\fIscript\fR couldnot be deleted to \fIrunlevel\fR
+.TP 
+\fB[skipped]\fR
+\fIscript\fR not part of \fIrunlevel\fR
+.TP 
+\fB[invalid]\fR
+\fIrunlevel\fR is not existing
+.SH "ACTION: LIST"
+\fBeclectic rc list\fR [\fIrunlevel\fR]
+.br 
+Displays an orderd list of init scripts that belong to \fIrunlevel\fR. In case that
+\fIrunlevel\fR is given, this action will list all scripts from /etc/init.d/.
+
+phi / # eclectic rc list default
+Init scripts to be started by runlevel default
+  cupsd
+  local
+  metalog
+  net.eth0
+  netmount
+  powernowd
+  sshd
+  vixie\-cron
+  xdm
+  xfs
+.SH "ACTION: SHOW"
+\fBeclectic rc show\fR
+.br 
+Shows the current runlevel's init script and lists them together with their status.
+
+phi / # eclectic rc show
+.br 
+Status of init scripts in runlevel default
+  cupsd                     [started]
+  local                     [started]
+  metalog                   [started]
+  net.eth0                  [started]
+  netmount                  [started]
+  powernowd                 [started]
+  sshd                      [stopped]
+  vixie\-cron                [started]
+  xdm                       [started]
+
+The status flags are as following
+
+.TP 
+\fB[started]\fR
+\fIscript\fR has been successfully run.
+.TP 
+\fB[stopping]\fR
+\fIscript\fR stop has been ordered, but it has not ceased yet.
+.TP 
+\fB[stopped]\fR
+\fIscript\fR has manually been stopped.
+.TP 
+\fB[failed]\fR
+One or more commands in \fIscript\fR have not succeeded.
+.TP 
+\fB[broken]\fR
+\fIscript\fR has a syntax error.
+
+.SH "AUTHOR"
+Danny van Dyk <kugelfang@gentoo.org>
+.SH "REVISION"
+$Id$

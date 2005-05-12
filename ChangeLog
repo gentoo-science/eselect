@@ -1,8 +1,15 @@
 ChangeLog for eclectic
 
+2005-05-12 Danny van Dyk <kugelfang@gentoo.org>
+
+	* modules/{mailer,blas,lapack}.eclectic: Use SVN_DATE.
+	* module/rc.eclectic: Added module rc.
+	* man/rc.ecletic.5: Added manpage for module rc.
+	* modules/blas.eclectic: Add preliminary support for "threaded-ATLAS".
+
 2005-05-10 Aaron Walker <ka0ttic@gentoo.org>
 
-	* profile.eclectic, bashcomp.eclectic: Use SVN_DATE.
+	* modules/{profile,bashcomp}.eclectic: Use SVN_DATE.
 
 2005-05-10 Ciaran McCreesh <ciaranm@gentoo.org>
 
