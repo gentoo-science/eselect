@@ -136,7 +136,7 @@ ec_do_list-modules() {
 # invoked as a something-config/something-update.
 action=""
 
-for suffix in config update tool manager ; do
+for suffix in config update{,r} tool manager ; do
     if [[ ${0%%-${suffix}} != ${0} ]] ; then
         action=$(basename "${0}" )
         action=${action%%-${suffix}}
@@ -147,7 +147,7 @@ unset suffix
 
 if [[ -z ${action} ]] ; then
     binname=$(basename "${0}" )
-    for prefix in config update manage ; do
+    for prefix in config update{,r} manage ; do
         if [[ ${binname##${prefix}-} != ${binname} ]] ; then
             action=$(basename "${0}" )
             action=${action##${prefix}-}

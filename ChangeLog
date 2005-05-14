@@ -1,5 +1,9 @@
 ChangeLog for eclectic
 
+2005-05-15 Elfyn McBratney <beu@gentoo.org>
+
+	* bin/eclectic.in: Support both -update and -updater suffixes.
+
 2005-05-14 Danny van Dyk <kugelfang@gentoo.org>
 
 	* modules/rc.eclectic: Do not show files ending in '~'. Added to the
