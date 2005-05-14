@@ -41,7 +41,7 @@ remove_symlink() {
 set_symlink() {
 	portdir=$(portageq portdir 2>/dev/null)
 	target=${1}
-	if [[ -z "${target//[[:digit:]]}" ]] ; then
+	if is_number "${target}" ; then
 		targets=( $(find_targets) )
 		target=${targets[$(( ${target} - 1 ))]}
 	elif [[ -n "${target}" && -d "${ROOT}/${portdir}/profiles/${target}" ]]

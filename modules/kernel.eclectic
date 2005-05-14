@@ -22,7 +22,7 @@ remove_symlink() {
 # set the kernel symlink
 set_symlink() {
 	target=${1}
-	if [[ -z "${target//[[:digit:]]}" ]] ; then
+	if is_number "${target}" ; then
 		targets=( $(find_targets ) )
 		target=${targets[$(( ${target} - 1 ))]}
 	fi

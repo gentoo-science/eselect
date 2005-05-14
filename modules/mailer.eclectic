@@ -33,7 +33,7 @@ remove_symlink() {
 set_symlink() {
 	check_dirs
 	target=${1}
-	if [[ -z "${target//[[:digit:]]}" ]] ; then
+	if is_number "${target}" ; then
 		targets=( $(find_targets ) )
 		target=${targets[$(( ${target} - 1 ))]%.mailer}
 	fi

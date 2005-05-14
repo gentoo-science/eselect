@@ -2,6 +2,9 @@ ChangeLog for eclectic
 
 2005-05-14 Ciaran McCreesh <ciaranm@gentoo.org>
 
+	* modules/mailer.eclectic, modules/vi.eclectic,
+	modules/kernel.eclectic, modules/profile.eclectic: Switch to use
+	is_number.
 	* modules/mailer.eclectic: Make 'set by number' work.
 
 2005-05-14 Elfyn McBratney <beu@gentoo.org>
