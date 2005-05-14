@@ -28,7 +28,9 @@ list_runlevels() {
 find_scripts() {
 	local ret
 	for file in ${1}/* ; do
-		[[ ${file%%.sh} == ${file} ]] && ret=(${ret[@]} "${file##*/}")
+		[[ ${file%%.sh} == ${file} ]] \
+			&& [[ ${file%%\~} == ${file} ]] \
+			&& ret=(${ret[@]} "${file##*/}")
 	done
 	echo -ne ${ret[@]}
 }

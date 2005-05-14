@@ -1,5 +1,10 @@
 ChangeLog for eclectic
 
+2005-05-14 Danny van Dyk <kugelfang@gentoo.org>
+
+	* modules/rc.eclectic: Do not show files ending in '~'. Added to the
+	Makefile.am, too.
+
 2005-05-12 Danny van Dyk <kugelfang@gentoo.org>
 
 	* modules/{mailer,blas,lapack}.eclectic: Use SVN_DATE.
