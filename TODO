@@ -17,5 +17,10 @@ modules... Don't bother using the ChangeLog for this file.
   that get automatically stripped before passing control to the main app. Is
   --nocolo(u)r the only one? (ciaranm)
   
-  --interactive/--ask : We could make this a global option and PUBLIC, for th
-  modules to decide whether an action can be performed.
+* --interactive/--ask : We could make this a global option and PUBLIC, for th
+  modules to decide whether an action can be performed. (ciaranm doesn't like
+  this idea)
+
+* list action should highlight currently selected option. (ciaranm / ferdy)
+
+vim: set tw=78 ft=glep :
