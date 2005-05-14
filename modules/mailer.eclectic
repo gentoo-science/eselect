@@ -35,7 +35,7 @@ set_symlink() {
 	target=${1}
 	if [[ -z "${target//[[:digit:]]}" ]] ; then
 		targets=( $(find_targets ) )
-		target=${targets[$(( ${target} -1 ))]}
+		target=${targets[$(( ${target} - 1 ))]%.mailer}
 	fi
 	if [[ -z ${target} ]] ; then
 		die -q "Target \"${1}\" doesn't appear to be valid!"

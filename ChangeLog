@@ -1,6 +1,10 @@
 ChangeLog for eclectic
 
-2005-05-15 Elfyn McBratney <beu@gentoo.org>
+2005-05-14 Ciaran McCreesh <ciaranm@gentoo.org>
+
+	* modules/mailer.eclectic: Make 'set by number' work.
+
+2005-05-14 Elfyn McBratney <beu@gentoo.org>
 
 	* bin/eclectic.in: Support both -update and -updater suffixes.
 
