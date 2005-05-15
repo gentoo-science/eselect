@@ -6,6 +6,11 @@ Authors
 
 See the AUTHORS file.
 
+Documentation
+-------------
+
+See ``doc//``. Use ``make html`` for HTML versions.
+
 Copyright
 ---------
 
@@ -20,5 +25,6 @@ Style Notes
 * For the main source, indent is four spaces, no tabs, text width of 80.
 * For .eclectic files, the same indenting rules apply as for ebuilds.
 * Public functions don't get the ``ec_`` prefix, private functions do.
+* eval is evil, so we disabled it.
 
  vim: set tw=78 ft=glep :
