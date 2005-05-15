@@ -224,4 +224,4 @@ do_scan() {
 	done
 }
 
-# vim: set ft=ebuild
+# vim: set ft=eclectic

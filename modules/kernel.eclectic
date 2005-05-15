@@ -101,4 +101,4 @@ do_set() {
 	fi
 }
 
-# vim: set ft=ebuild :
+# vim: set ft=eclectic :

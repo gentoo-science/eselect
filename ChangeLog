@@ -2,6 +2,12 @@ ChangeLog for eclectic
 
 2005-05-15 Ciaran McCreesh <ciaranm@gentoo.org>
 
+	* modules/config.eclectic, modules/cow.eclectic,
+	modules/mailer.eclectic, modules/lapack.eclectic,
+	modules/bashcomp.eclectic, modules/vi.eclectic,
+	modules/kernel.eclectic, modules/profile.eclectic,
+	modules/blas.eclectic, modules/rc.eclectic: Switch vim modelines to
+	use eclectic rather than ebuild as the filetype.
 	* modules/kernel.eclectic: Handle no available targets. Mark the
 	currently active kernel symlink when doing list.
 	* libs/core.bash.in: Don't allow eval, since it's evil and leads to

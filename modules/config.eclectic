@@ -430,5 +430,5 @@ do_interactive() {
 	done
 }
 
-# vim: set ft=ebuild :
+# vim: set ft=eclectic :
 

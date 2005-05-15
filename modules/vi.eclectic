@@ -111,5 +111,5 @@ do_update() {
 }
 
 
-# vim: set ft=ebuild :
+# vim: set ft=eclectic :
 

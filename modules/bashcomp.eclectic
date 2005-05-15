@@ -177,4 +177,4 @@ do_disable() {
 	done
 }
 
-# vim: set ft=ebuild :
+# vim: set ft=eclectic :

@@ -147,4 +147,4 @@ do_show() {
 	done
 }
 
-# vim: set ft=ebuild :
+# vim: set ft=eclectic :

@@ -27,4 +27,4 @@ do_think() {
 	echo "${@:-Am I a cow?}" | cowthink
 }
 
-# vim: set ft=ebuild :
+# vim: set ft=eclectic :
