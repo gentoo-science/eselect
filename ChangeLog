@@ -1,5 +1,10 @@
 ChangeLog for eclectic
 
+2005-05-15 Ciaran McCreesh <ciaranm@gentoo.org>
+
+	* libs/core.bash.in: Don't allow eval, since it's evil and leads to
+	horridly broken code.
+
 2005-05-14 Aaron Walker <ka0ttic@gentoo.org>
 
 	* libs/core.bash.in: Updated do_action() to display the correct usage
