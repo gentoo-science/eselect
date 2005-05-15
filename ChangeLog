@@ -1,5 +1,9 @@
 ChangeLog for eclectic
 
+2005-05-15 Aaron Walker <ka0ttic@gentoo.org>
+
+	* man/Makefile.am: Add missing manual page.
+
 2005-05-15 Ciaran McCreesh <ciaranm@gentoo.org>
 
 	* modules/config.eclectic, modules/cow.eclectic,
@@ -36,14 +40,15 @@ ChangeLog for eclectic
 
 2005-05-12 Danny van Dyk <kugelfang@gentoo.org>
 
-	* modules/{mailer,blas,lapack}.eclectic: Use SVN_DATE.
+	* modules/mailer.eclectic, modules/blas.eclectic,
+	modules/lapack.eclectic: Use SVN_DATE.
 	* module/rc.eclectic: Added module rc.
 	* man/rc.ecletic.5: Added manpage for module rc.
 	* modules/blas.eclectic: Add preliminary support for "threaded-ATLAS".
 
 2005-05-10 Aaron Walker <ka0ttic@gentoo.org>
 
-	* modules/{profile,bashcomp}.eclectic: Use SVN_DATE.
+	* modules/profile.eclectic, modules/bashcomp.eclectic: Use SVN_DATE.
 
 2005-05-10 Ciaran McCreesh <ciaranm@gentoo.org>
 
