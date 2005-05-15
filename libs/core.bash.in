@@ -88,6 +88,10 @@ do_action() {
 
     ECLECTIC_MODULE_NAME="${action}"
     ECLECTIC_COMMAND="${ECLECTIC_PROGRAM_NAME} ${ECLECTIC_MODULE_NAME}"
+
+    [[ ${ECLECTIC_BINARY_NAME##*/} != ${ECLECTIC_PROGRAM_NAME} ]] && \
+        ECLECTIC_COMMAND="${ECLECTIC_BINARY_NAME##*/}"
+
     modfile=$( ec_find_module "${action}" )
     (
         source "$ECLECTIC_DEFAULT_ACTIONS" 2>/dev/null \

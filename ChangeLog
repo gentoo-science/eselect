@@ -1,5 +1,10 @@
 ChangeLog for eclectic
 
+2005-05-14 Aaron Walker <ka0ttic@gentoo.org>
+
+	* libs/core.bash.in: Updated do_action() to display the correct usage
+	message depending on how eclectic was invoked.
+
 2005-05-14 Ciaran McCreesh <ciaranm@gentoo.org>
 
 	* modules/mailer.eclectic, modules/vi.eclectic,
