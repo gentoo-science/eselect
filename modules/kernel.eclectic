@@ -10,7 +10,7 @@ VERSION=$(svn_date_to_version "${SVN_DATE}" )
 # find a list of kernel symlink targets
 find_targets() {
 	for f in ${ROOT}/usr/src/linux-* ; do
-		echo $(basename ${f} )
+		[[ -d ${f} ]] && echo $(basename ${f} )
 	done
 }
 
@@ -61,7 +61,16 @@ describe_list() {
 do_list() {
 	targets=( $(find_targets ) )
 	write_list_start "Available kernel symlink targets:"
-	write_numbered_list "${targets[@]}"
+	if [[ -n ${targets[@]} ]] ; then
+		local i
+		for (( i = 0 ; i < ${#targets[@]} ; i = i + 1 )) ; do
+			[[ ${targets[${i}]} == $(readlink ${ROOT}/usr/src/linux ) ]] && \
+				targets[${i}]="${targets[${i}]} $(highlight '*' )"
+		done
+		write_numbered_list "${targets[@]}"
+	else
+		write_kv_list_entry "(none found)" ""
+	fi
 }
 
 ### set action ###

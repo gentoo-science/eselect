@@ -2,6 +2,8 @@ ChangeLog for eclectic
 
 2005-05-15 Ciaran McCreesh <ciaranm@gentoo.org>
 
+	* modules/kernel.eclectic: Handle no available targets. Mark the
+	currently active kernel symlink when doing list.
 	* libs/core.bash.in: Don't allow eval, since it's evil and leads to
 	horridly broken code.
 
