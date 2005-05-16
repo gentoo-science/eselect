@@ -2,6 +2,8 @@ ChangeLog for eclectic
 
 2005-05-16 Ciaran McCreesh <ciaranm@gentoo.org>
 
+	* bin/Makefile.am: Install symlinks for kernel-config, profile-config,
+	rc-config
 	* libs/output.bash.in: Make highlighting work with bash-2.
 
 	* Tag 0.9.3 release.
