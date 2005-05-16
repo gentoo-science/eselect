@@ -1,5 +1,10 @@
 ChangeLog for eclectic
 
+2005-05-16 Tom Martin <slarti@gentoo.org>
+
+	* modules/mailer.eclectic: Handle no available targets. Mark the
+	currently active profile when doing list.
+
 2005-05-15 Aaron Walker <ka0ttic@gentoo.org>
 
 	* man/Makefile.am: Add missing manual page.

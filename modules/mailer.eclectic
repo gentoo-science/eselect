@@ -78,7 +78,19 @@ do_list() {
 	targets=( $(find_targets ) )
 	targets=( ${targets[@]%.mailer} )
 	write_list_start "Available mailer.conf profiles:"
-	write_numbered_list "${targets[@]}"
+	if [[ -n ${targets[@]} ]] ; then
+		local i
+		for (( i = 0 ; i < ${#targets[@]} ; i = i + 1 )) ; do
+			# any more elegant way to do this?
+			local profile
+			profile="$(readlink ${ROOT}/etc/mail/mailer.conf )"
+			[[ ${targets[${i}]} == ${profile%.mailer} ]] && \
+				targets[${i}]="${targets[${i}]} $(highlight '*' )"
+			done
+			write_numbered_list "${targets[@]}"
+		else
+			write_kv_list_entry "(none found)" ""
+		fi
 }
 
 ### set action ###
