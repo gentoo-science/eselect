@@ -22,6 +22,17 @@ if test x$SED = "x"; then
     AC_MSG_ERROR([sed is required])
 fi
 
+AC_MSG_CHECKING([whether dodgy modules should be installed])
+AC_ARG_ENABLE(dodgy_modules,
+  [  --enable-dodgy-modules  Enable experimental and incomplete modules],
+  if test x$enableval = "xyes" ; then
+      DODGY_MODULES="yes"
+  else
+      DODGY_MODULES="no"
+  fi)
+AC_SUBST(DODGY_MODULES)
+AC_MSG_RESULT(${DODGY_MODULES:-nope})
+
 AC_OUTPUT(Makefile
 	  doc/Makefile
 	  man/Makefile

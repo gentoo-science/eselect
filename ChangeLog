@@ -1,5 +1,10 @@
 ChangeLog for eclectic
 
+2005-05-16 Ciaran McCreesh <ciaranm@gentoo.org>
+
+	* configure.ac, modules/Makefile.am: add --enable-dodgy-modules to
+	install incomplete / experimental things (config, cow, vi).
+
 2005-05-16 Tom Martin <slarti@gentoo.org>
 
 	* modules/mailer.eclectic: Handle no available targets. Mark the
