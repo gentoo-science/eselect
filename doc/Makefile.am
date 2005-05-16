@@ -1,4 +1,4 @@
-doc_files = developer-guide user-guide release-guide
+doc_files = developer-guide user-guide release-guide overview
 
 noinst_DATA = $(foreach f, $(doc_files), $(f).txt)
 

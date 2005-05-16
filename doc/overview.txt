@@ -1,0 +1,83 @@
+A Brief Overview of Eclectic
+============================
+
+Eclectic is a modular framework for writing configuration utilities. It consists
+of:
+
+* A main program named ``eclectic``.
+* Various modules (``*.eclectic`` files) which carry out different tasks.
+* Several libraries which help ensure consistent behaviour and simplify the
+  creation of new modules.
+
+A module provides several actions. Actions typically either display some
+information (``list`` and ``show`` actions are common) or update the system
+somehow (for example, ``set`` and ``update``). Each module also provides
+``help`` and ``usage`` actions which explains how to use the module.
+
+Eclectic is invoked as ``eclectic <module> <action>``. Some actions take
+additional arguments -- these are added to the commandline.
+
+Some modules install symlinks to the main program. Eclectic handles these
+intelligently -- for example, it realises that ``profile-config list`` should be
+treated as if the user had run ``eclectic profile list``.
+
+Advantages for End Users and System Administrators
+--------------------------------------------------
+
+For system administrators and end users, tools written as Eclectic modules offer
+several advantages over the traditional 'write each tool from scratch' approach:
+
+Consistent user interface
+    Eclectic modules provide a consistent user interface. Thanks to Eclectic's
+    action framework, there is no longer any need to remember or look up dozens
+    of ``-x`` style switches for each tool. The output format used by modules is
+    also standardised.
+
+Consistent help format
+    All Eclectic modules provide easily accessible help documentation via the
+    ``help`` and ``usage`` actions.
+
+Consistent tool naming
+    There is no need to remember dozens of ``foo-config`` and ``update-blah``
+    names. To see a list of available tools, simply run ``eclectic`` with no
+    arguments. Of course, the ``foo-config`` style names are still available
+    (via symlinks) if you prefer.
+
+Guaranteed Support for ``$ROOT``
+    For those of you using ``$ROOT``, you will not have to worry about whether a
+    particular tool can handle it. Support for ``$ROOT`` is required for all
+    Eclectic modules.
+
+Advantages for Developers and Package Maintainers
+-------------------------------------------------
+
+Writing your tool as an Eclectic module rather than starting from scratch gives
+you various benefits:
+
+Faster Development Time
+    Much of the work is already done for you. Eclectic provides a series of
+    libraries for common tasks, and the main ``eclectic`` program handles most
+    of the hard work for you. All you need to do is provide the actions and any
+    domain-specific functions you require.
+
+Automatic Actions
+    The ``help`` and ``usage`` actions are automatically generated from your
+    actions, so there's no need to spend time worrying about keeping these
+    written and up to date.
+
+Easy Consistent Behaviour
+    Because most of the input, output and commandline handling is split off into
+    library functions, writing a 'standard' module which behaves consistently
+    with other tools is very simple.
+
+Familiar Format
+    For Gentoo developers, the Eclectic module format will be very familiar --
+    it is a ``bash`` file with similar structure to ebuilds.
+
+Further Documentation
+---------------------
+
+Further user and developer documentation is included with the main Eclectic
+distribution.
+
+.. vim: set ft=glep tw=80 sw=4 sts=4 et spell spelllang=en : ..
