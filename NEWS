@@ -1,6 +1,17 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+0.9.3:
+    Bug Fixes:
+    - mailer and kernel modules: handle no targets better, show current
+    selection when doing a list.
+    - usage message should now always be correct.
+    - support for many more symlink prefixes and suffixes.
+
+    New Features:
+    - more documentation.
+    - rc module as a replacement for rc-config and rc-status.
+
 0.9.2:
     Bug Fixes:
     - blas/lapack modules now use 'scan' subcommand over 'update'.
