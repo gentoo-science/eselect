@@ -2,6 +2,7 @@ ChangeLog for eclectic
 
 2005-05-16 Ciaran McCreesh <ciaranm@gentoo.org>
 
+	* Tag 0.9.3 release.
 	* doc/overview.txt, doc/Makefile.am: Add an 'overview' document.
 	* configure.ac, modules/Makefile.am: Add --enable-dodgy-modules to
 	install incomplete / experimental things (config, cow, vi).
