@@ -84,9 +84,9 @@ write_numbered_list() {
 # is the text.
 apply_text_highlights() {
     local restore=${1} text=${2}
-    text="${text//\%%%HI%%%/${COLOUR_HI}}"
-    text="${text//\%%%WA%%%/${COLOUR_WARN}}"
-    text="${text//\%%%RE%%%/${restore}}"
+    text="${text//?%%HI%%%/${COLOUR_HI}}"
+    text="${text//?%%WA%%%/${COLOUR_WARN}}"
+    text="${text//?%%RE%%%/${restore}}"
     echo -n "${text}"
 }
 
