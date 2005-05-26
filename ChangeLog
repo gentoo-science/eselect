@@ -1,5 +1,9 @@
 ChangeLog for eclectic
 
+2005-05-26 Danny van Dyk <kugelfang@gentoo.org>
+
+	* modules/rc.eclectic: Added actions start, stop, restart and pause. 
+
 2005-05-16 Ciaran McCreesh <ciaranm@gentoo.org>
 
 	* bin/Makefile.am: Install symlinks for kernel-config, profile-config,

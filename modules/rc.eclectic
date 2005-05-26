@@ -23,16 +23,38 @@ list_runlevels() {
 	echo -ne "${runlevels[@]}"
 }
 
+# is_script PRIVATE
+# check if file $1 is a valid init script
+is_script() {
+	local file=${1}
+	[[ -n ${file} ]] \
+		&& [[ ${file%%.sh} == ${file} ]] \
+		&& [[ ${file%%\~} == ${file} ]] \
+		&& [[ -n `grep "^#\!/sbin/runscript" ${file}` ]]
+}
+
 # find_scripts PRIVATE
 # browse directory $1 for init scripts and return a list
 find_scripts() {
 	local ret
 	for file in ${1}/* ; do
-		[[ ${file%%.sh} == ${file} ]] \
-			&& [[ ${file%%\~} == ${file} ]] \
+		is_script ${file} \
 			&& ret=(${ret[@]} "${file##*/}")
 	done
 	echo -ne ${ret[@]}
+}
+
+# run_runscript PRIVATE
+# run RC_RUNSCRIPT with script $2- and command $1
+run_runscript() {
+	local command=${1}
+	shift
+	write_list_start "${1}"
+	shift
+	for script in ${@} ; do
+		is_script ${ROOT}/etc/init.d/${script} \
+			&& /sbin/runscript ${ROOT}/etc/init.d/${script} ${command} 
+	done
 }
 
 ### add action
@@ -147,4 +169,44 @@ do_show() {
 	done
 }
 
-# vim: set ft=eclectic :
+### start action
+
+describe_start() {
+	echo "Start given set of init scripts manually"
+}
+
+do_start() {
+	run_runscript start "Starting init script$([[ ${#@} -gt 1 ]] && echo -ne 's')" ${@}
+}
+
+### stop action
+
+describe_stop() {
+	echo "Stop given set of init scripts manually"
+}
+
+do_stop() {
+	run_runscript stop "Stopping init script$([[ ${#@} -gt 1 ]] && echo -ne 's')" ${@}
+}
+
+### pause action
+
+describe_pause() {
+	echo "Pauses given set of init scripts manually"
+}
+
+do_pause() {
+	run_runscript pause "Pausing init script$([[ ${#@} -gt 1 ]] && echo -ne 's')" ${@}
+}
+
+### restart action
+
+describe_restart() {
+	echo "Restart given set of init scripts"
+}
+
+do_restart() {
+	run_runscript restart "Restarting init script$([[ ${#@}-gt 1]] && echo -ne 's')" ${@}
+}
+
+# vim: set ft=ebuild :

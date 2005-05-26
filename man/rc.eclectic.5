@@ -85,6 +85,16 @@ Init scripts to be started by runlevel default
   vixie\-cron
   xdm
   xfs
+.SH "ACTION: RESTART"
+\fBeclectic rc restart\fR \fIscript\fR [\fIscript\fR ...]
+.br 
+Restarts the given set of init scripts.
+
+phi / # eclectic rc restart sshd
+.br 
+Restarting init script
+ * ERROR:  "local" has not yet been started.
+ * Stopping sshd ...                                                      [ ok ]
 .SH "ACTION: SHOW"
 \fBeclectic rc show\fR
 .br 
@@ -121,6 +131,26 @@ One or more commands in \fIscript\fR have not succeeded.
 \fB[broken]\fR
 \fIscript\fR has a syntax error.
 
+.SH "ACTION: START"
+\fBeclectic rc start\fR \fIscript\fR [\fIscript\fR ...]
+.br 
+Starts the given set of init scripts manually, regardless of the current runlevel.
+
+phi / # eclectic rc start local sshd
+.br 
+Restarting init script
+ * Starting local ...                                                    [ ok ]
+ * WARNING:  "sshd" has already been started.
+.SH "ACTION: STOP"
+\fBeclectic rc stop\fR \fIscript\fR [\fIscript\fR ...]
+.br 
+Stops the given set of init scripts manually, regardless of the current runlevel.
+
+phi / # eclectic rc stop local sshd
+.br 
+Stopping init script local sshd
+ * ERROR:  "local" has not yet been started.
+ * Stopping sshd ...                                                      [ ok ]
 .SH "AUTHOR"
 Danny van Dyk <kugelfang@gentoo.org>
 .SH "REVISION"
