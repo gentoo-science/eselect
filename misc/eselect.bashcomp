@@ -2,10 +2,10 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-# bash command-line completion for eclectic
+# bash command-line completion for eselect
 # Author: Aaron Walker <ka0ttic@gentoo.org>
 
-_eclectic() {
+_eselect() {
     local cur prev preprev sedcmd possibles
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
@@ -13,14 +13,14 @@ _eclectic() {
     sedcmd='sed -n -e s/^[[:space:]]\+.*1m\([^[:space:]][[:alnum:]-]\+\).*[[:space:]]\+.*$/\1/p'
 
     if [[ ${COMP_CWORD} -eq 1 ]] ; then
-        possibles=$(eclectic list-modules | ${sedcmd})
+        possibles=$(eselect list-modules | ${sedcmd})
     elif [[ ${COMP_CWORD} -eq 2 ]] ; then
-        possibles=$(eclectic ${prev} usage | ${sedcmd})
+        possibles=$(eselect ${prev} usage | ${sedcmd})
     fi
 
     COMPREPLY=($(compgen -W "${possibles}" -- ${cur}))
     return 0
 }
-complete -F _eclectic eclectic
+complete -F _eselect eselect
 
 # vim: set ft=sh tw=80 sw=4 et :

@@ -1,7 +1,7 @@
 noinst_SCRIPTS = \
 		 config.bash \
 		 core.bash \
-		 default.eclectic \
+		 default.eselect \
 		 manip.bash \
 		 multilib.bash \
 		 output.bash \
@@ -12,7 +12,7 @@ EXTRA_DIST = $(foreach f, $(noinst_SCRIPTS), $(f).in)
 %.bash : %.bash.in
 	cp $? $@
 
-%.eclectic : %.eclectic.in
+%.eselect : %.eselect.in
 	cp $? $@
 
 MAINTAINERCLEANFILES = Makefile.in

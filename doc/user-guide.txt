@@ -1,31 +1,31 @@
-Eclectic User Guide
+eselect User Guide
 ===================
 
 Introduction
 ------------
 
-Eclectic is a tool for administration and configuration on Gentoo systems. It
+eselect is a tool for administration and configuration on Gentoo systems. It
 _will_ modify the system's behaviour and should be used with care by the system
 administrator.
 
 Terminology
 -----------
 
-Eclectic is a framework providing a program named ``eclectic`` and many small
+eselect is a framework providing a program named ``eselect`` and many small
 bash scripts that do the actual work. These are known as ``modules``, and can be
-identified by their ``.eclectic`` file extension.
+identified by their ``.eselect`` file extension.
 
 Every module provides a set of functions that can be called via the main
-eclectic tool. These functions are called ``actions``.
+eselect tool. These functions are called ``actions``.
 
 Usage
 -----
 
-Eclectic should be called as: ::
+eselect should be called as: ::
 
-	eclectic <module> <action> <options>
+	eselect <module> <action> <options>
 
-Eclectic features consistently named actions among most of its modules. The
+eselect features consistently named actions among most of its modules. The
 following are standard action names -- each module may provide a subset of these
 actions:
 
@@ -54,13 +54,13 @@ scan
 
 A typical session will look like the following for most modules: ::
 
-    / # eclectic <module> list
+    / # eselect <module> list
     These selections are available:
       [1] <first>
       [2] <second>
   
-    / # eclectic <module> set <first>
-    / # eclectic <module> show
+    / # eselect <module> set <first>
+    / # eselect <module> show
     Active selection:
       <item1>
 

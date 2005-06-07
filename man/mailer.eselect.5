@@ -1,42 +1,42 @@
-.TH "ECLECTIC" "5" "April 2005" "Gentoo Linux" "eclectic"
+.TH "ESELECT" "5" "April 2005" "Gentoo Linux" "eselect"
 .SH "NAME"
-mailer.eclectic \- The mailer profile management module for Gentoo's eclectic
+mailer.eselect \- The mailer profile management module for Gentoo's eselect
 .SH "SYNOPSIS"
-\fBeclectic mailer\fR [\fBhelp\fR|\fBusage\fR]
+\fBeselect mailer\fR [\fBhelp\fR|\fBusage\fR]
 .br 
-\fBeclectic mailer\fR \fBlist\fR
+\fBeselect mailer\fR \fBlist\fR
 .br 
-\fBeclectic mailer\fR \fBset\fR \fIprofile\fR
+\fBeselect mailer\fR \fBset\fR \fIprofile\fR
 .br 
-\fBeclectic mailer\fR \fBshow\fR
+\fBeselect mailer\fR \fBshow\fR
 .br 
 .SH "DESCRIPTION"
-\fBeclectic\fR is Gentoo's configuration and management tool. It features
+\fBeselect\fR is Gentoo's configuration and management tool. It features
 modules that care for the individual administrative tasks.
 .SH "ACTION: LIST"
-\fBeclectic mailer list\fR [\fIoptions\fR]
+\fBeselect mailer list\fR [\fIoptions\fR]
 .br 
 Displays an ordered list of the installed mailer profiles. Each line has
 a number, the profile's name and version number.
 
-pohl / # eclectic mailer list
+pohl / # eselect mailer list
 .br 
 Available mailer.conf profiles:
   [1]   default
   [2]   msmtp\-1.4.0
   [3]   nbsmtp\-0.98
 .SH "ACTION: SET"
-\fBeclectic mailer set\fR \fIprofile\fR
+\fBeselect mailer set\fR \fIprofile\fR
 .br 
 Sets your system's currently active mailer to \fIprofile\fR. 
 
-pohl / # eclectic mailer set msmtp-1.4.0
+pohl / # eselect mailer set msmtp-1.4.0
 .SH "ACTION: SHOW"
-\fBeclectic mailer show\fR
+\fBeselect mailer show\fR
 .br 
 Shows your system's mailer profiles.
 
-pohl / # eclectic mailer show
+pohl / # eselect mailer show
 .br 
 Current mailer.conf profile:
   msmtp-1.4.0

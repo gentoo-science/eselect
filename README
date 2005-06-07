@@ -1,4 +1,4 @@
-README for eclectic
+README for eselect
 ===================
 
 Authors
@@ -14,7 +14,7 @@ See ``doc//``. Use ``make html`` for HTML versions.
 Copyright
 ---------
 
-eclectic is Copyright (c) 2005 Gentoo Foundation. This code is distributed
+eselect is Copyright (c) 2005 Gentoo Foundation. This code is distributed
 under the terms of the GNU General Public License v2.
 
 Style Notes
@@ -23,7 +23,7 @@ Style Notes
 * Always use ``[[ brackets ]]``, never `[ brackets ]`.
 * Use quotes on variables where necessary.
 * For the main source, indent is four spaces, no tabs, text width of 80.
-* For .eclectic files, the same indenting rules apply as for ebuilds.
+* For .eselect files, the same indenting rules apply as for ebuilds.
 * Public functions don't get the ``ec_`` prefix, private functions do.
 * eval is evil, so we disabled it.
 

@@ -1,36 +1,36 @@
-Eclectic Developer Reference
+eselect Developer Reference
 ============================
 
-About Eclectic
+About eselect
 --------------
 
-Eclectic is a framework for simplifying and introducing consistency to the
+eselect is a framework for simplifying and introducing consistency to the
 various Gentoo ``foo-config`` and ``update-blah`` tools. It is an option for
 developers who don't like reinventing the wheel, not a mandatory tool.
 
-You can obtain the latest version of Eclectic from:
+You can obtain the latest version of eselect from:
 
         https://developer.berlios.de/svn/?group_id=3165
 
-This document assumes some basic familiarity with the user-side of Eclectic.
+This document assumes some basic familiarity with the user-side of eselect.
 
-How Eclectic Works
+How eselect Works
 ------------------
 
-Eclectic provides a script named ``eclectic``. This script is invoked as
-``eclectic <module> <action> <parameters>``. Eclectic will try to find the
+eselect provides a script named ``eselect``. This script is invoked as
+``eselect <module> <action> <parameters>``. eselect will try to find the
 module requested, and then call the relevant action function in that module.
 Additional handling is available for help parameters and listing available
 modules.
 
-Eclectic consists of several components:
+eselect consists of several components:
 
-* The main ``eclectic`` script.
+* The main ``eselect`` script.
 * Various library scripts which provide functions which can be used in modules
-  (and the main ``eclectic`` script).
+  (and the main ``eselect`` script).
 * A collection of modules for performing different tasks.
 
-When porting your application to use the Eclectic framework, you will generally
+When porting your application to use the eselect framework, you will generally
 need to create a module. Often this can be heavily based upon an existing
 module, so check to see whether there is something that does almost what you
 need first (symlink handling is a good example of something that can be copied
@@ -40,9 +40,9 @@ A Simple Module
 ---------------
 
 It's easiest to illustrate by example. Here's a simple module, named
-``cow.eclectic``. It has two actions, ``moo`` and ``think``, plus the standard
+``cow.eselect``. It has two actions, ``moo`` and ``think``, plus the standard
 ``help``, ``usage`` and ``version`` actions, and is installed to
-``$(datadir)/eclectic/modules/`` ::
+``$(datadir)/eselect/modules/`` ::
 
     # Copyright 1999-2005 Gentoo Foundation
     # Distributed under the terms of the GNU General Public License v2
@@ -74,21 +74,21 @@ It's easiest to illustrate by example. Here's a simple module, named
 As you can see, the format is fairly similar to that of an ebuild -- it is a
 bash script which is run in a special environment. This is intentional. There
 are ``DESCRIPTION`` and ``VERSION`` variables globally which are used by
-``eclectic`` and some of the default action handlers, and a series of functions.
+``eselect`` and some of the default action handlers, and a series of functions.
 
-.. Warning:: In ebuilds, global scope code can cause problems. In eclectic
+.. Warning:: In ebuilds, global scope code can cause problems. In eselect
   modules, global scope code is **absolutely forbidden**. Your module *will* be
   sourced for tasks other than running your actions. For example, if
-  ``eclectic list-modules`` is executed, your module will be sourced to obtain
+  ``eselect list-modules`` is executed, your module will be sourced to obtain
   the description. Any code being run here would be a very bad thing.
 
 Unlike ebuilds, the function names are not fixed. Any function whose name starts
 with ``do_`` is considered to be an action implementation. It is conventional to
 have a ``describe_`` function for every ``do_`` function that gives a short
-description of the function -- this is used for ``eclectic modulename help``,
+description of the function -- this is used for ``eselect modulename help``,
 for example.
 
-.. Note:: If Eclectic is invoked as ``cow-config`` or ``cow-update`` (for
+.. Note:: If eselect is invoked as ``cow-config`` or ``cow-update`` (for
   example, via a symlink), it will automatically select the cow module.
 
 Standard Action Names
@@ -126,14 +126,14 @@ update
         actions.
 
 .. Note:: You can override the ``help``, ``usage`` and ``version`` actions. They
-  are provided by default by ``lib/default.eclectic``. You should only do this
-  with a good reason. Removing them is not a good idea, ``eclectic`` assumes
+  are provided by default by ``lib/default.eselect``. You should only do this
+  with a good reason. Removing them is not a good idea, ``eselect`` assumes
   that they exist.
 
 Utility Functions
 -----------------
 
-Eclectic provides many utility functions. These are useful for standardised
+eselect provides many utility functions. These are useful for standardised
 output formatting. Where possible, these should be used, especially for output.
 If a standard function is not available for the output format required, consider
 implementing one.
@@ -260,7 +260,7 @@ as follows: ::
 
 Then turn on SVN keyword expansion for the module: ::
 
-    svn propset svn:keywords "Date" modules/foo.eclectic
+    svn propset svn:keywords "Date" modules/foo.eselect
 
 Configuration Functions
 '''''''''''''''''''''''
@@ -271,7 +271,7 @@ The ``store_config`` Function
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``store_config`` function saves a key/value pair in the module's
-configuration file (``/etc/eclectic/${module}/${module}.config``). This file
+configuration file (``/etc/eselect/${module}/${module}.config``). This file
 is a bash script consisting only of key/value pairs and should not be altered
 manually. Comments in the file will be deleted each time ``store_config`` is
 called. The function is invoked as ``store_config modulename key value``.

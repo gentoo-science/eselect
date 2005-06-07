@@ -2,23 +2,23 @@
 
 # Copyright (c) 2005 Gentoo Foundation.
 # $Header$
-# This file is part of the 'Eclectic' tools framework.
+# This file is part of the 'eselect' tools framework.
 #
-# Eclectic is free software; you can redistribute it and/or modify it under the
+# eselect is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 2 of the License, or (at your option) any later
 # version.
 #
-# Eclectic is distributed in the hope that it will be useful, but WITHOUT ANY
+# eselect is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# Eclectic; if not, write to the Free Software Foundation, Inc., 59 Temple
+# eselect; if not, write to the Free Software Foundation, Inc., 59 Temple
 # Place, Suite 330, Boston, MA  02111-1307  USA
 
 # store_config module key value PUBLIC
-# Stores a $key/$value pair for given module in /etc/eclectic/$module
+# Stores a $key/$value pair for given module in /etc/eselect/$module
 store_config() {
     # we need at least "module" and "key"
     [[ ${#@} -gt 2 ]] || die
@@ -26,32 +26,32 @@ store_config() {
     shift 2
     value=${@}
 
-    if [[ ! -e ${ROOT}/etc/eclectic/${module} ]] ; then
-        mkdir -p ${ROOT}/etc/eclectic/${module} \
+    if [[ ! -e ${ROOT}/etc/eselect/${module} ]] ; then
+        mkdir -p ${ROOT}/etc/eselect/${module} \
             || die -q \
-            "Couldn't create directory ${ROOT}/etc/eclectic/${module}"
+            "Couldn't create directory ${ROOT}/etc/eselect/${module}"
     fi
     
     store_config_header() {
-        echo "# Configuration file for eclectic's '${module}' module" \
-            > ${ROOT}/etc/eclectic/${module}/${module}.config
+        echo "# Configuration file for eselect's '${module}' module" \
+            > ${ROOT}/etc/eselect/${module}/${module}.config
         echo "# This file has been automatically generated." \
-            >> ${ROOT}/etc/eclectic/${module}/${module}.config
+            >> ${ROOT}/etc/eselect/${module}/${module}.config
     }
 
-    if [[ ! -f ${ROOT}/etc/eclectic/${module}/${module}.config ]] ; then
+    if [[ ! -f ${ROOT}/etc/eselect/${module}/${module}.config ]] ; then
         store_config_header
         echo "${key}=\"${value}\"" \
-	    >> ${ROOT}/etc/eclectic/${module}/${module}.config
+	    >> ${ROOT}/etc/eselect/${module}/${module}.config
         return
     fi
         
-    content=$(<${ROOT}/etc/eclectic/${module}/${module}.config)
+    content=$(<${ROOT}/etc/eselect/${module}/${module}.config)
 
     if [[ -z ${content[@]} ]] ; then
         store_config_header
         echo "${key}=\"${value}\"" \
-	    >> ${ROOT}/etc/eclectic/${module}/${module}.config
+	    >> ${ROOT}/etc/eselect/${module}/${module}.config
         return
     fi
 
@@ -63,43 +63,43 @@ store_config() {
         vars=(${vars[@]} ${line})
     done
 
-    source ${ROOT}/etc/eclectic/${module}/${module}.config
+    source ${ROOT}/etc/eselect/${module}/${module}.config
 
     store_config_header
     for var in ${vars[@]} ; do
 	if [[ ${var} == ${key} ]] ; then
             echo "${var}=\"${value}\"" \
-                >> ${ROOT}/etc/eclectic/${module}/${module}.config
+                >> ${ROOT}/etc/eselect/${module}/${module}.config
 	    changed=1
 	else
             echo "${var}=\"${!var}\"" \
-                >> ${ROOT}/etc/eclectic/${module}/${module}.config
+                >> ${ROOT}/etc/eselect/${module}/${module}.config
 	fi
     done
     [[ ${changed} == 1 ]] \
     	|| echo "${key}=\"${value}\"" \
-        >> ${ROOT}/etc/eclectic/${module}/${module}.config
+        >> ${ROOT}/etc/eselect/${module}/${module}.config
 }
 
 # load_config module key PUBLIC
-# Loads $key value from /etc/eclectic/$module
+# Loads $key value from /etc/eselect/$module
 load_config() {
     [[ ${#@} -eq 2 ]] || die
     local module key value
 
     module=${1}
     key=${2}
-    [[ ! -e ${ROOT}/etc/eclectic/${module}/${module}.config ]] \
+    [[ ! -e ${ROOT}/etc/eselect/${module}/${module}.config ]] \
         && return 1
     value=$(
-        source ${ROOT}/etc/eclectic/${module}/${module}.config
+        source ${ROOT}/etc/eselect/${module}/${module}.config
     	echo ${!key}
     )
     echo ${value}
 }
 
 # add_config module key item ... PUBLIC
-# Adds $item to already stored value of $key in /etc/eclectic/$module
+# Adds $item to already stored value of $key in /etc/eselect/$module
 add_config() {
     [[ ${#@} -gt 2 ]] || die
     local module=${1} key=${2} item oldvalue newvalue

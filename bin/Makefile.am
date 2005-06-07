@@ -1,5 +1,5 @@
-bin_SCRIPTS = eclectic
-EXTRA_DIST = eclectic.in
+bin_SCRIPTS = eselect
+EXTRA_DIST = eselect.in
 
 symlinks = kernel-config profile-config rc-config
 
@@ -18,7 +18,7 @@ MAINTAINERCLEANFILES = Makefile.in
 install-data-local : $(foreach f, $(symlinks), install-symlink-$(f))
 
 install-symlink-% :
-	ln -snf $(DESTDIR)$(bindir)/eclectic \
+	ln -snf $(DESTDIR)$(bindir)/eselect \
 		$(DESTDIR)$(bindir)/$*
 
 CLEANFILES = $(bin_SCRIPTS)

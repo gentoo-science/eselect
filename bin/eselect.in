@@ -2,53 +2,53 @@
 
 # Copyright (c) 2005 Gentoo Foundation.
 # $Header$
-# This file is part of the 'Eclectic' tools framework.
+# This file is part of the 'eselect' tools framework.
 #
-# Eclectic is free software; you can redistribute it and/or modify it under the
+# eselect is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 2 of the License, or (at your option) any later
 # version.
 #
-# Eclectic is distributed in the hope that it will be useful, but WITHOUT ANY
+# eselect is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# Eclectic; if not, write to the Free Software Foundation, Inc., 59 Temple
+# eselect; if not, write to the Free Software Foundation, Inc., 59 Temple
 # Place, Suite 330, Boston, MA  02111-1307  USA
 
 # Where is our data?
-ECLECTIC_DATA_PATH="%DATADIR%/eclectic/"
+ESELECT_DATA_PATH="%DATADIR%/eselect/"
 
 # Look in these places for modules
-ECLECTIC_MODULES_PATH=( \
-    "${HOME}/.eclectic/modules" \
-    "${ECLECTIC_DATA_PATH}/modules" )
+ESELECT_MODULES_PATH=( \
+    "${HOME}/.eselect/modules" \
+    "${ESELECT_DATA_PATH}/modules" )
 
 # Look in this place for libraries
-ECLECTIC_CORE_PATH="${ECLECTIC_DATA_PATH}/libs"
+ESELECT_CORE_PATH="${ESELECT_DATA_PATH}/libs"
 
 # Look here for the default contents of a module
-ECLECTIC_DEFAULT_ACTIONS="${ECLECTIC_CORE_PATH}/default.eclectic"
+ESELECT_DEFAULT_ACTIONS="${ESELECT_CORE_PATH}/default.eselect"
 
 # Our program name and version
-ECLECTIC_VERSION="%VERSION%"
-ECLECTIC_PROGRAM_NAME="eclectic"
+ESELECT_VERSION="%VERSION%"
+ESELECT_PROGRAM_NAME="eselect"
 
 # Invokation information
-ECLECTIC_BINARY_NAME="${0}"
-ECLECTIC_KILL_TARGET="$$"
+ESELECT_BINARY_NAME="${0}"
+ESELECT_KILL_TARGET="$$"
 
 shopt -s extglob
 shopt -s expand_aliases
 
 # Load core and output functions
-source "${ECLECTIC_CORE_PATH}/core.bash" || exit 255
-source "${ECLECTIC_CORE_PATH}/output.bash" || die "Couldn't source output.bash"
-source "${ECLECTIC_CORE_PATH}/config.bash" || die "Couldn't source config.bash"
-source "${ECLECTIC_CORE_PATH}/multilib.bash" || die "Couldn't source multilib.bash"
-source "${ECLECTIC_CORE_PATH}/tests.bash" || die "Couldn't source tests.bash"
-source "${ECLECTIC_CORE_PATH}/manip.bash" || die "Couldn't source manip.bash"
+source "${ESELECT_CORE_PATH}/core.bash" || exit 255
+source "${ESELECT_CORE_PATH}/output.bash" || die "Couldn't source output.bash"
+source "${ESELECT_CORE_PATH}/config.bash" || die "Couldn't source config.bash"
+source "${ESELECT_CORE_PATH}/multilib.bash" || die "Couldn't source multilib.bash"
+source "${ESELECT_CORE_PATH}/tests.bash" || die "Couldn't source tests.bash"
+source "${ESELECT_CORE_PATH}/manip.bash" || die "Couldn't source manip.bash"
 
 # Sneaky trick to make die in subshells work. If you don't get
 # it, don't ask...
@@ -60,23 +60,23 @@ trap 'echo "exiting." ; exit 250' 15
 ec_find_module() {
     local modname="$1" modpath="" modfile=""
     [[ -z ${modname} ]] && die "Usage: ${FUNCNAME} <module>"
-    for modpath in "${ECLECTIC_MODULES_PATH[@]}" ; do
-        [[ -f ${modpath}/${modname}.eclectic ]] && break
+    for modpath in "${ESELECT_MODULES_PATH[@]}" ; do
+        [[ -f ${modpath}/${modname}.eselect ]] && break
     done
 
-    modfile="${modpath}/${modname}.eclectic"
+    modfile="${modpath}/${modname}.eselect"
     [[ -r ${modfile} ]] || die -q "Can't load module ${modname}"
     echo ${modfile}
 }
 
 # ec_do_usage
-# Display eclectic usage
+# Display eselect usage
 ec_do_usage() {
-    echo "Usage: eclectic <module name> <options>"
+    echo "Usage: eselect <module name> <options>"
 }
 
 # ec_do_help
-# Display eclectic help
+# Display eselect help
 ec_do_help() {
     ec_do_usage
     echo
@@ -84,16 +84,16 @@ ec_do_help() {
 }
 
 # ec_do_version
-# Display eclectic version
+# Display eselect version
 ec_do_version() {
-    echo "eclectic ${ECLECTIC_VERSION}"
+    echo "eselect ${ESELECT_VERSION}"
     echo
     echo "Copyright (c) 2005 Gentoo Foundation. Distributed under the"
     echo "terms of the GNU General Public License v2."
 }
 
 # ec_do_list-modules
-# Display all available eclectic modules
+# Display all available eselect modules
 ec_do_list-modules() {
     local path file module name desc
 
@@ -104,9 +104,9 @@ ec_do_list-modules() {
     write_kv_list_entry "version"       "Display version information"
 
     extra_modules=()
-    for path in "${ECLECTIC_MODULES_PATH[@]}" ; do
+    for path in "${ESELECT_MODULES_PATH[@]}" ; do
         [[ -d ${path} ]] || continue
-        for file in ${path}/*.eclectic ; do
+        for file in ${path}/*.eselect ; do
             [[ -f ${file} ]] || continue
             extra_modules=( ${extra_modules[@]} "${file}" )
         done
@@ -117,10 +117,10 @@ ec_do_list-modules() {
         write_list_start "Extra modules:"
         for module in ${extra_modules[@]} ; do
             name=${module##*/}
-            name=${name%%.eclectic}
+            name=${name%%.eselect}
             desc=$(
-                source "$ECLECTIC_DEFAULT_ACTIONS" 2>/dev/null \
-                    || die "Couldn't source ${ECLECTIC_DEFAULT_ACTIONS}"
+                source "$ESELECT_DEFAULT_ACTIONS" 2>/dev/null \
+                    || die "Couldn't source ${ESELECT_DEFAULT_ACTIONS}"
                 source "${module}" 2>/dev/null \
                     || die "Couldn't source ${module}"
                 echo "${DESCRIPTION}"

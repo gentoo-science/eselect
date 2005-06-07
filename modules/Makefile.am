@@ -1,16 +1,16 @@
 safe_scripts = \
-		 bashcomp.eclectic \
-		 blas.eclectic \
-		 kernel.eclectic \
-		 lapack.eclectic \
-		 mailer.eclectic \
-		 profile.eclectic \
-		 rc.eclectic
+		 bashcomp.eselect \
+		 blas.eselect \
+		 kernel.eselect \
+		 lapack.eselect \
+		 mailer.eselect \
+		 profile.eselect \
+		 rc.eselect
 
 dodgy_scripts = \
-		 config.eclectic \
-		 cow.eclectic \
-		 vi.eclectic
+		 config.eselect \
+		 cow.eselect \
+		 vi.eselect
 
 EXTRA_DIST = $(safe_scripts) $(dodgy_scripts)
 

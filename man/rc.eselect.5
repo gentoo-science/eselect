@@ -1,26 +1,26 @@
-.TH "ECLECTIC" "5" "April 2005" "Gentoo Linux" "eclectic"
+.TH "ESELECT" "5" "April 2005" "Gentoo Linux" "eselect"
 .SH "NAME"
-rc.eclectic \- Runlevel configuration module
+rc.eselect \- Runlevel configuration module
 .SH "SYNOPSIS"
-\fBeclectic rc\fR [\fBhelp\fR|\fBusage\fR]
+\fBeselect rc\fR [\fBhelp\fR|\fBusage\fR]
 .br 
-\fBeclectic rc\fR \fBadd\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
+\fBeselect rc\fR \fBadd\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
 .br 
-\fBeclectic rc\fR \fBdelete\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
+\fBeselect rc\fR \fBdelete\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
 .br 
-\fBeclectic rc\fR \fBlist\fR [\fIrunlevel\fR]
+\fBeselect rc\fR \fBlist\fR [\fIrunlevel\fR]
 .br 
-\fBeclectic rc\fR \fBshow\fR
+\fBeselect rc\fR \fBshow\fR
 .SH "DESCRIPTION"
-\fBeclectic\fR is Gentoo's configuration and management tool. It features
+\fBeselect\fR is Gentoo's configuration and management tool. It features
 modules that care for the individual administrative tasks.
 .SH "ACTION: ADD"
-\fBeclectic rc add\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
+\fBeselect rc add\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
 .br 
 Add \fIscript\fR to given \fIrunlevels\fR. If no \fIrunlevel\fR is given,
 this action will add \fIscript\fR to the \fBdefault\fR runlevel.
 
-phi ~ # eclectic rc add local default nonetwork notexisting
+phi ~ # eselect rc add local default nonetwork notexisting
 .br 
 Adding local to following runlevels
   default                   [done]
@@ -42,12 +42,12 @@ The result\-tags are as following
 \fB[invalid]\fR
 \fIrunlevel\fR is not existing
 .SH "ACTION: DELETE"
-\fBeclectic rc delete\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
+\fBeselect rc delete\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
 .br 
 Delete \fIscript\fR to given \fIrunlevels\fR. If no \fIrunlevel\fR is given,
 this action will delete \fIscript\fR from the \fBdefault\fR runlevel.
 
-phi ~ # eclectic rc delete local nonetwork notexisting
+phi ~ # eselect rc delete local nonetwork notexisting
 .br 
 Adding local to following runlevels
   nonetwork                 [done]
@@ -68,12 +68,12 @@ The result\-tags are as following
 \fB[invalid]\fR
 \fIrunlevel\fR is not existing
 .SH "ACTION: LIST"
-\fBeclectic rc list\fR [\fIrunlevel\fR]
+\fBeselect rc list\fR [\fIrunlevel\fR]
 .br 
 Displays an orderd list of init scripts that belong to \fIrunlevel\fR. In case that
 \fIrunlevel\fR is given, this action will list all scripts from /etc/init.d/.
 
-phi / # eclectic rc list default
+phi / # eselect rc list default
 Init scripts to be started by runlevel default
   cupsd
   local
@@ -86,21 +86,21 @@ Init scripts to be started by runlevel default
   xdm
   xfs
 .SH "ACTION: RESTART"
-\fBeclectic rc restart\fR \fIscript\fR [\fIscript\fR ...]
+\fBeselect rc restart\fR \fIscript\fR [\fIscript\fR ...]
 .br 
 Restarts the given set of init scripts.
 
-phi / # eclectic rc restart sshd
+phi / # eselect rc restart sshd
 .br 
 Restarting init script
  * ERROR:  "local" has not yet been started.
  * Stopping sshd ...                                                      [ ok ]
 .SH "ACTION: SHOW"
-\fBeclectic rc show\fR
+\fBeselect rc show\fR
 .br 
 Shows the current runlevel's init script and lists them together with their status.
 
-phi / # eclectic rc show
+phi / # eselect rc show
 .br 
 Status of init scripts in runlevel default
   cupsd                     [started]
@@ -132,21 +132,21 @@ One or more commands in \fIscript\fR have not succeeded.
 \fIscript\fR has a syntax error.
 
 .SH "ACTION: START"
-\fBeclectic rc start\fR \fIscript\fR [\fIscript\fR ...]
+\fBeselect rc start\fR \fIscript\fR [\fIscript\fR ...]
 .br 
 Starts the given set of init scripts manually, regardless of the current runlevel.
 
-phi / # eclectic rc start local sshd
+phi / # eselect rc start local sshd
 .br 
 Restarting init script
  * Starting local ...                                                    [ ok ]
  * WARNING:  "sshd" has already been started.
 .SH "ACTION: STOP"
-\fBeclectic rc stop\fR \fIscript\fR [\fIscript\fR ...]
+\fBeselect rc stop\fR \fIscript\fR [\fIscript\fR ...]
 .br 
 Stops the given set of init scripts manually, regardless of the current runlevel.
 
-phi / # eclectic rc stop local sshd
+phi / # eselect rc stop local sshd
 .br 
 Stopping init script local sshd
  * ERROR:  "local" has not yet been started.

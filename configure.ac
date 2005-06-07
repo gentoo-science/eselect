@@ -1,6 +1,6 @@
-AC_INIT(eclectic, 0.9.3, ciaranm@gentoo.org, eclectic)
+AC_INIT(eselect, 0.9.3, ciaranm@gentoo.org, eselect)
 AC_PREREQ(2.53)
-AC_CONFIG_SRCDIR(bin/eclectic.in)
+AC_CONFIG_SRCDIR(bin/eselect.in)
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE(1.9)
 

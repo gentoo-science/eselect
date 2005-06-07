@@ -1,8 +1,13 @@
-ChangeLog for eclectic
+ChangeLog for eselect
+
+2005-06-07 DAnny van Dyk <kugelfang@gentoo.org>
+
+	* Renamed to 'eselect'.
+	* Moved to Gentoo infrastructure.
 
 2005-05-26 Danny van Dyk <kugelfang@gentoo.org>
 
-	* modules/rc.eclectic: Added actions start, stop, restart and pause. 
+	* modules/rc.eselect: Added actions start, stop, restart and pause. 
 
 2005-05-16 Ciaran McCreesh <ciaranm@gentoo.org>
 
@@ -17,7 +22,7 @@ ChangeLog for eclectic
 
 2005-05-16 Tom Martin <slarti@gentoo.org>
 
-	* modules/mailer.eclectic: Handle no available targets. Mark the
+	* modules/mailer.eselect: Handle no available targets. Mark the
 	currently active profile when doing list.
 
 2005-05-15 Aaron Walker <ka0ttic@gentoo.org>
@@ -26,13 +31,13 @@ ChangeLog for eclectic
 
 2005-05-15 Ciaran McCreesh <ciaranm@gentoo.org>
 
-	* modules/config.eclectic, modules/cow.eclectic,
-	modules/mailer.eclectic, modules/lapack.eclectic,
-	modules/bashcomp.eclectic, modules/vi.eclectic,
-	modules/kernel.eclectic, modules/profile.eclectic,
-	modules/blas.eclectic, modules/rc.eclectic: Switch vim modelines to
-	use eclectic rather than ebuild as the filetype.
-	* modules/kernel.eclectic: Handle no available targets. Mark the
+	* modules/config.eselect, modules/cow.eselect,
+	modules/mailer.eselect, modules/lapack.eselect,
+	modules/bashcomp.eselect, modules/vi.eselect,
+	modules/kernel.eselect, modules/profile.eselect,
+	modules/blas.eselect, modules/rc.eselect: Switch vim modelines to
+	use eselect rather than ebuild as the filetype.
+	* modules/kernel.eselect: Handle no available targets. Mark the
 	currently active kernel symlink when doing list.
 	* libs/core.bash.in: Don't allow eval, since it's evil and leads to
 	horridly broken code.
@@ -40,50 +45,50 @@ ChangeLog for eclectic
 2005-05-14 Aaron Walker <ka0ttic@gentoo.org>
 
 	* libs/core.bash.in: Updated do_action() to display the correct usage
-	message depending on how eclectic was invoked.
+	message depending on how eselect was invoked.
 
 2005-05-14 Ciaran McCreesh <ciaranm@gentoo.org>
 
-	* modules/mailer.eclectic, modules/vi.eclectic,
-	modules/kernel.eclectic, modules/profile.eclectic: Switch to use
+	* modules/mailer.eselect, modules/vi.eselect,
+	modules/kernel.eselect, modules/profile.eselect: Switch to use
 	is_number.
-	* modules/mailer.eclectic: Make 'set by number' work.
+	* modules/mailer.eselect: Make 'set by number' work.
 
 2005-05-14 Elfyn McBratney <beu@gentoo.org>
 
-	* bin/eclectic.in: Support both -update and -updater suffixes.
+	* bin/eselect.in: Support both -update and -updater suffixes.
 
 2005-05-14 Danny van Dyk <kugelfang@gentoo.org>
 
-	* modules/rc.eclectic: Do not show files ending in '~'. Added to the
+	* modules/rc.eselect: Do not show files ending in '~'. Added to the
 	Makefile.am, too.
 
 2005-05-12 Danny van Dyk <kugelfang@gentoo.org>
 
-	* modules/mailer.eclectic, modules/blas.eclectic,
-	modules/lapack.eclectic: Use SVN_DATE.
-	* module/rc.eclectic: Added module rc.
+	* modules/mailer.eselect, modules/blas.eselect,
+	modules/lapack.eselect: Use SVN_DATE.
+	* module/rc.eselect: Added module rc.
 	* man/rc.ecletic.5: Added manpage for module rc.
-	* modules/blas.eclectic: Add preliminary support for "threaded-ATLAS".
+	* modules/blas.eselect: Add preliminary support for "threaded-ATLAS".
 
 2005-05-10 Aaron Walker <ka0ttic@gentoo.org>
 
-	* modules/profile.eclectic, modules/bashcomp.eclectic: Use SVN_DATE.
+	* modules/profile.eselect, modules/bashcomp.eselect: Use SVN_DATE.
 
 2005-05-10 Ciaran McCreesh <ciaranm@gentoo.org>
 
 	* autogen.sh: Make config dir if it's not there already.
-	* man/eclectic.1: Include note about full docs.
+	* man/eselect.1: Include note about full docs.
 	* doc/developer-guide.txt: Document manip functions.
-	* modules/config.eclectic, modules/cow.eclectic, modules/vi.eclectic,
-	modules/kernel.eclectic: Update to use SVN date as the version number.
-	* libs/manip.bash.in, libs/Makefile.am, bin/eclectic.in: Add manip
+	* modules/config.eselect, modules/cow.eselect, modules/vi.eselect,
+	modules/kernel.eselect: Update to use SVN date as the version number.
+	* libs/manip.bash.in, libs/Makefile.am, bin/eselect.in: Add manip
 	library for text manipulation functions. svn_date_to_version will
 	convert an SVN date string into a nice VERSION number.
 
 2005-05-09 Aaron Walker <ka0ttic@gentoo.org>
 
-	* misc/eclectic.bashcomp: Parse list-modules/usage instead of relying
+	* misc/eselect.bashcomp: Parse list-modules/usage instead of relying
 	on the assumption that the default action will give us what we want.
 
 2005-05-09 Ciaran McCreesh <ciaranm@gentoo.org>
@@ -98,16 +103,16 @@ ChangeLog for eclectic
 	releases" document.
 
 	* Merge from branches/ciaranm/config:
-	* bin/eclectic.in: Better prefix/suffix support. Now recognises
+	* bin/eselect.in: Better prefix/suffix support. Now recognises
 	prefixes config-, update-, manage- and suffixes -config, -update,
 	-tool, -manager.
 	* libs/output.bash.in, libs/core.bash.in: Add highlight_warning
 	function.
-	* bin/eclectic.in, libs/tests.bash.in, libs/Makefile.am: Add tests
+	* bin/eselect.in, libs/tests.bash.in, libs/Makefile.am: Add tests
 	library. Currently one function, is_number.
-	* libs/default.eclectic.in: Allow show_extra_help_text as part of
+	* libs/default.eselect.in: Allow show_extra_help_text as part of
 	the default help action. Show extra usage message if appropriate.
-	* modules/config.eclectic, modules/Makefile.am: Add initial version of
+	* modules/config.eselect, modules/Makefile.am: Add initial version of
 	the config plugin. Not production ready.
 
 2005-05-08 Aaron Walker <ka0ttic@gentoo.org>
@@ -116,10 +121,10 @@ ChangeLog for eclectic
 
 	* Tag 0.9.2 release.
 	* configure.in: Update version (0.9.2).
-	* modules/profile.eclectic: Re-fix profile module since the
+	* modules/profile.eselect: Re-fix profile module since the
 	profile-symlink -> profile move reverted the changes.
-	* modules/bashcomp.eclectic: do_show should return 0.
-	* bin/eclectic.in, bin/Makefile.am: Use %VERSION%.
+	* modules/bashcomp.eselect: do_show should return 0.
+	* bin/eselect.in, bin/Makefile.am: Use %VERSION%.
 
 2005-05-08 Ciaran McCreesh <ciaranm@gentoo.org>
 
@@ -129,13 +134,13 @@ ChangeLog for eclectic
 
 2005-05-08 Danny van Dyk <kugelfang@gentoo.org>
 
-	* modules/blas.eclectic: update -> scan transition complete.
-	* modules/lapack.eclectic: update -> scan. Fixed directory settings
+	* modules/blas.eselect: update -> scan transition complete.
+	* modules/lapack.eselect: update -> scan. Fixed directory settings
 	for lapack-atlas and lapack-reference.
 
 2005-05-08 Tom Martin <slarti@gentoo.org>
 	
-	* modules/mailer.eclectic: Fix find_targets. If the glob didn't
+	* modules/mailer.eselect: Fix find_targets. If the glob didn't
 	match, it was interpreted as a literal string. Fix a stupid typo
 	(findi_targets -> find_targets).
 
@@ -153,19 +158,19 @@ ChangeLog for eclectic
 2005-05-07 Ciaran McCreesh <ciaranm@gentoo.org>
 
 	* doc/developer-guide.txt: Fix formatting, typos. Add a bit more about
-	how eclectic works.
+	how eselect works.
 	* doc/Makefile.am: Make this much more generic.
 	* misc/Makefile.am: Add Makefile.in to maintainer-clean targets.
 
 2005-05-07 Tom Martin <slarti@gentoo.org>
 
-	* man/mailer.eclectic.5: Add a man page for mailer.eclectic.
-	* modules/mailer.eclectic: Add a check_dirs() function for
+	* man/mailer.eselect.5: Add a man page for mailer.eselect.
+	* modules/mailer.eselect: Add a check_dirs() function for
 	sanity checking /etc/mail/.
 
 2005-05-07 Danny van Dyk <kugelfang@gentoo.org>
 
-	* man/profile.eclectic.5: Fixed typos.
+	* man/profile.eselect.5: Fixed typos.
 	* doc/developer-guide.txt: Added descriptions for the multilib.bash
 	and config.bash functions.
 
@@ -174,40 +179,40 @@ ChangeLog for eclectic
 	* doc/: Add initial developer docs.
 	* libs/core.bash.in: Fix bug in has so that it is consistent with
 	portage syntax.
-	* modules/blas.eclectic, modules/lapack.eclectic: Update to new has
+	* modules/blas.eselect, modules/lapack.eselect: Update to new has
 	syntax.
 
 2005-05-07 Aaron Walker <ka0ttic@gentoo.org>
 
-	* modules/profile-symlink.eclectic: Fix sed to use current
+	* modules/profile-symlink.eselect: Fix sed to use current
 	profiles.desc format. Also, ensure that explicitly specified profiles
 	are actually valid for the host arch.
 	* man/Makefile.am: Add missing manual pages.
-	* man/profile.eclectic.5: Add missing '.br'.
+	* man/profile.eselect.5: Add missing '.br'.
 	* configure.in, Makefile.am, doc/Makefile.am: Added Makefile.am for
 	doc/ with html target.
 
 2005-05-07 Danny van Dyk <kugelfang@gentoo.org>
 
 	* libs/output.bash.in: Added function 'space'.
-	* libs/default.eclectic.in: Fixed do_usage to filter 'action'.
-	* man/blas.eclectic: Added missing Section 'ACTION: SET'.
-	* man/lapack.eclectic: Added a manpage for the lapack module.
-	* man/profile.eclectic: Added a manpage for profile.
-	* modules/blas.eclectic: Finalized this module.
-	* modules/lapack.eclectic: Added lapack module.
+	* libs/default.eselect.in: Fixed do_usage to filter 'action'.
+	* man/blas.eselect: Added missing Section 'ACTION: SET'.
+	* man/lapack.eselect: Added a manpage for the lapack module.
+	* man/profile.eselect: Added a manpage for profile.
+	* modules/blas.eselect: Finalized this module.
+	* modules/lapack.eselect: Added lapack module.
 
 2005-04-25 Tom Martin <slarti@gentoo.org>
 
-	* modules/mailer.eclectic: Added mailwrapper module.
+	* modules/mailer.eselect: Added mailwrapper module.
 
 2005-04-11 Aaron Walker <ka0ttic@gentoo.org>
 
 	* man/Makefile.am: forgot to add $(man_MANS) to EXTRA_DIST.
-	* modules/profile.eclectic: Added make.profile module.
-	* modules/bashcomp.eclectic: Fixed do_list to ignore *~.
+	* modules/profile.eselect: Added make.profile module.
+	* modules/bashcomp.eselect: Fixed do_list to ignore *~.
 	* misc/Makefile.am: Added Makefile.am.
-	* misc/eclectic.bashcomp: Added eclectic command-line completion.
+	* misc/eselect.bashcomp: Added eselect command-line completion.
 
 2005-04-10 Aaron Walker <ka0ttic@gentoo.org>
 
@@ -215,23 +220,23 @@ ChangeLog for eclectic
 
 2005-04-07 Danny van Dyk <kugelfang@gentoo.org>
 
-	* modules/blas.eclectic: Added package information to outputs.
-	* man/blas.eclectic.1: Added a manpage for the blas module.
+	* modules/blas.eselect: Added package information to outputs.
+	* man/blas.eselect.1: Added a manpage for the blas module.
 
 2005-04-04 Danny van Dyk <kugelfang@gentoo.org>
 
-	* man/eclectic.1: Added a rudimental manpage.
+	* man/eselect.1: Added a rudimental manpage.
 
 2005-03-24 Danny van Dyk <kugelfang@gentoo.org>
 
 	* libs/config.bash.in: Fixed store_config(), added add_config().
 	* libs/core.bash.in: Added function has().
 	* libs/multilib.bash.in: Added multilib library.
-	* modules/blas.eclectic: Added blas module.
+	* modules/blas.eselect: Added blas module.
 
 2005-02-22 Aaron Walker <ka0ttic@gentoo.org>
 
-	* modules/bashcomp.eclectic: Added bashcomp module.
+	* modules/bashcomp.eselect: Added bashcomp module.
 
 2005-02-22 Ciaran McCreesh <ciaranm@gentoo.org>
 

@@ -101,4 +101,4 @@ do_set() {
 	fi
 }
 
-# vim: set ft=eclectic :
+# vim: set ft=eselect :

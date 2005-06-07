@@ -2,19 +2,19 @@
 
 # Copyright (c) 2005 Gentoo Foundation.
 # $Header$
-# This file is part of the 'Eclectic' tools framework.
+# This file is part of the 'eselect' tools framework.
 #
-# Eclectic is free software; you can redistribute it and/or modify it under the
+# eselect is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation; either version 2 of the License, or (at your option) any later
 # version.
 #
-# Eclectic is distributed in the hope that it will be useful, but WITHOUT ANY
+# eselect is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# Eclectic; if not, write to the Free Software Foundation, Inc., 59 Temple
+# eselect; if not, write to the Free Software Foundation, Inc., 59 Temple
 # Place, Suite 330, Boston, MA  02111-1307  USA
 
 # Colours
@@ -57,7 +57,7 @@ die() {
     fi
 
     # Evil, but effective.
-    kill ${ECLECTIC_KILL_TARGET}
+    kill ${ESELECT_KILL_TARGET}
     exit 249
 }
 
@@ -86,16 +86,16 @@ do_action() {
     [[ -z ${action} ]] && die "Usage: do_action <action> <args>"
     shift 2
 
-    ECLECTIC_MODULE_NAME="${action}"
-    ECLECTIC_COMMAND="${ECLECTIC_PROGRAM_NAME} ${ECLECTIC_MODULE_NAME}"
+    ESELECT_MODULE_NAME="${action}"
+    ESELECT_COMMAND="${ESELECT_PROGRAM_NAME} ${ESELECT_MODULE_NAME}"
 
-    [[ ${ECLECTIC_BINARY_NAME##*/} != ${ECLECTIC_PROGRAM_NAME} ]] && \
-        ECLECTIC_COMMAND="${ECLECTIC_BINARY_NAME##*/}"
+    [[ ${ESELECT_BINARY_NAME##*/} != ${ESELECT_PROGRAM_NAME} ]] && \
+        ESELECT_COMMAND="${ESELECT_BINARY_NAME##*/}"
 
     modfile=$( ec_find_module "${action}" )
     (
-        source "$ECLECTIC_DEFAULT_ACTIONS" 2>/dev/null \
-            || die "Couldn't source ${ECLECTIC_DEFAULT_ACTIONS}"
+        source "$ESELECT_DEFAULT_ACTIONS" 2>/dev/null \
+            || die "Couldn't source ${ESELECT_DEFAULT_ACTIONS}"
         source "${modfile}" 2>/dev/null \
             || die "Couldn't source ${modfile}"
         if [[ -z ${subaction} ]] ; then

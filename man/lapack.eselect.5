@@ -1,28 +1,28 @@
-.TH "ECLECTIC" "5" "April 2005" "Gentoo Linux" "eclectic"
+.TH "ESELECT" "5" "April 2005" "Gentoo Linux" "eselect"
 .SH "NAME"
-lapack.eclectic \- The LAPACK management module for Gentoo's eclectic
+lapack.eselect \- The LAPACK management module for Gentoo's eselect
 .SH "SYNOPSIS"
-\fBeclectic lapack\fR [\fBhelp\fR|\fBusage\fR]
+\fBeselect lapack\fR [\fBhelp\fR|\fBusage\fR]
 .br 
-\fBeclectic lapack\fR \fBlist\fR [\fIoptions\fR]
+\fBeselect lapack\fR \fBlist\fR [\fIoptions\fR]
 .br 
-\fBeclectic lapack\fR \fBset\fR \fIimplementation\fR [\fIoptions\fR]
+\fBeselect lapack\fR \fBset\fR \fIimplementation\fR [\fIoptions\fR]
 .br 
-\fBeclectic lapack\fR \fBshow\fR [\fIoptions\fR]
+\fBeselect lapack\fR \fBshow\fR [\fIoptions\fR]
 .br 
-\fBeclectic lapack\fR \fBupdate\fR
+\fBeselect lapack\fR \fBupdate\fR
 .SH "DESCRIPTION"
-\fBeclectic\fR is Gentoo's configuration and management tool. It features
+\fBeselect\fR is Gentoo's configuration and management tool. It features
 modules that care for the individual administrative tasks.
 .SH "ACTION: LIST"
-\fBeclectic lapack list\fR [\fIoptions\fR]
+\fBeselect lapack list\fR [\fIoptions\fR]
 .br 
 Displays an orderd list of installed LAPACK implementations. It distinguishes between versions with different
 Application Binary Interfaces (e.g. x86/AMD64). Further it distinguishes
 between interfaces to highlevel programming languages. Each line holds
 a number, the implementation's name and the providing package's name.
 
-phi / # eclectic lapack list
+phi / # eselect lapack list
 .br 
 \-\-\- Installed in /usr/lib \-\-\-
 .br 
@@ -35,20 +35,20 @@ FORTRAN 77 profiles
 Possible \fIoptions\fR to the \fBlist\fR action are restrictions to
 handle only certain profiles or ABI\-specific library directories. For example,
  
-\fBeclectic lapack list lib64\fR
+\fBeselect lapack list lib64\fR
 
 lists only LAPACK implementations found in \fB/usr/lib64\fR while
 
-\fBeclectic lapack list lib32 F77\fR
+\fBeselect lapack list lib32 F77\fR
 
 lists only LAPACK implementations that provide a FORTRAN 77 interface
 and are located in \fB/usr/lib32\fR.
 .SH "ACTION: SHOW"
-\fBeclectic lapack show\fR [\fIoptions\fR]
+\fBeselect lapack show\fR [\fIoptions\fR]
 .br 
 Shows your system's currently active LAPACK implementations.
 
-phi / # eclectic lapack show
+phi / # eselect lapack show
 .br 
 Active LAPACK implementations
   /usr/lib (F77)            ACML (sci\-libs/ACML)
@@ -57,13 +57,13 @@ Active LAPACK implementations
 The same \fIoptions\fR that apply to the \fBlist\fR action can be used
 with the \fBshow\fR action to restrict it to given ABIs and language interfaces.
 .SH "ACTION: SET"
-\fBeclectic lapack set\fR \fIimplementation\fR [\fIoptions\fR]
+\fBeselect lapack set\fR \fIimplementation\fR [\fIoptions\fR]
 .br 
 Sets your system's currently active LAPACK implementations to \fIimplementation\fR. 
 The same \fIoptions\fR that apply to the \fBlist\fR action can be used
 with the \fBset\fR action to restrict it to given ABIs and language interfaces.
 
-phi / # eclectic lapack set ACML
+phi / # eselect lapack set ACML
 .br 
 Changing LAPACK implementation to ACML in
 .br 
@@ -72,7 +72,7 @@ Changing LAPACK implementation to ACML in
 Affected language interfaces
   F77
 .SH "ACTION: SCAN"
-\fBeclectic lapack scan\fR
+\fBeselect lapack scan\fR
 .br 
 Browses your system for installed LAPACK implementations
 and save the data for further actions. During this process it automatically

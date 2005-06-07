@@ -1,7 +1,7 @@
-Eclectic Release Guide
+eselect Release Guide
 ======================
 
-.. Note:: This guide is intended for people who do ``eclectic`` releases. It is
+.. Note:: This guide is intended for people who do ``eselect`` releases. It is
   probably of no interest to the rest of you.
 
 Make sure ChangeLog is tidy.  Add ChangeLog entry for updating configure.in
@@ -20,7 +20,7 @@ Do a test run in trunk/. ::
 Test with an ebuild and make sure everything builds and everything that
 should be included in the tarball is.
 
-Test eclectic itself and as many modules as you can.
+Test eselect itself and as many modules as you can.
 
 Commit any changes you may have made in the previous steps.
 
@@ -44,13 +44,13 @@ Sign it (there may be a dist-sign target in the future). ::
 Release.
 
 1) Log into your berlios account.
-2) Go to the Admin section of eclectic project page.
+2) Go to the Admin section of eselect project page.
 3) Go to Edit/Add File Releases
-4) Scroll to bottom and find eclectic project. click on 'Add Release'.
+4) Scroll to bottom and find eselect project. click on 'Add Release'.
 5) Upload tarball and gpg signature to ftp.berlios.de/incoming (login
    as anonymous) via your favorite ftp client.
 6) In 'New release name:' text box, put ${PV}. 'Of which package' should
-   be eclectic. Click on Create This Release.
+   be eselect. Click on Create This Release.
 7) Paste the summary you added to NEWS in the ChangeLog box and select
    'Preserve my pre-formatted text'
 8) Scroll down and find the two files you uploaded and select them. Click

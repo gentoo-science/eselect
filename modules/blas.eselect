@@ -279,8 +279,8 @@ describe_scan() {
 
 do_scan() {
 	local lib libdir impl prof
-	[[ -e ${ROOT}/etc/eclectic/blas/blas.config ]] \
-		&& rm ${ROOT}/etc/eclectic/blas/blas.config
+	[[ -e ${ROOT}/etc/eselect/blas/blas.config ]] \
+		&& rm ${ROOT}/etc/eselect/blas/blas.config
 	for libdir in $(list_libdirs) ; do
 		[[ -e ${ROOT}/usr/${libdir}/ ]] || continue
 		for impl in ${BLAS_IMPLEMENTATIONS} ; do
@@ -299,4 +299,4 @@ do_scan() {
 	done
 }
 
-# vim: set ft=eclectic
+# vim: set ft=eselect

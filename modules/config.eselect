@@ -430,5 +430,5 @@ do_interactive() {
 	done
 }
 
-# vim: set ft=eclectic :
+# vim: set ft=eselect :
 
