@@ -1,6 +1,15 @@
 ChangeLog for eselect
 
-2005-06-07 DAnny van Dyk <kugelfang@gentoo.org>
+2005-06-08 Danny van Dyk <kugelfang@gentoo.org>
+
+	* bin/eselect.in: Added handling of global options in main code.
+	* libs/core.bash.in: Removed COLOUR_* vars.
+	* libs/output.bash.in: Added function colours() which replaces all
+	${COLOURS_*} uses and respects the --no-colour option.
+	* docs/{developer,user}-guide.txt: Added reference to global options
+	and --no-colour.
+
+2005-06-07 Danny van Dyk <kugelfang@gentoo.org>
 
 	* Renamed to 'eselect'.
 	* Moved to Gentoo infrastructure.

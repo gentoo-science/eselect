@@ -39,6 +39,9 @@ ESELECT_PROGRAM_NAME="eselect"
 ESELECT_BINARY_NAME="${0}"
 ESELECT_KILL_TARGET="$$"
 
+# Global options
+ESELECT_OPTIONS=""
+
 shopt -s extglob
 shopt -s expand_aliases
 
@@ -158,10 +161,19 @@ if [[ -z ${action} ]] ; then
 fi
 
 [[ -z ${action} ]] && if [[ -n ${1##--} ]] ; then
-    action=${1##--}
-    shift
-elif [[ -n ${1} ]] ; then
-    action=$1
+    while [[ ${1##--} != ${1} ]] ; do
+        case ${1} in
+            --no-colour)
+                ESELECT_OPTIONS=(${ESELECT_OPTIONS[@]} "NOCOLOUR")
+                shift
+                ;;
+            *)
+                write_error_msg "Unknown option $(highlight ${1}) ignored!"
+		shift
+		;;
+        esac
+    done
+    action=${1}
     shift
 fi
 

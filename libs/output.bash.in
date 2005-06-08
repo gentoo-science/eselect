@@ -17,18 +17,46 @@
 # eselect; if not, write to the Free Software Foundation, Inc., 59 Temple
 # Place, Suite 330, Boston, MA  02111-1307  USA
 
+# Colours
+colour() {
+	has "${ESELECT_OPTIONS}" NOCOLOUR && return
+	case ${1} in
+		LIST_HEADER)
+			echo -ne "\033[1;32m"
+			;;
+		LIST_LEFT)
+			echo -ne "\033[0;1m"
+			;;
+		LIST_RIGHT)
+			echo -ne "\033[00m"
+			;;
+		ERROR)
+			echo -ne "\033[1;31m"
+			;;
+		NORMAL)
+			echo -ne "\033[00m"
+			;;
+		HI)
+			echo -ne "\033[1;34m"
+			;;
+		WARN)
+			echo -ne "\033[1;31m"
+			;;
+	esac
+}
+	
 # write_error_msg PUBLIC
 # write an error
 write_error_msg() {
-    echo -e "${COLOUR_ERROR}!!! Error: ${COLOUR_NORMAL}${*}" 1>&2
+    echo -e "$(colour ERROR)!!! Error: $(colour NORMAL)${*}" 1>&2
 }
 
 # write_list_start PUBLIC
 # Write a list heading. Args may include text highlighting.
 write_list_start() {
-    echo -n -e "${COLOUR_LIST_HEADER}"
-    echo -n -e $(apply_text_highlights "${COLOUR_LIST_HEADER}" "$*")
-    echo -n -e "${COLOUR_NORMAL}"
+    echo -n -e "$(colour LIST_HEADER)"
+    echo -n -e $(apply_text_highlights "$(colour LIST_HEADER)" "$*")
+    echo -n -e "$(colour NORMAL)"
     echo
 }
 
@@ -37,16 +65,16 @@ write_list_start() {
 # Args may include text highlighting.
 write_kv_list_entry() {
     local n text
-    echo -n -e "  ${COLOUR_LIST_LEFT}"
-    echo -n -e $(apply_text_highlights "${COLOUR_LIST_LEFT}" "$1")
-    echo -n -e "${COLOUR_NORMAL} "
+    echo -n -e "  $(colour LIST_LEFT)"
+    echo -n -e $(apply_text_highlights "$(colour LIST_LEFT)" "$1")
+    echo -n -e "$(colour NORMAL) "
     text=${1//\%%%??%%%}
     for (( n = 1 ; n <= $(( 25 - ${#text} )) ; ++n )) ; do
         echo -n " "
     done
-    echo -n -e "${COLOUR_LIST_RIGHT}"
-    echo -n -e $(apply_text_highlights "${COLOUR_LIST_RIGHT}" "$2")
-    echo -n -e "${COLOUR_NORMAL}"
+    echo -n -e "$(colour LIST_RIGHT)"
+    echo -n -e $(apply_text_highlights "$(colour LIST_RIGHT)" "$2")
+    echo -n -e "$(colour NORMAL)"
     echo
 }
 
@@ -55,15 +83,15 @@ write_kv_list_entry() {
 # include text highlighting.
 write_numbered_list_entry() {
     local n
-    echo -n -e "  ${COLOUR_LIST_LEFT}"
-    echo -n -e $(apply_text_highlights "${COLOUR_LIST_LEFT}" "[$1]")
-    echo -n -e "${COLOUR_NORMAL}"
+    echo -n -e "  $(colour LIST_LEFT)"
+    echo -n -e $(apply_text_highlights "$(colour LIST_LEFT)" "[$1]")
+    echo -n -e "$(colour NORMAL)"
     for (( n = 1 ; n <= $(( 4 - ${#1} )) ; ++n )) ; do
         echo -n " "
     done
-    echo -n -e "${COLOUR_LIST_RIGHT}"
-    echo -n -e $(apply_text_highlights "${COLOUR_LIST_RIGHT}" "$2")
-    echo -n -e "${COLOUR_NORMAL}"
+    echo -n -e "$(colour LIST_RIGHT)"
+    echo -n -e $(apply_text_highlights "$(colour LIST_RIGHT)" "$2")
+    echo -n -e "$(colour NORMAL)"
     echo
 }
 
@@ -84,8 +112,8 @@ write_numbered_list() {
 # is the text.
 apply_text_highlights() {
     local restore=${1} text=${2}
-    text="${text//?%%HI%%%/${COLOUR_HI}}"
-    text="${text//?%%WA%%%/${COLOUR_WARN}}"
+    text="${text//?%%HI%%%/$(colour HI)}"
+    text="${text//?%%WA%%%/$(colour WARN)}"
     text="${text//?%%RE%%%/${restore}}"
     echo -n "${text}"
 }

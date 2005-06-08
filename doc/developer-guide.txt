@@ -18,9 +18,9 @@ How eselect Works
 ------------------
 
 eselect provides a script named ``eselect``. This script is invoked as
-``eselect <module> <action> <parameters>``. eselect will try to find the
-module requested, and then call the relevant action function in that module.
-Additional handling is available for help parameters and listing available
+``eselect [<global-options>] <module> <action> <parameters>``. eselect will try
+to find the module requested, and then call the relevant action function in that
+module. Additional handling is available for help parameters and listing available
 modules.
 
 eselect consists of several components:

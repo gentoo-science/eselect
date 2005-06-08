@@ -23,10 +23,15 @@ Usage
 
 eselect should be called as: ::
 
-	eselect <module> <action> <options>
+	eselect [<global-options>] <module> <action> <options>
 
-eselect features consistently named actions among most of its modules. The
-following are standard action names -- each module may provide a subset of these
+eselect features consistently named actions among most of its modules. There
+is currently only one global option:
+
+--no-colour
+  Don't use colourization throughout all of eselect's modules.
+
+The following are standard action names -- each module may provide a subset of these
 actions:
 
 help

@@ -8,6 +8,7 @@ Targets For 0.9.4
 * add in 'no colour' mode. We probably want some standard recognised options
   that get automatically stripped before passing control to the main app. Is
   --nocolo(u)r the only one? (ciaranm)
+  Done as of revision 118. (kugelfang)
 
 * make the Makefile install symlinks for various tools
 
