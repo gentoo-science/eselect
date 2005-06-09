@@ -59,13 +59,13 @@ scan
 
 A typical session will look like the following for most modules: ::
 
-    / # eselect <module> list
+    # eselect <module> list
     These selections are available:
       [1] <first>
       [2] <second>
   
-    / # eselect <module> set <first>
-    / # eselect <module> show
+    # eselect <module> set <first>
+    # eselect <module> show
     Active selection:
       <item1>
 
