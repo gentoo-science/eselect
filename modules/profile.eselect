@@ -104,6 +104,15 @@ describe_list() {
 
 do_list() {
 	targets=( $(find_targets) )
+	local active=$(readlink ${ROOT}/etc/make.profile)
+	active=${active##*profiles/}
+	if [[ -n ${targets[@]} ]] ; then
+		local i
+		for (( i = 0 ; i < ${#targets[@]} ; i = i + 1 )) ; do
+			[[ ${targets[${i}]} == ${active} ]] \
+				&& targets[${i}]="${targets[${i}]} $(highlight '*' )"
+		done
+	fi
 	write_list_start "Available profile symlink targets:"
 	write_numbered_list "${targets[@]}"
 }

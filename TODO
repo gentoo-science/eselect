@@ -11,6 +11,7 @@ Targets For 0.9.4
   Done as of revision 118. (kugelfang)
 
 * make the Makefile install symlinks for various tools
+  Done for rc-config, profile-config, kernel-config (whoever)
 
 * list action should highlight currently selected option for all modules. Also
   check that 'no items' are handled correctly.

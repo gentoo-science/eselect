@@ -9,6 +9,8 @@ ChangeLog for eselect
 	of *_config functions.
 	* doc/developer-guide.txt: Documented new behaviour of *_config
 	functions.
+	* modules/{blas,lapack,profiles}.eselect: The list action now marks
+	active options with a highlighted *.
 
 2005-06-08 Danny van Dyk <kugelfang@gentoo.org>
 

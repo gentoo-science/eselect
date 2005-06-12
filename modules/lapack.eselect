@@ -115,11 +115,15 @@ do_list() {
 	for libdir in ${libdirs} ; do
 		F77_PROFILES=$(load_config ${LAPACK_CONFIG} F77_${libdir})
 		if [[ -n ${F77_PROFILES} ]] ; then
-			echo "--- Installed in ${ROOT}/usr/${libdir} ---"
-			write_list_start "FORTRAN 77 profiles"
+			write_list_start "FORTRAN 77 profiles in ${ROOT}/usr/${libdir}"
 			n=1
 			for x in ${F77_PROFILES} ; do
-					write_numbered_list_entry $n "${x}$(space $(( 12 - ${#x})))($(package ${x}))"
+					active=''
+					is_active_${x} ${ROOT}/usr/${libdir}/liblapack.so \
+						&& active=' *'
+					write_numbered_list_entry \
+						$n \
+						"${x}$(space $(( 12 - ${#x})))($(package ${x}))$(highlight "${active}")"
 					n=$(( n + 1))
 			done
 			echo
