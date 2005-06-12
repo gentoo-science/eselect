@@ -80,7 +80,7 @@ do_add() {
 			if [[ -L ${ROOT}/etc/runlevels/${runlevel}/${script} ]] ; then
 				write_kv_list_entry ${runlevel} "[skipped]"
 			else
-				/usr/bin/ln -sf \
+				ln -sf \
 					${ROOT}/etc/init.d/${script} \
 					${ROOTi}/etc/runlevels/${runlevel}/${script} \
 					&& write_kv_list_entry ${runlevel} "[done]" \

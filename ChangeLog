@@ -1,5 +1,9 @@
 ChangeLog for eselect
 
+2005-06-12 Danny van Dyk <kugelfang@gentoo.org>
+
+	* modules/rc.eselect: Fix hardcoded path to ln.
+
 2005-06-08 Danny van Dyk <kugelfang@gentoo.org>
 
 	* bin/eselect.in: Added handling of global options in main code.
