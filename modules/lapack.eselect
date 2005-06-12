@@ -7,6 +7,7 @@ MAINTAINER="Danny van Dyk <kugelfang@gentoo.org>"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}")
 
+LAPACK_CONFIG="${ROOT}/etc/eselect/lapack/lapack.config"
 LAPACK_IMPLEMENTATIONS="ACML ATLAS reference"
 LAPACK_PROFILES="F77"
 
@@ -112,7 +113,7 @@ do_list() {
 		|| libdirs="$@"
 		
 	for libdir in ${libdirs} ; do
-		F77_PROFILES=$(load_config lapack F77_${libdir})
+		F77_PROFILES=$(load_config ${LAPACK_CONFIG} F77_${libdir})
 		if [[ -n ${F77_PROFILES} ]] ; then
 			echo "--- Installed in ${ROOT}/usr/${libdir} ---"
 			write_list_start "FORTRAN 77 profiles"
@@ -161,7 +162,8 @@ do_set() {
 	for libdir in ${libdirs} ; do
 		for prof in ${profiles} ; do
 			setup_${impl} ${ROOT}/usr/${libdir} ${prof}
-			store_config lapack "${prof}_${libdir}_CURRENT" ${impl}
+			store_config ${LAPACK_CONFIG} \
+				"${prof}_${libdir}_CURRENT" ${impl}
 		done
 	done
 }
@@ -178,13 +180,12 @@ do_show() {
 	[[ -n ${2} ]] && has "${profiles}" ${1} && profiles=${1}
 	write_list_start "Active LAPACK implementations"
 	for libdir in ${libdirs} ; do
-		[[ ${#libdirs} -eq 1 ]] || prefix="${ROOT}/usr/${libdir}"
+		[[ ${#libdddirs} -eq 1 ]] || prefix="${ROOT}/usr/${libdir}"
 		for prof in ${profiles} ; do
-			[[ ${#profiles} -eq 1 ]] || prefix="${prefix}:${prof}"
 			[[ ${prof} == F77 ]] && lib=liblapack.so
-			impl=$(load_config lapack "${prof}_${libdir}_CURRENT")
+			impl=$(load_config ${LAPACK_CONFIG} "${prof}_${libdir}_CURRENT")
 			if [[ -z ${impl} ]] ; then
-				[[ -n $(load_config lapack "${prof}_${libdir}") ]] \
+				[[ -n $(load_config ${LAPACK_CONFIG} "${prof}_${libdir}") ]] \
 					&& die -q "Configuration file is broken. Please run scan."
 			else
 				if is_active_${impl} ${ROOT}/usr/${libdir}/${lib} ; then
@@ -212,10 +213,11 @@ do_scan() {
 		for impl in ${LAPACK_IMPLEMENTATIONS} ; do
 			for prof in $(check_${impl} ${ROOT}/usr/${libdir}/) ; do
 				if has "${LAPACK_PROFILES}" ${prof} ; then
-					add_config lapack "${prof}_${libdir}" ${impl}
+					add_config ${LAPACK_CONFIG} "${prof}_${libdir}" ${impl}
 					[[ ${prof} == F77 ]] && lib=${ROOT}/usr/${libdir}/liblapack.so
 					is_active_${impl} ${lib} \
-						&& store_config lapack "${prof}_${libdir}_CURRENT" ${impl}
+						&& store_config ${LAPACK_CONFIG} \
+							"${prof}_${libdir}_CURRENT" ${impl}
 				else
 					die -q "Unknown profile: \"${prof}\". Valid profiles: ${LAPACK_PROFILES}"
 				fi

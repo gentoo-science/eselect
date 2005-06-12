@@ -270,17 +270,17 @@ These are implemented in ``libs/config.bash``.
 The ``store_config`` Function
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The ``store_config`` function saves a key/value pair in the module's
-configuration file (``/etc/eselect/${module}/${module}.config``). This file
+The ``store_config`` function saves a key/value pair in a given
+configuration file which is passed as first argument. This file
 is a bash script consisting only of key/value pairs and should not be altered
 manually. Comments in the file will be deleted each time ``store_config`` is
-called. The function is invoked as ``store_config modulename key value``.
+called. The function is invoked as ``store_config filename key value``.
 
 The ``load_config`` Function
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``load_config`` function loads a stored value from the module's
-configuration file. It is invoked as ``load_config modulename key``
+configuration file. It is invoked as ``load_config filename key``
 and prints the associated value.
 
 The ``add_config`` Function
@@ -288,7 +288,7 @@ The ``add_config`` Function
 
 The ``add_config`` function adds an item to an already stored value in the
 modules configuration file. It uses ``load_config`` / ``store_config``
-internally and should be invoked as ``add_config modulename key item``.
+internally and should be invoked as ``add_config filename key item``.
 
 Multilib Functions
 ''''''''''''''''''

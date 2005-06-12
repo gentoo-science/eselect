@@ -17,97 +17,99 @@
 # eselect; if not, write to the Free Software Foundation, Inc., 59 Temple
 # Place, Suite 330, Boston, MA  02111-1307  USA
 
-# store_config module key value PUBLIC
-# Stores a $key/$value pair for given module in /etc/eselect/$module
+# store_config file key value PUBLIC
+# Stores a $key/$value pair for given module in $configfile
 store_config() {
     # we need at least "module" and "key"
     [[ ${#@} -gt 2 ]] || die
-    local module=${1} key=${2} value content vars line="" changed=0
+    local configfile=${1} key=${2} value content vars line="" changed=0
     shift 2
     value=${@}
 
-    if [[ ! -e ${ROOT}/etc/eselect/${module} ]] ; then
-        mkdir -p ${ROOT}/etc/eselect/${module} \
+    if [[ ! -e ${configfile} ]] ; then
+        mkdir -p ${configfile%/*} \
             || die -q \
-            "Couldn't create directory ${ROOT}/etc/eselect/${module}"
+            "Couldn't create directory ${configfile%/*}"
     fi
     
     store_config_header() {
-        echo "# Configuration file for eselect's '${module}' module" \
-            > ${ROOT}/etc/eselect/${module}/${module}.config
+        echo "# Configuration file for eselect" \
+            > ${configfile}
         echo "# This file has been automatically generated." \
-            >> ${ROOT}/etc/eselect/${module}/${module}.config
+            >> ${configfile}
     }
 
-    if [[ ! -f ${ROOT}/etc/eselect/${module}/${module}.config ]] ; then
+    if [[ ! -f ${configfile} ]] ; then
         store_config_header
         echo "${key}=\"${value}\"" \
-	    >> ${ROOT}/etc/eselect/${module}/${module}.config
+	    >> ${configfile}
         return
     fi
         
-    content=$(<${ROOT}/etc/eselect/${module}/${module}.config)
+    content=$(<${configfile})
 
     if [[ -z ${content[@]} ]] ; then
         store_config_header
         echo "${key}=\"${value}\"" \
-	    >> ${ROOT}/etc/eselect/${module}/${module}.config
+	    >> ${configfile}.config
         return
     fi
 
-    # parse the names of all settings in the file
-    for line in ${content[@]} ; do
-        [[ ${line/=/} != ${line} ]] || continue
-        line=${line/=*/}
-        local ${line}=""
-        vars=(${vars[@]} ${line})
-    done
+    (
+        # parse the names of all settings in the file
+        for line in ${content[@]} ; do
+    	    [[ ${line/=/} != ${line} ]] || continue
+            line=${line/=*/}
+            local ${line}=""
+            vars=(${vars[@]} ${line})
+        done
 
-    source ${ROOT}/etc/eselect/${module}/${module}.config
+        source ${configfile}
 
-    store_config_header
-    for var in ${vars[@]} ; do
-	if [[ ${var} == ${key} ]] ; then
-            echo "${var}=\"${value}\"" \
-                >> ${ROOT}/etc/eselect/${module}/${module}.config
-	    changed=1
-	else
-            echo "${var}=\"${!var}\"" \
-                >> ${ROOT}/etc/eselect/${module}/${module}.config
-	fi
-    done
-    [[ ${changed} == 1 ]] \
-    	|| echo "${key}=\"${value}\"" \
-        >> ${ROOT}/etc/eselect/${module}/${module}.config
+        store_config_header
+        for var in ${vars[@]} ; do
+	    if [[ ${var} == ${key} ]] ; then
+                echo "${var}=\"${value}\"" \
+                    >> ${configfile}
+	        changed=1
+	    else
+                echo "${var}=\"${!var}\"" \
+                    >> ${configfile}
+	    fi
+        done
+        [[ ${changed} == 1 ]] \
+    	    || echo "${key}=\"${value}\"" \
+            >> ${configfile}
+    )
 }
 
 # load_config module key PUBLIC
-# Loads $key value from /etc/eselect/$module
+# Loads $key value from $configfile
 load_config() {
     [[ ${#@} -eq 2 ]] || die
-    local module key value
+    local configfile key value
 
-    module=${1}
+    configfile=${1}
     key=${2}
-    [[ ! -e ${ROOT}/etc/eselect/${module}/${module}.config ]] \
+    [[ ! -e ${configfile} ]] \
         && return 1
     value=$(
-        source ${ROOT}/etc/eselect/${module}/${module}.config
+        source ${configfile}
     	echo ${!key}
     )
     echo ${value}
 }
 
-# add_config module key item ... PUBLIC
-# Adds $item to already stored value of $key in /etc/eselect/$module
+# add_config file key item ... PUBLIC
+# Adds $item to already stored value of $key in $configfile
 add_config() {
     [[ ${#@} -gt 2 ]] || die
-    local module=${1} key=${2} item oldvalue newvalue
+    local configfile=${1} key=${2} item oldvalue newvalue
     shift 2
     item="$@"
-    oldvalue=$(load_config ${module} ${key})
+    oldvalue=$(load_config ${configfile} ${key})
     newvalue=( ${oldvalue[@]} ${item} )
-    store_config ${module} ${key} ${newvalue[@]}
+    store_config ${configfile} ${key} ${newvalue[@]}
 }
 
 # vim: set sw=4 et sts=4 tw=80 :

@@ -7,6 +7,7 @@ MAINTAINER="Danny van Dyk <kugelfang@gentoo.org>"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}")
 
+BLAS_CONFIG="${ROOT}/etc/eselect/blas/blas.config"
 BLAS_IMPLEMENTATIONS="ACML ATLAS threaded-ATLAS reference"
 BLAS_PROFILES="C F77"
 
@@ -170,8 +171,8 @@ do_list() {
 		|| libdirs="$@"
 		
 	for libdir in ${libdirs} ; do
-		C_PROFILES=$(load_config blas C_${libdir})
-		F77_PROFILES=$(load_config blas F77_${libdir})
+		C_PROFILES=$(load_config ${BLAS_CONFIG} C_${libdir})
+		F77_PROFILES=$(load_config ${BLAS_CONFIG} F77_${libdir})
 		if [[ -n ${C_PROFILES} ]] || [[ -n ${F77_PROFILES} ]] ; then
 			echo "--- Installed in ${ROOT}/usr/${libdir} ---"
 			if [[ -n ${C_PROFILES} ]] ; then
@@ -235,7 +236,7 @@ do_set() {
 	for libdir in ${libdirs} ; do
 		for prof in ${profiles} ; do
 			setup_${impl} ${ROOT}/usr/${libdir} ${prof}
-			store_config blas "${prof}_${libdir}_CURRENT" ${impl}
+			store_config ${BLAS_CONFIG} "${prof}_${libdir}_CURRENT" ${impl}
 		done
 	done
 }
@@ -256,9 +257,9 @@ do_show() {
 		for prof in ${profiles} ; do
 			[[ ${prof} == C ]] && lib=libcblas.so
 			[[ ${prof} == F77 ]] && lib=libblas.so
-			impl=$(load_config blas "${prof}_${libdir}_CURRENT")
+			impl=$(load_config ${BLAS_CONFIG} "${prof}_${libdir}_CURRENT")
 			if [[ -z ${impl} ]] ; then
-				[[ -n $(load_config lapack "${prof}_${libdir}") ]] \
+				[[ -n $(load_config ${BLAS_CONFIG} "${prof}_${libdir}") ]] \
 					&& die -q "Configuration file is broken. Please run scan."
 			else
 				if is_active_${impl} ${ROOT}/usr/${libdir}/${lib} ; then
@@ -286,11 +287,12 @@ do_scan() {
 		for impl in ${BLAS_IMPLEMENTATIONS} ; do
 			for prof in $(check_${impl} ${ROOT}/usr/${libdir}/) ; do
 				if has "${BLAS_PROFILES}" ${prof} ; then
-					add_config blas "${prof}_${libdir}" ${impl}
+					add_config ${BLAS_CONFIG} "${prof}_${libdir}" ${impl}
 					[[ ${prof} == C ]] && lib=${ROOT}/usr/${libdir}/libcblas.so
 					[[ ${prof} == F77 ]] && lib=${ROOT}/usr/${libdir}/libblas.so
 					is_active_${impl} ${lib} \
-						&& store_config blas "${prof}_${libdir}_CURRENT" ${impl}
+						&& store_config ${BLAS_CONFIG} \
+							"${prof}_${libdir}_CURRENT" ${impl}
 				else
 					die -q "Unknown profile: \"${prof}\". Valid profiles: ${BLAS_PROFILES}"
 				fi
