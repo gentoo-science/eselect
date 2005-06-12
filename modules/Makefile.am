@@ -8,6 +8,7 @@ safe_scripts = \
 		 rc.eselect
 
 dodgy_scripts = \
+		 binutils.eselect \
 		 config.eselect \
 		 cow.eselect \
 		 vi.eselect

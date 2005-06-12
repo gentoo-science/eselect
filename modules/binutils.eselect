@@ -1,0 +1,214 @@
+# Copyright 1999-2005 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+DESCRIPTION="Manage installed versions of sys-devel/binutils"
+MAINTAINER="kugelfang@gentoo.org"
+SVN_DATE='$Date$'
+VERSION=$(svn_date_to_version "${SVN_DATE}" )
+
+# find_targets [patterns]
+# find all possible targets [that match one of ${@}]
+find_targets() {
+	local args=${@} targets
+	[[ -z ${args[@]} ]] && args='-*'
+	for item in ${args} ; do
+		item=${item%%-[1-9]*}
+		[[ ${item:0:1} == '-' ]] || item=-${item}
+		for file in ${ROOT}/etc/env.d/binutils/config${item} ; do
+			[[ -f ${file} ]] || continue
+			targets=(${targets[@]} "${file##*/config-}")
+		done
+	done
+	echo ${targets[@]}
+}
+
+# find_versions
+# find all installed version of installed binutils
+find_versions() {
+	local versions
+	for target in $(find_targets) ; do
+		for file in ${ROOT}/etc/env.d/binutils/${target}-* ; do
+			versions=(${versions[@]} "${file##*/}")
+		done
+	done
+	echo ${versions[@]}
+}
+
+# is_active $target $version
+# returns true if $version is currently used
+is_active() {
+	[[ ${#@} -eq 2 ]] || die "Need exactly 2 arguments!"
+	current=$(load_config ${ROOT}/etc/env.d/binutils/config-${1} CURRENT)
+	[[ ${current} == ${2} ]]
+}
+
+# is_valid $profile
+is_valid() {
+	([[ ${#@} -eq 1 ]] && [[ -e ${ROOT}/etc/env.d/binutils/${profile} ]]) \
+		|| die "Need exactly 1 argument!"
+	
+}
+
+# swtich_profile $profile
+# switches binutils to $profile
+switch_profile() {
+	# set us up
+	[[ ${#@} -eq 1 ]] || die "Need exactly 1 argument!"
+	local profile=${1##*/}
+	local profile_file="${ROOT}/etc/env.d/binutils/${profile}"
+	local target targets version binutilspath libpath chost
+	#target=${profile%%-[1-9]*}
+	#version=${profile##${target}-}
+	is_active ${target} ${version} \
+		&& die -q "Profile \"${profile}\" is already active!"
+	chost=$(portageq envvar CHOST)
+	version=$(load_config ${profile_file} VER)
+	target=$(load_config ${profile_file} TARGET)
+	libpath=$(load_config ${profile_file} LIBPATH)
+	libpath=${libpath:-/usr/lib/binutils/${TARGET}/${VER}}
+	faketargets=( $(load_config ${profile_file} FAKE_TARGETS) )
+
+	# Generate binary symlinks
+	echo "Switching to ${profile}..."
+	[[ -d  "${ROOT}/usr/${target}/binutils-bin/${version}" ]] \
+		|| die -q "Can't cd ${ROOT}/usr/${target}/binutils-bin/${version}!"
+	mkdir -p "${ROOT}/usr/${target}/bin" \
+		|| die -q "Can't create ${ROOT}/usr/${target}/bin!"
+	
+	#TODO Fake targets!
+	# Iterate through all fake targets
+	# Setting up faketargets by default
+	binutilspath="/usr/${target}/binutils-bin/${version}"
+	for app in "${ROOT}"/${binutilspath}/* ; do
+		app=${app##*/}
+		echo ln -sf \
+			"${binutilspath}/${app}" \
+			"${ROOT}/usr/${target}/bin/${app}" \
+			|| die -q "Linking ${ROOT}/${binutilspath}/${app} failed!"
+		echo ln -sf \
+			../${target}/bin/${app} \
+			"${ROOT}/usr/bin/${target}-${app}" \
+			|| die -q "Linking ${ROOT}/usr/bin/${target}-${app} failed!"
+		for fake in ${faketargets} ; do
+			[[ -f "${ROOT}/etc/env.d/binutils/config-${fake}" ]] \
+				&& continue
+			echo ln -sf ../${target}/bin/${app} "${ROOT}/usr/bin/${fake}-${app}"
+		done
+		[[ ${chost} == ${target} ]] || continue
+		echo ln -sf \
+			${target}-${app} \
+			"${ROOT}/usr/bin/${app}" \
+			|| die -q "Linking ${ROOT}/usr/bin/${app} failed!"
+	done	
+	
+	# Generate library and ldscripts symlinks
+	mkdir -p "${ROOT}"/usr/${target}/lib
+	rm -r "${ROOT}"/usr/${TARGET}/lib/ldscripts
+	echo ln -sf "${libpath}/ldscripts" "${ROOT}"/usr/${target}/lib/ldscripts
+	[[ ${target} == ${chost} ]] \
+		&& dest="${ROOT}"/usr/${chost}/lib \
+		|| dest="${ROOT}"/usr/${chost}/${target}/lib
+	mkdir -p "${dest}"
+	for lib in "${ROOT}"/${libpath}/lib* ; do
+		echo ln -sf "${libpath}/${lib##*/}" "${dest}/${lib##*/}"
+	done
+
+	# Generate include symlink
+	[[ ${target} == ${chost} ]] \
+		&& dest="${ROOT}/usr/include" \
+		|| dest="${ROOT}/usr/${target}/include"
+	mkdir -p "${dest}"
+	for inc in "${ROOT}"/${libpath}/include/* ; do
+		echo ln -sf "${inc##${ROOT}}" "${dest}/${inc##*/}"
+	done
+
+	# Update the environment
+	if [[ ${target} == ${chost} ]] ; then
+		datapath=/usr/share/binutils-date/${target}/${version}
+		envfile="${ROOT}/etc/env.d/05binutils"
+		[[ -d ${datapath}/man ]] \
+			&& store_config ${envfile} MANPATH "${datapath}/man"
+		[[ -d ${datapath}/info ]] \
+			&& store_config ${envfile} INFOPATH "${datapath}/info"
+		store_config ${envfile} LDPATH "/usr/${target}/lib"
+	fi
+
+	store_config \
+		"${ROOT}"/etc/env.d/config-${target} \
+		CURRENT ${version}
+	if [[ ${ROOT} == / ]] && [[ ${target} == ${chost} ]] ; then
+		env-update
+		echo "Please remember to run:"
+		echo
+		echo "  # source /etc/profile"
+		echo
+		echo "in order to let changes take effect!"
+	fi
+}
+
+### list action
+
+describe_list() {
+	echo "List all installed version of binutils"
+}
+
+do_list() {
+	local targets i=0 active version processed
+	targets=( $(find_targets ${@}) )
+	
+	[[ -z ${targets[@]} ]] \
+		&& die -q "Pattern ${@} does not match any installed version of binutils!"
+	
+	for target in $(find_targets) ; do
+		[[ ${targets[@]/${target}/} == ${targets[@]} ]] \
+			|| write_list_start "Installed binutils for target $(highlight ${target})"
+		for file in ${ROOT}/etc/env.d/binutils/${@:-*} ; do
+			version=${file##*/${target}-}
+			[[ ${version} == ${file} ]] && continue
+			[[ ${processed[@]/${file}/} == ${processed[@]} ]] || continue
+			processed=(${processed[@]} "${file}")
+			i=$(( i + 1 ))
+			[[ ${targets[@]/${target}/} == ${targets[@]} ]] && continue
+			active=''
+			is_active ${target} ${version} \
+				&& active=' *' 
+				
+			write_numbered_list_entry $i "${version}$(highlight "${active}")"
+		done
+	done
+}
+
+### set action
+
+describe_set() {
+	echo "Activate one of the installed binutils"
+}
+
+do_set() {
+		local versions file fail=0
+		versions=( $(find_versions) )
+
+		for item in ${@} ; do
+			if is_number ${item} ; then
+				if [[ ${item} -ge 1 ]] && [[ ${item} -le $(( ${#versions[@]} + 2)) ]] ; then
+					switch_profile ${versions[$(( ${item} -1 ))]}
+				else
+					fail=1
+					echo "Item not in range 1-$((${#versions[@]} + 1)): ${item}"
+				fi
+			else
+				file=( ${ROOT}/etc/env.d/binutils/${item} )
+				if [[ ${#file[@]} -gt 1 ]] ; then
+					fail=1
+					echo "Ambigious pattern: ${item}"
+				else
+					switch_profile ${file##*/}
+				fi
+			fi
+		done
+
+		[[ ${fail} == 1 ]] && die -q "One or more actions have failed!"
+}
+
+# vim: set ft=eselect :

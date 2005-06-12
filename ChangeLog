@@ -11,6 +11,8 @@ ChangeLog for eselect
 	functions.
 	* modules/{blas,lapack,profiles}.eselect: The list action now marks
 	active options with a highlighted *.
+	* modules/binutils.eselect: Added initial and unfunctional version of
+	binutils.eselect.
 
 2005-06-08 Danny van Dyk <kugelfang@gentoo.org>
 
