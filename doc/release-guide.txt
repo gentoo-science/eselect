@@ -4,6 +4,8 @@ eselect Release Guide
 .. Note:: This guide is intended for people who do ``eselect`` releases. It is
   probably of no interest to the rest of you.
 
+Update version in configure.ac.
+
 Make sure ChangeLog is tidy.  Add ChangeLog entry for updating configure.in
 and tagging the release.
 
