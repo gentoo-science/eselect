@@ -1,6 +1,17 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+0.9.4:
+    Bug Fixes:
+    - fixed call to lapack config file in blas module.
+    
+    New Features:
+    - added a testing version of binutils.eselect.
+    - added (start|stop|restart) subactions to rc module.
+    - implemented global options handling generally and a --no-colour
+    option specificly.
+    - all modules mark currently active options with a * in list subaction.
+
 0.9.3:
     Bug Fixes:
     - mailer and kernel modules: handle no targets better, show current

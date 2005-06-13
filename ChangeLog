@@ -1,5 +1,9 @@
 ChangeLog for eselect
 
+2005-06-13 Danny van Dyk <kugelfang@gentoo.org>
+
+	* Tag 0.9.4 release.
+
 2005-06-13 Shyam Mani <fox2mike@gentoo.org>
 	* doc/overview.txt: Removed, since it is obsolete.
 	* doc/user-guide.txt: Updated with info which was in overview.
@@ -95,7 +99,7 @@ ChangeLog for eselect
 	* modules/mailer.eselect, modules/blas.eselect,
 	modules/lapack.eselect: Use SVN_DATE.
 	* module/rc.eselect: Added module rc.
-	* man/rc.ecletic.5: Added manpage for module rc.
+	* man/rc.eselect.5: Added manpage for module rc.
 	* modules/blas.eselect: Add preliminary support for "threaded-ATLAS".
 
 2005-05-10 Aaron Walker <ka0ttic@gentoo.org>
