@@ -7,29 +7,49 @@ MAINTAINER="ka0ttic@gentoo.org"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}")
 
-### show action ###
-
-describe_show() {
-	echo "Show currently enabled completions"
+find_targets() {
+	for bc in ${ROOT}/usr/share/bash-completion/* ; do
+		[[ ${bc} == *~ || ! -e ${bc} ]] && continue
+		echo -n "${bc##*/} "
+	done
 }
 
-do_show() {
-	local bc bcdir="${ROOT}/${HOME}/.bash_completion.d" n=0
+is_enabled() {
+	local bcdir="${ROOT}/${HOME}/.bash_completion.d"
+	
+	if [[ ${1} == "--global" ]] ; then
+		bcdir="${ROOT}/etc/bash_completion.d"
+		shift
+	fi
 
-	[[ ${1} == "--global" ]] && bcdir="${ROOT}/etc/bash_completion.d"
-
-	write_list_start "Currently enabled completions:"
-
-	for bc in ${bcdir}/* ; do
-		[[ -e "${bc}" ]] || continue
-		write_numbered_list_entry "$((++n))" "${bc##*/}"
-	done
-
-	[[ ${n} -eq 0 ]] && \
-		write_kv_list_entry "No completions currently enabled" ""
-
+	[[ -e ${bcdir}/${1} ]] || return 1
 	return 0
 }
+
+#find_enabled() {
+#	for x in $(find_targets) ; do
+#		is_enabled ${1:-} ${x} && echo ${x}
+#	done
+#}
+
+### show action ###
+
+#describe_show() {
+#	echo "Show currently enabled completions"
+#}
+
+#do_show() {
+#	enabled=( $(find_enabled ${1:-}) )
+#	write_list_start "Currently enabled completions:"
+
+#	if [[ -n "${enabled[@]}" ]] ; then
+#		write_numbered_list "${enabled[@]}"
+#	else
+#		write_kv_list_entry "No completions currently enabled" ""
+#	fi
+
+#	return 0
+#}
 
 ### list action ###
 
@@ -38,33 +58,20 @@ describe_list() {
 }
 
 do_list() {
-	local bc bcdir="${ROOT}/${HOME}/.bash_completion.d" n=0
-	local enabled_bcs=()
-
-	[[ ${1} == "--global" ]] && bcdir="${ROOT}/etc/bash_completion.d"
-
-	# get a list of enabled completions, so we can exclude them
-	for bc in ${bcdir}/* ; do
-		enabled_bcs[((n++))]="${bc##*/}"
-	done
-
+	targets=( $(find_targets) )
 	write_list_start "Available completions:"
 
-	n=0
-	for bc in ${ROOT}/usr/share/bash-completion/* ; do
-		[[ ${bc} == *~ || ! -e ${bc} ]] && continue
-
-		bc="${bc##*/}"
-
-		# skip completions that are already enabled
-		local b a=0
-		for b in ${enabled_bcs[@]} ; do
-			[[ ${b} == "${bc}" ]] && { a=1 ; break ; }
+	if [[ -n "${targets[@]}" ]] ; then
+		for (( n = 0 ; n < ${#targets[@]} ; ++n )) ; do
+			is_enabled ${1:-} ${targets[${n}]} && \
+				targets[${n}]="${targets[${n}]} $(highlight '*')"
 		done
-		[[ ${a} -eq 1 ]] && continue
+		write_numbered_list "${targets[@]}"
+	else
+		write_kv_list_entry "(none found)" ""
+	fi
 
-		write_numbered_list_entry "$((++n))" "${bc}"
-	done
+	return 0
 }
 
 ### enable action ###
@@ -94,8 +101,18 @@ do_enable() {
 	[[ -w ${bcdir} ]] || \
 		die -q "You don't have permission to write to ${bcdir}"
 
+	targets=( $(find_targets) )
+
 	for bc in $@ ; do
-		local file
+		local file target=${bc}
+
+		is_number "${target}" && \
+			target=${targets[$(( ${target} - 1 ))]}
+		
+		[[ -z "${target}" ]] && \
+			die -q "Target \"${bc}\" doesn't appear to be valid!"
+
+		bc=${target}
 
 		# ignore any unrecognized options
 		[[ ${bc} == --* ]] && continue
@@ -156,8 +173,19 @@ do_disable() {
 
 	[[ -z ${1} ]] && die -q "You didn't specify any completions to disable"
 
+	targets=( $(find_targets) )
+
 	for bc in $@ ; do
-		local file="${bcdir}/${bc}"
+		local file target=${bc}
+
+		is_number "${target}" && \
+			target=${targets[$(( ${target} - 1 ))]}
+
+		[[ -z "${target}" ]] && \
+			die -q "Target \"${bc}\" doesn't appear to be valid!"
+
+		bc=${target}
+		file="${bcdir}/${bc}"
 
 		# ignore any unrecognized options
 		[[ ${bc} == --* ]] && continue

@@ -1,5 +1,12 @@
 ChangeLog for eselect
 
+2005-06-15 Aaron Walker <ka0ttic@gentoo.org>
+
+	* modules/bashcomp.eselect: Rewrote most of the module.  Removed
+	do_show() since do_list now correctly identifies currently enabled
+	completions.  Also do_enable/do_disable now work with list numbers as
+	they should.
+
 2005-06-13 Aaron Walker <ka0ttic@gentoo.org>
 
 	* doc/release-guide.txt: Updated to mention updating configure.ac
