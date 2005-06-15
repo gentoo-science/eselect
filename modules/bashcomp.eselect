@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
+# $Header: $
 
 DESCRIPTION="Manage contributed bash-completion scripts"
 MAINTAINER="ka0ttic@gentoo.org"
@@ -8,10 +8,20 @@ SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}")
 
 find_targets() {
-	for bc in ${ROOT}/usr/share/bash-completion/* ; do
-		[[ ${bc} == *~ || ! -e ${bc} ]] && continue
-		echo -n "${bc##*/} "
+	local targets bc x i=0
+	bcdirs[i]="${ROOT}/usr/share/bash-completion/*"
+
+	if [[ -n "${ES_BASHCOMP_DIRS}" ]] ; then
+		for x in ${ES_BASHCOMP_DIRS} ; do
+			bcdirs[$((++i))]="${x}/*"
+		done
+	fi
+
+	for bc in ${bcdirs[@]} ; do
+		[[ -e ${bc} && ${bc} != *~ ]] && targets="${targets}\n${bc##*/}"
 	done
+
+	echo -ne ${targets} | sort -u
 }
 
 is_enabled() {
@@ -133,8 +143,18 @@ do_enable() {
 				if [[ -f ${bc} ]] ; then
 					file="${ROOT}/${PWD}/${bc}"
 				# assume /usr/share/bash-completion
-				else
+				elif [[ -f ${ROOT}/usr/share/bash-completion/${bc} ]]
+				then
 					file="${ROOT}/usr/share/bash-completion/${bc}"
+				else
+					if [[ -n "${ES_BASHCOMP_DIRS}" ]] ; then
+						for x in ${ES_BASHCOMP_DIRS} ; do
+							[[ -f ${x}/${bc} ]] && file="${x}/${bc}"
+						done
+					fi
+
+					[[ -e ${file} ]] || \
+						file="${ROOT}/usr/share/bash-completion/${bc}"
 				fi
 				;;
 		esac
