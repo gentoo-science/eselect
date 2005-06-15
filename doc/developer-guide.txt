@@ -1,5 +1,9 @@
+============================
 eselect Developer Reference
 ============================
+
+Introduction
+============
 
 About eselect
 --------------
@@ -8,27 +12,11 @@ eselect is a framework for simplifying and introducing consistency to the
 various Gentoo ``foo-config`` and ``update-blah`` tools. It is an option for
 developers who don't like reinventing the wheel, not a mandatory tool.
 
-You can obtain the latest version of eselect from:
+Getting Started
+===============
 
-        https://developer.berlios.de/svn/?group_id=3165
-
-This document assumes some basic familiarity with the user-side of eselect.
-
-How eselect Works
-------------------
-
-eselect provides a script named ``eselect``. This script is invoked as
-``eselect [<global-options>] <module> <action> <parameters>``. eselect will try
-to find the module requested, and then call the relevant action function in that
-module. Additional handling is available for help parameters and listing available
-modules.
-
-eselect consists of several components:
-
-* The main ``eselect`` script.
-* Various library scripts which provide functions which can be used in modules
-  (and the main ``eselect`` script).
-* A collection of modules for performing different tasks.
+Introduction
+------------
 
 When porting your application to use the eselect framework, you will generally
 need to create a module. Often this can be heavily based upon an existing
@@ -131,7 +119,7 @@ update
   that they exist.
 
 Utility Functions
------------------
+=================
 
 eselect provides many utility functions. These are useful for standardised
 output formatting. Where possible, these should be used, especially for output.
@@ -143,8 +131,8 @@ General Utility Functions
 
 These are implemented in ``libs/core.bash``.
 
-The ``die`` Utility Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The ``die`` Function
+^^^^^^^^^^^^^^^^^^^^
 
 The ``die`` function (which, unlike its ebuild counterpart, *can* be called from
 within subshells) is used to exit with a fatal error. It should be invoked as
@@ -152,29 +140,29 @@ within subshells) is used to exit with a fatal error. It should be invoked as
 will be displayed -- this should never happen because of user input error, only
 abnormal conditions.
 
-The ``is_function`` Utility Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The ``is_function`` Function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``is_function`` utility function returns true if and only if its parameter
 exists and is a function. This is mostly used internally, but may have some use
 for modules.
 
-The ``check_do`` Utility Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The ``check_do`` Function
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``check_do`` utility function checks that the first parameter is a function,
 and then calls it with any additional parameters as its arguments. If the
 function does not exist, ``die`` is called. Again, this is mostly internal.
 
-The ``do_action`` Utility Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The ``do_action`` Function
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``do_action`` utility function is the correct way to call a utility function
 which is defined in another module. The first parameter is the action,
 additional parameters are passed as arguments.
 
-The ``has`` Utility Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The ``has`` Function
+^^^^^^^^^^^^^^^^^^^^
 
 The ``has`` utility function is like portage's ``hasq``. It returns true if and
 only if the first parameter is equal to any of the remaining parameters.
@@ -184,14 +172,14 @@ Output Utility Functions
 
 These are implemented in ``libs/output.bash``.
 
-The ``write_error_msg`` Utility Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The ``write_error_msg`` Function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``write_error_msg`` function displays an error message in the standard
 format. It is similar to ``eerror``.
 
-The ``write_list_`` Utility Functions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The ``write_list_`` Functions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To display a list, the ``write_list_`` family of functions should be used. Lists
 should always start with a header, which can be displayed using
@@ -209,8 +197,8 @@ The ``write_numbered_list`` function is a wrapper around
 parameter passed is displayed as a numbered list item, the first with index 1,
 the second with index 2 and so on.
 
-The ``highlight`` Utility Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The ``highlight`` Function
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``highlight`` utility function can be used to emphasise some text which is
 to be displayed by any of the above functions. A typical invocation might look
@@ -221,14 +209,14 @@ like: ::
          write_kv_list_entry "$(highlight Second)" "This is the $(highlight second) entry"
          write_kv_list_entry "Third" "$(highlight The end)"
 
-The ``highlight_warning`` Utility Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The ``highlight_warning`` Function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``highlight_warning`` function is like ``highlight``, but for warnings. It
 displays the text in question in red.
 
-The ``space`` Utility Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The ``space`` Function
+^^^^^^^^^^^^^^^^^^^^^^
 
 The ``space`` utility function takes a single integer parameter. It displays
 that many space characters.
@@ -238,8 +226,8 @@ Test Functions
 
 These are implemented in ``libs/tests.bash``.
 
-The ``is_number`` Utility Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The ``is_number`` Function
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Returns true if and only if the parameter is a positive whole number.
 
@@ -248,8 +236,8 @@ Manipulation Functions
 
 These are implemented in ``libs/manip.bash``.
 
-The ``svn_date_to_version`` Utility Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The ``svn_date_to_version`` Function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``svn_date_to_version`` function can be used instead of manually keeping
 track of ``VERSION``. It is safe to use in global scope. The canonical usage is
