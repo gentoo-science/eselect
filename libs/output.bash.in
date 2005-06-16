@@ -19,30 +19,34 @@
 
 # Colours
 colour() {
-	has "${ESELECT_OPTIONS}" NOCOLOUR && return
-	case ${1} in
-		LIST_HEADER)
-			echo -ne "\033[1;32m"
-			;;
-		LIST_LEFT)
-			echo -ne "\033[0;1m"
-			;;
-		LIST_RIGHT)
-			echo -ne "\033[00m"
-			;;
-		ERROR)
-			echo -ne "\033[1;31m"
-			;;
-		NORMAL)
-			echo -ne "\033[00m"
-			;;
-		HI)
-			echo -ne "\033[1;34m"
-			;;
-		WARN)
-			echo -ne "\033[1;31m"
-			;;
-	esac
+    if has "${ESELECT_OPTIONS}" NOCOLOUR ; then
+        echo -ne "\033[00m"
+        return
+    fi
+
+    case ${1} in
+	LIST_HEADER)
+	    echo -ne "\033[1;32m"
+	    ;;
+	LIST_LEFT)
+	    echo -ne "\033[0;1m"
+	    ;;
+	LIST_RIGHT)
+	    echo -ne "\033[00m"
+	    ;;
+	ERROR)
+	    echo -ne "\033[1;31m"
+	    ;;
+	NORMAL)
+	    echo -ne "\033[00m"
+	    ;;
+	HI)
+	    echo -ne "\033[1;34m"
+	    ;;
+	WARN)
+	    echo -ne "\033[1;31m"
+	    ;;
+    esac
 }
 	
 # write_error_msg PUBLIC
