@@ -11,14 +11,17 @@ _eselect() {
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
     sedcmd='sed -n -e s/^[[:space:]]\+.*1m\([^[:space:]][[:alnum:]-]\+\).*[[:space:]]\+.*$/\1/p'
+    opts="--no-colour"
 
-    if [[ ${COMP_CWORD} -eq 1 ]] ; then
-        possibles=$(eselect list-modules | ${sedcmd})
-    elif [[ ${COMP_CWORD} -eq 2 ]] ; then
+    if [[ ${COMP_CWORD} -eq 1 ]] || [[ -n "${prev}" && ${prev} == -* ]]
+    then
+        possibles="$(eselect list-modules | ${sedcmd}) ${opts}"
+    elif eselect ${prev} usage &>/dev/null ; then
         possibles=$(eselect ${prev} usage | ${sedcmd})
     fi
 
-    COMPREPLY=($(compgen -W "${possibles}" -- ${cur}))
+    [[ -n "${possibles}" ]] && \
+        COMPREPLY=($(compgen -W "${possibles}" -- ${cur}))
     return 0
 }
 complete -F _eselect eselect
