@@ -9,6 +9,8 @@ ChangeLog for eselect
 	* libs/output.bash.in: fixed bug in nocolour handling that caused
 	literal interpretation of '*' in $(highlight '*') thus causing the
 	contents of the ${PWD} to be displayed instead.
+	* doc/release-guide.txt: Removed the now irrelevant section on
+	doing the release on berlios.
 
 2005-06-15 Shyam Mani <fox2mike@gentoo.org>
 	* doc/developer-guide.txt: Removed redundant sections and fixed up a
