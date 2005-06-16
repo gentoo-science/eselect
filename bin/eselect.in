@@ -160,10 +160,10 @@ if [[ -z ${action} ]] ; then
     unset binname prefix
 fi
 
-[[ -z ${action} ]] && if [[ -n ${1##--} ]] ; then
+if [[ -z ${action} ]] && [[ -n ${1##--} ]] ; then
     while [[ ${1##--} != ${1} ]] ; do
         case ${1} in
-            --no-colour)
+            --no-colour|--no-color)
                 ESELECT_OPTIONS=(${ESELECT_OPTIONS[@]} "NOCOLOUR")
                 shift
                 ;;
