@@ -40,6 +40,7 @@ ESELECT_BINARY_NAME="${0}"
 ESELECT_KILL_TARGET="$$"
 
 # Global options
+ESELECT_KNOWN_OPTIONS="no-colour no-color"
 ESELECT_OPTIONS=""
 
 shopt -s extglob
@@ -75,7 +76,7 @@ ec_find_module() {
 # ec_do_usage
 # Display eselect usage
 ec_do_usage() {
-    echo "Usage: eselect <module name> <options>"
+    echo "Usage: eselect <global options> <module name> <module options>"
 }
 
 # ec_do_help
@@ -162,15 +163,16 @@ fi
 
 if [[ -z ${action} ]] && [[ -n ${1##--} ]] ; then
     while [[ ${1##--} != ${1} ]] ; do
-        case ${1} in
-            --no-colour|--no-color)
+        if ! has "${ESELECT_KNOWN_OPTIONS[@]}" ${1##--} ; then
+		write_error_msg "Unknown option ${1} ignored!"
+		continue
+	fi
+	case ${1##--} in
+            no-colour|no-color)
                 ESELECT_OPTIONS=(${ESELECT_OPTIONS[@]} "NOCOLOUR")
-                shift
-                ;;
-            *)
-                write_error_msg "Unknown option $(highlight ${1}) ignored!"
+                nocolours
 		shift
-		;;
+                ;;
         esac
     done
     action=${1}

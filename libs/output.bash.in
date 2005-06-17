@@ -18,49 +18,36 @@
 # Place, Suite 330, Boston, MA  02111-1307  USA
 
 # Colours
-colour() {
-    if has "${ESELECT_OPTIONS}" NOCOLOUR ; then
-        echo -ne "\033[00m"
-        return
-    fi
+COLOUR_LIST_HEADER="\033[1;32m"
+COLOUR_LIST_LEFT="\033[0;1m"
+COLOUR_LIST_RIGHT="\033[00m"
+COLOUR_ERROR="\033[1;31m"
+COLOUR_NORMAL="\033[00m"
+COLOUR_HI="\033[1;34m"
+COLOUR_WARN="\033[1;31m"
 
-    case ${1} in
-	LIST_HEADER)
-	    echo -ne "\033[1;32m"
-	    ;;
-	LIST_LEFT)
-	    echo -ne "\033[0;1m"
-	    ;;
-	LIST_RIGHT)
-	    echo -ne "\033[00m"
-	    ;;
-	ERROR)
-	    echo -ne "\033[1;31m"
-	    ;;
-	NORMAL)
-	    echo -ne "\033[00m"
-	    ;;
-	HI)
-	    echo -ne "\033[1;34m"
-	    ;;
-	WARN)
-	    echo -ne "\033[1;31m"
-	    ;;
-    esac
+# set all colours to COLOURS_NORMAL
+nocolours() {
+COLOUR_LIST_HEADER="\033[00m"
+COLOUR_LIST_LEFT="\033[00m"
+COLOUR_LIST_RIGHT="\033[00m"
+COLOUR_ERROR="\033[00m"
+COLOUR_HI="\033[00m"
+COLOUR_WARN="\033[00m"
 }
 	
 # write_error_msg PUBLIC
 # write an error
 write_error_msg() {
-    echo -e "$(colour ERROR)!!! Error: $(colour NORMAL)${*}" 1>&2
+    echo -e "${COLOUR_ERROR}!!! Error: ${COLOUR_NORMAL}${*}" 1>&2
 }
 
 # write_list_start PUBLIC
 # Write a list heading. Args may include text highlighting.
 write_list_start() {
-    echo -n -e "$(colour LIST_HEADER)"
-    echo -n -e $(apply_text_highlights "$(colour LIST_HEADER)" "$*")
-    echo -n -e "$(colour NORMAL)"
+    echo -n -e "${COLOUR_LIST_HEADER}"
+    echo -n -e $(apply_text_highlights "${COLOUR_LIST_HEADER}" "$*")
+    echo -n -e "${COLOUR_NORMAL}"
     echo
 }
 
@@ -69,16 +56,14 @@ write_list_start() {
 # Args may include text highlighting.
 write_kv_list_entry() {
     local n text
-    echo -n -e "  $(colour LIST_LEFT)"
-    echo -n -e $(apply_text_highlights "$(colour LIST_LEFT)" "$1")
-    echo -n -e "$(colour NORMAL) "
+    echo -n -e "  ${COLOUR_LIST_LEFT}"
+    echo -n -e $(apply_text_highlights "${COLOUR_LIST_LEFT}" "$1")
+    echo -n -e "${COLOUR_NORMAL} "
     text=${1//\%%%??%%%}
-    for (( n = 1 ; n <= $(( 25 - ${#text} )) ; ++n )) ; do
-        echo -n " "
-    done
-    echo -n -e "$(colour LIST_RIGHT)"
-    echo -n -e $(apply_text_highlights "$(colour LIST_RIGHT)" "$2")
-    echo -n -e "$(colour NORMAL)"
+    space $(( 25 - ${#test} ))
+    echo -n -e "${COLOUR_LIST_RIGHT}"
+    echo -n -e $(apply_text_highlights "${COLOUR_LIST_RIGHT}" "$2")
+    echo -n -e "${COLOUR_NORMAL}"
     echo
 }
 
@@ -87,15 +72,13 @@ write_kv_list_entry() {
 # include text highlighting.
 write_numbered_list_entry() {
     local n
-    echo -n -e "  $(colour LIST_LEFT)"
-    echo -n -e $(apply_text_highlights "$(colour LIST_LEFT)" "[$1]")
-    echo -n -e "$(colour NORMAL)"
-    for (( n = 1 ; n <= $(( 4 - ${#1} )) ; ++n )) ; do
-        echo -n " "
-    done
-    echo -n -e "$(colour LIST_RIGHT)"
-    echo -n -e $(apply_text_highlights "$(colour LIST_RIGHT)" "$2")
-    echo -n -e "$(colour NORMAL)"
+    echo -n -e "  ${COLOUR_LIST_LEFT}"
+    echo -n -e "[$(apply_text_highlights "${COLOUR_LIST_LEFT}" "$1")]"
+    echo -n -e "${COLOUR_NORMAL}"
+    space $(( 4 - ${#1} ))
+    echo -n -e "${COLOUR_LIST_RIGHT}"
+    echo -n -e $(apply_text_highlights "${COLOUR_LIST_RIGHT}" "$2")
+    echo -n -e "${COLOUR_NORMAL}"
     echo
 }
 
@@ -107,7 +90,7 @@ write_numbered_list() {
         item=${1}
         shift
         write_numbered_list_entry "${n}" "${item}"
-        n=$((  ${n} + 1 ))
+        n=$(( ${n} + 1 ))
     done
 }
 
@@ -116,8 +99,8 @@ write_numbered_list() {
 # is the text.
 apply_text_highlights() {
     local restore=${1} text=${2}
-    text="${text//?%%HI%%%/$(colour HI)}"
-    text="${text//?%%WA%%%/$(colour WARN)}"
+    text="${text//?%%HI%%%/${COLOUR_HI}}"
+    text="${text//?%%WA%%%/${COLOUR_WARN}}"
     text="${text//?%%RE%%%/${restore}}"
     echo -n "${text}"
 }
@@ -134,15 +117,14 @@ highlight_warning() {
     echo -n -e "%%%WA%%%${*}%%%RE%%%"
 }
 
-
 # space PUBLIC
 # Write $1 numbers of spaces
 space() {
-    local n=${1}
-    while [[ ${n} -gt 0 ]] ; do
-        echo -ne " "
-        n=$(( ${n} - 1))
+    local ret=""
+    for (( n = 1 ; n <= ${1} ; ++n )) ; do
+        ret="${ret} "
     done
+    echo -n "${ret}"
 }
 
 # vim: set sw=4 et sts=4 tw=80 :

@@ -1,5 +1,13 @@
 ChangeLog for eselect
 
+2005-06-17 Danny van Dyk <kugelfang@gentoo.org>
+
+	* libs/output.bash.in: Moved back to use COLOUR_* envvars instead of a
+	function, as the latters slows down eselect. Also,
+	write_kv_list_entry() and write_numbered_list_entry() now use space().
+	* bin/eselect.in: Introduced new var which holds all known global
+	options. The global option parser now checks for those.
+
 2005-06-16 Aaron Walker <ka0ttic@gentoo.org>
 
 	* misc/eselect.bashcomp: Updated to take global options into
