@@ -20,7 +20,7 @@
 # sed PUBLIC
 # GNU sed wrapper (real path to GNU sed determined by configure)
 sed() {
-    %SED% $*
+    %SED% "$@"
 }
 
 # die [-q] "Message" PUBLIC
