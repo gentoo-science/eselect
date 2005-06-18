@@ -9,7 +9,7 @@ See the AUTHORS file.
 Documentation
 -------------
 
-See ``doc//``. Use ``make html`` for HTML versions.
+See ``doc/``. Use ``make html`` for HTML versions.
 
 Copyright
 ---------
