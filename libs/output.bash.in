@@ -60,7 +60,7 @@ write_kv_list_entry() {
     echo -n -e $(apply_text_highlights "${COLOUR_LIST_LEFT}" "$1")
     echo -n -e "${COLOUR_NORMAL} "
     text=${1//\%%%??%%%}
-    space $(( 25 - ${#test} ))
+    space $(( 25 - ${#text} ))
     echo -n -e "${COLOUR_LIST_RIGHT}"
     echo -n -e $(apply_text_highlights "${COLOUR_LIST_RIGHT}" "$2")
     echo -n -e "${COLOUR_NORMAL}"
