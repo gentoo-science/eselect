@@ -1,11 +1,14 @@
 .TH "ESELECT" "5" "April 2005" "Gentoo Linux" "eselect"
 .SH "NAME"
-eselect \- Gentoo's multipurpose configuration and managment tool
+\fBeselect\fR \- Gentoo's multi\-purpose configuration and managment tool
 .SH "SYNOPSIS"
-\fBeselect\fR \fImodule\fR [\fIaction\fR [\fIoption(s)\fR]]
+\fBeselect\fR <\fIglobal options\fR> <\fImodule\fR> <\fImodule options\fR>
 .SH "DESCRIPTION"
 \fBeselect\fR is Gentoo's configuration and management tool. It features
-modules that care for the individual administrative tasks.
+modules that care for individual administrative tasks.
+.SH "OPTIONS"
+.B "\-\-no-color, \-\-no-colour"
+Disable coloured output.
 .SH "BUILT-INS"
 .TP 
 \fIhelp\fR
@@ -26,7 +29,7 @@ You can view a list of installed modules using
 .ad l
 .hy 0
 .HP 14
-\fBeselect list\-modules\fR
+\fBeselect\fR \fIlist\-modules\fR
 .ad
 .hy
 .ad l
@@ -44,12 +47,15 @@ For individual help on each module, please run
 .ad l
 .hy 0
 .HP 14
-or refer to the manpage \fImodule\fR.eselect
+or refer to the manpage \fImodule\fR.eselect(5)
 .SH "FULL DOCUMENTATION"
 Full user and developer documentation is included in Restructured Text (RST)
 format. The 'html' Make target can be used to generate HTML versions.
 .SH "AUTHORS"
 Danny van Dyk <kugelfang@gentoo.org>
+.br
 Ciaran McCreesh <ciaranm@gentoo.org>
+.br
+Aaron Walker <ka0ttic@gentoo.org>
 .SH "CVS HEADER"
 $Id$
