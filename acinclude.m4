@@ -8,7 +8,6 @@ do
     IFS=$saved_IFS
     if test -x "$es_dir/sed" ; then
 	if "$es_dir/sed" --version 2>&1 < /dev/null | grep 'GNU' > /dev/null ; then
-	    echo "and is GNU sed" >> file
 	    es_path_sed="$es_dir/sed"
 	fi
     fi
