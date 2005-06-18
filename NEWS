@@ -1,6 +1,20 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+0.9.5:
+    Bug Fixes:
+    - Fixed nocolour handling that caused literal interpretation of '*' thus
+      causing the contents of ${PWD} to be displayed instead.
+    - Now recognizes the us'ian --no-color in addition to --no-colour.
+    - Reverted the colours implementation to the previously used one as all
+      the 'colours' calls in a sub-shell made displaying things quite slow.
+    - Removed hardcoded paths to binaries that were present in certain modules.
+    - Added GNU sed checks so we use the proper path thus allowing it to work
+      on systems whose GNU sed is 'gsed'.
+    - bashcomp module now properly supports using corresponding numbers
+      (from list action) when running enable/disable action.
+    - eselect bash-completion now recogizes (and completes on) global options.
+
 0.9.4:
     Bug Fixes:
     - fixed call to lapack config file in blas module.
