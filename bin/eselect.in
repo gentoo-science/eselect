@@ -84,6 +84,8 @@ ec_do_usage() {
 ec_do_help() {
     ec_do_usage
     echo
+    ec_do_list-options
+    echo
     ec_do_list-modules
 }
 
@@ -94,6 +96,13 @@ ec_do_version() {
     echo
     echo "Copyright (c) 2005 Gentoo Foundation. Distributed under the"
     echo "terms of the GNU General Public License v2."
+}
+
+# ec_do_list-options
+# Display all recognized global options
+ec_do_list-options() {
+    write_list_start "Global options:"
+    write_kv_list_entry "--no-color,--no-colour"    "Disable coloured output"
 }
 
 # ec_do_list-modules
@@ -165,6 +174,7 @@ if [[ -z ${action} ]] && [[ -n ${1##--} ]] ; then
     while [[ ${1##--} != ${1} ]] ; do
         if ! has "${ESELECT_KNOWN_OPTIONS[@]}" ${1##--} ; then
 		write_error_msg "Unknown option ${1} ignored!"
+                shift
 		continue
 	fi
 	case ${1##--} in
