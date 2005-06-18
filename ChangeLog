@@ -2,6 +2,8 @@ ChangeLog for eselect
 
 2005-06-18 Aaron Walker <ka0ttic@gentoo.org>
 
+	* Tagged 0.9.5 release.
+	* configure.ac: Update version.
 	* libs/output.bash.in: Fixed typo in write_kv_list_entry() that caused
 	misaligned value text.
 	* bin/eselect.in: Added missing 'shift' when unrecognized global
