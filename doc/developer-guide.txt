@@ -34,10 +34,12 @@ It's easiest to illustrate by example. Here's a simple module, named
 
     # Copyright 1999-2005 Gentoo Foundation
     # Distributed under the terms of the GNU General Public License v2
-    # $Header: $
+    # $Id: $
 
     DESCRIPTION="Do things to a cow"
-    VERSION="1.0"
+    MAINTAINER="foo@gentoo.org"
+    SVN_DATE='$Date: $'
+    VERSION=$(svn_date_to_version "${SVN_DATE}")
 
     ### moo action
 
@@ -127,12 +129,12 @@ If a standard function is not available for the output format required, consider
 implementing one.
 
 General Utility Functions
-'''''''''''''''''''''''''
+-------------------------
 
 These are implemented in ``libs/core.bash``.
 
 The ``die`` Function
-^^^^^^^^^^^^^^^^^^^^
+,,,,,,,,,,,,,,,,,,,,
 
 The ``die`` function (which, unlike its ebuild counterpart, *can* be called from
 within subshells) is used to exit with a fatal error. It should be invoked as
@@ -141,45 +143,45 @@ will be displayed -- this should never happen because of user input error, only
 abnormal conditions.
 
 The ``is_function`` Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``is_function`` utility function returns true if and only if its parameter
 exists and is a function. This is mostly used internally, but may have some use
 for modules.
 
 The ``check_do`` Function
-^^^^^^^^^^^^^^^^^^^^^^^^^
+,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``check_do`` utility function checks that the first parameter is a function,
 and then calls it with any additional parameters as its arguments. If the
 function does not exist, ``die`` is called. Again, this is mostly internal.
 
 The ``do_action`` Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``do_action`` utility function is the correct way to call a utility function
 which is defined in another module. The first parameter is the action,
 additional parameters are passed as arguments.
 
 The ``has`` Function
-^^^^^^^^^^^^^^^^^^^^
+,,,,,,,,,,,,,,,,,,,,
 
 The ``has`` utility function is like portage's ``hasq``. It returns true if and
 only if the first parameter is equal to any of the remaining parameters.
 
 Output Utility Functions
-''''''''''''''''''''''''
+------------------------
 
 These are implemented in ``libs/output.bash``.
 
 The ``write_error_msg`` Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``write_error_msg`` function displays an error message in the standard
 format. It is similar to ``eerror``.
 
 The ``write_list_`` Functions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 To display a list, the ``write_list_`` family of functions should be used. Lists
 should always start with a header, which can be displayed using
@@ -198,7 +200,7 @@ parameter passed is displayed as a numbered list item, the first with index 1,
 the second with index 2 and so on.
 
 The ``highlight`` Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``highlight`` utility function can be used to emphasise some text which is
 to be displayed by any of the above functions. A typical invocation might look
@@ -210,34 +212,34 @@ like: ::
          write_kv_list_entry "Third" "$(highlight The end)"
 
 The ``highlight_warning`` Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``highlight_warning`` function is like ``highlight``, but for warnings. It
 displays the text in question in red.
 
 The ``space`` Function
-^^^^^^^^^^^^^^^^^^^^^^
+,,,,,,,,,,,,,,,,,,,,,,
 
 The ``space`` utility function takes a single integer parameter. It displays
 that many space characters.
 
 Test Functions
-''''''''''''''
+--------------
 
 These are implemented in ``libs/tests.bash``.
 
 The ``is_number`` Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 Returns true if and only if the parameter is a positive whole number.
 
 Manipulation Functions
-''''''''''''''''''''''
+----------------------
 
 These are implemented in ``libs/manip.bash``.
 
 The ``svn_date_to_version`` Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``svn_date_to_version`` function can be used instead of manually keeping
 track of ``VERSION``. It is safe to use in global scope. The canonical usage is
@@ -251,12 +253,12 @@ Then turn on SVN keyword expansion for the module: ::
     svn propset svn:keywords "Date" modules/foo.eselect
 
 Configuration Functions
-'''''''''''''''''''''''
+-----------------------
 
 These are implemented in ``libs/config.bash``.
 
 The ``store_config`` Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``store_config`` function saves a key/value pair in a given
 configuration file which is passed as first argument. This file
@@ -265,26 +267,26 @@ manually. Comments in the file will be deleted each time ``store_config`` is
 called. The function is invoked as ``store_config filename key value``.
 
 The ``load_config`` Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``load_config`` function loads a stored value from the module's
 configuration file. It is invoked as ``load_config filename key``
 and prints the associated value.
 
 The ``add_config`` Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``add_config`` function adds an item to an already stored value in the
 modules configuration file. It uses ``load_config`` / ``store_config``
 internally and should be invoked as ``add_config filename key item``.
 
 Multilib Functions
-''''''''''''''''''
+------------------
 
 These are implemented in ``libs/multilib.bash``.
 
 The ``list_libdirs`` Function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``list_libdirs`` function returns a set of valid libdirs for the used
 architecture. It uses ``uname`` to determine the architecture.
