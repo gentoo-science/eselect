@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 DESCRIPTION="Manage contributed bash-completion scripts"
 MAINTAINER="ka0ttic@gentoo.org"
@@ -68,12 +68,18 @@ describe_list() {
 }
 
 do_list() {
+	local opts
 	targets=( $(find_targets) )
 	write_list_start "Available completions:"
 
+	if [[ ${1} == "--global" ]] ; then
+		opts="--global"
+		shift
+	fi
+
 	if [[ -n "${targets[@]}" ]] ; then
 		for (( n = 0 ; n < ${#targets[@]} ; ++n )) ; do
-			is_enabled ${1:-} ${targets[${n}]} && \
+			is_enabled ${opts:-} ${targets[${n}]} && \
 				targets[${n}]="${targets[${n}]} $(highlight '*')"
 		done
 		write_numbered_list "${targets[@]}"
