@@ -122,9 +122,9 @@ setup_ACML() {
 
 setup_ATLAS() {
 	if [[ ${2} == C ]] ; then
-		ln -sf ${1}/blas/atlas/libblas.so ${1}/libcblas.so
-		ln -sf ${1}/blas/atlas/libblas.so ${1}/libcblas.so.0
-		ln -sf ${1}/blas/atlas/libblas.a  ${1}/libcblas.a
+		ln -sf ${1}/blas/atlas/libcblas.so ${1}/libcblas.so
+		ln -sf ${1}/blas/atlas/libcblas.so ${1}/libcblas.so.0
+		ln -sf ${1}/blas/atlas/libcblas.a  ${1}/libcblas.a
 	elif [[ ${2} == F77 ]] ; then
 		ln -sf ${1}/blas/atlas/libblas.so ${1}/libblas.so
 		ln -sf ${1}/blas/atlas/libblas.so ${1}/libblas.so.0
@@ -136,9 +136,9 @@ setup_ATLAS() {
 
 setup_threaded-ATLAS() {
 	if [[ ${2} == C ]] ; then
-		ln -sf ${1}/blas/threaded-atlas/libblas.so ${1}/libcblas.so
-		ln -sf ${1}/blas/threaded-atlas/libblas.so ${1}/libcblas.so.0
-		ln -sf ${1}/blas/threaded-atlas/libblas.a  ${1}/libcblas.a
+		ln -sf ${1}/blas/threaded-atlas/libcblas.so ${1}/libcblas.so
+		ln -sf ${1}/blas/threaded-atlas/libcblas.so ${1}/libcblas.so.0
+		ln -sf ${1}/blas/threaded-atlas/libcblas.a  ${1}/libcblas.a
 	elif [[ ${2} == F77 ]] ; then
 		ln -sf ${1}/blas/threaded-atlas/libblas.so ${1}/libblas.so
 		ln -sf ${1}/blas/threaded-atlas/libblas.so ${1}/libblas.so.0

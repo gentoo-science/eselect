@@ -23,8 +23,9 @@ ChangeLog for eselect
 	this file when we add new global options.
 	* Makefile.am: Added html target to generate HTML for TODO and README
 	in addition to those in doc/.
-	* modules/blas.eselect, modules/lapack.eselect: Don't hardcore the
-	path to readlink.
+	* modules/blas.eselect, modules/lapack.eselect: Don't hardcode the
+	path to readlink.  Also, fixed a few libblas -> libcblas typo's on
+	Kugelfang's behalf.
 
 2005-06-17 Danny van Dyk <kugelfang@gentoo.org>
 
