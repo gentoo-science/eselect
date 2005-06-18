@@ -1,5 +1,29 @@
 ChangeLog for eselect
 
+2005-06-18 Aaron Walker <ka0ttic@gentoo.org>
+
+	* libs/output.bash.in: Fixed typo in write_kv_list_entry() that caused
+	misaligned value text.
+	* bin/eselect.in: Added missing 'shift' when unrecognized global
+	options are encountered.  Otherwise an infinite loop occurs if a user
+	specifies one.  Also added ec_do_list-options() and updated
+	ec_do_help() to call it.
+	* bin/Makefile.am: Add bashcomp-config to symlinks list.
+	* doc/developer-guide.txt: Fixed headers so that it'll compile.
+	* modules/bashcomp.eselect: Fixed bug if do_list is passed an argument
+	besides --global.
+	* man/eselect.1: updated usage info with global options. Added OPTIONS
+	section where global options will be described.
+	* README, man/profile.eselect.5: Fixed minor typo.
+	* man/Makefile.am, man/bashcomp.eselect.5: Added manual page for
+	bashcomp.eselect.
+	* misc/eselect.bashcomp: Parse 'eselect help' instead of 'eselect
+	list-modules' so that we can pick up supported global options and add
+	them to possible completions.  This means we *never* will have to edit
+	this file when we add new global options.
+	* Makefile.am: Added html target to generate HTML for TODO and README
+	in addition to those in doc/.
+
 2005-06-17 Danny van Dyk <kugelfang@gentoo.org>
 
 	* libs/output.bash.in: Moved back to use COLOUR_* envvars instead of a

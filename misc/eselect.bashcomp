@@ -6,22 +6,22 @@
 # Author: Aaron Walker <ka0ttic@gentoo.org>
 
 _eselect() {
-    local cur prev preprev sedcmd possibles
+    local cur prev sedcmd possibles
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
     sedcmd='sed -n -e s/^[[:space:]]\+.*1m\([^[:space:]][[:alnum:]-]\+\).*[[:space:]]\+.*$/\1/p'
-    opts="--no-colour"
 
     if [[ ${COMP_CWORD} -eq 1 ]] || [[ -n "${prev}" && ${prev} == -* ]]
     then
-        possibles="$(eselect list-modules | ${sedcmd}) ${opts}"
+        possibles="$(eselect help | ${sedcmd})"
     elif eselect ${prev} usage &>/dev/null ; then
         possibles=$(eselect ${prev} usage | ${sedcmd})
     fi
 
     [[ -n "${possibles}" ]] && \
-        COMPREPLY=($(compgen -W "${possibles}" -- ${cur}))
+        COMPREPLY=( $(compgen -W "${possibles}" -- ${cur}) )
+
     return 0
 }
 complete -F _eselect eselect
