@@ -9,8 +9,10 @@ noinst_SCRIPTS = \
 
 EXTRA_DIST = $(foreach f, $(noinst_SCRIPTS), $(f).in)
 
+dosed = @SED@ -e 's,%SED%,@SED@,g'
+
 %.bash : %.bash.in
-	cp $? $@
+	@$(dosed) $< > $@
 
 %.eselect : %.eselect.in
 	cp $? $@

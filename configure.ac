@@ -17,9 +17,10 @@ if test x$BASH = "x"; then
     AC_MSG_ERROR([bash is required])
 fi
 
-AC_CHECK_PROGS(SED, sed)
-if test x$SED = "x"; then
-    AC_MSG_ERROR([sed is required])
+unset SED
+ES_PROG_GNU_SED
+if test x$SED = "x" ; then
+    AC_MSG_ERROR([GNU sed is required])
 fi
 
 AC_MSG_CHECKING([whether dodgy modules should be installed])
