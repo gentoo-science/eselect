@@ -4,6 +4,10 @@ ChangeLog for eselect
 
 	* libs/output.bash.in: Watch out for escaped spaces and concatenate
 	items accordingly. Fixes BUG #95886.
+	* modules/binutils.eselect: Removed the echo before each ln call to
+	enable it. Fixed the order of is_active() and loading of VERSION and
+	TARGET. Added a check on whether the selected profile exists in
+	/etc/env.d/binutils/.
 
 2005-06-18 Aaron Walker <ka0ttic@gentoo.org>
 

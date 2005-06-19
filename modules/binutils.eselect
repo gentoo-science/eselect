@@ -58,13 +58,11 @@ switch_profile() {
 	local profile=${1##*/}
 	local profile_file="${ROOT}/etc/env.d/binutils/${profile}"
 	local target targets version binutilspath libpath chost
-	#target=${profile%%-[1-9]*}
-	#version=${profile##${target}-}
+	version=$(load_config ${profile_file} VER)
+	target=$(load_config ${profile_file} TARGET)
 	is_active ${target} ${version} \
 		&& die -q "Profile \"${profile}\" is already active!"
 	chost=$(portageq envvar CHOST)
-	version=$(load_config ${profile_file} VER)
-	target=$(load_config ${profile_file} TARGET)
 	libpath=$(load_config ${profile_file} LIBPATH)
 	libpath=${libpath:-/usr/lib/binutils/${TARGET}/${VER}}
 	faketargets=( $(load_config ${profile_file} FAKE_TARGETS) )
@@ -82,21 +80,21 @@ switch_profile() {
 	binutilspath="/usr/${target}/binutils-bin/${version}"
 	for app in "${ROOT}"/${binutilspath}/* ; do
 		app=${app##*/}
-		echo ln -sf \
+		ln -sf \
 			"${binutilspath}/${app}" \
 			"${ROOT}/usr/${target}/bin/${app}" \
 			|| die -q "Linking ${ROOT}/${binutilspath}/${app} failed!"
-		echo ln -sf \
+		ln -sf \
 			../${target}/bin/${app} \
 			"${ROOT}/usr/bin/${target}-${app}" \
 			|| die -q "Linking ${ROOT}/usr/bin/${target}-${app} failed!"
 		for fake in ${faketargets} ; do
 			[[ -f "${ROOT}/etc/env.d/binutils/config-${fake}" ]] \
 				&& continue
-			echo ln -sf ../${target}/bin/${app} "${ROOT}/usr/bin/${fake}-${app}"
+			ln -sf ../${target}/bin/${app} "${ROOT}/usr/bin/${fake}-${app}"
 		done
 		[[ ${chost} == ${target} ]] || continue
-		echo ln -sf \
+		ln -sf \
 			${target}-${app} \
 			"${ROOT}/usr/bin/${app}" \
 			|| die -q "Linking ${ROOT}/usr/bin/${app} failed!"
@@ -104,14 +102,14 @@ switch_profile() {
 	
 	# Generate library and ldscripts symlinks
 	mkdir -p "${ROOT}"/usr/${target}/lib
-	rm -r "${ROOT}"/usr/${TARGET}/lib/ldscripts
-	echo ln -sf "${libpath}/ldscripts" "${ROOT}"/usr/${target}/lib/ldscripts
+	rm -r "${ROOT}"/usr/${target}/lib/ldscripts
+	ln -sf "${libpath}/ldscripts" "${ROOT}"/usr/${target}/lib/ldscripts
 	[[ ${target} == ${chost} ]] \
 		&& dest="${ROOT}"/usr/${chost}/lib \
 		|| dest="${ROOT}"/usr/${chost}/${target}/lib
 	mkdir -p "${dest}"
 	for lib in "${ROOT}"/${libpath}/lib* ; do
-		echo ln -sf "${libpath}/${lib##*/}" "${dest}/${lib##*/}"
+		ln -sf "${libpath}/${lib##*/}" "${dest}/${lib##*/}"
 	done
 
 	# Generate include symlink
@@ -120,7 +118,7 @@ switch_profile() {
 		|| dest="${ROOT}/usr/${target}/include"
 	mkdir -p "${dest}"
 	for inc in "${ROOT}"/${libpath}/include/* ; do
-		echo ln -sf "${inc##${ROOT}}" "${dest}/${inc##*/}"
+		ln -sf "${inc##${ROOT}}" "${dest}/${inc##*/}"
 	done
 
 	# Update the environment
@@ -135,7 +133,7 @@ switch_profile() {
 	fi
 
 	store_config \
-		"${ROOT}"/etc/env.d/config-${target} \
+		"${ROOT}"/etc/env.d/binutils/config-${target} \
 		CURRENT ${version}
 	if [[ ${ROOT} == / ]] && [[ ${target} == ${chost} ]] ; then
 		env-update
@@ -196,15 +194,21 @@ do_set() {
 				else
 					fail=1
 					echo "Item not in range 1-$((${#versions[@]} + 1)): ${item}"
+					continue
 				fi
 			else
 				file=( ${ROOT}/etc/env.d/binutils/${item} )
 				if [[ ${#file[@]} -gt 1 ]] ; then
 					fail=1
 					echo "Ambigious pattern: ${item}"
-				else
-					switch_profile ${file##*/}
+					continue
 				fi
+				if ! [[ -f ${file} ]] ; then
+					fail=1
+					echo "Pattern doesn't match anything: ${item}" 
+					continue
+				fi
+				switch_profile ${file##*/}
 			fi
 		done
 
