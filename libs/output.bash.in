@@ -89,6 +89,10 @@ write_numbered_list() {
     while [[ ${#@} -gt 0 ]] ; do
         item=${1}
         shift
+	if [[ ${item##*\\} == "" ]] ; then
+		item="${item%\\} ${1}"
+		shift
+	fi
         write_numbered_list_entry "${n}" "${item}"
         n=$(( ${n} + 1 ))
     done
