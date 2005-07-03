@@ -1,5 +1,12 @@
 ChangeLog for eselect
 
+2005-07-03 Aaron Walker <ka0ttic@gentoo.org>
+
+	* libs/core.bash.in: Added dirname/basename wrapper functions which use
+	bash instead of launching their external counterparts.
+	* modules/bashcomp.eselect: Use basename instead of ${var##*/}
+	constructs.
+
 2005-06-19 Danny van Dyk <kugelfang@gentoo.org>
 
 	* libs/output.bash.in: Watch out for escaped spaces and concatenate
@@ -14,7 +21,7 @@ ChangeLog for eselect
 	* Tagged 0.9.5 release.
 	* acinclude.m4: Added ES_PROG_GNU_SED macro for checking the path to
 	GNU sed.  This allows eselect to work on platforms where GNU sed is
-	gsed.
+	"gsed" not "sed".
 	* configure.ac: Update version; added call to our new ES_PROG_GNU_SED
 	macro.
 	* libs/core.bash.in: Added 'sed() { @SED@ $* ; }' so that everything
