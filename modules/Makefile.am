@@ -11,6 +11,7 @@ dodgy_scripts = \
 		 binutils.eselect \
 		 config.eselect \
 		 cow.eselect \
+		 env.eselect \
 		 vi.eselect
 
 EXTRA_DIST = $(safe_scripts) $(dodgy_scripts)

@@ -1,5 +1,9 @@
 ChangeLog for eselect
 
+2005-07-12 Danny van Dyk <kugelfang@gentoo.org>
+
+	* modules/env.eselect, modules/Makefile.am: Added initial env module.
+
 2005-07-03 Aaron Walker <ka0ttic@gentoo.org>
 
 	* libs/core.bash.in: Added dirname/basename wrapper functions which use
