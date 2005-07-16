@@ -14,6 +14,8 @@ Targets for 1.0.0
   certain designated actions. We'll also need library functions for menus and
   so on. See code in config module for a rough demo. (ciaranm)
 
+* make these modules 'undodgy': binutils,config,env (all)
+
 Possible Ideas
 ==============
 
