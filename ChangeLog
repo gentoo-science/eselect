@@ -8,6 +8,7 @@ ChangeLog for eselect
 	* modules/env.eselect: Tidied code up, add prelink.conf code. These
 	file are now sanley created: /etc/profile.env, /etc/ld.so.conf,
 	/etc/prelink.conf.
+	* module/env.eselect: Removed LDPATH from inclusion into profile.env.
 
 2005-07-16 Danny van Dyk <kugelfang@gentoo.org>
 
