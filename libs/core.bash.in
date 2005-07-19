@@ -101,9 +101,10 @@ do_action() {
 
 # has varname item
 has() {
-    local var=${1} item
-    for item in ${var} ; do
-        [[ ${item} == ${2} ]] && return 0
+    local test=${1} item
+    shift
+    for item in $@ ; do
+        [[ ${item} == ${test} ]] && return 0
     done
     return 1
 }
