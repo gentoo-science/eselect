@@ -6,7 +6,9 @@ ChangeLog for eselect
 	least 2 parameters, not 3.
 	* modules/env.eselect: Removed check on storing empty vars. Added
 	support for updating ld.so.cache. Added a mtime database for all items
-	of LDPATH.
+	of LDPATH. Fixed last bugs that kept it in dodgy-scripts.
+	* modules/Makefile.am: Removed env.eselect from dodgy-scripts.
+	* man/env.eselect.5, man/Makefile.am: Added a manpage for env.eselect.
 
 2005-07-19 Danny van Dyk <kugelfang@gentoo.org>
 

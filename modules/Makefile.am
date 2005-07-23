@@ -1,6 +1,7 @@
 safe_scripts = \
 		 bashcomp.eselect \
 		 blas.eselect \
+		 env.eselect \
 		 kernel.eselect \
 		 lapack.eselect \
 		 mailer.eselect \
@@ -11,7 +12,6 @@ dodgy_scripts = \
 		 binutils.eselect \
 		 config.eselect \
 		 cow.eselect \
-		 env.eselect \
 		 vi.eselect
 
 EXTRA_DIST = $(safe_scripts) $(dodgy_scripts)
