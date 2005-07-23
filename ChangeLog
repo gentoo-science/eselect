@@ -1,5 +1,13 @@
 ChangeLog for eselect
 
+2005-07-23 Danny van Dyk <kugelfang@gentoo.org>
+
+	* libs/config.bash.in: Fixed a condition in store_config as it needs at
+	least 2 parameters, not 3.
+	* modules/env.eselect: Removed check on storing empty vars. Added
+	support for updating ld.so.cache. Added a mtime database for all items
+	of LDPATH.
+
 2005-07-19 Danny van Dyk <kugelfang@gentoo.org>
 
 	* libs/core.bash.in: Fixed order of paramters.

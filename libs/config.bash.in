@@ -21,7 +21,7 @@
 # Stores a $key/$value pair for given module in $configfile
 store_config() {
     # we need at least "module" and "key"
-    [[ ${#@} -gt 2 ]] || die
+    [[ ${#@} -ge 2 ]] || die
     local configfile=${1} key=${2} value content vars line="" changed=0
     shift 2
     value=${@}
