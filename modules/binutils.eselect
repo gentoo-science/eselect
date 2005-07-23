@@ -135,8 +135,8 @@ switch_profile() {
 	store_config \
 		"${ROOT}"/etc/env.d/binutils/config-${target} \
 		CURRENT ${version}
-	if [[ ${ROOT} == / ]] && [[ ${target} == ${chost} ]] ; then
-		env-update
+	if [[ ${ROOT:-/} == / ]] && [[ ${target} == ${chost} ]] ; then
+		do_action env update
 		echo "Please remember to run:"
 		echo
 		echo "  # source /etc/profile"

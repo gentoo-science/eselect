@@ -9,6 +9,8 @@ ChangeLog for eselect
 	of LDPATH. Fixed last bugs that kept it in dodgy-scripts.
 	* modules/Makefile.am: Removed env.eselect from dodgy-scripts.
 	* man/env.eselect.5, man/Makefile.am: Added a manpage for env.eselect.
+	* modules/binutils.eselect: Uses env.eselect now instead of env-update.
+	Fixed condition for environment updates.
 
 2005-07-19 Danny van Dyk <kugelfang@gentoo.org>
 
