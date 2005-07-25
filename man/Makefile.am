@@ -1,5 +1,6 @@
 man_MANS = eselect.1 \
 	   bashcomp.eselect.5 \
+	   binutils.eselect.5 \
 	   blas.eselect.5 \
 	   env.eselect.5 \
 	   lapack.eselect.5 \

@@ -1,6 +1,18 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+0.9.6:
+    Bug Fixes:
+    - Fixed crippled output of items that contain spaces in write_list
+    functions.
+    - Fixed store_config() to also store empty values.
+
+    New Features:
+    - Moved both binutils and env module out of dodgy-scripts.
+    - Added env module to replace env-update.
+    - Added dirname()/basename() function in pure bash to reduce number of
+      calls to external binaries.
+
 0.9.5:
     Bug Fixes:
     - Fixed nocolour handling that caused literal interpretation of '*' thus
