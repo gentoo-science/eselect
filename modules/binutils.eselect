@@ -181,6 +181,8 @@ describe_set() {
 }
 
 do_set() {
+		[[ ${#@} == 1 ]] \
+			|| die -q "Please specify exactly one version to activate!"
 		local versions file fail=0
 		versions=( $(find_versions) )
 

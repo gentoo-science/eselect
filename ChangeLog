@@ -9,6 +9,8 @@ ChangeLog for eselect
 	* configure.ac: Updated version number.
 	* man/Makefile.am, man/binutils.eselect.5: Added manpage for binutils
 	module.
+	* modules/binutils.eselect, modules/env.eselect: Check for sane
+	parameters and root access.
 
 2005-07-23 Danny van Dyk <kugelfang@gentoo.org>
 
