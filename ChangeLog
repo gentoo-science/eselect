@@ -1,5 +1,10 @@
 ChangeLog for eselect
 
+2005-07-25 Danny van Dyk <kugelfang@gentoo.org>
+
+	* modules/Makefile.am: Moved binutils.eselect out of dodgy-scripts.
+	* modules/binutils.eselect: Removed outdated comments.
+
 2005-07-23 Danny van Dyk <kugelfang@gentoo.org>
 
 	* libs/config.bash.in: Fixed a condition in store_config as it needs at

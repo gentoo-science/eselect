@@ -1,5 +1,6 @@
 safe_scripts = \
 		 bashcomp.eselect \
+		 binutils.eselect \
 		 blas.eselect \
 		 env.eselect \
 		 kernel.eselect \
@@ -9,7 +10,6 @@ safe_scripts = \
 		 rc.eselect
 
 dodgy_scripts = \
-		 binutils.eselect \
 		 config.eselect \
 		 cow.eselect \
 		 vi.eselect

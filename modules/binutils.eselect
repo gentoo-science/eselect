@@ -74,9 +74,6 @@ switch_profile() {
 	mkdir -p "${ROOT}/usr/${target}/bin" \
 		|| die -q "Can't create ${ROOT}/usr/${target}/bin!"
 	
-	#TODO Fake targets!
-	# Iterate through all fake targets
-	# Setting up faketargets by default
 	binutilspath="/usr/${target}/binutils-bin/${version}"
 	for app in "${ROOT}"/${binutilspath}/* ; do
 		app=${app##*/}
