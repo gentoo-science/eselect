@@ -6,9 +6,9 @@ bashcomp\.eselect \- Manage contributed bash-completion scripts
 .br 
 \fBeselect bashcomp\fR \fBlist\fR
 .br 
-\fBeselect bashcomp\fR \fBenable\fR \fIbashcomp1 bashcomp2\fR
+\fBeselect bashcomp\fR \fBenable\fR [\fB\-\-global\fR] \fIbashcomp1 bashcomp2\fR
 .br 
-\fBeselect bashcomp\fR \fBdisable\fR \fIbashcomp1 bashcomp2\fR
+\fBeselect bashcomp\fR \fBdisable\fR [\fB\-\-global\fR] \fIbashcomp1 bashcomp2\fR
 
 .SH "DESCRIPTION"
 \fBeselect\fR is Gentoo's configuration and management tool. It features
@@ -25,16 +25,19 @@ Available completions:
   [1]  bitkeeper
   [2]  cowsay *
 .SH "ACTION: ENABLE"
-\fBeselect bashcomp enable \fIbashcomp1 bashcomp2\fR
+\fBeselect bashcomp enable\fR [\fB\-\-global\fR] \fIbashcomp1 bashcomp2\fR
 .br 
+.br
 Enable the specified completion(s).  Arguments may be a completion name or
-a corresponding number produced by \fBeselect bashcomp list\fR.
+a corresponding number produced by \fBeselect bashcomp list\fR.  If the \fB\-\-global\fR
+option is specified, enable globally (for all users).
 .SH "ACTION: DISABLE"
-\fBeselect bashcomp disable\fR \fIbashcomp1 bashcomp2\fR
+\fBeselect bashcomp disable\fR [\fB\-\-global\fR] \fIbashcomp1 bashcomp2\fR
 .br
 Disable the specified completion(s). Arguments may be a completion name or
-a corresponding number produced by \fBeselect bashcomp list\fR.
+a corresponding number produced by \fBeselect bashcomp list\fR.  If the \fB\-\-global\fR
+option is specified, disable globally (for all users).
 .SH "AUTHORS"
 Aaron Walker  <ka0ttic@gentoo.org>
 .SH "REVISION"
-$Id: profile.eselect.5 117 2005-06-07 06:57:38Z kugelfang $
+$Id$
