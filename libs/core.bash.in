@@ -70,6 +70,14 @@ check_do() {
     fi
 }
 
+# check_root
+# Check that calling user is root
+check_root() {
+    if [[ $(id -u) -ne 0 ]]; then
+        die -q "Must be run as root."
+    fi
+}
+
 # do_action action args...
 # Load and do 'action' with the specified args
 do_action() {
