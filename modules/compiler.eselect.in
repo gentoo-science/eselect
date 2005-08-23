@@ -15,10 +15,12 @@ WRAPPER="@libexecdir@/compiler-wrapper"
 PROFILE_MANAGER="@libexecdir@/profile-manager"
 
 show_extra_help_text() {
+	write_list_start "Extra options for all actions:"
+	write_kv_list_entry "-u, --user" "Use ${HOME}/@userconfigdir@ to override global settings."	
+	echo ""
 	write_list_start "Extra options for 'set' action:"
-	write_kv_list_entry "--chost=<chost>" "Install this profile using the specified CHOST rather than the default."
-	write_kv_list_entry "--default" "Make this the default CHOST"
-	write_kv_list_entry "-u" "Make changes in ${HOME}/@userconfigdir@ instead of ${ROOT}/@configdir@"
+	write_kv_list_entry "-c, --chost=<chost>" "Install this profile using the specified CHOST rather than the default."
+	write_kv_list_entry "-d, --default" "Make this the default CHOST."
 }
 
 ### list action ###
@@ -32,18 +34,33 @@ do_list() {
 	local set_v
 	local profile
 	local i
-	local tmp=$(mktemp)
+	local tmp
 	local active='*'
+	local preopts=""
 
-	${PROFILE_MANAGER} get-profiles > ${tmp} || die -q "Failed to get data on installed profiles."
+	while [[ ${#} -gt 0 ]]; do
+		local opt=${1}
+		shift
+		case ${opt} in
+			--user|-u)
+				preopts="${preopts} --user"
+			;;
+			*)
+				die -q "Invalid option: ${opt}"
+			;;
+		esac
+	done
+
+	tmp=$(mktemp)
+	${PROFILE_MANAGER} ${preopts} get-profiles > ${tmp} || die -q "Failed to get data on installed profiles."
 	source ${tmp}
+	rm ${tmp}
 
 	((i = 0))
 	for chost in ${COMPILER_CONFIG_ALL_CHOSTS} ; do
 		write_list_start "Available compilers for CHOST $(highlight "${chost}")"
 
 		profiles_v="COMPILER_CONFIG_PROFILES_${chost//-/_}"
-		set_v="COMPILER_CONFIG_SET_${chost//-/_}"
 		for profile in ${!profiles_v} ; do
 			((i++))
 			write_numbered_list_entry $i "${profile}"
@@ -68,8 +85,72 @@ describe_set() {
 	echo "Select a compiler profile."
 }
 
+list_all_profiles() {
+	local preopts=${1}
+	local chost
+	local profiles_v
+	local i=0
+	local tmp
+
+	tmp=$(mktemp)
+	${PROFILE_MANAGER} ${preopts} get-profiles > ${tmp} || die -q "Failed to get data on installed profiles."
+	source ${tmp}
+	rm ${tmp}
+
+	for chost in ${COMPILER_CONFIG_ALL_CHOSTS} ; do
+		if (( i == 0 )) ; then
+			(( i++ ))
+		else
+			echo -n " "
+		fi
+
+		profiles_v="COMPILER_CONFIG_PROFILES_${chost//-/_}"
+		echo -n ${!profiles_v}
+	done
+
+	echo ""
+}
+
 do_set() {
-	is_number ${0}
+	local preopts=""
+	local profile=""
+	local postopts=""
+	while [[ ${#} -gt 0 ]]; do
+		local opt=${1}
+		shift
+		case ${opt} in
+			--default|-d)
+				postopts="${postopts} --default"
+			;;
+			--user|-u)
+				preopts="${preopts} --user"
+			;;
+			--chost=*)
+				postopts="${postopts} ${opt}"
+			;;
+			-c)
+				if [[ ${#} -eq 0 ]] ; then
+					die -q "No option given to -c"
+				fi
+				postopts="${postopts} --chost=${1}"
+				shift
+			;;
+			*)
+				if is_number ${opt} ; then
+					profiles=( $(list_all_profiles ${preopts}) )
+					profile=${profiles[$(( ${opt} - 1 ))]}
+				else
+					profile=${opt}
+				fi
+			;;
+		esac
+	done
+
+	if [[ -z "${profile}" ]] ; then
+		die -q "No profile given to set action."
+	fi
+
+	echo "You want me to set to ${profile}"
 }
 
 make_env() {
