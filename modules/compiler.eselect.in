@@ -1,0 +1,77 @@
+# Copyright 1999-2004 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Id: $
+# Author: Jeremy Huddleston <eradicator@gentoo.org>
+
+# Eselect data
+DESCRIPTION="Manage the installed compilers."
+MAINTAINER="toolchain@gentoo.org"
+VERSION="2.0.0"
+
+# Our data
+ENV="${ROOT}/etc/env.d/05compiler"
+CONFIG_D="${ROOT}/@configdir@"
+WRAPPER="@libexecdir@/compiler-wrapper"
+PROFILE_MANAGER="@libexecdir@/profile-manager"
+
+show_extra_help_text() {
+	write_list_start "Extra options for 'set' action:"
+	write_kv_list_entry "--chost=<chost>" "Install this profile using the specified CHOST rather than the default."
+	write_kv_list_entry "--default" "Make this the default CHOST"
+	write_kv_list_entry "-u" "Make changes in ${HOME}/@userconfigdir@ instead of ${ROOT}/@configdir@"
+}
+
+### list action ###
+describe_list() {
+	echo "List all installed compiler profiles."
+}
+
+do_list() {
+	local chost
+	local profiles_v
+	local set_v
+	local profile
+	local i
+	local tmp=$(mktemp)
+	local active='*'
+
+	${PROFILE_MANAGER} get-profiles > ${tmp} || die -q "Failed to get data on installed profiles."
+	source ${tmp}
+
+	((i = 0))
+	for chost in ${COMPILER_CONFIG_ALL_CHOSTS} ; do
+		write_list_start "Available compilers for CHOST $(highlight "${chost}")"
+
+		profiles_v="COMPILER_CONFIG_PROFILES_${chost//-/_}"
+		set_v="COMPILER_CONFIG_SET_${chost//-/_}"
+		for profile in ${!profiles_v} ; do
+			((i++))
+			write_numbered_list_entry $i "${profile}"
+		done
+	done
+
+	echo ""
+
+	write_list_start "Activated profiles:"
+	for chost in ${COMPILER_CONFIG_SET_CHOSTS} ; do
+		set_v="COMPILER_CONFIG_SET_${chost//-/_}"
+		if [[ "${chost}" == "${COMPILER_CONFIG_DEFAULT_CHOST}" ]] ; then
+			write_kv_list_entry "${chost} $(highlight "${active}")" "${!set_v}"
+		else
+			write_kv_list_entry "${chost}" "${!set_v}"
+		fi
+	done
+}
+
+### set action ###
+describe_set() {
+	echo "Select a compiler profile."
+}
+
+do_set() {
+	is_number ${0}
+}
+
+make_env() {
+	> ${ENV} || die -q "Could not write to ${ENV}"
+}
