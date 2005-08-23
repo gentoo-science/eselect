@@ -10,7 +10,7 @@
 # Eselect data
 DESCRIPTION="Manage the OpenGL implementation used by your system"
 MAINTAINER="x11-drivers@gentoo.org"
-VERSION="1.0.0"
+VERSION="1.0.1"
 
 # Our data
 ENV_D="${ROOT}/etc/env.d/03opengl"
@@ -199,7 +199,7 @@ set_new_implementation() {
 							rm -f ${file} || die -q "Failed to delete ${DST_PREFIX}/include/GL/$(basename ${file})"
 						fi
 
-						[[ -f "${file}" || ( -L "${file}" && ! -e "${file}" ) ]] && rm -f ${file}
+						ln -s ${PREFIX}/${LIBDIR}/opengl/${GL_IMPLEM}/include/${file} || die -q "Failed to create ${DST_PREFIX}/include/GL/$(basename ${file})"
 					elif [[ -e ${PREFIX}/${LIBDIR}/opengl/xorg-x11/include/${file} ]]; then
 						if [[ -f "${file}" || ( -L "${file}" && ! -e "${file}" ) ]] ; then
 							rm -f ${file} || die -q "Failed to delete ${DST_PREFIX}/include/GL/$(basename ${file})"

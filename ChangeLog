@@ -1,5 +1,8 @@
 ChangeLog for eselect
 
+2005-08-23 Jeremy Huddleston <eradicator@gentoo.org>
+	* modules/opengl.eselect: Fixed a bug in creating symlinks to header files.
+
 2005-08-17 Jeremy Huddleston <eradicator@gentoo.org>
 	* modules/opengl.eselect: Added opengl module.  Not adding to Makefile.am as it's not going to be installed with the base package.
 
