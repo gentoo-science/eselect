@@ -1,6 +1,6 @@
-# Copyright 1999-2004 Gentoo Foundation
+# Copyright 2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id: $
+# $Id:$
 # Author: Jeremy Huddleston <eradicator@gentoo.org>
 
 # Eselect data
@@ -11,7 +11,7 @@ VERSION="2.0.0"
 # Our data
 ENV="${ROOT}/etc/env.d/05compiler"
 CONFIG_D="${ROOT}/@configdir@"
-WRAPPER="@libexecdir@/compiler-wrapper"
+WRAPPER="${ROOT}/@libexecdir@/compiler-wrapper"
 PROFILE_MANAGER="@libexecdir@/profile-manager"
 
 show_extra_help_text() {
@@ -19,8 +19,20 @@ show_extra_help_text() {
 	write_kv_list_entry "-u, --user" "Use ${HOME}/@userconfigdir@ to override global settings."	
 	echo ""
 	write_list_start "Extra options for 'set' action:"
+	write_kv_list_entry "-b, --bindir=<dir>" "Install the wrappers into this directory.  If -u is specified and this is not, no wrappers will be installed."
 	write_kv_list_entry "-c, --chost=<chost>" "Install this profile using the specified CHOST rather than the default."
 	write_kv_list_entry "-d, --default" "Make this the default CHOST."
+}
+
+eval_pm() {
+	local tmp=$(mktemp)
+	local retval
+
+	${PROFILE_MANAGER} --config-dir="${CONFIG_D}" "${@}" > ${tmp}
+	retval=${?}
+	source ${tmp}
+	rm -f ${tmp}
+	return ${retval}
 }
 
 ### list action ###
@@ -34,7 +46,6 @@ do_list() {
 	local set_v
 	local profile
 	local i
-	local tmp
 	local active='*'
 	local preopts=""
 
@@ -51,10 +62,7 @@ do_list() {
 		esac
 	done
 
-	tmp=$(mktemp)
-	${PROFILE_MANAGER} ${preopts} get-profiles > ${tmp} || die -q "Failed to get data on installed profiles."
-	source ${tmp}
-	rm ${tmp}
+	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles."
 
 	((i = 0))
 	for chost in ${COMPILER_CONFIG_ALL_CHOSTS} ; do
@@ -86,16 +94,10 @@ describe_set() {
 }
 
 list_all_profiles() {
-	local preopts=${1}
+	local preopts="${@}"
 	local chost
 	local profiles_v
 	local i=0
-	local tmp
-
-	tmp=$(mktemp)
-	${PROFILE_MANAGER} ${preopts} get-profiles > ${tmp} || die -q "Failed to get data on installed profiles."
-	source ${tmp}
-	rm ${tmp}
 
 	for chost in ${COMPILER_CONFIG_ALL_CHOSTS} ; do
 		if (( i == 0 )) ; then
@@ -111,35 +113,90 @@ list_all_profiles() {
 	echo ""
 }
 
+# Return the binaries in the passed directory, but don't include any with a CHOST prefix
+# Currently this just extracts the prefix from the directory by assuming
+# the directory matches */usr/<CHOST>/gcc-bin/*
+# TODO: Cleanup to work better with non-gcc
+get_bins() {
+	local dir=${1}
+	local file
+	local basefile
+	local prefix
+
+	if [[ "${dir#*/usr/}" != "${dir}" && "${dir%/gcc-bin/*}" != "${dir}" ]] ; then
+		prefix=${dir#*/usr/}
+		prefix=${prefix%/gcc-bin/*}
+	fi
+
+	local i=0
+	for file in ${dir}/* ; do
+		basefile="$(basename ${file})"
+
+		if [[ -x "${file}" && "${basefile#${prefix}-}" == "${basefile}" ]] ; then
+			if (( i == 0 )) ; then
+				(( i++ ))
+			else
+				echo -n " "
+			fi
+			echo -n ${basefile}
+		fi
+	done
+	echo ""
+}
+
 do_set() {
-	local preopts=""
-	local profile=""
-	local postopts=""
+	local preopts postopts profile oldprofile chost bindir olddefaultbins oldbins newbins set_v userconf ref
+
+	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles."
+
 	while [[ ${#} -gt 0 ]]; do
 		local opt=${1}
 		shift
 		case ${opt} in
+			--bindir=*)
+				if [[ -z "${opt#*=}" ]] ; then
+					die -q "No option given to --bindir"
+				fi
+				bindir=${opt#*=}
+			;;
+			-b)
+				if [[ ${#} -eq 0 ]] ; then
+					die -q "No option given to -b"
+				fi
+				bindir=${1}
+				shift
+			;;
 			--default|-d)
 				postopts="${postopts} --default"
 			;;
 			--user|-u)
+				userconf=1
 				preopts="${preopts} --user"
 			;;
 			--chost=*)
-				postopts="${postopts} ${opt}"
+				if [[ -z "${opt#*=}" ]] ; then
+					die -q "No option given to --chost"
+				fi
+				chost=${opt#*=}
 			;;
 			-c)
 				if [[ ${#} -eq 0 ]] ; then
 					die -q "No option given to -c"
 				fi
-				postopts="${postopts} --chost=${1}"
+				chost=${1}
 				shift
 			;;
 			*)
 				if is_number ${opt} ; then
 					profiles=( $(list_all_profiles ${preopts}) )
 					profile=${profiles[$(( ${opt} - 1 ))]}
+					if [[ -z "${profile}" ]] ; then
+						die -q "Invalid profile: ${opt}"
+					fi
 				else
+					if ! has ${opt} $(list_all_profiles ${preopts}) ; then
+						die -q "Invalid profile: ${opt}"
+					fi
 					profile=${opt}
 				fi
 			;;
@@ -150,9 +207,125 @@ do_set() {
 		die -q "No profile given to set action."
 	fi
 
-	echo "You want me to set to ${profile}"
+	# Figure out the chost for this compiler
+	if [[ -z "${chost}" ]] ; then
+		eval_pm ${preopts} get-profile ${profile} || die -q "Failed to get data on the desired profiles."
+		chost=${COMPILER_CONFIG_CHOST}
+	fi
+
+	# Figure out what bins are installed for the default CHOST in case we are or are becoming default
+	set_v="COMPILER_CONFIG_SET_${COMPILER_CONFIG_DEFAULT_CHOST}"
+	if [[ -n "${!set_v}" ]] ; then
+		oldprofile=${!set_v}
+
+		if eval_pm ${preopts} get-profile ${oldprofile} ; then
+			olddefaultbins="$(get_bins "${ROOT}/${COMPILER_CONFIG_BINPATH}") ${COMPILER_CONFIG_ALIASES}"
+		else
+			write_error_msg "Could not get data on the previous profile for the default CHOST (${oldprofile})."
+  		write_error_msg "You may have extra wrappers installed that you did not intend."
+		fi
+	fi
+
+	# Figure out what bins are installed for the old profile for this CHOST
+	set_v="COMPILER_CONFIG_SET_${chost//-/_}"
+	if [[ -n "${!set_v}" ]] ; then
+		oldprofile=${!set_v}
+
+		if eval_pm ${preopts} get-profile ${oldprofile} ; then
+			oldbins="$(get_bins "${ROOT}/${COMPILER_CONFIG_BINPATH}") ${COMPILER_CONFIG_ALIASES}"
+		else
+			write_error_msg "Could not get data on the previous profile for this CHOST (${oldprofile})."
+			write_error_msg "You may have extra wrappers installed for the old."
+		fi
+	fi
+
+	# Update our profile for the wrapper
+	${PROFILE_MANAGER} ${preopts} set ${profile} ${postopts} --chost=${chost} || die -q "Failed to save the new profile."
+
+	# If we're updating the userconf, but not changing wrappers, leave now...
+	if [[ "${userconf}" == "1" && -z "${bindir}" ]] ; then
+		return 0
+	fi
+
+	# Get data on the new profile
+	eval_pm ${preopts} get-profile ${profile} || die -q "Failed to get data on the desired profile after updating config."
+	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles after updating config."
+
+	# Select /usr/bin if the location isn't given to us
+	if [[ -z "${bindir}" ]] ; then
+		bindir="${ROOT}/usr/bin"
+	fi
+
+	# Remove old wrappers
+	if [[ "${chost}" == "${COMPILER_CONFIG_DEFAULT_CHOST}" ]] ; then
+		for bin in ${olddefaultbins} ; do
+			[[ -f "${bindir}/${bin}" ]] && rm -f "${bindir}/${bin}"
+		done
+	fi
+	for bin in ${oldbins} ; do
+		[[ -f "${bindir}/${chost}-${bin}" ]] && rm -f "${bindir}/${bin}"
+	done
+
+	# Install the wrappers
+	newbins="$(get_bins "${ROOT}/${COMPILER_CONFIG_BINPATH}") ${COMPILER_CONFIG_ALIASES}"
+	for bin in ${newbins} ; do
+		# We want to figure out the 'reference file' for each 
+		# wrapper (the binary we're 'wrapping') so that we can 
+		# sync mtimes together.  This makes things like ccache
+		# happy.  See Bug #70548 for more info.
+		if has ${bin} ${COMPILER_CONFIG_ALIASES} ; then
+			set_v="COMPILER_CONFIG_ALIAS_${bin}"
+			ref="${ROOT}/${COMPILER_CONFIG_BINPATH}/${!set_v}"
+		else
+			ref="${ROOT}/${COMPILER_CONFIG_BINPATH}/${bin}"
+		fi
+		cp -f "${WRAPPER}" "${bindir}/${chost}-${bin}"
+		touch -r "${ref}" "${bindir}/${chost}-${bin}"
+
+		if [[ "${chost}" == "${COMPILER_CONFIG_DEFAULT_CHOST}" ]] ; then
+			cp -f "${WRAPPER}" "${bindir}/${bin}"
+			touch -r "${ref}" "${bindir}/${bin}"
+		fi
+	done
+
+	# Update /etc/env.d
+	if [[ "${userconf}" == "1" ]] ; then
+		return 0
+	fi
+
+	set_env ${preopts} || die -q "Could not set ${ENV}"
+
+	echo "Successfully set compiler for ${chost} to ${profile}."
 }
 
-make_env() {
-	> ${ENV} || die -q "Could not write to ${ENV}"
+set_env() {
+	local preopts="${@}"
+	local ENV_MANPATH
+	local ENV_INFOPATH
+	local ENV_LDPATH
+	local chost
+	local set_v
+
+	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles."
+	# Build up the variables for all the active profiles
+	for chost in ${COMPILER_CONFIG_SET_CHOSTS} ; do
+		set_v="COMPILER_CONFIG_SET_${chost//-/_}"
+		if eval_pm ${preopts} get-profile ${!set_v}; then
+			[[ -n "${COMPILER_CONFIG_MANPATH}" ]] &&
+				ENV_MANPATH="${ENV_MANPATH:+"${ENV_MANPATH}:"}${COMPILER_CONFIG_MANPATH}"
+			[[ -n "${COMPILER_CONFIG_INFOPATH}" ]] &&
+				ENV_INFOPATH="${ENV_INFOPATH:+"${ENV_INFOPATH}:"}${COMPILER_CONFIG_INFOPATH}"
+			[[ -n "${COMPILER_CONFIG_LDPATH}" ]] &&
+				ENV_LDPATH="${ENV_LDPATH:+"${ENV_LDPATH}:"}${COMPILER_CONFIG_LDPATH}"
+		else
+			write_error_msg "Unable to get profile information for ${!set_v} which is set for CHOST ${chost}"
+ 		fi
+	done
+
+	# Now write it
+	cat > ${ENV} <<EOF || die -q "Could not write to ${ENV}"
+INFOPATH="${ENV_INFOPATH}"
+MANPATH="${ENV_MANPATH}"
+LDPATH="${ENV_LDPATH}"
+EOF
 }
