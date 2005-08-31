@@ -1,13 +1,26 @@
 ChangeLog for eselect
 
-2005-08-23 Jeremy Huddleston <eradicator@gentoo.org>
-	* modules/compiler.eselect.in: Added eselect module for the forthcoming compiler-config-2.0 (formerly gcc-config).  It is alpha code and currently only supports set and list actions.
+2005-08-31 Danny van Dyk <kugelfang@gentoo.org>
+
+	* modules/kernel.eselect: Fixed bug #104354. kernel.eselect now looks
+	only for linux-kernel directories w/o listing source directories of
+	additional drivers.
 
 2005-08-23 Jeremy Huddleston <eradicator@gentoo.org>
-	* modules/opengl.eselect: Fixed a bug in creating symlinks to header files.
+
+	* modules/compiler.eselect.in: Added eselect module for the
+	forthcoming compiler-config-2.0 (formerly gcc-config).  It is alpha
+	code and currently only supports set and list actions.
+
+2005-08-23 Jeremy Huddleston <eradicator@gentoo.org>
+
+	* modules/opengl.eselect: Fixed a bug in creating symlinks to header 
+	files.
 
 2005-08-17 Jeremy Huddleston <eradicator@gentoo.org>
-	* modules/opengl.eselect: Added opengl module.  Not adding to Makefile.am as it's not going to be installed with the base package.
+
+	* modules/opengl.eselect: Added opengl module.  Not adding to 
+	Makefile.am as it's not going to be installed with the base package.
 
 2005-08-08 Aaron Walker <ka0ttic@gentoo.org>
 

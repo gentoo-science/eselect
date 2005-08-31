@@ -9,7 +9,7 @@ VERSION=$(svn_date_to_version "${SVN_DATE}" )
 
 # find a list of kernel symlink targets
 find_targets() {
-	for f in ${ROOT}/usr/src/linux-* ; do
+	for f in ${ROOT}/usr/src/linux-[[:digit:]]* ; do
 		[[ -d ${f} ]] && echo $(basename ${f} )
 	done
 }
