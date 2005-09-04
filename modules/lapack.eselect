@@ -165,9 +165,10 @@ do_set() {
 	echo "  ${profiles}"
 	for libdir in ${libdirs} ; do
 		for prof in ${profiles} ; do
-			setup_${impl} ${ROOT}/usr/${libdir} ${prof}
-			store_config ${LAPACK_CONFIG} \
-				"${prof}_${libdir}_CURRENT" ${impl}
+			setup_${impl} ${ROOT}/usr/${libdir} ${prof} \
+				&& store_config ${LAPACK_CONFIG} \
+					"${prof}_${libdir}_CURRENT" ${impl} \
+				|| die "Please report this incident!"
 		done
 	done
 }

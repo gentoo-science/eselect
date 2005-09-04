@@ -1,5 +1,13 @@
 ChangeLog for eselect
 
+2005-09-04 Danny van Dyk <kugelfang@gentoo.org>
+
+	* modules/blas.eselect: Fixed a bug about setting implementation to
+	reference in case we had an active C implementation already. Storing
+	configuration will now be handled after the setup_*() step.
+	* modules/lapack.eselect: Storing configuration will now be handled
+	after the setup_*() step.
+
 2005-08-31 Danny van Dyk <kugelfang@gentoo.org>
 
 	* modules/kernel.eselect: Fixed bug #104354. kernel.eselect now looks

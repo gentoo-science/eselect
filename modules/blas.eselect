@@ -153,6 +153,8 @@ setup_reference() {
 		ln -sf ${1}/blas/reference/libblas.so ${1}/libblas.so
 		ln -sf ${1}/blas/reference/libblas.so ${1}/libblas.so.0
 		ln -sf ${1}/blas/reference/libblas.a  ${1}/libblas.a
+	elif [[ ${2} == C ]] ; then
+		return 1
 	else
 		die "Illegal profile: ${2}"
 	fi
@@ -237,13 +239,16 @@ do_set() {
 	write_list_start "Changing BLAS implementation to $(highlight ${impl}) in"
 	echo "  ${libdirs}"
 	write_list_start "Affected language interfaces"
-	echo "  ${profiles}"
 	for libdir in ${libdirs} ; do
 		for prof in ${profiles} ; do
-			setup_${impl} ${ROOT}/usr/${libdir} ${prof}
-			store_config ${BLAS_CONFIG} "${prof}_${libdir}_CURRENT" ${impl}
+			if setup_${impl} ${ROOT}/usr/${libdir} ${prof} ; then
+				has ${prof} ${myprofiles} \
+					|| myprofiles=( ${myprofiles[@]} ${prof} )
+				store_config ${BLAS_CONFIG} "${prof}_${libdir}_CURRENT" ${impl}
+			fi
 		done
 	done
+	echo "  ${myprofiles[@]}"
 }
 
 ### show action ###
