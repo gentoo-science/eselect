@@ -28,7 +28,11 @@ list_runlevels() {
 is_script() {
 	local file=${1}
 	[[ -n ${file} ]] \
-		&& [[ -e $(readlink ${file}) ]] \
+		|| return 1
+	( [[ -L ${file} ]] \
+		&& [[ ! -e $(readlink ${file}) ]] ) \
+		&& return 1
+	[[ -e ${file} ]] \
 		&& [[ ${file%%.sh} == ${file} ]] \
 		&& [[ ${file%%\~} == ${file} ]] \
 		&& [[ -n `grep "^#\!/sbin/runscript" ${file}` ]]
