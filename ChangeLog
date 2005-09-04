@@ -7,6 +7,8 @@ ChangeLog for eselect
 	configuration will now be handled after the setup_*() step.
 	* modules/lapack.eselect: Storing configuration will now be handled
 	after the setup_*() step.
+	* modules/rc.eselect: Fixed a 'file not found' bug on bogus
+	baselayouts thanks to Mike Doty <kingtaco@gentoo.org>.
 
 2005-08-31 Danny van Dyk <kugelfang@gentoo.org>
 
