@@ -128,6 +128,17 @@ output formatting. Where possible, these should be used, especially for output.
 If a standard function is not available for the output format required, consider
 implementing one.
 
+The following categories of function are available by default:
+
+* General Utility Functions
+* Output Utility Functions
+* Manipulation Functions
+* Path-Manipulation Functions
+* Test Functions
+
+To use any of the other functions, you have first to ``inherit`` the corresponding
+library file. (cf: `The ``inherit`` Function`_)
+
 General Utility Functions
 -------------------------
 
@@ -141,13 +152,6 @@ within subshells) is used to exit with a fatal error. It should be invoked as
 ``die -q "Message to display"``. If the ``-q`` is not provided, a stacktrace
 will be displayed -- this should never happen because of user input error, only
 abnormal conditions.
-
-The ``is_function`` Function
-,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-
-The ``is_function`` utility function returns true if and only if its parameter
-exists and is a function. This is mostly used internally, but may have some use
-for modules.
 
 The ``check_do`` Function
 ,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -163,11 +167,12 @@ The ``do_action`` utility function is the correct way to call a utility function
 which is defined in another module. The first parameter is the action,
 additional parameters are passed as arguments.
 
-The ``has`` Function
-,,,,,,,,,,,,,,,,,,,,
+The ``inherit`` Function
+,,,,,,,,,,,,,,,,,,,,,,,,
 
-The ``has`` utility function is like portage's ``hasq``. It returns true if and
-only if the first parameter is equal to any of the remaining parameters.
+The ``inherit`` function sources eselect library files based on their name. In
+order to source the file ``libs/foo.bash`` you have to add ``inherit foo`` in
+global scope of your module.
 
 Output Utility Functions
 ------------------------
@@ -228,10 +233,40 @@ Test Functions
 
 These are implemented in ``libs/tests.bash``.
 
+The ``has`` Function
+,,,,,,,,,,,,,,,,,,,,
+
+The ``has`` utility function is like portage's ``hasq``. It returns true if and
+only if the first parameter is equal to any of the remaining parameters.
+
+The ``is_function`` Function
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+The ``is_function`` utility function returns true if and only if its parameter
+exists and is a function. This is mostly used internally, but may have some use
+for modules.
+
 The ``is_number`` Function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 Returns true if and only if the parameter is a positive whole number.
+
+Path-Manipulation Functions
+---------------------------
+
+These are implemented in ``libs/path-manipulation``.
+
+The ``basename`` Function
+,,,,,,,,,,,,,,,,,,,,,,,,
+
+The ``basename`` function is a transparent bash-only replacement for the external
+``basename`` application.
+
+The ``dirname`` Function
+,,,,,,,,,,,,,,,,,,,,,,,,
+
+The ``dirname`` function is a transparent bash-only replacement for the external
+``dirname`` application.
 
 Manipulation Functions
 ----------------------
@@ -290,5 +325,23 @@ The ``list_libdirs`` Function
 
 The ``list_libdirs`` function returns a set of valid libdirs for the used
 architecture. It uses ``uname`` to determine the architecture.
+
+Portage Functions
+-----------------
+
+These are implemented in ``libs/portage.bash``.
+
+The ``arch`` Function
+,,,,,,,,,,,,,,,,,,,,,
+
+The ``arch`` function returns the correct value of ${ARCH} for the current
+system. If Portage cannot provide this information, ``arch`` falls back to a
+``uname -m`` and ``uname -s`` based lookup-table.
+
+The ``portageq`` Function
+,,,,,,,,,,,,,,,,,,,,,,,,,
+
+The ``portageq`` function transparently wraps the corresponding Portage script
+whilst redirecting stderr to ``/dev/null``.
 
 .. vim: set ft=glep tw=80 sw=4 et spell spelllang=en : ..
