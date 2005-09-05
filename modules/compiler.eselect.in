@@ -3,6 +3,8 @@
 # $Id:$
 # Author: Jeremy Huddleston <eradicator@gentoo.org>
 
+inherit path-manipulation
+
 # Eselect data
 DESCRIPTION="Manage the installed compilers."
 MAINTAINER="toolchain@gentoo.org"

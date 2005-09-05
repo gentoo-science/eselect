@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-inherit config multilib
+inherit config multilib path-manipulation
 
 DESCRIPTION="Manage installed LAPACK implementations"
 MAINTAINER="Danny van Dyk <kugelfang@gentoo.org>"

@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Copyright (c) 2005 Gentoo Foundation.
+# $Id$
+# This file is part of the 'eselect' tools framework.
+#
+# eselect is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 2 of the License, or (at your option) any later
+# version.
+#
+# eselect is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# eselect; if not, write to the Free Software Foundation, Inc., 59 Temple
+# Place, Suite 330, Boston, MA  02111-1307  USA
+
+# arch
+# Return the architecture we're running on...
+arch() {
+	ret=$(portageq envvar ARCH 2>/dev/null)
+
+	# $arch will be null if there's no current make.profile symlink
+	# we cannot get a list of valid profiles without it.
+	if [[ -z "${ret}" ]] ; then
+		[[ -z ${ROOT} || ${ROOT} == / ]] \
+                    || die -q "Failed to determine \${ARCH}. Is your make.profile symlink valid?"
+                case $(uname -m) in
+                    i?86) ret=x86 ;;
+                    sparc*) ret=sparc ;;
+                    x86_64) ret=amd64 ;;
+                    *) die \
+                        "Unknown architecture. Please submit a bug including the output of 'uname -m'!"
+                        ;;
+                esac
+	fi
+
+	echo ${ret}
+}
+
+
+# portageq ...
+# Run portageq with safe filename as set by configure
+portageq() {
+    %PORTAGEQ% $* 2> /dev/null
+}
+
+
+
+# vim: set sw=4 et sts=4 tw=80 :
+
+

@@ -9,9 +9,11 @@ ChangeLog for eselect
 	Moved basename() and dirname() to a new seperate library.
 	* libs/core.bash.in, libs/test.bash.in: moved has() and is_function()
 	to tests library.
-	* modules/binutils.eselect, modules/blas.eselect, modules/env.eselect,
-	modules/lapack.eselect, modules/opengl.eselect: Added necessary
-	inherit lines.
+	* modules/bashcomp.eselect, modules/binutils.eselect,
+	modules/blas.eselect, modules/compiler.eselect.in,
+	modules/config.eselect, modules/env.eselect, modules/kernel.eselect,
+	modules/lapack.eselect, modules/opengl.eselect, modules/vi.eselect:
+	Added necessary inherit lines.
 
 2005-09-04 Danny van Dyk <kugelfang@gentoo.org>
 

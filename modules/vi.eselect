@@ -2,6 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
+inherit path-manipulation
+
 DESCRIPTION="Manage /usr/bin/vi providers"
 MAINTAINER="ciaranm@gentoo.org"
 SVN_DATE='$Date$'
