@@ -1,5 +1,11 @@
 ChangeLog for eselect
 
+2005-09-05 Jeremy Huddleston <eradicator@gentoo.org>
+
+	* modules/compiler.eselect.in: Cleaned up code to conform to eselect
+	coding style.  Make better use of the eselect API.  Fixed a bug with
+	--impl-headers.  Many thanks to kugs =).
+
 2005-09-05 Danny van Dyk <kugelfang@gentoo.org>
 
 	* libs/core.bash.in: Added inherit() function that allows dynamic
