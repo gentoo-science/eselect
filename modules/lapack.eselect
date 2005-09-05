@@ -2,6 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
+inherit config multilib
+
 DESCRIPTION="Manage installed LAPACK implementations"
 MAINTAINER="Danny van Dyk <kugelfang@gentoo.org>"
 SVN_DATE='$Date$'

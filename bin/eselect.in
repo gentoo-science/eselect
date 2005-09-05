@@ -46,13 +46,10 @@ ESELECT_OPTIONS=""
 shopt -s extglob
 shopt -s expand_aliases
 
-# Load core and output functions
+# Load core functions
 source "${ESELECT_CORE_PATH}/core.bash" || exit 255
-source "${ESELECT_CORE_PATH}/output.bash" || die "Couldn't source output.bash"
-source "${ESELECT_CORE_PATH}/config.bash" || die "Couldn't source config.bash"
-source "${ESELECT_CORE_PATH}/multilib.bash" || die "Couldn't source multilib.bash"
-source "${ESELECT_CORE_PATH}/tests.bash" || die "Couldn't source tests.bash"
-source "${ESELECT_CORE_PATH}/manip.bash" || die "Couldn't source manip.bash"
+# Load necessary functions for the main script
+inherit manip output tests
 
 # Sneaky trick to make die in subshells work. If you don't get
 # it, don't ask...

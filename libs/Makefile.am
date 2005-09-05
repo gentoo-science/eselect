@@ -5,6 +5,7 @@ noinst_SCRIPTS = \
 		 manip.bash \
 		 multilib.bash \
 		 output.bash \
+		 path-manipulation.bash \
 		 tests.bash
 
 EXTRA_DIST = $(foreach f, $(noinst_SCRIPTS), $(f).in)

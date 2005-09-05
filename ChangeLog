@@ -1,5 +1,18 @@
 ChangeLog for eselect
 
+2005-09-05 Danny van Dyk <kugelfang@gentoo.org>
+
+	* libs/core.bash.in: Added inherit() function that allows dynamic
+	and individual sourcing of libraries for each module.
+	* bin/eselect.in: Removed sourcing of all available modules.
+	* libs/core.bash.in, libs/path-manipulation.bash.in, libs/Makefile.in:
+	Moved basename() and dirname() to a new seperate library.
+	* libs/core.bash.in, libs/test.bash.in: moved has() and is_function()
+	to tests library.
+	* modules/binutils.eselect, modules/blas.eselect, modules/env.eselect,
+	modules/lapack.eselect, modules/opengl.eselect: Added necessary
+	inherit lines.
+
 2005-09-04 Danny van Dyk <kugelfang@gentoo.org>
 
 	* modules/blas.eselect: Fixed a bug about setting implementation to

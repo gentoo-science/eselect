@@ -17,6 +17,18 @@
 # eselect; if not, write to the Free Software Foundation, Inc., 59 Temple
 # Place, Suite 330, Boston, MA  02111-1307  USA
 
+# check_do function args
+# Check that function exists, and call it with args.
+check_do() {
+    local function="${1}"
+    shift
+    if is_function "${function}" ; then
+        ${function} "$@"
+    else
+        die "No function ${function}"
+    fi
+}
+
 # die [-q] "Message" PUBLIC
 # Display "Message" as an error. If -q is not provided, gives a stacktrace.
 die() {
@@ -52,24 +64,6 @@ die() {
     exit 249
 }
 
-# is_function function PUBLIC
-# Test whether function exists
-is_function() {
-    [[ $(type -t "${1}" ) == "function" ]]
-}
-
-# check_do function args
-# Check that function exists, and call it with args.
-check_do() {
-    local function="${1}"
-    shift
-    if is_function "${function}" ; then
-        ${function} "$@"
-    else
-        die "No function ${function}"
-    fi
-}
-
 # do_action action args...
 # Load and do 'action' with the specified args
 do_action() {
@@ -99,14 +93,16 @@ do_action() {
     )
 }
 
-# has varname item
-has() {
-    local test=${1} item
-    shift
-    for item in $@ ; do
-        [[ ${item} == ${test} ]] && return 0
+# inherit module PUBLIC
+# Sources a given eselect library file
+inherit() {
+    local x
+    for x in ${@} ; do
+        [[ -e "${ESELECT_CORE_PATH}/${x}.bash" ]] \
+            || die "Couldn't find ${x}.bash"
+        source "${ESELECT_CORE_PATH}/${x}.bash" \
+            || die "Couldn't source ${x}.bash"
     done
-    return 1
 }
 
 # make eval not work, because it's evil
@@ -117,16 +113,6 @@ eval() {
 # GNU sed wrapper (real path to GNU sed determined by configure)
 sed() {
     %SED% "$@"
-}
-
-# basename wrapper
-basename() {
-    echo ${1##*/}
-}
-
-# dirname wrapper
-dirname() {
-    echo ${1%/*}
 }
 
 # vim: set sw=4 et sts=4 tw=80 :
