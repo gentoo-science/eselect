@@ -49,7 +49,7 @@ shopt -s expand_aliases
 # Load core functions
 source "${ESELECT_CORE_PATH}/core.bash" || exit 255
 # Load necessary functions for the main script
-inherit manip output tests
+inherit manip output path-manipulation tests
 
 # Sneaky trick to make die in subshells work. If you don't get
 # it, don't ask...

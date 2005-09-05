@@ -2,8 +2,6 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-inherit path-manipulation
-
 DESCRIPTION="Manage the /usr/src/linux symlink"
 MAINTAINER="ciaranm@gentoo.org"
 SVN_DATE='$Date$'
