@@ -257,7 +257,7 @@ Path-Manipulation Functions
 These are implemented in ``libs/path-manipulation``.
 
 The ``basename`` Function
-,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``basename`` function is a transparent bash-only replacement for the external
 ``basename`` application.
