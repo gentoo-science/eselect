@@ -2,30 +2,18 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
+inherit portage
+
 DESCRIPTION="Manage the /etc/make.profile symlink"
 MAINTAINER="ka0ttic@gentoo.org"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}")
 
-# determine ARCH
-get_arch() {
-	arch=$(portageq envvar ARCH 2>/dev/null)
-
-	# $arch will be null if there's no current make.profile symlink
-	# we cannot get a list of valid profiles without it.
-	if [[ -z "${arch}" ]] ; then
-		die -q "Failed to determine \${ARCH}. Is your make.profile symlink valid?"
-	fi
-
-	echo ${arch}
-}
-
 # get a list of valid profiles
 find_targets() {
-	arch=$(get_arch)
 	portdir=$(portageq portdir 2>/dev/null)
 
-	for p in $(sed -n -e "s|^${arch}[[:space:]]\+\([^[:space:]]\+\).*$|\1|p" \
+	for p in $(sed -n -e "s|^$(arch)[[:space:]]\+\([^[:space:]]\+\).*$|\1|p" \
 		${ROOT}/${portdir}/profiles/profiles.desc)
 	do
 		echo ${p}
@@ -48,7 +36,7 @@ set_symlink() {
 	then
 		# if the profile was explicitly specified (rather than a number)
 		# double check and make sure it's valid
-		arch=$(get_arch)
+		arch=$(arch)
 
 		# do a reverse lookup and find the arch associated with ${target}
 		parch=$(sed -n -e "s|^\([[:alnum:]]\+\)[[:space:]].*${target}.*$|\1|p" \

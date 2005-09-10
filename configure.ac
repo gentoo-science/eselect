@@ -13,7 +13,7 @@ test x$sysconfdir = "xNONE" && sysconfdir="$ac_default_sysconfdir"
 # thanks to James Rowe for the heads up.
 unset BASH
 AC_PATH_PROGS(BASH, bash)
-if test x$BASH = "x"; then
+if test x$BASH = "x" ; then
     AC_MSG_ERROR([bash is required])
 fi
 
@@ -22,6 +22,13 @@ ES_PROG_GNU_SED
 if test x$SED = "x" ; then
     AC_MSG_ERROR([GNU sed is required])
 fi
+
+unset PORTAGEQ
+AC_PATH_PROG(PORTAGEQ, portageq)
+if test x$PORTAGEQ = "x" ; then
+    AC_MSG_ERROR([Portage is required])
+fi
+AC_SUBST(PORTAGEQ)
 
 AC_MSG_CHECKING([whether dodgy modules should be installed])
 AC_ARG_ENABLE(dodgy_modules,

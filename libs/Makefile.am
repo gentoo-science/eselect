@@ -6,11 +6,12 @@ noinst_SCRIPTS = \
 		 multilib.bash \
 		 output.bash \
 		 path-manipulation.bash \
+		 portage.bash \
 		 tests.bash
 
 EXTRA_DIST = $(foreach f, $(noinst_SCRIPTS), $(f).in)
 
-dosed = @SED@ -e 's,%SED%,@SED@,g'
+dosed = @SED@ -e 's,\@SED\@,@SED@,g' -e 's,\@PORTAGEQ\@,@PORTAGEQ@,g'
 
 %.bash : %.bash.in
 	@$(dosed) $< > $@

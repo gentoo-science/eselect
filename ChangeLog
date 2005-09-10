@@ -4,12 +4,19 @@ ChangeLog for eselect
 
 	* bin/eselect.in: Fixed Bug in usage of has(). Thanks to Sven Wegener
 	<swegener@gentoo.org> for spotting this.
+	* man/opengl.eselect: Added manpage for opengl module.
+	* libs/portage.bash.in, libs/Makefile.am,
+	configure.ac, modules/binutils.eselect, modules/config.eselect,
+	modules/opengl.eselect, modules/profile.eselect: Added portage
+	library, moved profile.eselect:get_arch() to portage.bash:arch().
+	* doc/developer-guide.txt: Changed documentation acording to API
+	changes (inherit / core.bash-split).
 
 2005-09-05 Jeremy Huddleston <eradicator@gentoo.org>
 
-	* modules/compiler.eselect.in: Cleaned up code to conform to eselect
+	* modules/opengl.eselect: Cleaned up code to conform to eselect
 	coding style.  Make better use of the eselect API.  Fixed a bug with
-	--impl-headers.  Many thanks to kugs =).
+	--impl-headers.  Many thanks to Danny van Dyk <kugelfang@gentoo.org>.
 
 2005-09-05 Danny van Dyk <kugelfang@gentoo.org>
 
