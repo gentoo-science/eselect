@@ -13,3 +13,9 @@ Aaron Walker <ka0ttic@gentoo.org>
 
 Tom Martin <slarti@gentoo.org>
     Modules:    mailer
+
+Jeremy Huddleston <eradicator@gentoo.org>
+    Modules:    compiler, opengl
+
+Michael Kohl <citizen428@gentoo.org>
+    Modules:    ruby

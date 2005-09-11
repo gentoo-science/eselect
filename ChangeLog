@@ -1,5 +1,10 @@
 ChangeLog for eselect
 
+2005-09-11 Danny van Dyk <kugelfang@gentoo.org>
+
+	* modules/ruby.eselect: Added ruby module, written by Michael Kohl
+	<citizen428@gentoo.org>.
+
 2005-09-10 Danny van Dyk <kugelfang@gentoo.org>
 
 	* bin/eselect.in: Fixed Bug in usage of has(). Thanks to Sven Wegener
