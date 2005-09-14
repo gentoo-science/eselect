@@ -14,7 +14,7 @@ DESCRIPTION="Manage the OpenGL implementation used by your system"
 MAINTAINER="x11-drivers@gentoo.org"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}" )
-EBUILD_VERSION="1.0.2"
+EBUILD_VERSION="1.0.3"
 
 # Our data
 ENV_FILE="${ROOT}/etc/env.d/03opengl"
@@ -279,7 +279,7 @@ do_set() {
 		case ${opt} in
 			--use-old)
 				if [[ -n ${current} ]] && has ${current} ${available}; then
-					ACTION="old-implementation"
+					action="old-implementation"
 				fi
 			;;
 			--prefix=*)

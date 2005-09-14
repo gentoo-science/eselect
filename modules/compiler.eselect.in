@@ -11,8 +11,8 @@ VERSION="2.0.0"
 # Our data
 ENV="${ROOT}/etc/env.d/05compiler"
 CONFIG_D="${ROOT}/@configdir@"
-WRAPPER="${ROOT}/@libexecdir@/compiler-wrapper"
-PROFILE_MANAGER="@libexecdir@/profile-manager"
+WRAPPER="${ROOT}/@libexecdir@/eselect/compiler/compiler-wrapper"
+PROFILE_MANAGER="@libexecdir@/eselect/compiler/profile-manager"
 
 show_extra_help_text() {
 	write_list_start "Extra options for all actions:"
