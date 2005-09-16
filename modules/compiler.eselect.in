@@ -1,18 +1,21 @@
 # Copyright 2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id:$
+# $Id$
 # Author: Jeremy Huddleston <eradicator@gentoo.org>
 
 # Eselect data
 DESCRIPTION="Manage the installed compilers."
 MAINTAINER="toolchain@gentoo.org"
-VERSION="2.0.0"
+SVN_DATE='$Date: 2005-09-13 19:53:00 -0700 (Tue, 13 Sep 2005) $'
+VERSION=$(svn_date_to_version "${SVN_DATE}" )
+EBUILD_VERSION="2.0.0"
 
 # Our data
+ROOT=${ROOT:-/}
 ENV="${ROOT}/etc/env.d/05compiler"
-CONFIG_D="${ROOT}/@configdir@"
-WRAPPER="${ROOT}/@libexecdir@/eselect/compiler/compiler-wrapper"
-PROFILE_MANAGER="@libexecdir@/eselect/compiler/profile-manager"
+CONFIG_D="${ROOT}@configdir@"
+WRAPPER="${ROOT}@evallibexecdir@/eselect/compiler/compiler-wrapper"
+PROFILE_MANAGER="@evallibexecdir@/eselect/compiler/profile-manager"
 
 show_extra_help_text() {
 	write_list_start "Extra options for all actions:"
@@ -80,7 +83,7 @@ do_list() {
 	write_list_start "Activated profiles:"
 	for chost in ${COMPILER_CONFIG_SET_CHOSTS} ; do
 		set_v="COMPILER_CONFIG_SET_${chost//-/_}"
-		if [[ "${chost}" == "${COMPILER_CONFIG_DEFAULT_CHOST}" ]] ; then
+		if [[ ${chost} == ${COMPILER_CONFIG_DEFAULT_CHOST} ]] ; then
 			write_kv_list_entry "${chost} $(highlight "${active}")" "${!set_v}"
 		else
 			write_kv_list_entry "${chost}" "${!set_v}"
@@ -123,7 +126,7 @@ get_bins() {
 	local basefile
 	local prefix
 
-	if [[ "${dir#*/usr/}" != "${dir}" && "${dir%/gcc-bin/*}" != "${dir}" ]] ; then
+	if [[ ${dir#*/usr/} != ${dir} && ${dir%/gcc-bin/*} != ${dir} ]] ; then
 		prefix=${dir#*/usr/}
 		prefix=${prefix%/gcc-bin/*}
 	fi
@@ -132,7 +135,7 @@ get_bins() {
 	for file in ${dir}/* ; do
 		basefile="$(basename ${file})"
 
-		if [[ -x "${file}" && "${basefile#${prefix}-}" == "${basefile}" ]] ; then
+		if [[ -x ${file} && ${basefile#${prefix}-} == ${basefile} ]] ; then
 			if (( i == 0 )) ; then
 				(( i++ ))
 			else
@@ -154,7 +157,7 @@ do_set() {
 		shift
 		case ${opt} in
 			--bindir=*)
-				if [[ -z "${opt#*=}" ]] ; then
+				if [[ -z ${opt#*=} ]] ; then
 					die -q "No option given to --bindir"
 				fi
 				bindir=${opt#*=}
@@ -174,7 +177,7 @@ do_set() {
 				preopts="${preopts} --user"
 			;;
 			--chost=*)
-				if [[ -z "${opt#*=}" ]] ; then
+				if [[ -z ${opt#*=} ]] ; then
 					die -q "No option given to --chost"
 				fi
 				chost=${opt#*=}
@@ -190,7 +193,7 @@ do_set() {
 				if is_number ${opt} ; then
 					profiles=( $(list_all_profiles ${preopts}) )
 					profile=${profiles[$(( ${opt} - 1 ))]}
-					if [[ -z "${profile}" ]] ; then
+					if [[ -z ${profile} ]] ; then
 						die -q "Invalid profile: ${opt}"
 					fi
 				else
@@ -203,19 +206,19 @@ do_set() {
 		esac
 	done
 
-	if [[ -z "${profile}" ]] ; then
+	if [[ -z ${profile} ]] ; then
 		die -q "No profile given to set action."
 	fi
 
 	# Figure out the chost for this compiler
-	if [[ -z "${chost}" ]] ; then
+	if [[ -z ${chost} ]] ; then
 		eval_pm ${preopts} get-profile ${profile} || die -q "Failed to get data on the desired profiles."
 		chost=${COMPILER_CONFIG_CHOST}
 	fi
 
 	# Figure out what bins are installed for the default CHOST in case we are or are becoming default
 	set_v="COMPILER_CONFIG_SET_${COMPILER_CONFIG_DEFAULT_CHOST}"
-	if [[ -n "${!set_v}" ]] ; then
+	if [[ -n ${!set_v} ]] ; then
 		oldprofile=${!set_v}
 
 		if eval_pm ${preopts} get-profile ${oldprofile} ; then
@@ -228,7 +231,7 @@ do_set() {
 
 	# Figure out what bins are installed for the old profile for this CHOST
 	set_v="COMPILER_CONFIG_SET_${chost//-/_}"
-	if [[ -n "${!set_v}" ]] ; then
+	if [[ -n ${!set_v} ]] ; then
 		oldprofile=${!set_v}
 
 		if eval_pm ${preopts} get-profile ${oldprofile} ; then
@@ -243,7 +246,7 @@ do_set() {
 	${PROFILE_MANAGER} ${preopts} set ${profile} ${postopts} --chost=${chost} || die -q "Failed to save the new profile."
 
 	# If we're updating the userconf, but not changing wrappers, leave now...
-	if [[ "${userconf}" == "1" && -z "${bindir}" ]] ; then
+	if [[ ${userconf} == "1" && -z ${bindir} ]] ; then
 		return 0
 	fi
 
@@ -252,22 +255,50 @@ do_set() {
 	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles after updating config."
 
 	# Select /usr/bin if the location isn't given to us
-	if [[ -z "${bindir}" ]] ; then
+	if [[ -z ${bindir} ]] ; then
 		bindir="${ROOT}/usr/bin"
 	fi
 
 	# Remove old wrappers
-	if [[ "${chost}" == "${COMPILER_CONFIG_DEFAULT_CHOST}" ]] ; then
+	if [[ ${chost} == ${COMPILER_CONFIG_DEFAULT_CHOST} ]] ; then
 		for bin in ${olddefaultbins} ; do
-			[[ -f "${bindir}/${bin}" ]] && rm -f "${bindir}/${bin}"
+			[[ -f ${bindir}/${bin} ]] && rm -f "${bindir}/${bin}"
 		done
 	fi
 	for bin in ${oldbins} ; do
-		[[ -f "${bindir}/${chost}-${bin}" ]] && rm -f "${bindir}/${bin}"
+		[[ -f ${bindir}/${chost}-${bin} ]] && rm -f "${bindir}/${bin}"
 	done
 
 	# Install the wrappers
-	newbins="$(get_bins "${ROOT}/${COMPILER_CONFIG_BINPATH}") ${COMPILER_CONFIG_ALIASES}"
+	set_bins ${chost} ${bindir}
+
+	# Update /etc/env.d
+	if [[ ${userconf} == "1" ]] ; then
+		return 0
+	fi
+
+	set_env ${preopts} || die -q "Could not set ${ENV}"
+
+	echo "Successfully set compiler for ${chost} to ${profile}."
+}
+
+# Setup the wrapper binaries for the passed CHOST
+set_bins() {
+	local chost="$1"
+	local bindir="$2"
+	local bin
+
+	# Get data on the new profile
+	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles after updating config."
+
+	local set_v="COMPILER_CONFIG_SET_${chost//-/_}"
+	local profile=${!set_v}
+
+	[[ -z ${profile} ]] && return 1
+
+	eval_pm ${preopts} get-profile ${profile} || die -q "Failed to get data on the desired profile after updating config."
+
+	local newbins="$(get_bins "${ROOT}/${COMPILER_CONFIG_BINPATH}") ${COMPILER_CONFIG_ALIASES}"
 	for bin in ${newbins} ; do
 		# We want to figure out the 'reference file' for each 
 		# wrapper (the binary we're 'wrapping') so that we can 
@@ -282,27 +313,18 @@ do_set() {
 		cp -f "${WRAPPER}" "${bindir}/${chost}-${bin}"
 		touch -r "${ref}" "${bindir}/${chost}-${bin}"
 
-		if [[ "${chost}" == "${COMPILER_CONFIG_DEFAULT_CHOST}" ]] ; then
+		if [[ ${chost} == ${COMPILER_CONFIG_DEFAULT_CHOST} ]] ; then
 			cp -f "${WRAPPER}" "${bindir}/${bin}"
 			touch -r "${ref}" "${bindir}/${bin}"
 		fi
 	done
-
-	# Update /etc/env.d
-	if [[ "${userconf}" == "1" ]] ; then
-		return 0
-	fi
-
-	set_env ${preopts} || die -q "Could not set ${ENV}"
-
-	echo "Successfully set compiler for ${chost} to ${profile}."
 }
 
 set_env() {
 	local preopts="${@}"
-	local ENV_MANPATH
-	local ENV_INFOPATH
-	local ENV_LDPATH
+	local env_manpath
+	local env_infopath
+	local env_ldpath
 	local chost
 	local set_v
 
@@ -311,12 +333,12 @@ set_env() {
 	for chost in ${COMPILER_CONFIG_SET_CHOSTS} ; do
 		set_v="COMPILER_CONFIG_SET_${chost//-/_}"
 		if eval_pm ${preopts} get-profile ${!set_v}; then
-			[[ -n "${COMPILER_CONFIG_MANPATH}" ]] &&
-				ENV_MANPATH="${ENV_MANPATH:+"${ENV_MANPATH}:"}${COMPILER_CONFIG_MANPATH}"
-			[[ -n "${COMPILER_CONFIG_INFOPATH}" ]] &&
-				ENV_INFOPATH="${ENV_INFOPATH:+"${ENV_INFOPATH}:"}${COMPILER_CONFIG_INFOPATH}"
-			[[ -n "${COMPILER_CONFIG_LDPATH}" ]] &&
-				ENV_LDPATH="${ENV_LDPATH:+"${ENV_LDPATH}:"}${COMPILER_CONFIG_LDPATH}"
+			[[ -n ${COMPILER_CONFIG_MANPATH} ]] &&
+				env_manpath="${env_manpath:+"${env_manpath}:"}${COMPILER_CONFIG_MANPATH}"
+			[[ -n ${COMPILER_CONFIG_INFOPATH} ]] &&
+				env_infopath="${env_infopath:+"${env_infopath}:"}${COMPILER_CONFIG_INFOPATH}"
+			[[ -n ${COMPILER_CONFIG_LDPATH} ]] &&
+				env_ldpath="${env_ldpath:+"${env_ldpath}:"}${COMPILER_CONFIG_LDPATH}"
 		else
 			write_error_msg "Unable to get profile information for ${!set_v} which is set for CHOST ${chost}"
  		fi
@@ -324,8 +346,42 @@ set_env() {
 
 	# Now write it
 	cat > ${ENV} <<EOF || die -q "Could not write to ${ENV}"
-INFOPATH="${ENV_INFOPATH}"
-MANPATH="${ENV_MANPATH}"
-LDPATH="${ENV_LDPATH}"
+INFOPATH="${env_infopath}"
+MANPATH="${env_manpath}"
+LDPATH="${env_ldpath}"
 EOF
+}
+
+### update action
+describe_update() {
+	echo "Refresh all the installed wrappers."
+}
+
+do_update() {
+	local chost
+	local bindir
+
+	while [[ ${#} -gt 0 ]]; do
+		local opt=${1}
+		shift
+		case ${opt} in
+			--bindir=*)
+				if [[ -z ${opt#*=} ]] ; then
+					die -q "No option given to --bindir"
+				fi
+				bindir=${opt#*=}
+				;;
+		esac
+	done
+
+	if [[ -z ${bindir} ]] ; then
+		bindir="${ROOT}/usr/bin"
+	fi
+
+	# Get data on the new profile
+	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles after updating config."
+
+	for chost in ${COMPILER_CONFIG_SET_CHOSTS} ; do
+		set_bins ${chost} ${bindir}
+	done
 }
