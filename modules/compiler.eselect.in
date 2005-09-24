@@ -24,7 +24,7 @@ show_extra_help_text() {
 	write_list_start "Extra options for 'set' action:"
 	write_kv_list_entry "-b, --bindir=<dir>" "Install the wrappers into this directory.  If -u is specified and this is not, no wrappers will be installed."
 	write_kv_list_entry "-c, --chost=<chost>" "Install this profile using the specified CHOST rather than the default."
-	write_kv_list_entry "-d, --default" "Make this the default CHOST."
+	write_kv_list_entry "-n, --native" "Make this the default CHOST."
 }
 
 eval_pm() {
@@ -89,6 +89,46 @@ do_list() {
 			write_kv_list_entry "${chost}" "${!set_v}"
 		fi
 	done
+}
+
+### show action ###
+describe_show() {
+	echo "Print the current active configuration.  It can take a CTARGET argument"
+}
+
+do_show() {
+	local chost
+	local preopts=""
+
+	while [[ ${#} -gt 0 ]]; do
+		local opt=${1}
+		shift
+		case ${opt} in
+			--user|-u)
+				preopts="${preopts} --user"
+			;;
+			*)
+				chost=${opt}
+			;;
+		esac
+	done
+
+	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles."
+
+	if [[ -z ${chost} ]] ; then
+		chost=${COMPILER_CONFIG_DEFAULT_CHOST}
+	fi
+
+	echo ${chost}
+
+	local set_v="COMPILER_CONFIG_SET_${chost//-/_}"
+	if [[ -n ${!set_v} ]] ; then
+		echo ${!set_v}
+		return 0
+	else
+		echo "(none)"
+		return 2
+	fi
 }
 
 ### set action ###
@@ -169,8 +209,8 @@ do_set() {
 				bindir=${1}
 				shift
 			;;
-			--default|-d)
-				postopts="${postopts} --default"
+			--native|-n)
+				postopts="${postopts} --native"
 			;;
 			--user|-u)
 				userconf=1
@@ -352,14 +392,15 @@ LDPATH="${env_ldpath}"
 EOF
 }
 
-### update action
-describe_update() {
-	echo "Refresh all the installed wrappers."
+### unset action
+describe_unset() {
+	echo "Deactivate a selected profile."
 }
 
-do_update() {
+do_unset() {
+	local bindir="${ROOT}/usr/bin"
+	local preopts
 	local chost
-	local bindir
 
 	while [[ ${#} -gt 0 ]]; do
 		local opt=${1}
@@ -371,12 +412,62 @@ do_update() {
 				fi
 				bindir=${opt#*=}
 				;;
+			--user|-u)
+					userconf=1
+					preopts="${preopts} --user"
+				;;
+			*)
+				chost=${opt}
+				;;
 		esac
 	done
 
-	if [[ -z ${bindir} ]] ; then
-		bindir="${ROOT}/usr/bin"
+	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles."
+
+	set_v="COMPILER_CONFIG_SET_${chost//-/_}"
+	if eval_pm ${preopts} get-profile ${!set_v} ; then
+		local bins="$(get_bins "${ROOT}/${COMPILER_CONFIG_BINPATH}") ${COMPILER_CONFIG_ALIASES}"
+		local bin
+
+		for bin in ${bins} ; do
+			[[ -f ${bindir}/${chost}-${bin} ]] && rm -f "${bindir}/${chost}-${bin}"
+			if [[ ${chost} == ${COMPILER_CONFIG_DEFAULT_CHOST} ]] ; then
+				[[ -f ${bindir}/${bin} ]] && rm -f "${bindir}/${bin}"
+			fi
+		done
+	else
+		return 1
 	fi
+
+	return 0
+}
+
+### update action
+describe_update() {
+	echo "Refresh all the installed wrappers."
+}
+
+do_update() {
+	local chost
+	local bindir="${ROOT}/usr/bin"
+	local preopts
+
+	while [[ ${#} -gt 0 ]]; do
+		local opt=${1}
+		shift
+		case ${opt} in
+			--bindir=*)
+				if [[ -z ${opt#*=} ]] ; then
+					die -q "No option given to --bindir"
+				fi
+				bindir=${opt#*=}
+				;;
+			--user|-u)
+				userconf=1
+				preopts="${preopts} --user"
+				;;
+		esac
+	done
 
 	# Get data on the new profile
 	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles after updating config."
