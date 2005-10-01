@@ -1,5 +1,9 @@
 ChangeLog for eselect
 
+2005-09-30 Jeremy Huddleston <eradicator@gentoo.org>
+
+	* modules/compiler.eselect.in: Added migrate action to migrate from 1.x configs.
+
 2005-09-24 Jeremy Huddleston <eradicator@gentoo.org>
 
 	* modules/compiler.eselect.in: Added show and unset actions.
