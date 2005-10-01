@@ -8,11 +8,11 @@ DESCRIPTION="Manage the installed compilers."
 MAINTAINER="toolchain@gentoo.org"
 SVN_DATE='$Date: 2005-09-13 19:53:00 -0700 (Tue, 13 Sep 2005) $'
 VERSION=$(svn_date_to_version "${SVN_DATE}" )
-EBUILD_VERSION="2.0.0"
+EBUILD_VERSION="2.0.0_beta1"
 
 # Our data
 ROOT=${ROOT:-/}
-ENV="${ROOT}/etc/env.d/05compiler"
+ENV_FILE="${ROOT}/etc/env.d/05compiler"
 CONFIG_D="${ROOT}@configdir@"
 WRAPPER="${ROOT}@evallibexecdir@/eselect/compiler/compiler-wrapper"
 PROFILE_MANAGER="@evallibexecdir@/eselect/compiler/profile-manager"
@@ -23,9 +23,11 @@ show_extra_help_text() {
 	echo ""
 	write_list_start "Extra options for 'set' action:"
 	write_kv_list_entry "-b, --bindir=<dir>" "Install the wrappers into this directory.  If -u is specified and this is not, no wrappers will be installed."
-	write_kv_list_entry "-c, --chost=<chost>" "Install this profile using the specified CHOST rather than the default."
-	write_kv_list_entry "-n, --native" "Make this the default CHOST."
+	write_kv_list_entry "-c, --ctarget=<ctarget>" "Install this profile using the specified CTARGET rather than the default."
+	write_kv_list_entry "-n, --native" "Make this the native CTARGET."
 }
+
+### Helpers ###
 
 eval_pm() {
 	local tmp=$(mktemp)
@@ -38,127 +40,29 @@ eval_pm() {
 	return ${retval}
 }
 
-### list action ###
-describe_list() {
-	echo "List all installed compiler profiles."
-}
-
-do_list() {
-	local chost
-	local profiles_v
-	local set_v
-	local profile
-	local i
-	local active='*'
-	local preopts=""
-
-	while [[ ${#} -gt 0 ]]; do
-		local opt=${1}
-		shift
-		case ${opt} in
-			--user|-u)
-				preopts="${preopts} --user"
-			;;
-			*)
-				die -q "Invalid option: ${opt}"
-			;;
-		esac
-	done
-
-	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles."
-
-	((i = 0))
-	for chost in ${COMPILER_CONFIG_ALL_CHOSTS} ; do
-		write_list_start "Available compilers for CHOST $(highlight "${chost}")"
-
-		profiles_v="COMPILER_CONFIG_PROFILES_${chost//-/_}"
-		for profile in ${!profiles_v} ; do
-			((i++))
-			write_numbered_list_entry $i "${profile}"
-		done
-	done
-
-	echo ""
-
-	write_list_start "Activated profiles:"
-	for chost in ${COMPILER_CONFIG_SET_CHOSTS} ; do
-		set_v="COMPILER_CONFIG_SET_${chost//-/_}"
-		if [[ ${chost} == ${COMPILER_CONFIG_DEFAULT_CHOST} ]] ; then
-			write_kv_list_entry "${chost} $(highlight "${active}")" "${!set_v}"
-		else
-			write_kv_list_entry "${chost}" "${!set_v}"
-		fi
-	done
-}
-
-### show action ###
-describe_show() {
-	echo "Print the current active configuration.  It can take a CTARGET argument"
-}
-
-do_show() {
-	local chost
-	local preopts=""
-
-	while [[ ${#} -gt 0 ]]; do
-		local opt=${1}
-		shift
-		case ${opt} in
-			--user|-u)
-				preopts="${preopts} --user"
-			;;
-			*)
-				chost=${opt}
-			;;
-		esac
-	done
-
-	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles."
-
-	if [[ -z ${chost} ]] ; then
-		chost=${COMPILER_CONFIG_DEFAULT_CHOST}
-	fi
-
-	echo ${chost}
-
-	local set_v="COMPILER_CONFIG_SET_${chost//-/_}"
-	if [[ -n ${!set_v} ]] ; then
-		echo ${!set_v}
-		return 0
-	else
-		echo "(none)"
-		return 2
-	fi
-}
-
-### set action ###
-describe_set() {
-	echo "Select a compiler profile."
-}
-
 list_all_profiles() {
 	local preopts="${@}"
-	local chost
+	local ctarget
 	local profiles_v
 	local i=0
 
-	for chost in ${COMPILER_CONFIG_ALL_CHOSTS} ; do
+	for ctarget in ${COMPILER_CONFIG_ALL_CTARGETS} ; do
 		if (( i == 0 )) ; then
 			(( i++ ))
 		else
 			echo -n " "
 		fi
 
-		profiles_v="COMPILER_CONFIG_PROFILES_${chost//-/_}"
+		profiles_v="COMPILER_CONFIG_PROFILES_${ctarget//-/_}"
 		echo -n ${!profiles_v}
 	done
 
 	echo ""
 }
 
-# Return the binaries in the passed directory, but don't include any with a CHOST prefix
+# Return the binaries in the passed directory, but don't include any with a CTARGET prefix
 # Currently this just extracts the prefix from the directory by assuming
-# the directory matches */usr/<CHOST>/gcc-bin/*
+# the directory matches */usr/<CTARGET>/gcc-bin/*
 # TODO: Cleanup to work better with non-gcc
 get_bins() {
 	local dir=${1}
@@ -187,8 +91,106 @@ get_bins() {
 	echo ""
 }
 
+### ACTIONS ###
+
+### list action ###
+describe_list() {
+	echo "List all installed compiler profiles."
+}
+
+do_list() {
+	local ctarget
+	local profiles_v
+	local set_v
+	local profile
+	local i
+	local active='*'
+	local preopts=""
+
+	while [[ ${#} -gt 0 ]]; do
+		local opt=${1}
+		shift
+		case ${opt} in
+			--user|-u)
+				preopts="${preopts} --user"
+			;;
+			*)
+				die -q "Invalid option: ${opt}"
+			;;
+		esac
+	done
+
+	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles."
+
+	((i = 0))
+	for ctarget in ${COMPILER_CONFIG_ALL_CTARGETS} ; do
+		write_list_start "Available compilers for CTARGET $(highlight "${ctarget}")"
+
+		profiles_v="COMPILER_CONFIG_PROFILES_${ctarget//-/_}"
+		for profile in ${!profiles_v} ; do
+			((i++))
+			write_numbered_list_entry $i "${profile}"
+		done
+	done
+
+	echo ""
+
+	write_list_start "Activated profiles:"
+	for ctarget in ${COMPILER_CONFIG_SET_CTARGETS} ; do
+		set_v="COMPILER_CONFIG_SET_${ctarget//-/_}"
+		if [[ ${ctarget} == ${COMPILER_CONFIG_DEFAULT_CTARGET} ]] ; then
+			write_kv_list_entry "${ctarget} $(highlight "${active}")" "${!set_v}"
+		else
+			write_kv_list_entry "${ctarget}" "${!set_v}"
+		fi
+	done
+}
+
+### show action ###
+describe_show() {
+	echo "Print the current active configuration.  It can take a CTARGET argument"
+}
+
+do_show() {
+	local ctarget
+	local preopts=""
+
+	while [[ ${#} -gt 0 ]]; do
+		local opt=${1}
+		shift
+		case ${opt} in
+			--user|-u)
+				preopts="${preopts} --user"
+			;;
+			*)
+				ctarget=${opt}
+			;;
+		esac
+	done
+
+	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles."
+
+	if [[ -z ${ctarget} ]] ; then
+		ctarget=${COMPILER_CONFIG_DEFAULT_CTARGET}
+	fi
+
+	local set_v="COMPILER_CONFIG_SET_${ctarget//-/_}"
+	if [[ -n ${!set_v} ]] ; then
+		echo ${!set_v}
+		return 0
+	else
+		echo "(none)"
+		return 2
+	fi
+}
+
+### set action ###
+describe_set() {
+	echo "Select a compiler profile."
+}
+
 do_set() {
-	local preopts postopts profile oldprofile chost bindir olddefaultbins oldbins newbins set_v userconf ref
+	local preopts postopts profile oldprofile ctarget bindir olddefaultbins oldbins newbins set_v userconf ref
 
 	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles."
 
@@ -216,17 +218,17 @@ do_set() {
 				userconf=1
 				preopts="${preopts} --user"
 			;;
-			--chost=*)
+			--ctarget=*)
 				if [[ -z ${opt#*=} ]] ; then
-					die -q "No option given to --chost"
+					die -q "No option given to --ctarget"
 				fi
-				chost=${opt#*=}
+				ctarget=${opt#*=}
 			;;
 			-c)
 				if [[ ${#} -eq 0 ]] ; then
 					die -q "No option given to -c"
 				fi
-				chost=${1}
+				ctarget=${1}
 				shift
 			;;
 			*)
@@ -250,40 +252,40 @@ do_set() {
 		die -q "No profile given to set action."
 	fi
 
-	# Figure out the chost for this compiler
-	if [[ -z ${chost} ]] ; then
+	# Figure out the ctarget for this compiler
+	if [[ -z ${ctarget} ]] ; then
 		eval_pm ${preopts} get-profile ${profile} || die -q "Failed to get data on the desired profiles."
-		chost=${COMPILER_CONFIG_CHOST}
+		ctarget=${COMPILER_CONFIG_CTARGET}
 	fi
 
-	# Figure out what bins are installed for the default CHOST in case we are or are becoming default
-	set_v="COMPILER_CONFIG_SET_${COMPILER_CONFIG_DEFAULT_CHOST}"
+	# Figure out what bins are installed for the default CTARGET in case we are or are becoming default
+	set_v="COMPILER_CONFIG_SET_${COMPILER_CONFIG_DEFAULT_CTARGET}"
 	if [[ -n ${!set_v} ]] ; then
 		oldprofile=${!set_v}
 
 		if eval_pm ${preopts} get-profile ${oldprofile} ; then
 			olddefaultbins="$(get_bins "${ROOT}/${COMPILER_CONFIG_BINPATH}") ${COMPILER_CONFIG_ALIASES}"
 		else
-			write_error_msg "Could not get data on the previous profile for the default CHOST (${oldprofile})."
+			write_error_msg "Could not get data on the previous profile for the default CTARGET (${oldprofile})."
   		write_error_msg "You may have extra wrappers installed that you did not intend."
 		fi
 	fi
 
-	# Figure out what bins are installed for the old profile for this CHOST
-	set_v="COMPILER_CONFIG_SET_${chost//-/_}"
+	# Figure out what bins are installed for the old profile for this CTARGET
+	set_v="COMPILER_CONFIG_SET_${ctarget//-/_}"
 	if [[ -n ${!set_v} ]] ; then
 		oldprofile=${!set_v}
 
 		if eval_pm ${preopts} get-profile ${oldprofile} ; then
 			oldbins="$(get_bins "${ROOT}/${COMPILER_CONFIG_BINPATH}") ${COMPILER_CONFIG_ALIASES}"
 		else
-			write_error_msg "Could not get data on the previous profile for this CHOST (${oldprofile})."
+			write_error_msg "Could not get data on the previous profile for this CTARGET (${oldprofile})."
 			write_error_msg "You may have extra wrappers installed for the old."
 		fi
 	fi
 
 	# Update our profile for the wrapper
-	${PROFILE_MANAGER} ${preopts} set ${profile} ${postopts} --chost=${chost} || die -q "Failed to save the new profile."
+	${PROFILE_MANAGER} ${preopts} set ${profile} ${postopts} --ctarget=${ctarget} || die -q "Failed to save the new profile."
 
 	# If we're updating the userconf, but not changing wrappers, leave now...
 	if [[ ${userconf} == "1" && -z ${bindir} ]] ; then
@@ -300,38 +302,38 @@ do_set() {
 	fi
 
 	# Remove old wrappers
-	if [[ ${chost} == ${COMPILER_CONFIG_DEFAULT_CHOST} ]] ; then
+	if [[ ${ctarget} == ${COMPILER_CONFIG_DEFAULT_CTARGET} ]] ; then
 		for bin in ${olddefaultbins} ; do
 			[[ -f ${bindir}/${bin} ]] && rm -f "${bindir}/${bin}"
 		done
 	fi
 	for bin in ${oldbins} ; do
-		[[ -f ${bindir}/${chost}-${bin} ]] && rm -f "${bindir}/${bin}"
+		[[ -f ${bindir}/${ctarget}-${bin} ]] && rm -f "${bindir}/${bin}"
 	done
 
 	# Install the wrappers
-	set_bins ${chost} ${bindir}
+	set_bins ${ctarget} ${bindir}
 
 	# Update /etc/env.d
 	if [[ ${userconf} == "1" ]] ; then
 		return 0
 	fi
 
-	set_env ${preopts} || die -q "Could not set ${ENV}"
+	set_env ${preopts} || die -q "Could not set ${ENV_FILE}"
 
-	echo "Successfully set compiler for ${chost} to ${profile}."
+	echo "Successfully set compiler for ${ctarget} to ${profile}."
 }
 
-# Setup the wrapper binaries for the passed CHOST
+# Setup the wrapper binaries for the passed CTARGET
 set_bins() {
-	local chost="$1"
+	local ctarget="$1"
 	local bindir="$2"
 	local bin
 
 	# Get data on the new profile
 	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles after updating config."
 
-	local set_v="COMPILER_CONFIG_SET_${chost//-/_}"
+	local set_v="COMPILER_CONFIG_SET_${ctarget//-/_}"
 	local profile=${!set_v}
 
 	[[ -z ${profile} ]] && return 1
@@ -350,10 +352,10 @@ set_bins() {
 		else
 			ref="${ROOT}/${COMPILER_CONFIG_BINPATH}/${bin}"
 		fi
-		cp -f "${WRAPPER}" "${bindir}/${chost}-${bin}"
-		touch -r "${ref}" "${bindir}/${chost}-${bin}"
+		cp -f "${WRAPPER}" "${bindir}/${ctarget}-${bin}"
+		touch -r "${ref}" "${bindir}/${ctarget}-${bin}"
 
-		if [[ ${chost} == ${COMPILER_CONFIG_DEFAULT_CHOST} ]] ; then
+		if [[ ${ctarget} == ${COMPILER_CONFIG_DEFAULT_CTARGET} ]] ; then
 			cp -f "${WRAPPER}" "${bindir}/${bin}"
 			touch -r "${ref}" "${bindir}/${bin}"
 		fi
@@ -365,13 +367,13 @@ set_env() {
 	local env_manpath
 	local env_infopath
 	local env_ldpath
-	local chost
+	local ctarget
 	local set_v
 
 	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles."
 	# Build up the variables for all the active profiles
-	for chost in ${COMPILER_CONFIG_SET_CHOSTS} ; do
-		set_v="COMPILER_CONFIG_SET_${chost//-/_}"
+	for ctarget in ${COMPILER_CONFIG_SET_CTARGETS} ; do
+		set_v="COMPILER_CONFIG_SET_${ctarget//-/_}"
 		if eval_pm ${preopts} get-profile ${!set_v}; then
 			[[ -n ${COMPILER_CONFIG_MANPATH} ]] &&
 				env_manpath="${env_manpath:+"${env_manpath}:"}${COMPILER_CONFIG_MANPATH}"
@@ -380,16 +382,14 @@ set_env() {
 			[[ -n ${COMPILER_CONFIG_LDPATH} ]] &&
 				env_ldpath="${env_ldpath:+"${env_ldpath}:"}${COMPILER_CONFIG_LDPATH}"
 		else
-			write_error_msg "Unable to get profile information for ${!set_v} which is set for CHOST ${chost}"
+			write_error_msg "Unable to get profile information for ${!set_v} which is set for CTARGET ${ctarget}"
  		fi
 	done
 
 	# Now write it
-	cat > ${ENV} <<EOF || die -q "Could not write to ${ENV}"
-INFOPATH="${env_infopath}"
-MANPATH="${env_manpath}"
-LDPATH="${env_ldpath}"
-EOF
+	store_config ${ENV_FILE} INFOPATH "${env_infopath}"
+	store_config ${ENV_FILE} MANPATH "${env_manpath}"
+	store_config ${ENV_FILE} LDPATH "${env_ldpath}"
 }
 
 ### unset action
@@ -400,7 +400,7 @@ describe_unset() {
 do_unset() {
 	local bindir="${ROOT}/usr/bin"
 	local preopts
-	local chost
+	local ctarget
 
 	while [[ ${#} -gt 0 ]]; do
 		local opt=${1}
@@ -417,21 +417,21 @@ do_unset() {
 					preopts="${preopts} --user"
 				;;
 			*)
-				chost=${opt}
+				ctarget=${opt}
 				;;
 		esac
 	done
 
 	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles."
 
-	set_v="COMPILER_CONFIG_SET_${chost//-/_}"
+	set_v="COMPILER_CONFIG_SET_${ctarget//-/_}"
 	if eval_pm ${preopts} get-profile ${!set_v} ; then
 		local bins="$(get_bins "${ROOT}/${COMPILER_CONFIG_BINPATH}") ${COMPILER_CONFIG_ALIASES}"
 		local bin
 
 		for bin in ${bins} ; do
-			[[ -f ${bindir}/${chost}-${bin} ]] && rm -f "${bindir}/${chost}-${bin}"
-			if [[ ${chost} == ${COMPILER_CONFIG_DEFAULT_CHOST} ]] ; then
+			[[ -f ${bindir}/${ctarget}-${bin} ]] && rm -f "${bindir}/${ctarget}-${bin}"
+			if [[ ${ctarget} == ${COMPILER_CONFIG_DEFAULT_CTARGET} ]] ; then
 				[[ -f ${bindir}/${bin} ]] && rm -f "${bindir}/${bin}"
 			fi
 		done
@@ -448,7 +448,7 @@ describe_update() {
 }
 
 do_update() {
-	local chost
+	local ctarget
 	local bindir="${ROOT}/usr/bin"
 	local preopts
 
@@ -472,7 +472,158 @@ do_update() {
 	# Get data on the new profile
 	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles after updating config."
 
-	for chost in ${COMPILER_CONFIG_SET_CHOSTS} ; do
-		set_bins ${chost} ${bindir}
+	for ctarget in ${COMPILER_CONFIG_SET_CTARGETS} ; do
+		set_bins ${ctarget} ${bindir}
 	done
+}
+
+### migrate action ###
+describe_migrate() {
+	echo "Convert gcc-1.x profiles.  This will not overwrite existing profiles."
+}
+
+do_migrate() {
+	local envd="${ROOT}/etc/env.d/gcc/"
+	local file
+
+	[[ -d ${CONFIG_D} ]] || mkdir -p ${CONFIG_D}
+
+	for file in ${envd}/* ; do
+		[[ -f ${file} ]] || continue
+
+		local basefile=$(basename ${file})
+
+		# Skip the config files for now
+		[[ ${basefile#config*} != ${basefile} ]] && continue
+
+		local ctarget=$(split_old_gcc_ver "${basefile}" | cut -f1 -d' ')
+		local version=$(split_old_gcc_ver "${basefile}" | cut -f2 -d' ')
+
+		[[ -f "${CONFIG_D}/${ctarget}-${version}.conf" ]] || migrate_profile ${ctarget}-${version}
+	done
+	
+	for file in ${envd}/config* ; do
+		[[ -f ${file} ]] || continue
+
+		local basefile=$(basename ${file})
+		local ctarget
+
+		local oldprofile=$(load_config "${file}" CURRENT)
+		local prof_ctarget=$(split_old_gcc_ver  ${oldprofile} | cut -f1 -d' ')
+		local version=$(split_old_gcc_ver  ${oldprofile} | cut -f2 -d' ')
+		local spec=$(split_old_gcc_ver  ${oldprofile} | cut -f3 -d' ')
+		[[ -z ${spec} ]] && spec="default"
+
+		if [[ ${basefile} == "config" ]] ; then
+			ctarget=$(split_old_gcc_ver  $(load_config "${file}" CURRENT) | cut -f1 -d' ')
+			if [[ $(do_show) == "(none)" ]] ; then
+				do_set "--ctarget=${ctarget}" "${prof_ctarget}-${version}/${spec}" --native
+			fi
+		else
+			ctarget=${basefile#config-}
+			if [[ $(do_show ${ctarget}) == "(none)" ]] ; then
+				do_set "--ctarget=${ctarget}" "${prof_ctarget}-${version}/${spec}"
+			fi
+		fi
+
+	done
+}
+
+migrate_profile() {
+	local profile=$1
+	local doneglobal=0
+	local conf="${CONFIG_D}/${profile}.conf"
+	local ctarget=$(split_old_gcc_ver ${profile} | cut -f1 -d' ')
+	local val
+
+	[[ -f  ${conf} ]] && return 1
+
+	for file in ${envd}/${profile}* ; do
+		if [[ ${doneglobal} == 0 ]] ; then
+			local binpath=$(load_config "${file}" PATH)
+
+			echo "[global]" > ${conf}
+			echo "	version=${profile}" >> ${conf}
+			echo "	binpath=${binpath}" >> ${conf}
+
+			val=$(load_config "${file}" MANPATH)
+			[[ -n ${val} ]] && echo "	manpath=${val}" >> ${conf}
+
+			val=$(load_config "${file}" INFOPATH)
+			[[ -n ${val} ]] && echo "	infopath=${val}" >> ${conf}
+
+			val=$(load_config "${file}" STDCXX_INCDIR)
+			[[ -n ${val} ]] && echo "	stdcxx_incdif=${val}" >> ${conf}
+
+			echo "	alias_cc=gcc" >> ${conf}
+			if [[ -f "${binpath}/${ctarget}-gfortran" || -f "${binpath}/gfortran" ]] ; then
+				echo "	alias_g77=gfortran" >> ${conf}
+			elif [[ -f "${binpath}/${ctarget}-g77" || -f "${binpath}/g77" ]] ; then
+				echo "	alias_gfortran=g77" >> ${conf}
+			fi
+
+			echo >> ${conf}
+			doneglobal=1
+		fi
+
+		local spec=$(split_old_gcc_ver $(basename ${file}) | cut -f3 -d' ')
+		[[ -z ${spec} ]] && spec="default"
+
+		echo "[${spec}]" >> ${conf}
+		echo "	ctarget=${ctarget}" >> ${conf}
+
+		val=$(load_config "${file}" LDPATH)
+		[[ -n ${val} ]] && echo "	ldpath=${val}" >> ${conf}
+
+		val=$(load_config "${file}" GCC_SPECS)
+		[[ -n ${val} ]] && echo "	spec=${val}" >> ${conf}
+
+		echo >> ${conf}
+	done
+}
+
+# Taken from gcc-config-1.3.12:
+split_old_gcc_ver() {
+# Split up the gcc profile into components:
+# TARGET-VER[-specs] -> TARGET VER [specs]
+# arm-linux-3.3.6 -> arm-linux 3.3.6
+# x86_64-linux-4.0.1-pre1234 -> x86_64-linux 4.0.1-pre1234
+# sh-linux-3.4.4-hardened -> sh-linux 3.4.4 hardened
+#
+# So below we will start at the end and run a small state machine ...
+# specs [3]
+#    accept everything
+# specs -> version transition [3->2]
+#    when we find a version component
+# version [2]
+#    accept only version components (see the regex)
+# version -> target transition [2->1]
+#    when we hit a non version component
+# target [1]
+#    accept everything we have left
+#
+	echo "$@" | awk -F- '
+	function pushit(onme, pushee) {
+		return (onme == "" ? pushee : pushee"-"onme);
+	}
+	{
+		state=3
+		targ=""
+		ver=""
+		spec=""
+		for (i=NF; i > 0; --i) {
+			if (state >= 2) {
+				if ($i ~ /^(alpha|beta|pre|rc|p)?[[:digit:].]+$/) {
+					ver=pushit(ver, $i)
+					state=2
+				} else if (state == 3)
+					spec=pushit(spec, $i)
+				else
+					state=1
+			}
+			if (state == 1)
+				targ = pushit(targ, $i)
+		}
+		print targ " " ver (spec != "" ? " " spec : "")
+	}'
 }
