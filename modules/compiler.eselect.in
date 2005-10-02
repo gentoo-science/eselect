@@ -23,8 +23,21 @@ show_extra_help_text() {
 	echo ""
 	write_list_start "Extra options for 'set' action:"
 	write_kv_list_entry "-b, --bindir=<dir>" "Install the wrappers into this directory.  If -u is specified and this is not, no wrappers will be installed."
-	write_kv_list_entry "-c, --ctarget=<ctarget>" "Install this profile using the specified CTARGET rather than the default."
+	write_kv_list_entry "-c, --ctarget=<CTARGET>" "Install this profile using the specified CTARGET rather than the default."
 	write_kv_list_entry "-n, --native" "Make this the native CTARGET."
+	echo
+	write_list_start "Extra options for 'getval' action:"
+	write_kv_list_entry "-c, --ctarget=<CTARGET>" "Get the variable for the active profile of the given CTARGET."
+	write_kv_list_entry "-p, --profile=<PROFILE>" "Get the variable for the given profile."
+	echo	
+	write_list_start "Possible values to pass to 'getval' action:"
+	write_kv_list_entry "BINPATH" "The location of the binaries."
+	write_kv_list_entry "INFOPATH" "The location of the info documentation."
+	write_kv_list_entry "MANPATH" "The location of the man pages."
+	write_kv_list_entry "LDPATH" "The location of the libraries."
+	write_kv_list_entry "STDCXX_INCDIR" "The stdcxx include dir."
+	write_kv_list_entry "GCC_SPECS" "The specs file used."
+	write_kv_list_entry "CFLAGS" "The CFLAGS that are automatically prepended."
 }
 
 ### Helpers ###
@@ -182,6 +195,78 @@ do_show() {
 		echo "(none)"
 		return 2
 	fi
+}
+
+### getval action ###
+describe_getval() {
+	echo "Print information for the given profile.  It takes a variable name as an argument."
+}
+
+do_getval() {
+	local ctarget
+	local profile
+	local preopts
+	local var
+	local set_v
+
+	while [[ ${#} -gt 0 ]]; do
+		local opt=${1}
+		shift
+		case ${opt} in
+			--user|-u)
+				preopts="${preopts} --user"
+			;;
+			--ctarget=*)
+				if [[ -z ${opt#*=} ]] ; then
+					die -q "No option given to --ctarget"
+				fi
+				ctarget=${opt#*=}
+			;;
+			-c)
+				if [[ ${#} -eq 0 ]] ; then
+					die -q "No option given to -c"
+				fi
+				ctarget=${1}
+				shift
+			;;
+			--profile=*)
+				if [[ -z ${opt#*=} ]] ; then
+					die -q "No option given to --profile"
+				fi
+				profile=${opt#*=}
+			;;
+			-p)
+				if [[ ${#} -eq 0 ]] ; then
+					die -q "No option given to -p"
+				fi
+				profile=${1}
+				shift
+			;;
+			*)
+				var=${opt}
+		esac
+	done
+
+	if [[ -n ${profile} && -n ${ctarget} ]] ; then
+		die -q "You can't pass --profile and --ctarget at the same time."
+	elif [[ -z ${profile} ]] ; then
+		eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles."
+
+		if [[ -z ${ctarget} ]] ; then
+			ctarget=${COMPILER_CONFIG_DEFAULT_CTARGET}
+		fi
+
+		local set_v="COMPILER_CONFIG_SET_${ctarget//-/_}"
+		[[ -z ${!set_v} ]] && die -q "Invalid CTARGET: ${ctarget}"
+
+		profile=${!set_v}
+	fi
+
+	eval_pm ${preopts} get-profile ${profile} || die -q "Failed to get data on the profile '${profile}'."
+	var="COMPILER_CONFIG_${var}"
+	echo ${!var}
+
+	return 0
 }
 
 ### set action ###
@@ -422,7 +507,15 @@ do_unset() {
 		esac
 	done
 
+	if [[ -z ${ctarget} ]] ; then
+		die -q "You did not give a CTARGET to unset."
+	fi
+
 	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles."
+
+	if [[ ${ctarget} == ${COMPILER_CONFIG_DEFAULT_CTARGET} ]] ; then
+		die -q "You cannot unset the native CTARGET.  Pleasse set another CTARGET native first."
+	fi
 
 	set_v="COMPILER_CONFIG_SET_${ctarget//-/_}"
 	if eval_pm ${preopts} get-profile ${!set_v} ; then
@@ -438,6 +531,8 @@ do_unset() {
 	else
 		return 1
 	fi
+
+	${PROFILE_MANAGER} ${preopts} unset ${ctarget} || die -q "Failed to unset the profile."
 
 	return 0
 }
