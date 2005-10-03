@@ -8,7 +8,7 @@ DESCRIPTION="Manage the installed compilers."
 MAINTAINER="toolchain@gentoo.org"
 SVN_DATE='$Date: 2005-09-13 19:53:00 -0700 (Tue, 13 Sep 2005) $'
 VERSION=$(svn_date_to_version "${SVN_DATE}" )
-EBUILD_VERSION="2.0.0_beta1"
+EBUILD_VERSION="2.0.0_beta2"
 
 # Our data
 ROOT=${ROOT:-/}
