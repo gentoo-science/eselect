@@ -42,7 +42,7 @@ set_symlink() {
 		parch=$(sed -n -e "s|^\([[:alnum:]]\+\)[[:space:]].*${target}.*$|\1|p" \
 			${ROOT}/${portdir}/profiles/profiles.desc)
 
-		if [[ ${arch} != ${parch} ]] ; then
+		if [[ ${arch} != ${parch} && ${2} != "--force" ]] ; then
 			die -q "${target} is not a valid profile for ${arch}"
 		fi
 	fi
@@ -112,13 +112,20 @@ describe_set() {
 }
 
 do_set() {
+	local force
+
+	if [[ ${1} == "--force" ]] ; then
+		force=${1}
+		shift
+	fi
+
 	if [[ -z ${1} ]] ; then
 		die -q "You didn't tell me what to set the symlink to"
 	elif [[ -e "${ROOT}/etc/make.profile" ]] &&
 		[[ ! -L "${ROOT}/etc/make.profile" ]] ; then
 		die -q "${ROOT}/etc/make.profile isn't a symlink"
 	else
-		set_symlink "${1}" || die -q "Couldn't set a new symlink"
+		set_symlink "${1}" ${force} || die -q "Couldn't set a new symlink"
 	fi
 }
 

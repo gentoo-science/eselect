@@ -6,7 +6,7 @@ profile\.eselect \- The profile management module for Gentoo's eselect
 .br 
 \fBeselect profile\fR \fBlist\fR
 .br 
-\fBeselect profile\fR \fBset\fR \fIprofile\fR
+\fBeselect profile\fR \fBset\fR [\fB\-\-force\fR] \fIprofile\fR
 .br 
 \fBeselect profile\fR \fBshow\fR
 
@@ -23,9 +23,11 @@ phi / # eselect profile list
 Available profile symlink targets:
   [1]   default\-linux/amd64/2005.0
 .SH "ACTION: SET"
-\fBeselect profile\ set\fR [\fIprofile\fR]
+\fBeselect profile\ set\fR [\fB\-\-force\fR] [\fIprofile\fR]
 .br 
-Select a valid \fIprofile\fR for future use with portage.
+Select a valid profile for future use with portage.  If the \-\-force flag
+is specified, set the profile even if it doesn't appear to be a valid one (doesn't
+exist in \fB${PORTDIR}\fR/profiles/profiles.desc).
 .SH "ACTION: SHOW"
 \fBeselect profile\ show\fR
 .br 
