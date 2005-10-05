@@ -90,9 +90,10 @@ get_bins() {
 
 	local i=0
 	for file in ${dir}/* ; do
-		basefile="$(basename ${file})"
+		basefile=$(basename ${file})
+		basefile=${basefile#${prefix}-}
 
-		if [[ -x ${file} && ${basefile#${prefix}-} == ${basefile} ]] ; then
+		if [[ -x ${file} ]] && ! has ${basefile} ${retval} ; then
 			if (( i == 0 )) ; then
 				(( i++ ))
 			else
@@ -678,7 +679,7 @@ migrate_profile() {
 		[[ -n ${val} ]] && echo "	ldpath=${val}" >> ${conf}
 
 		val=$(load_config "${file}" GCC_SPECS)
-		[[ -n ${val} ]] && echo "	spec=${val}" >> ${conf}
+		[[ -n ${val} ]] && echo "	specs=${val}" >> ${conf}
 
 		echo >> ${conf}
 	done

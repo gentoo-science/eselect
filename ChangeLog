@@ -4,6 +4,8 @@ ChangeLog for eselect
 
 	* modules/compiler.eselect.in: Support .s in CTARGET.  Made logic
 	  smarter when determining reference file for timestamp for crossdev.
+	  Fixed a bug in migrate using spec instead of specs.  Fixed a bug in
+	  get_bins on crosscompilers.
 
 2005-10-01 Jeremy Huddleston <eradicator@gentoo.org>
 
