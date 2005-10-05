@@ -1,8 +1,19 @@
 ChangeLog for eselect
 
+2005-10-05 Jeremy Huddleston <eradicator@gentoo.org>
+
+	* modules/compiler.eselect.in: Support .s in CTARGET.  Made logic
+	  smarter when determining reference file for timestamp for crossdev.
+
+2005-10-01 Jeremy Huddleston <eradicator@gentoo.org>
+
+	* modules/compiler.eselect.in: Added getval action to query configs
+	  and give backwards support for -X, -L, and -B in gcc-config.
+
 2005-09-30 Jeremy Huddleston <eradicator@gentoo.org>
 
-	* modules/compiler.eselect.in: Added migrate action to migrate from 1.x configs.
+	* modules/compiler.eselect.in: Added migrate action to migrate from
+	  1.x configs.
 
 2005-09-24 Jeremy Huddleston <eradicator@gentoo.org>
 

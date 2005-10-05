@@ -8,7 +8,7 @@ DESCRIPTION="Manage the installed compilers."
 MAINTAINER="toolchain@gentoo.org"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}" )
-EBUILD_VERSION="2.0.0_beta2"
+EBUILD_VERSION="2.0.0_beta3"
 
 # Our data
 ROOT=${ROOT:-/}
@@ -43,7 +43,7 @@ show_extra_help_text() {
 ### Helpers ###
 
 eval_pm() {
-	local tmp=$(mktemp)
+	local tmp=$(mktemp -t tmp.XXXXXX)
 	local retval
 
 	${PROFILE_MANAGER} --config-dir="${CONFIG_D}" "${@}" > ${tmp}
@@ -66,7 +66,7 @@ list_all_profiles() {
 			echo -n " "
 		fi
 
-		profiles_v="COMPILER_CONFIG_PROFILES_${ctarget//-/_}"
+		profiles_v="COMPILER_CONFIG_PROFILES_${ctarget//[-.]/_}"
 		echo -n ${!profiles_v}
 	done
 
@@ -139,7 +139,7 @@ do_list() {
 	for ctarget in ${COMPILER_CONFIG_ALL_CTARGETS} ; do
 		write_list_start "Available compilers for CTARGET $(highlight "${ctarget}")"
 
-		profiles_v="COMPILER_CONFIG_PROFILES_${ctarget//-/_}"
+		profiles_v="COMPILER_CONFIG_PROFILES_${ctarget//[-.]/_}"
 		for profile in ${!profiles_v} ; do
 			((i++))
 			write_numbered_list_entry $i "${profile}"
@@ -150,7 +150,7 @@ do_list() {
 
 	write_list_start "Activated profiles:"
 	for ctarget in ${COMPILER_CONFIG_SET_CTARGETS} ; do
-		set_v="COMPILER_CONFIG_SET_${ctarget//-/_}"
+		set_v="COMPILER_CONFIG_SET_${ctarget//[-.]/_}"
 		if [[ ${ctarget} == ${COMPILER_CONFIG_DEFAULT_CTARGET} ]] ; then
 			write_kv_list_entry "${ctarget} $(highlight "${active}")" "${!set_v}"
 		else
@@ -187,7 +187,7 @@ do_show() {
 		ctarget=${COMPILER_CONFIG_DEFAULT_CTARGET}
 	fi
 
-	local set_v="COMPILER_CONFIG_SET_${ctarget//-/_}"
+	local set_v="COMPILER_CONFIG_SET_${ctarget//[-.]/_}"
 	if [[ -n ${!set_v} ]] ; then
 		echo ${!set_v}
 		return 0
@@ -357,7 +357,7 @@ do_set() {
 	fi
 
 	# Figure out what bins are installed for the old profile for this CTARGET
-	set_v="COMPILER_CONFIG_SET_${ctarget//-/_}"
+	set_v="COMPILER_CONFIG_SET_${ctarget//[-.]/_}"
 	if [[ -n ${!set_v} ]] ; then
 		oldprofile=${!set_v}
 
@@ -418,7 +418,7 @@ set_bins() {
 	# Get data on the new profile
 	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles after updating config."
 
-	local set_v="COMPILER_CONFIG_SET_${ctarget//-/_}"
+	local set_v="COMPILER_CONFIG_SET_${ctarget//[-.]/_}"
 	local profile=${!set_v}
 
 	[[ -z ${profile} ]] && return 1
@@ -433,10 +433,17 @@ set_bins() {
 		# happy.  See Bug #70548 for more info.
 		if has ${bin} ${COMPILER_CONFIG_ALIASES} ; then
 			set_v="COMPILER_CONFIG_ALIAS_${bin}"
-			ref="${ROOT}/${COMPILER_CONFIG_BINPATH}/${!set_v}"
+			ref="${!set_v}"
 		else
-			ref="${ROOT}/${COMPILER_CONFIG_BINPATH}/${bin}"
+			ref="${bin}"
 		fi
+
+		if [[ -f "${ROOT}/${COMPILER_CONFIG_BINPATH}/${ref}" ]] ; then
+			ref="${ROOT}/${COMPILER_CONFIG_BINPATH}/${ref}"
+		else
+			ref="${ROOT}/${COMPILER_CONFIG_BINPATH}/${ctarget}-${ref}"
+		fi
+
 		cp -f "${WRAPPER}" "${bindir}/${ctarget}-${bin}"
 		touch -r "${ref}" "${bindir}/${ctarget}-${bin}"
 
@@ -458,7 +465,7 @@ set_env() {
 	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles."
 	# Build up the variables for all the active profiles
 	for ctarget in ${COMPILER_CONFIG_SET_CTARGETS} ; do
-		set_v="COMPILER_CONFIG_SET_${ctarget//-/_}"
+		set_v="COMPILER_CONFIG_SET_${ctarget//[-.]/_}"
 		if eval_pm ${preopts} get-profile ${!set_v}; then
 			[[ -n ${COMPILER_CONFIG_MANPATH} ]] &&
 				env_manpath="${env_manpath:+"${env_manpath}:"}${COMPILER_CONFIG_MANPATH}"
@@ -517,7 +524,7 @@ do_unset() {
 		die -q "You cannot unset the native CTARGET.  Pleasse set another CTARGET native first."
 	fi
 
-	set_v="COMPILER_CONFIG_SET_${ctarget//-/_}"
+	set_v="COMPILER_CONFIG_SET_${ctarget//[-.]/_}"
 	if eval_pm ${preopts} get-profile ${!set_v} ; then
 		local bins="$(get_bins "${ROOT}/${COMPILER_CONFIG_BINPATH}") ${COMPILER_CONFIG_ALIASES}"
 		local bin
