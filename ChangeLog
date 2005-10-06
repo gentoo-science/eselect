@@ -1,5 +1,12 @@
 ChangeLog for eselect
 
+2005-10-06 Jeremy Huddleston <eradicator@gentoo.org>
+
+	* modules/compiler.eselect.in: Ignore symlinks in the binpath.  Fixed
+	  a bug where selecting a non-native compiler removed the native
+	  binaries.  Use bin_prefix to determine reference file for timestamp
+	  which is needed for the alternate targets of multilib crosscompilers.
+
 2005-10-05 Aaron Walker <ka0ttic@gentoo.org>
 
 	* modules/profile.eselect: Add a --force option to 'set' sub-command

@@ -8,7 +8,7 @@ DESCRIPTION="Manage the installed compilers."
 MAINTAINER="toolchain@gentoo.org"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}" )
-EBUILD_VERSION="2.0.0_beta3"
+EBUILD_VERSION="2.0.0_beta4"
 
 # Our data
 ROOT=${ROOT:-/}
@@ -93,7 +93,7 @@ get_bins() {
 		basefile=$(basename ${file})
 		basefile=${basefile#${prefix}-}
 
-		if [[ -x ${file} ]] && ! has ${basefile} ${retval} ; then
+		if [[ -x ${file} && ! -h ${file} ]] && ! has ${basefile} ${retval} ; then
 			if (( i == 0 )) ; then
 				(( i++ ))
 			else
@@ -394,7 +394,7 @@ do_set() {
 		done
 	fi
 	for bin in ${oldbins} ; do
-		[[ -f ${bindir}/${ctarget}-${bin} ]] && rm -f "${bindir}/${bin}"
+		[[ -f ${bindir}/${ctarget}-${bin} ]] && rm -f "${bindir}/${ctarget}-${bin}"
 	done
 
 	# Install the wrappers
@@ -439,10 +439,14 @@ set_bins() {
 			ref="${bin}"
 		fi
 
-		if [[ -f "${ROOT}/${COMPILER_CONFIG_BINPATH}/${ref}" ]] ; then
+		if [[ -f ${ROOT}/${COMPILER_CONFIG_BINPATH}/${ref} ]] ; then
 			ref="${ROOT}/${COMPILER_CONFIG_BINPATH}/${ref}"
-		else
+		elif [[ -f ${ROOT}/${COMPILER_CONFIG_BINPATH}/${ctarget}-${ref} ]] ; then
 			ref="${ROOT}/${COMPILER_CONFIG_BINPATH}/${ctarget}-${ref}"
+		elif [[ -f ${ROOT}/${COMPILER_CONFIG_BINPATH}/${COMPILER_CONFIG_BIN_PREFIX}-${ref} ]] ; then
+			ref="${ROOT}/${COMPILER_CONFIG_BINPATH}/${COMPILER_CONFIG_BIN_PREFIX}-${ref}"
+		else
+			die -q "Error determining reference timestamp for binaries.  Please file a bug report at http://bugs.gentoo.org."
 		fi
 
 		cp -f "${WRAPPER}" "${bindir}/${ctarget}-${bin}"
