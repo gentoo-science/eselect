@@ -267,6 +267,26 @@ describe_set() {
 	echo "Select the OpenGL implementation."
 }
 
+describe_set_parameters() {
+	echo "<target> [--use-old] [--prefix=<val>] [--dst-prefix=<val>] [--impl-headers]"
+}
+
+describe_set_options() {
+	echo "<target> : The profile to activate"
+	echo "--use-old : If an implementation is already set, use that one instead"
+	echo "--prefix=<val> : Set the source prefix (default: /usr)"
+	echo "--dst-prefix=<val> : Set the destination prefix (default: /usr)"
+	echo "--impl-headers : Override global headers with ones provided by this profile"
+#	write_list_start "Extra options for 'set' action:"
+#	write_kv_list_entry "<target>" "The profile to activate."
+#	write_kv_list_entry "--use-old" "If an implementation is already set, use that one."
+#	write_kv_list_entry "--prefix=<val>" "Set the source prefix (default: /usr)"
+#	write_kv_list_entry "--dst-prefix=<val>" "Set the destination prefix (default: /usr)"
+#	write_kv_list_entry "--impl-headers" "Use headers provided by this implementation to"
+#	write_kv_list_entry "" "override golbal ones provided by opengl-update."
+#	write_kv_list_entry "" "This was default in <opengl-update-2.2"
+}
+
 do_set() {
 	local action="error"
 	local current=$(get_current_implementation)
@@ -322,23 +342,11 @@ do_set() {
 				set_new_implementation ${new}
 				return $?
 			else
-				show_extra_help_text
 				die -q "Please specify an implementation to set"
 			fi
 		;;
 		*)
-			show_extra_help_text
 			die -q "Invalid usage of set action."
 		;;
 	esac
-}
-
-show_extra_help_text() {
-	write_list_start "Extra options for 'set' action:"
-	write_kv_list_entry "--use-old" "If an implementation is already set, use that one."
-	write_kv_list_entry "--prefix=<val>" "Set the source prefix (default: /usr)"
-	write_kv_list_entry "--dst-prefix=<val>" "Set the destination prefix (default: /usr)"
-	write_kv_list_entry "--impl-headers" "Use headers provided by this implementation to"
-	write_kv_list_entry "" "override golbal ones provided by opengl-update."
-	write_kv_list_entry "" "This was default in <opengl-update-2.2"
 }
