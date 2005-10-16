@@ -211,7 +211,7 @@ describe_restart() {
 }
 
 do_restart() {
-	run_runscript restart "Restarting init script$([[ ${#@}-gt 1]] && echo -ne 's')" ${@}
+	run_runscript restart "Restarting init script$([[ ${#@} -gt 1]] && echo -ne 's')" ${@}
 }
 
 # vim: set ft=ebuild :

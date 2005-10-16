@@ -1,5 +1,9 @@
 ChangeLog for eselect
 
+2005-10-16 Danny van Dyk <kugelfang@gentoo.org>
+
+	* modules/rc.eselect: Fixed Bug #106540.
+
 2005-10-06 Jeremy Huddleston <eradicator@gentoo.org>
 
 	* modules/compiler.eselect.in: Ignore symlinks in the binpath.  Fixed
