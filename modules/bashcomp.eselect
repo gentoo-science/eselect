@@ -96,6 +96,15 @@ describe_enable() {
 	echo "Enable specified completion(s)"
 }
 
+describe_enable_parameters() {
+	echo "<target>"
+}
+
+describe_enable_options() {
+	echo "<target> : Target name or number (from 'list' action)"
+	echo "--global : Enable for all users"
+}
+
 do_enable() {
 	local bc bcdir="${ROOT}/${HOME}/.bash_completion.d"
 
@@ -188,6 +197,16 @@ do_enable() {
 describe_disable() {
 	echo "Disable specified completion(s)"
 }
+
+describe_disable_parameters() {
+	echo "<target>"
+}
+
+describe_disable_options() {
+	echo "<target> : Target name or number (from 'list' action)"
+	echo "--global : Disable for all users"
+}
+
 
 do_disable() {
 	local bc bcdir="${ROOT}/${HOME}/.bash_completion.d"

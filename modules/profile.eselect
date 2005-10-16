@@ -111,6 +111,15 @@ describe_set() {
 	echo "Set a new profile symlink target"
 }
 
+describe_set_parameters() {
+	echo "<target>"
+}
+
+describe_set_options() {
+	echo "target : Target name or number (from 'list' action)"
+	echo "--force : Forcibly set the symlink"
+}
+
 do_set() {
 	local force
 

@@ -2,6 +2,11 @@ ChangeLog for eselect
 
 2005-10-16 Ciaran McCreesh
 
+	* modules/bashcomp.eselect, modules/profile.eselect,
+	modules/cow.eselect: Implement actions and parameters.
+	* libs/default.eselect.in: Add describe_action_options and
+	describe_action_parameters support for default help action.
+	* libs/output.bash.in: Add -p option to write_ things.
 	* autogen.sh -> autogen.bash, doc/release-guide.txt, Makefile.am: Make
 	autogen work on systems with weirder autotools setups.
 

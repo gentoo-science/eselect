@@ -43,41 +43,58 @@ write_error_msg() {
 }
 
 # write_list_start PUBLIC
-# Write a list heading. Args may include text highlighting.
+# Write a list heading. Args may include text highlighting. If -p is passed,
+# use 'plain' highlighting.
 write_list_start() {
-    echo -n -e "${COLOUR_LIST_HEADER}"
-    echo -n -e $(apply_text_highlights "${COLOUR_LIST_HEADER}" "$*")
+    local colour="${COLOUR_LIST_HEADER}"
+    if [[ ${1} == "-p" ]] ; then
+        colour=
+        shift
+    fi
+    echo -n -e "${colour}"
+    echo -n -e $(apply_text_highlights "${colour}" "$*")
     echo -n -e "${COLOUR_NORMAL}"
     echo
 }
 
 # write_kv_list_entry PUBLIC
 # Write a key/value list entry with $1 on the left and $2 on the right.
-# Args may include text highlighting.
+# Args may include text highlighting. If -p is passed, use 'plain'
+# highlighting rather than bold.
 write_kv_list_entry() {
-    local n text
-    echo -n -e "  ${COLOUR_LIST_LEFT}"
-    echo -n -e $(apply_text_highlights "${COLOUR_LIST_LEFT}" "$1")
+    local n text left="${COLOUR_LIST_LEFT}" right="${COLOUR_LIST_RIGHT}"
+    if [[ ${1} == "-p" ]] ; then
+        left=
+        right=
+        shift
+    fi
+    echo -n -e "  ${left}"
+    echo -n -e $(apply_text_highlights "${left}" "$1")
     echo -n -e "${COLOUR_NORMAL} "
-    text=${1//\%%%??%%%}
+    text=${1//\%%%??%%%/}
     space $(( 25 - ${#text} ))
-    echo -n -e "${COLOUR_LIST_RIGHT}"
-    echo -n -e $(apply_text_highlights "${COLOUR_LIST_RIGHT}" "$2")
+    echo -n -e "${right}"
+    echo -n -e $(apply_text_highlights "${right}" "$2")
     echo -n -e "${COLOUR_NORMAL}"
     echo
 }
 
 # write_numbered_list_entry PUBLIC
 # Write out a numbered list entry with index $1 and text $2. Args may
-# include text highlighting.
+# include text highlighting. If -p is passed, use 'plain' highlighting.
 write_numbered_list_entry() {
-    local n
-    echo -n -e "  ${COLOUR_LIST_LEFT}"
-    echo -n -e "[$(apply_text_highlights "${COLOUR_LIST_LEFT}" "$1")]"
+    local n left="${COLOUR_LIST_LEFT}" right="${COLOUR_LIST_RIGHT}"
+    if [[ ${1} == "-p" ]] ; then
+        left=""
+        right=""
+        shift
+    fi
+    echo -n -e "  ${left}"
+    echo -n -e "[$(apply_text_highlights "${left}" "$1")]"
     echo -n -e "${COLOUR_NORMAL}"
     space $(( 4 - ${#1} ))
-    echo -n -e "${COLOUR_LIST_RIGHT}"
-    echo -n -e $(apply_text_highlights "${COLOUR_LIST_RIGHT}" "$2")
+    echo -n -e "${right}"
+    echo -n -e $(apply_text_highlights "${right}" "$2")
     echo -n -e "${COLOUR_NORMAL}"
     echo
 }
@@ -85,15 +102,20 @@ write_numbered_list_entry() {
 # write_numbered_list PUBLIC
 # Write out a numbered list. Args may include text highlighting.
 write_numbered_list() {
-    local n=1
+    local n=1 p=
+    if [[ ${1} == "-p" ]] ; then
+        p="-p"
+        shift
+    fi
+
     while [[ ${#@} -gt 0 ]] ; do
         item=${1}
         shift
-	if [[ ${item##*\\} == "" ]] ; then
-		item="${item%\\} ${1}"
-		shift
-	fi
-        write_numbered_list_entry "${n}" "${item}"
+        if [[ ${item##*\\} == "" ]] ; then
+            item="${item%\\} ${1}"
+            shift
+        fi
+        write_numbered_list_entry ${p} "${n}" "${item}"
         n=$(( ${n} + 1 ))
     done
 }

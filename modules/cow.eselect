@@ -13,8 +13,33 @@ describe_moo() {
 	echo "Say moo"
 }
 
+describe_moo_parameters() {
+	echo "<text>"
+}
+
+describe_moo_options() {
+	echo "text : Text to display (optional)"
+	echo "--dead : Use a dead cow"
+	echo "--borg : Use a borged cow"
+}
+
 do_moo() {
-	echo "${@:-I am a cow}" | cowsay
+	local params=
+	while [[ ${1#--} != ${1} ]] ; do
+		if [[ "--dead" == ${1} ]] ; then
+			shift
+			params="${params} -d"
+		elif [[ "--borg" == "${1}" ]] ; then
+			shift
+			params="${params} -b"
+		elif [[ "--" == "${1}" ]] ; then
+			break
+		else
+			die -q "Unknown parameter ${1}"
+		fi
+	done
+
+	echo "${@:-I am a cow}" | cowsay ${params}
 }
 
 ### think action
@@ -23,8 +48,29 @@ describe_think() {
 	echo "Show a pensive cow"
 }
 
+describe_think_parameters() {
+	echo "<text>"
+}
+
+describe_think_options() {
+	echo "text : Text to display"
+	echo "--sheep : Use a sheep rather than a cow"
+}
+
 do_think() {
-	echo "${@:-Am I a cow?}" | cowthink
+	local params=
+	while [[ ${1#--} != ${1} ]] ; do
+		if [[ "--sheep" == ${1} ]] ; then
+			shift
+			params="${params} -f sheep"
+		elif [[ "--" == "${1}" ]] ; then
+			break
+		else
+			die -q "Unknown parameter ${1}"
+		fi
+	done
+	
+	echo "${@:-Am I a cow?}" | cowthink ${params}
 }
 
 # vim: set ft=eselect :
