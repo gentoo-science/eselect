@@ -268,7 +268,7 @@ describe_set() {
 }
 
 describe_set_parameters() {
-	echo "<target> [--use-old] [--prefix=<val>] [--dst-prefix=<val>] [--impl-headers]"
+	echo "<target>"
 }
 
 describe_set_options() {
