@@ -14,7 +14,7 @@ last release.
 
 Do a test run in trunk/. ::
 
-    $ ./autogen.sh
+    $ ./autogen.bash
     $ ./configure
     $ make dist
     $ mv ${P}.tar.bz2 ${DISTDIR}

@@ -13,7 +13,7 @@ MAINTAINERCLEANFILES = aclocal.m4 \
 		       config/config.sub \
 		       *.html
 
-EXTRA_DIST = autogen.sh \
+EXTRA_DIST = autogen.bash \
 	     ChangeLog \
 	     $(doc_files)
 
