@@ -32,33 +32,80 @@ It's easiest to illustrate by example. Here's a simple module, named
 ``help``, ``usage`` and ``version`` actions, and is installed to
 ``$(datadir)/eselect/modules/`` ::
 
+
     # Copyright 1999-2005 Gentoo Foundation
     # Distributed under the terms of the GNU General Public License v2
     # $Id: $
 
     DESCRIPTION="Do things to a cow"
-    MAINTAINER="foo@gentoo.org"
-    SVN_DATE='$Date: $'
-    VERSION=$(svn_date_to_version "${SVN_DATE}")
+    MAINTAINER="ciaranm@gentoo.org"
+    SVN_DATE='$Date: 2005-10-16 19:31:47 +0100 (Sun, 16 Oct 2005) $'
+    VERSION=$(svn_date_to_version "${SVN_DATE}" )
 
     ### moo action
 
     describe_moo() {
-            echo "Say moo"
+        echo "Say moo"
+    }
+
+    describe_moo_parameters() {
+        echo "<text>"
+    }
+
+    describe_moo_options() {
+        echo "text : Text to display (optional)"
+        echo "--dead : Use a dead cow"
+        echo "--borg : Use a borged cow"
     }
 
     do_moo() {
-            echo "${@:-I am a cow}" | cowsay
+        local params=
+        while [[ ${1#--} != ${1} ]] ; do
+            if [[ "--dead" == ${1} ]] ; then
+                shift
+                params="${params} -d"
+            elif [[ "--borg" == "${1}" ]] ; then
+                shift
+                params="${params} -b"
+            elif [[ "--" == "${1}" ]] ; then
+                break
+            else
+                die -q "Unknown parameter ${1}"
+            fi
+        done
+
+        echo "${@:-I am a cow}" | cowsay ${params}
     }
 
     ### think action
 
     describe_think() {
-            echo "Show a pensive cow"
+        echo "Show a pensive cow"
+    }
+
+    describe_think_parameters() {
+        echo "<text>"
+    }
+
+    describe_think_options() {
+        echo "text : Text to display"
+        echo "--sheep : Use a sheep rather than a cow"
     }
 
     do_think() {
-            echo "${@:-Am I a cow?}" | cowthink
+        local params=
+        while [[ ${1#--} != ${1} ]] ; do
+            if [[ "--sheep" == ${1} ]] ; then
+                shift
+                params="${params} -f sheep"
+            elif [[ "--" == "${1}" ]] ; then
+                break
+            else
+                die -q "Unknown parameter ${1}"
+            fi
+        done
+
+        echo "${@:-Am I a cow?}" | cowthink ${params}
     }
 
 As you can see, the format is fairly similar to that of an ebuild -- it is a
@@ -76,7 +123,8 @@ Unlike ebuilds, the function names are not fixed. Any function whose name starts
 with ``do_`` is considered to be an action implementation. It is conventional to
 have a ``describe_`` function for every ``do_`` function that gives a short
 description of the function -- this is used for ``eselect modulename help``,
-for example.
+for example. The ``describe_action_options`` and ``describe_action_parameters``
+functions are optional.
 
 .. Note:: If eselect is invoked as ``cow-config`` or ``cow-update`` (for
   example, via a symlink), it will automatically select the cow module.
@@ -203,6 +251,9 @@ The ``write_numbered_list`` function is a wrapper around
 ``write_numbered_list_entry`` that handles the numbering automatically. Each
 parameter passed is displayed as a numbered list item, the first with index 1,
 the second with index 2 and so on.
+
+If -p is passed as the first argument to these functions, 'plain' highlighting
+is used.
 
 The ``highlight`` Function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,

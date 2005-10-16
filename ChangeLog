@@ -2,6 +2,7 @@ ChangeLog for eselect
 
 2005-10-16 Ciaran McCreesh
 
+	* doc/developer-guide.txt: Documentation for options and parameters.
 	* modules/bashcomp.eselect, modules/profile.eselect,
 	modules/cow.eselect: Implement actions and parameters.
 	* libs/default.eselect.in: Add describe_action_options and
