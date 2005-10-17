@@ -11,7 +11,8 @@ VERSION=$(svn_date_to_version "${SVN_DATE}")
 
 # get a list of valid profiles
 find_targets() {
-	portdir=$(portageq portdir 2>/dev/null)
+	local p portdir=${1}
+	[[ -n "${portdir}" ]] || portdir=$(portageq portdir)
 
 	for p in $(sed -n -e "s|^$(arch)[[:space:]]\+\([^[:space:]]\+\).*$|\1|p" \
 		${ROOT}/${portdir}/profiles/profiles.desc)
@@ -27,13 +28,14 @@ remove_symlink() {
 
 # set the make.profile symlink
 set_symlink() {
-	portdir=$(portageq portdir 2>/dev/null)
-	target=${1}
+	local portdir=$(portageq portdir) target=${1} targets
 	if is_number "${target}" ; then
-		targets=( $(find_targets) )
+		targets=( $(find_targets "${portdir}") )
 		target=${targets[$(( ${target} - 1 ))]}
 	elif [[ -n "${target}" && -d "${ROOT}/${portdir}/profiles/${target}" ]]
 	then
+		local arch parch
+
 		# if the profile was explicitly specified (rather than a number)
 		# double check and make sure it's valid
 		arch=$(arch)
@@ -75,8 +77,8 @@ describe_show() {
 do_show() {
 	write_list_start "Current make.profile symlink:"
 	if [[ -L "${ROOT}/etc/make.profile" ]] ; then
-		link=$(readlink ${ROOT}/etc/make.profile)
-		portdir=$(portageq portdir 2>/dev/null)
+		local link=$(readlink ${ROOT}/etc/make.profile)
+		local portdir=$(portageq portdir)
 		link=${link##..${ROOT}/${portdir}/profiles/}
 		write_kv_list_entry "${link}" ""
 	else
@@ -91,8 +93,9 @@ describe_list() {
 }
 
 do_list() {
+	local active targets
 	targets=( $(find_targets) )
-	local active=$(readlink ${ROOT}/etc/make.profile)
+	active=$(readlink ${ROOT}/etc/make.profile)
 	active=${active##*profiles/}
 	if [[ -n ${targets[@]} ]] ; then
 		local i
