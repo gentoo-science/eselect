@@ -1,0 +1,41 @@
+.TH "ESELECT" "5" "October 2005", "Gentoo Linux" "eselect"
+.SH "NAME"
+kernel\.eselect \- The kernel symlink management module for Gentoo's eselect
+.SH "SYNOPSIS"
+\fBeselect kernel\fR [\fBhelp\fR|\fBusage\fR]
+.br
+\fBeselect kernel\fR \fBlist\fR
+.br
+\fBeselect kernel\fR \fBset\fR \fItarget\fR
+.br
+\fBeselect kernel\fR \fBshow\fR
+
+.SH "DESCRIPTION"
+\fBeselect\fR is Gentoo's configuration and management tool. It features
+modules that care for the individual administrative tasks.
+.SH "ACTION: LIST"
+\fBeselect kernel list\fR
+.br
+Displays an ordered list of available kernels.  An asterisk next to one of
+the list elements denotes the currently selected kernel.
+
+# eselect kernel list
+.br
+Available kernel symlink targets:
+  [1]   linux-2.6.11.11
+  [2]   linux-2.6.12.5 *
+  [3]   linux-2.6.13-rc6
+.SH "ACTION: SET"
+\fBeselect kernel set\fR \fItarget\fR
+.br
+Set /usr/src/linux symlink to point to the specified kernel name, \fItarget\fR.
+The \fItarget\fR argument may be a kernel name or it's associated number (displayed
+in \fBeselect kernel list\fR output).
+.SH "ACTION: SHOW"
+\fBeselect kernel show\fR
+.br
+Show the currently selected kernel.
+.SH "AUTHORS"
+Aaron Walker <ka0ttic@gentoo.org>
+.SH "REVISION"
+$Id$
