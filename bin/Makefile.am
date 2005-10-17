@@ -1,8 +1,6 @@
 bin_SCRIPTS = eselect
 EXTRA_DIST = eselect.in
 
-symlinks = kernel-config profile-config rc-config bashcomp-config
-
 dosed = @SED@ -e 's,%DATADIR%,$(datadir),g' \
 	      -e 's,%VERSION%,$(VERSION),g'
 
