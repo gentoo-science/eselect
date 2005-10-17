@@ -36,35 +36,14 @@ is_enabled() {
 	return 0
 }
 
-#find_enabled() {
-#	for x in $(find_targets) ; do
-#		is_enabled ${1:-} ${x} && echo ${x}
-#	done
-#}
-
-### show action ###
-
-#describe_show() {
-#	echo "Show currently enabled completions"
-#}
-
-#do_show() {
-#	enabled=( $(find_enabled ${1:-}) )
-#	write_list_start "Currently enabled completions:"
-
-#	if [[ -n "${enabled[@]}" ]] ; then
-#		write_numbered_list "${enabled[@]}"
-#	else
-#		write_kv_list_entry "No completions currently enabled" ""
-#	fi
-
-#	return 0
-#}
-
 ### list action ###
 
 describe_list() {
 	echo "List available completions"
+}
+
+describe_list_options() {
+	echo "--global : List globally enabled completions"
 }
 
 do_list() {
