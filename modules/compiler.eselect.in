@@ -8,7 +8,7 @@ DESCRIPTION="Manage the installed compilers."
 MAINTAINER="toolchain@gentoo.org"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}" )
-EBUILD_VERSION="2.0.0_beta4"
+EBUILD_VERSION="2.0.0_rc1"
 
 # Our data
 ROOT=${ROOT:-/}
@@ -20,24 +20,6 @@ PROFILE_MANAGER="@evallibexecdir@/eselect/compiler/profile-manager"
 show_extra_help_text() {
 	write_list_start "Extra options for all actions:"
 	write_kv_list_entry "-u, --user" "Use ${HOME}/@userconfigdir@ to override global settings."	
-	echo ""
-	write_list_start "Extra options for 'set' action:"
-	write_kv_list_entry "-b, --bindir=<dir>" "Install the wrappers into this directory.  If -u is specified and this is not, no wrappers will be installed."
-	write_kv_list_entry "-c, --ctarget=<CTARGET>" "Install this profile using the specified CTARGET rather than the default."
-	write_kv_list_entry "-n, --native" "Make this the native CTARGET."
-	echo
-	write_list_start "Extra options for 'getval' action:"
-	write_kv_list_entry "-c, --ctarget=<CTARGET>" "Get the variable for the active profile of the given CTARGET."
-	write_kv_list_entry "-p, --profile=<PROFILE>" "Get the variable for the given profile."
-	echo	
-	write_list_start "Possible values to pass to 'getval' action:"
-	write_kv_list_entry "BINPATH" "The location of the binaries."
-	write_kv_list_entry "INFOPATH" "The location of the info documentation."
-	write_kv_list_entry "MANPATH" "The location of the man pages."
-	write_kv_list_entry "LDPATH" "The location of the libraries."
-	write_kv_list_entry "STDCXX_INCDIR" "The stdcxx include dir."
-	write_kv_list_entry "GCC_SPECS" "The specs file used."
-	write_kv_list_entry "CFLAGS" "The CFLAGS that are automatically prepended."
 }
 
 ### Helpers ###
@@ -203,6 +185,37 @@ describe_getval() {
 	echo "Print information for the given profile.  It takes a variable name as an argument."
 }
 
+describe_getval_parameters() {
+	echo "<value>"
+}
+
+describe_getval_options() {
+	echo "<value> : The value to get (see below)."
+	echo "-c, --ctarget=<CTARGET> : Get the variable for the active profile of the given CTARGET."
+	echo "-p, --profile=<PROFILE> : Get the variable for the given profile."
+	echo ""
+	echo "BINPATH : The location of the binaries."
+	echo "INFOPATH : The location of the info documentation."
+	echo "MANPATH : The location of the man pages."
+	echo "LDPATH : The location of the libraries."
+	echo "STDCXX_INCDIR : The stdcxx include dir."
+	echo "GCC_SPECS : The specs file used."
+	echo "CFLAGS : The CFLAGS that are automatically prepended."
+
+	#write_list_start "Extra options for 'getval' action:"
+	#write_kv_list_entry "-c, --ctarget=<CTARGET>" "Get the variable for the active profile of the given CTARGET."
+	#write_kv_list_entry "-p, --profile=<PROFILE>" "Get the variable for the given profile."
+	#echo	
+	#write_list_start "Possible values to pass to 'getval' action:"
+	#write_kv_list_entry "BINPATH" "The location of the binaries."
+	#write_kv_list_entry "INFOPATH" "The location of the info documentation."
+	#write_kv_list_entry "MANPATH" "The location of the man pages."
+	#write_kv_list_entry "LDPATH" "The location of the libraries."
+	#write_kv_list_entry "STDCXX_INCDIR" "The stdcxx include dir."
+	#write_kv_list_entry "GCC_SPECS" "The specs file used."
+	#write_kv_list_entry "CFLAGS" "The CFLAGS that are automatically prepended."
+}
+
 do_getval() {
 	local ctarget
 	local profile
@@ -275,6 +288,22 @@ describe_set() {
 	echo "Select a compiler profile."
 }
 
+describe_set_parameters() {
+	echo "<profile>"
+}
+
+describe_set_options() {
+	echo "<profile> : The profile to activate, either by name or number."
+	echo "-b, --bindir=<dir> : Install the wrappers into this directory (default: /usr/bin).  If -u is specified and this is not, no wrappers will be installed."
+	echo "-c, --ctarget=<CTARGET> : Install this profile using the specified CTARGET rather than the default."
+	echo "-n, --native : Make this the native CTARGET."
+
+	#write_list_start "Extra options for 'set' action:"
+	#write_kv_list_entry "-b, --bindir=<dir>" "Install the wrappers into this directory.  If -u is specified and this is not, no wrappers will be installed."
+	#write_kv_list_entry "-c, --ctarget=<CTARGET>" "Install this profile using the specified CTARGET rather than the default."
+	#write_kv_list_entry "-n, --native" "Make this the native CTARGET."
+}
+
 do_set() {
 	local preopts postopts profile oldprofile ctarget bindir olddefaultbins oldbins newbins set_v userconf ref
 
@@ -344,16 +373,21 @@ do_set() {
 		ctarget=${COMPILER_CONFIG_CTARGET}
 	fi
 
-	# Figure out what bins are installed for the default CTARGET in case we are or are becoming default
-	set_v="COMPILER_CONFIG_SET_${COMPILER_CONFIG_DEFAULT_CTARGET}"
-	if [[ -n ${!set_v} ]] ; then
-		oldprofile=${!set_v}
+	# Assume --native if we don't have a default set
+	if [[ ${COMPILER_CONFIG_DEFAULT_CTARGET} == "(null)" ]] ; then
+		postopts="${postopts} --native"
+	else
+		# Figure out what bins are installed for the default CTARGET in case we are or are becoming default
+		set_v="COMPILER_CONFIG_SET_${COMPILER_CONFIG_DEFAULT_CTARGET}"
+		if [[ -n ${!set_v} ]] ; then
+			oldprofile=${!set_v}
 
-		if eval_pm ${preopts} get-profile ${oldprofile} ; then
-			olddefaultbins="$(get_bins "${ROOT}/${COMPILER_CONFIG_BINPATH}") ${COMPILER_CONFIG_ALIASES}"
-		else
-			write_error_msg "Could not get data on the previous profile for the default CTARGET (${oldprofile})."
-  		write_error_msg "You may have extra wrappers installed that you did not intend."
+			if eval_pm ${preopts} get-profile ${oldprofile} ; then
+				olddefaultbins="$(get_bins "${ROOT}/${COMPILER_CONFIG_BINPATH}") ${COMPILER_CONFIG_ALIASES}"
+			else
+				write_error_msg "Could not get data on the previous profile for the default CTARGET (${oldprofile})."
+ 	 		write_error_msg "You may have extra wrappers installed that you did not intend."
+			fi
 		fi
 	fi
 
@@ -608,7 +642,7 @@ do_migrate() {
 
 		[[ -f "${CONFIG_D}/${ctarget}-${version}.conf" ]] || migrate_profile ${ctarget}-${version}
 	done
-	
+
 	for file in ${envd}/config* ; do
 		[[ -f ${file} ]] || continue
 
