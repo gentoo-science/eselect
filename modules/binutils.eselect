@@ -182,6 +182,14 @@ describe_set() {
 	echo "Activate one of the installed binutils"
 }
 
+describe_set_parameters() {
+	echo "<target>"
+}
+
+describe_set_options() {
+	echo "target : Target name or number (from 'list' action)"
+}
+
 do_set() {
 		[[ ${#@} == 1 ]] \
 			|| die -q "Please specify exactly one version to activate!"

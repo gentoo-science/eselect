@@ -79,6 +79,14 @@ describe_set() {
 	echo "Set a new kernel symlink target"
 }
 
+describe_set_parameters() {
+	echo "<target>"
+}
+
+describe_set_options() {
+	echo "target : Target name or number (from 'list' action)"
+}
+
 do_set() {
 	if [[ -z ${1} ]] ; then
 		# no parameter
