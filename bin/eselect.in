@@ -169,11 +169,8 @@ fi
 
 if [[ -z ${action} ]] && [[ -n ${1##--} ]] ; then
     while [[ ${1##--} != ${1} ]] ; do
-        if ! has ${1##--} "${ESELECT_KNOWN_OPTIONS[@]}" ; then
-                write_error_msg "Unknown option ${1} ignored!"
-                shift
-                continue
-        fi
+        has ${1##--} "${ESELECT_KNOWN_OPTIONS[@]}" || \
+            die -q "Unknown option ${1}!"
         case ${1##--} in
             no-colour|no-color)
                 ESELECT_OPTIONS=(${ESELECT_OPTIONS[@]} "NOCOLOUR")

@@ -22,6 +22,8 @@ ChangeLog for eselect
 	user doesn't specify them.  Also added describe_action_options and
 	describe_action_parameters for each action that requires a parameter.
 	Also fixed vim ft s/ebuild/eselect/.
+	* bin/eselect.in: Bail if user specifies an invalid global option
+	instead of just ignoring it.
 
 2005-10-16 Jeremy Huddleston <eradicator@gentoo.org>
 	* modules/compiler.eselect.in: Added describe_*_{parameters,options}
