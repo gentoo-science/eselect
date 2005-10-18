@@ -279,7 +279,7 @@ describe_restart_options() {
 do_restart() {
 	[[ ${#@} -gt 0 ]] \
 		|| die -q "Please specify the init script to be restarted!"
-	run_runscript restart "Restarting init script$([[ ${#@} -gt 1]] && echo -ne 's')" ${@}
+	run_runscript restart "Restarting init script$([[ ${#@} -gt 1 ]] && echo -ne 's')" ${@}
 }
 
 # vim: set ft=eselect :
