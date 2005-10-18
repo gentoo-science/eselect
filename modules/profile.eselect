@@ -11,10 +11,13 @@ VERSION=$(svn_date_to_version "${SVN_DATE}")
 
 # get a list of valid profiles
 find_targets() {
-	local p portdir=${1}
+	local arch p portdir=${1}
 	[[ -n "${portdir}" ]] || portdir=$(portageq portdir)
 
-	for p in $(sed -n -e "s|^$(arch)[[:space:]]\+\([^[:space:]]\+\).*$|\1|p" \
+	arch=$(arch)
+	[[ -z "${arch}" ]] && return 1
+
+	for p in $(sed -n -e "s|^${arch}[[:space:]]\+\([^[:space:]]\+\).*$|\1|p" \
 		${ROOT}/${portdir}/profiles/profiles.desc)
 	do
 		echo ${p}
@@ -31,6 +34,7 @@ set_symlink() {
 	local portdir=$(portageq portdir) target=${1} targets
 	if is_number "${target}" ; then
 		targets=( $(find_targets "${portdir}") )
+		[[ -z "${targets}" ]] && die -q "Failed to get a list of valid profiles"
 		target=${targets[$(( ${target} - 1 ))]}
 	elif [[ -n "${target}" && -d "${ROOT}/${portdir}/profiles/${target}" ]]
 	then
@@ -39,6 +43,7 @@ set_symlink() {
 		# if the profile was explicitly specified (rather than a number)
 		# double check and make sure it's valid
 		arch=$(arch)
+		[[ -z "${arch}" && ${2} != "--force" ]] && return 1
 
 		# do a reverse lookup and find the arch associated with ${target}
 		parch=$(sed -n -e "s|^\([[:alnum:]]\+\)[[:space:]].*${target}.*$|\1|p" \
@@ -95,6 +100,9 @@ describe_list() {
 do_list() {
 	local active targets
 	targets=( $(find_targets) )
+
+	[[ -z "${targets}" ]] && die -q "Failed to get a list of valid profiles"
+
 	active=$(readlink ${ROOT}/etc/make.profile)
 	active=${active##*profiles/}
 	if [[ -n ${targets[@]} ]] ; then

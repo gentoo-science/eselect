@@ -17,6 +17,8 @@ ChangeLog for eselect
 	die()'ing as the caller may want to do something anyways and exit
 	successfully ("eselect profile set --force" for example).  Also fixed
 	errant 'i' in '[[ -z ${ROOT}i ]]' and also fixed indenting.
+	* modules/profile.eselect: Check the return value of arch() and
+	find_targets() and bail if necessary.
 
 2005-10-17 Aaron Walker <ka0ttic@gentoo.org>
 	
