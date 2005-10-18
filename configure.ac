@@ -1,4 +1,4 @@
-AC_INIT(eselect, 0.9.6, eselect@gentoo.org, eselect)
+AC_INIT(eselect, 1.0_rc1, eselect@gentoo.org, eselect)
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(bin/eselect.in)
 AC_CONFIG_AUX_DIR(config)
