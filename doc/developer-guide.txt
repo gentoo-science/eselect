@@ -233,6 +233,12 @@ The ``write_error_msg`` Function
 The ``write_error_msg`` function displays an error message in the standard
 format. It is similar to ``eerror``.
 
+The ``write_warning_msg`` Function
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+The ``write_warning_msg`` function displays a warning message in the standard
+format. It is similar to ``ewarn``.
+
 The ``write_list_`` Functions
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 

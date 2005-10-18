@@ -9,6 +9,9 @@ ChangeLog for eselect
 	distro's/OS's install it without the .py extension.  Also, don't
 	bail if portageq isn't found as eselect is supposed to be usable even
 	on non-Gentoo systems.
+	* libs/output.bash.in, doc/developer-guide.txt: Added
+	write_warning_msg function. Similar to write_error_msg but uses "!!!
+	Warning" and ${COLOUR_WARN}.
 
 2005-10-17 Aaron Walker <ka0ttic@gentoo.org>
 	
