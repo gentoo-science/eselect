@@ -11,12 +11,17 @@ ChangeLog for eselect
 	optional argument, portdir, so that if specified it doesn't need to
 	invoke portageq.  This prevents portageq from being invoked twice when
 	the 'set' action is executed.
-	* modules/kernel.eselect, modules/binutils.eselect: Add
-	describe_set_options and describe_set_parameters.
+	* modules/kernel.eselect, modules/binutils.eselect,
+	modules/mailer.eselect: Add describe_set_options and
+	describe_set_parameters.
 	* modules/bashcomp.eselect: Add describe_list_options since it also
 	accepts --global.
 	* man/kernel.eselect.5: Added manual page for kernel.eselect.
 	* man/profile.eselect.5: Fixed a typo.
+	* modules/rc.eselect: Bail on actions that require paramaters when the
+	user doesn't specify them.  Also added describe_action_options and
+	describe_action_parameters for each action that requires a parameter.
+	Also fixed vim ft s/ebuild/eselect/.
 
 2005-10-16 Jeremy Huddleston <eradicator@gentoo.org>
 	* modules/compiler.eselect.in: Added describe_*_{parameters,options}

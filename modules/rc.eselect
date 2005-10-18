@@ -58,7 +58,7 @@ run_runscript() {
 	shift
 	for script in ${@} ; do
 		is_script ${ROOT}/etc/init.d/${script} \
-			&& /sbin/runscript ${ROOT}/etc/init.d/${script} ${command} 
+			&& /sbin/runscript ${ROOT}/etc/init.d/${script} ${command}
 	done
 }
 
@@ -66,6 +66,16 @@ run_runscript() {
 
 describe_add() {
 	echo "Add script to existing runlevel(s)"
+}
+
+describe_add_parameters() {
+	echo "<script>"
+	echo "<runlevels>"
+}
+
+describe_add_options() {
+	echo "script : Init script (from 'list' action)"
+	echo "runlevels : Runlevels to add to (defaults to 'default')"
 }
 
 do_add() {
@@ -101,6 +111,16 @@ describe_delete() {
 	echo "Delete script from existing runlevel(s)"
 }
 
+describe_delete_parameters() {
+	echo "<script>"
+	echo "<runlevels>"
+}
+
+describe_delete_options() {
+	echo "script : Init script (from 'list' action)"
+	echo "runlevels : Runlevels to delete from (defaults to 'default')"
+}
+
 do_delete() {
 	[[ ${#@} -gt 0 ]] \
 		|| die -q "Please specify the init script to be deleted!"
@@ -130,6 +150,14 @@ do_delete() {
 
 describe_list() {
 	echo "List all available init scripts"
+}
+
+describe_list_parameters() {
+	echo "<runlevel>"
+}
+
+describe_list_options() {
+	echo "runlevel : Runlevel to list (defaults to all)"
 }
 
 do_list() {
@@ -180,7 +208,17 @@ describe_start() {
 	echo "Start given set of init scripts manually"
 }
 
+describe_start_parameters() {
+	echo "<scripts>"
+}
+
+describe_start_options() {
+	echo "scripts : Init scripts to start"
+}
+
 do_start() {
+	[[ ${#@} -gt 0 ]] \
+		|| die -q "Please specify the init script to be started!"
 	run_runscript start "Starting init script$([[ ${#@} -gt 1 ]] && echo -ne 's')" ${@}
 }
 
@@ -190,7 +228,17 @@ describe_stop() {
 	echo "Stop given set of init scripts manually"
 }
 
+describe_stop_parameters() {
+	echo "<scripts>"
+}
+
+describe_stop_options() {
+	echo "scripts : Init scripts to stop"
+}
+
 do_stop() {
+	[[ ${#@} -gt 0 ]] \
+		|| die -q "Please specify the init script to be stopped!"
 	run_runscript stop "Stopping init script$([[ ${#@} -gt 1 ]] && echo -ne 's')" ${@}
 }
 
@@ -200,7 +248,17 @@ describe_pause() {
 	echo "Pauses given set of init scripts manually"
 }
 
+describe_pause_parameters() {
+	echo "<scripts>"
+}
+
+describe_pause_options() {
+	echo "scripts : Init scripts to pause"
+}
+
 do_pause() {
+	[[ ${#@} -gt 0 ]] \
+		|| die -q "Please specify the init script to be paused!"
 	run_runscript pause "Pausing init script$([[ ${#@} -gt 1 ]] && echo -ne 's')" ${@}
 }
 
@@ -210,8 +268,18 @@ describe_restart() {
 	echo "Restart given set of init scripts"
 }
 
+describe_restart_parameters() {
+	echo "<scripts>"
+}
+
+describe_restart_options() {
+	echo "scripts : Init scripts to restart"
+}
+
 do_restart() {
+	[[ ${#@} -gt 0 ]] \
+		|| die -q "Please specify the init script to be restarted!"
 	run_runscript restart "Restarting init script$([[ ${#@} -gt 1]] && echo -ne 's')" ${@}
 }
 
-# vim: set ft=ebuild :
+# vim: set ft=eselect :
