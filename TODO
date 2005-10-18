@@ -1,14 +1,6 @@
 Possible TODO list. Not complete, just a collection of random thoughts for
 things we might otherwise forget. More for core ideas than ideas for new
 modules... Don't bother using the ChangeLog for this file.
- 
-Targets for 1.0.0
-=================
-
-* inherit / import functionality -- we could use some way of having a set of
-  common actions for, for example, alternatives-style plugins. Probably just a
-  wrapper around source and a few variables. Should be dead easy to do once we
-  figure out interface details. (all)
 
 Targets for 1.1.0
 =================
