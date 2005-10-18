@@ -5,7 +5,7 @@ noinst_DATA = $(foreach f, $(doc_files), $(f).txt)
 html: $(foreach f, $(doc_files), $(f).html )
 
 %.html : %.txt
-	rst2html.py < $? > $@
+	@RST2HTML@ < $? > $@
 
 CLEANFILES = $(foreach f, $(doc_files), $(f).html)
 MAINTAINERCLEANFILES = Makefile.in

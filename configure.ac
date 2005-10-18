@@ -17,18 +17,19 @@ if test x$BASH = "x" ; then
     AC_MSG_ERROR([bash is required])
 fi
 
-unset SED
 ES_PROG_GNU_SED
 if test x$SED = "x" ; then
     AC_MSG_ERROR([GNU sed is required])
 fi
 
-unset PORTAGEQ
 AC_PATH_PROG(PORTAGEQ, portageq)
-if test x$PORTAGEQ = "x" ; then
-    AC_MSG_ERROR([Portage is required])
+
+# Gentoo uses rst2html.py but most other
+# distro's/OS's install it w/o the .py extension
+AC_PATH_PROG(RST2HTML, rst2html)
+if test x$RST2HTML = "x" ; then
+    AC_PATH_PROG(RST2HTML, rst2html.py)
 fi
-AC_SUBST(PORTAGEQ)
 
 AC_MSG_CHECKING([whether dodgy modules should be installed])
 AC_ARG_ENABLE(dodgy_modules,

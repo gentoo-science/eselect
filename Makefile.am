@@ -22,4 +22,4 @@ html: $(foreach f, $(doc_files), $(f).html)
 	cd doc && $(MAKE) html
 
 %.html: %
-	rst2html.py < $? > $@
+	@RST2HTML@ < $? > $@

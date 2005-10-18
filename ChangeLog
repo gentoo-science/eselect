@@ -4,6 +4,11 @@ ChangeLog for eselect
 
 	* modules/rc.eselect: Added missing space after the '1' in
 	"[[ ${#@} -gt 1]]" which caused an unexpected EOF in do_restart().
+	* configure.ac, Makefile.am, doc/Makefile.am: Added check for rst2html
+	and don't assume it is installed as 'rst2html.py' as most other
+	distro's/OS's install it without the .py extension.  Also, don't
+	bail if portageq isn't found as eselect is supposed to be usable even
+	on non-Gentoo systems.
 
 2005-10-17 Aaron Walker <ka0ttic@gentoo.org>
 	
