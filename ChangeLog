@@ -12,6 +12,11 @@ ChangeLog for eselect
 	* libs/output.bash.in, doc/developer-guide.txt: Added
 	write_warning_msg function. Similar to write_error_msg but uses "!!!
 	Warning" and ${COLOUR_WARN}.
+	* libs/portage.bash.in: Have arch() use new write_warning_msg to print
+	a warning and return 1 if it cannot determine the arch instead of
+	die()'ing as the caller may want to do something anyways and exit
+	successfully ("eselect profile set --force" for example).  Also fixed
+	errant 'i' in '[[ -z ${ROOT}i ]]' and also fixed indenting.
 
 2005-10-17 Aaron Walker <ka0ttic@gentoo.org>
 	

@@ -20,37 +20,44 @@
 # arch
 # Return the architecture we're running on...
 arch() {
-	local ret=$(portageq envvar ARCH 2>/dev/null) suffix
+    local ret=$(portageq envvar ARCH 2>/dev/null) suffix
 
-	# $arch will be null if there's no current make.profile symlink
-	# we cannot get a list of valid profiles without it.
-	if [[ -z ${ret} ]] ; then
-		[[ -z ${ROOT}i || ${ROOT} == / ]] \
-                    || die -q "Failed to determine \${ARCH}. Is your make.profile symlink valid?"
-                ret=$(uname -m)
-                case ${ret} in
-                    alpha|ia64|ppc) ;;
-                    i?86) ret=x86 ;;
-                    mips*) ret=mips ;;
-                    sparc*) ret=sparc ;;
-                    x86_64) ret=amd64 ;;
-                    *) die \
-                        "Unknown architecture. Please submit a bug including the output of 'uname -m'!"
-                        ;;
-                esac
+    # $arch will be null if there's no current make.profile symlink
+    # we cannot get a list of valid profiles without it.
+    if [[ -z ${ret} ]] ; then
+        
+        if [[ -n "${ROOT}" && ${ROOT} != "/" ]] ; then
+            write_warning_msg "Failed to determine \${ARCH}. Is your make.profile symlink valid?"
+            return 1
+        fi
 
-                case $(uname -s) in
-                    Linux) ;;
-                    FreeBSD) suffix="-fbsd" ;;
-                    NetBSD) suffix="-nbsd" ;;
-                    DragonFly) suffix="-dfly" ;;
-                    *) die \
-                        "Unknown OS. Please submit a bug including the output of 'uname -s'!"
-                        ;;
-                esac
-	fi
+        ret=$(uname -m)
+        case ${ret} in
+            alpha|ia64|ppc) ;;
+            i?86) ret=x86 ;;
+            mips*) ret=mips ;;
+            sparc*) ret=sparc ;;
+            x86_64) ret=amd64 ;;
+            *) write_warning_msg \
+                "Unknown architecture. Please submit a bug including the output of 'uname -m'!"
+                return 1
+                ;;
+            esac
 
-	echo ${ret}${suffix}
+            case $(uname -s) in
+                Linux) ;;
+                FreeBSD) suffix="-fbsd" ;;
+                NetBSD) suffix="-nbsd" ;;
+                OpenBSD) suffix="-obsd" ;;
+                DragonFly) suffix="-dfly" ;;
+                *) write_warning_msg \
+                    "Unknown OS. Please submit a bug including the output of 'uname -s'!"
+                    return 1
+                    ;;
+            esac
+    fi
+
+    echo ${ret}${suffix}
 }
 
 
