@@ -99,6 +99,14 @@ describe_set() {
 	echo "Set a new mailer.conf profile"
 }
 
+describe_set_parameters() {
+	echo "<target>"
+}
+
+describe_set_options() {
+	echo "target : Target name or number (from 'list' action)"
+}
+
 do_set() {
 	check_dirs
 	if [[ -z ${1} ]] ; then
