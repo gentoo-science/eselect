@@ -100,14 +100,14 @@ write_kv_list_entry() {
                 n=$(( ${n} + ${#text} + 1 ))
             else
                 echo -n -e "\n${indent}${cwords[i]} "
-                n=$(( 28 + ${#text} + 1 ))
+                n=$(( ${#indent} + ${#text} + 1 ))
             fi
             i=$(( ${i} + 1 ))
         done
-        echo -e "${COLOUR_NORMAL}"
     else
-        echo -e "${cwords}${COLOUR_NORMAL}"
+        echo -n -e "${cwords}"
     fi
+    echo -e "${COLOUR_NORMAL}"
 }
 
 # write_numbered_list_entry PUBLIC

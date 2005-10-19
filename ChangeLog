@@ -2,6 +2,8 @@ ChangeLog for eselect
 
 2005-10-19 Aaron Walker <ka0ttic@gentoo.org>
 
+	* libs/output.bash.in: Use ${#indent} instead of a literal '28'.
+
 	* Tagged 1.0_rc1 release.
 	* libs/output.bash.in: Modified write_kv_list_entry to properly wrap
 	lines that are longer than the current terminal width.
