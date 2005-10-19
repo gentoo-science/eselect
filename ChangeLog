@@ -1,5 +1,14 @@
 ChangeLog for eselect
 
+2005-10-19 Aaron Walker <ka0ttic@gentoo.org>
+
+	* libs/output.bash.in: Modified write_kv_list_entry to properly wrap
+	lines that are longer than the current terminal width.
+	* man/bashcomp.eselect.5: Added --global as a possible option for the
+	'list' action.
+	* modules/env.eselect: Added describe_update_options and
+	describe_update_parameters.
+
 2005-10-18 Aaron Walker <ka0ttic@gentoo.org>
 
 	* modules/rc.eselect: Added missing space after the '1' in

@@ -69,20 +69,45 @@ write_list_start() {
 # highlighting rather than bold.
 write_kv_list_entry() {
     local n text left="${COLOUR_LIST_LEFT}" right="${COLOUR_LIST_RIGHT}"
+
     if [[ ${1} == "-p" ]] ; then
         left=
         right=
         shift
     fi
+
     echo -n -e "  ${left}"
     echo -n -e $(apply_text_highlights "${left}" "$1")
     echo -n -e "${COLOUR_NORMAL} "
+    
     text=${1//\%%%??%%%/}
-    space $(( 25 - ${#text} ))
+    n=$(( 25 - ${#text} ))
+    space ${n}
     echo -n -e "${right}"
-    echo -n -e $(apply_text_highlights "${right}" "$2")
-    echo -n -e "${COLOUR_NORMAL}"
-    echo
+    n=$(( ${n} + ${#text} + 2 )) # +2 for the inital "  " in the first echo
+
+    local cols=$(get_column_width) \
+        cwords="$(apply_text_highlights "${right}" "${2}")"
+    # only go through the trouble if we have to
+    text=${2//\%%%??%%%/}
+    if [[ $(( ${n} + ${#text} )) -ge ${cols} ]] ; then
+        local i=0 indent="$(space 28)"
+        cwords=(${cwords})
+        for text in ${2} ; do
+            text=${text//\%%%??%%%/}
+            if [[ $(( ${n} + ${#text} )) -lt ${cols} ]] ; then
+                echo -n -e "${cwords[i]} "
+                n=$(( ${n} + ${#text} + 1 ))
+            else
+                echo -n -e "\n${indent}${cwords[i]} "
+                n=$(( 28 + ${#text} + 1 ))
+            fi
+            i=$(( ${i} + 1 ))
+        done
+        echo -e "${COLOUR_NORMAL}"
+    else
+        echo -e "${cwords}${COLOUR_NORMAL}"
+    fi
 }
 
 # write_numbered_list_entry PUBLIC
@@ -124,6 +149,17 @@ write_numbered_list() {
         write_numbered_list_entry ${p} "${n}" "${item}"
         n=$(( ${n} + 1 ))
     done
+}
+
+# get_column_width INTERNAL
+# Get current column width
+get_column_width() {
+    if [[ -z "${COLS}" ]] ; then
+        COLS=( $(stty size 2>/dev/null) )
+        is_number "${COLS[1]}" && COLS=${COLS[1]} || COLS=79
+    fi
+
+    echo -n ${COLS}
 }
 
 # apply_text_highlights INTERNAL
