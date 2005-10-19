@@ -1,6 +1,37 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.0_rc1:
+    Bug fixes:
+    - Added missing description of --global flag in the bashcomp module's
+      manual page (bug #101898).
+    - kernel module's 'list' action now only lists kernels and not everything
+      in /usr/src (bug #104354).
+    - Fixed unexpected EOF error when calling the rc module's 'restart'
+      action (bug #106540).
+    - Fixed a 'file not found' bug in the rc module when encountering bogus
+      baselayouts (thanks to Mike Doty <kingtaco@gentoo.org>).
+    - Fixed bug in usage of has() library function in main eselect script
+      (thanks to Sven Wegener <swegener@gentoo.org>).
+    - Fixed unportable uses of absolute paths to binaries.
+    - Exit with an error if the user doesn't provide parameters to the various
+      rc module actions (start, stop, restart, etc).
+    - Our autogen script now works on non-linux boxen.
+    - Added symlinks for the manual pages of the modules we already provide
+      symlinks for.
+    - Added missing manual page for kernel module.
+
+    New features:
+     - inherit() support that allows dynamic and individual sourcing of
+       libraries for each module.
+     - Added support for modules to be able to describe the options/parameters
+       they accept via describe_ACTION_options() and
+       describe_ACTION_parameters().  These descriptions now show up in the
+       help/usage output for the respective module.
+     - profile module's 'set' action now accepts a --force flag for forcing the
+       setting of a profile.
+     - smart line wrapping for lines longer than the current terminal width.
+
 0.9.6:
     Bug Fixes:
     - Fixed crippled output of items that contain spaces in write_list
