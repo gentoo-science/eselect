@@ -4,7 +4,7 @@ bashcomp\.eselect \- Manage contributed bash-completion scripts
 .SH "SYNOPSIS"
 \fBeselect bashcomp\fR [\fBhelp\fR|\fBusage\fR]
 .br 
-\fBeselect bashcomp\fR \fBlist\fR
+\fBeselect bashcomp\fR \fBlist\fR [\fB\-\-global\fR]
 .br 
 \fBeselect bashcomp\fR \fBenable\fR [\fB\-\-global\fR] \fIbashcomp1 bashcomp2\fR
 .br 
@@ -14,10 +14,11 @@ bashcomp\.eselect \- Manage contributed bash-completion scripts
 \fBeselect\fR is Gentoo's configuration and management tool. It features
 modules that care for individual administrative tasks.
 .SH "ACTION: LIST"
-\fBeselect bashcomp list\fR
+\fBeselect bashcomp list\fR [\fB\-\-global\fR]
 .br 
 Displays a list of available contributed bash-completion scripts.  Enabled
-bash-completions are marked with a '*'.
+bash-completions are marked with a '*'.  If the \fB\-\-global\fR option is
+specified, list globally enabled completions.
 
 $ eselect bashcomp list
 .br 
