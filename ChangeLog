@@ -1,5 +1,9 @@
 ChangeLog for eselect
 
+2005-10-19 Jeremy Huddleston <eradicator@gentoo.org>
+
+	* modules/opengl.eselect: Added missing inherit config
+
 2005-10-19 Aaron Walker <ka0ttic@gentoo.org>
 
 	* libs/output.bash.in: Use ${#indent} instead of a literal '28'.
@@ -58,6 +62,7 @@ ChangeLog for eselect
 	instead of just ignoring it.
 
 2005-10-16 Jeremy Huddleston <eradicator@gentoo.org>
+
 	* modules/compiler.eselect.in: Added describe_*_{parameters,options}
 
 2005-10-16 Ciaran McCreesh <ciaranm@gentoo.org>
