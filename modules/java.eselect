@@ -91,10 +91,10 @@ do_set() {
 		die -q "Usage [user|system] [vm]"
 		
 	elif [[ ${1} == "system" ]]; then
-		if [[ ${EUID} == 0 ]]; then
+		if [[ -w $(dirname ${VM_SYSTEM}) ]]; then
 			my_set ${VM_SYSTEM} ${2}
 		else
-			die -q "Sorry only root can set system"
+			die -q "Sorry, you don't have enough premission to set system"
 		fi
 	elif [[ ${1} == "user" ]]; then
 		my_set ${VM_USER} ${2}

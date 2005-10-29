@@ -2,6 +2,7 @@ ChangeLog for eselect
 
 2005-10-29 Thomas Matthijs <axxo@gentoo.org>
 
+	* modules/java.eselect: Dont assume uid 0 has super powers, 
 	* modules/java.eselect: Added simple java module, for configuring 
 	system and user vm
 
