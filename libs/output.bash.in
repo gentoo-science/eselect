@@ -69,6 +69,9 @@ write_list_start() {
 # highlighting rather than bold.
 write_kv_list_entry() {
     local n text left="${COLOUR_LIST_LEFT}" right="${COLOUR_LIST_RIGHT}"
+    local key val lindent rindent ifs_save="${IFS}"
+
+    IFS=$' \t\n'
 
     if [[ ${1} == "-p" ]] ; then
         left=
@@ -76,31 +79,67 @@ write_kv_list_entry() {
         shift
     fi
 
-    echo -n -e "  ${left}"
-    echo -n -e $(apply_text_highlights "${left}" "$1")
+    lindent=${1%%[^[:space:]]*}
+    rindent=${2%%[^[:space:]]*}
+    key=${1##*([[:space:]])}
+    val=${2##*([[:space:]])}
+
+    echo -n -e "  ${lindent}${left}"
+    echo -n -e $(apply_text_highlights "${left}" "${key}")
     echo -n -e "${COLOUR_NORMAL} "
     
-    text=${1//\%%%??%%%/}
+    text=${key//\%%%??%%%/}
     n=$(( 25 - ${#text} ))
-    space ${n}
-    echo -n -e "${right}"
-    n=$(( ${n} + ${#text} + 2 )) # +2 for the inital "  " in the first echo
+
+    # if ${n} is less than or equal to zero then we have a long ${key}
+    # that will mess up the formatting of ${val}, so end the line, indent
+    # and let ${val} go on the next line.
+    if [[ ${n} -le 0 ]] ; then
+        n=$(( ${#rindent} + 28 ))
+        echo -n -e "\n$(space ${n})${right}"
+    else
+        space ${n}
+        n=$(( ${n} + 2 + ${#text} ))
+        # ${val} will already be indented by ${lindent} so only use the
+        # difference of ${rindent} and ${lindent} as the right indent
+        if [[ ${#rindent} -eq ${#lindent} ]] ; then
+            n=$(( ${n} + ${#lindent} ))
+        else
+            space $(( ${#rindent} - ${#lindent} ))
+            n=$(( ${n} + ${#rindent} - ${#lindent} ))
+        fi
+        echo -n -e "${right}"
+    fi
 
     local cols=$(get_column_width) \
-        cwords="$(apply_text_highlights "${right}" "${2}")"
-    # only go through the trouble if we have to
-    text=${2//\%%%??%%%/}
+        cwords="$(apply_text_highlights "${right}" "${val}")"
+
+    text=${val//\%%%??%%%/}
+    # only loop if it doesn't fit on the same line
     if [[ $(( ${n} + ${#text} )) -ge ${cols} ]] ; then
-        local i=0 indent="$(space 28)"
-        cwords=(${cwords})
-        for text in ${2} ; do
+        local i=0
+        rindent="${rindent}$(space 28)"
+        cwords=( ${cwords} )
+        for text in ${val} ; do
             text=${text//\%%%??%%%/}
-            if [[ $(( ${n} + ${#text} )) -lt ${cols} ]] ; then
-                echo -n -e "${cwords[i]} "
-                n=$(( ${n} + ${#text} + 1 ))
+            # put the word on the same line if it fits
+            if [[ $(( ${n} + ${#text} + 1 )) -lt ${cols} ]] ; then
+                echo -n -e "${cwords[i]}"
+                n=$(( ${n} + ${#text} ))
+                # only append a space if we're not on the last word
+                if [[ ${i} -ne ${#cwords} ]] ; then
+                    echo -n ' '
+                    n=$(( ${n} + 1 ))
+                fi
+            # otherwise, start a new line and indent
             else
-                echo -n -e "\n${indent}${cwords[i]} "
-                n=$(( ${#indent} + ${#text} + 1 ))
+                echo -n -e "\n${rindent}${cwords[i]}"
+                n=$(( ${#rindent} + ${#text} ))
+                # only append a space if we're not on the last word
+                if [[ ${i} -ne ${#cwords} ]] ; then
+                    echo -n ' '
+                    n=$(( ${n} + 1 ))
+                fi
             fi
             i=$(( ${i} + 1 ))
         done
@@ -108,6 +147,7 @@ write_kv_list_entry() {
         echo -n -e "${cwords}"
     fi
     echo -e "${COLOUR_NORMAL}"
+    IFS="${ifs_save}"
 }
 
 # write_numbered_list_entry PUBLIC

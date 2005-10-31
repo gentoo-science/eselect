@@ -1,10 +1,17 @@
 ChangeLog for eselect
 
+2005-10-30 Aaron Walker <ka0ttic@gentoo.org>
+
+	* libs/output.bash.in: Updated write_kv_list_entry with several bug
+	fixes: now handles args with leading whitespace appropriately, doesn't
+	append a ' ' onto the end of lines, displays the value on the next
+	line if key is too long.
+
 2005-10-29 Thomas Matthijs <axxo@gentoo.org>
 
 	* modules/java.eselect: Dont assume uid 0 has super powers, 
 	* modules/java.eselect: Added simple java module, for configuring 
-	system and user vm
+	system and user vm.
 
 2005-10-19 Jeremy Huddleston <eradicator@gentoo.org>
 
