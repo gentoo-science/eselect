@@ -1,5 +1,10 @@
 ChangeLog for eselect
 
+2005-11-01 Ciaran McCreesh <ciaranm@gentoo.org>
+
+	* bin/eselect.in: Add read- and -reader symlink module name decoding
+	voodoo options.
+
 2005-10-30 Aaron Walker <ka0ttic@gentoo.org>
 
 	* libs/output.bash.in: Updated write_kv_list_entry with several bug
