@@ -100,16 +100,19 @@ load_config() {
     echo ${value}
 }
 
-# add_config file key item ... PUBLIC
-# Adds $item to already stored value of $key in $configfile
-add_config() {
+# append_config file key item ... PUBLIC
+# Appends $item to already stored value of $key in $configfile
+# if $item is not already part of $key
+append_config() {
     [[ ${#@} -gt 2 ]] || die
     local configfile=${1} key=${2} item oldvalue newvalue
     shift 2
     item="$@"
     oldvalue=$(load_config ${configfile} ${key})
-    newvalue=( ${oldvalue[@]} ${item} )
-    store_config ${configfile} ${key} ${newvalue[@]}
+    if ! has ${item} ${oldvalue[@]} ; then
+        newvalue=( ${oldvalue[@]} ${item} )
+        store_config ${configfile} ${key} ${newvalue[@]}
+    fi
 }
 
 # vim: set sw=4 et sts=4 tw=80 :

@@ -365,12 +365,13 @@ The ``load_config`` function loads a stored value from the module's
 configuration file. It is invoked as ``load_config filename key``
 and prints the associated value.
 
-The ``add_config`` Function
+The ``append_config`` Function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
-The ``add_config`` function adds an item to an already stored value in the
+The ``append_config`` function appends an item to an already stored value in the
 modules configuration file. It uses ``load_config`` / ``store_config``
-internally and should be invoked as ``add_config filename key item``.
+internally and should be invoked as ``append_config filename key item``. Note that
+the item will not be appended if it occurs in the key's value already.
 
 Multilib Functions
 ------------------

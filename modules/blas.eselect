@@ -2,15 +2,15 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-inherit config multilib
+inherit config multilib portage
 
 DESCRIPTION="Manage installed BLAS implementations"
 MAINTAINER="Danny van Dyk <kugelfang@gentoo.org>"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}")
 
-BLAS_CONFIG="${ROOT}/etc/eselect/blas/blas.config"
-BLAS_IMPLEMENTATIONS="ACML ATLAS threaded-ATLAS reference"
+BLAS_CONFIG="${ROOT}/var/lib/eselect/blas/blas.config"
+BLAS_IMPLEMENTATIONS="ACML ATLAS threaded-ATLAS MKL72 reference"
 BLAS_PROFILES="C F77"
 
 # TODO
@@ -44,6 +44,18 @@ check_threaded-ATLAS() {
 	echo "${ret}"
 }
 
+check_MKL72() {
+	[[ -d ${ROOT}/opt/intel/mkl72 ]] || return
+	local dir
+	case $(arch) in
+		amd64)	dir="em64t";;
+		ia64)	dir="64";;
+		x86)	dir="32";;
+	esac
+	[[ -f ${ROOT}/opt/intel/mkl72/lib/${dir}/libmkl.so ]] \
+		&& echo "F77 C"
+}
+
 check_reference() {
 	[[ -d ${1}/blas/reference ]] || return
 	local ret
@@ -58,7 +70,7 @@ package() {
 	case ${1} in
 		ACML)		echo "sci-libs/ACML";;
 		ATLAS)		echo "sci-libs/blas-atlas";;
-		MKL)		echo "sci-libs/mkl";;
+		MKL*)		echo "sci-libs/mkl";;
 		reference)	echo "sci-libs/blas-reference";;
 		*) ;;
 	esac
@@ -92,10 +104,17 @@ is_active_threaded-ATLAS() {
 	return 1
 }
 
-#is_active_MKL() {
-#	[[ -L ${1} ]] || return 1
-#	local lib=$(readlink -sn ${1})
-#}
+is_active_MKL() {
+	[[ -L ${1} ]] || return 1
+	local lib=$(readlink -sn ${1})
+	[[ $(basename ${lib}) == libmkl.so ]] \
+		&& return 0
+	return 1
+}
+
+is_active_MKL72() {
+	is_active_MKL $@
+}
 
 is_active_reference() {
 	[[ -L ${1} ]] || return 1
@@ -150,6 +169,31 @@ setup_threaded-ATLAS() {
 	fi
 }
 
+setup_MKL72() {
+	local dir
+	case $(arch) in
+		amd64)	dir="em64t";;
+		ia64)	dir="64";;
+		x86)	dir="32";;
+	esac
+	if [[ ${2} == C ]] ; then
+		ln -sf ${ROOT}/opt/intel/mkl72/lib/${dir}/libmkl.so \
+			${1}/libcblas.so
+		ln -sf ${ROOT}/opt/intel/mkl72/lib/${dir}/libmkl.so \
+			${1}/libcblas.so.0
+		# No static library for MKL72
+		rm ${1}/libcblas.a &> /dev/null
+	elif [[ ${2} == F77 ]] ; then
+		ln -sf ${ROOT}/opt/intel/mkl72/lib/${dir}/libmkl.so \
+			${1}/libblas.so
+		ln -sf ${ROOT}/opt/intel/mkl72/lib/${dir}/libmkl.so \
+			${1}/libblas.so.0
+		rm ${1}/libblas.a &> /dev/null
+	else
+		die "Illegal profile: ${2}"
+	fi
+}
+
 setup_reference() {
 	if [[ ${2} == F77 ]] ; then
 		ln -sf ${1}/blas/reference/libblas.so ${1}/libblas.so
@@ -180,29 +224,23 @@ do_list() {
 		if [[ -n ${C_PROFILES} ]] || [[ -n ${F77_PROFILES} ]] ; then
 			if [[ -n ${C_PROFILES} ]] ; then
 				write_list_start "C/C++ profiles in ${ROOT}/usr/${libdir}"
-				n=1
 				for x in ${C_PROFILES} ; do
 					active=''
 					is_active_${x} ${ROOT}/usr/${libdir}/libcblas.so \
 						&& active=' *'
-					write_numbered_list_entry \
-						$n \
-						"${x}$(space $((12 - ${#x})))($(package ${x}))$(highlight "${active}")"
-					n=$(( n + 1))
+					write_kv_list_entry ${x} \
+						"($(package ${x}))$(highlight "${active}")"
 				done
 				echo
 			fi
 			if [[ -n ${F77_PROFILES} ]] ; then
 				write_list_start "FORTRAN 77 profiles in ${ROOT}/usr/${libdir}"
-				n=1
 				for x in ${F77_PROFILES} ; do
 					active=''
 					is_active_${x} ${ROOT}/usr/${libdir}/libblas.so \
 						&& active=' *'
-					write_numbered_list_entry \
-						$n \
-						"${x}$(space $((12 - ${#x})))($(package ${x}))$(highlight "${active}")"
-					n=$(( n + 1))
+					write_kv_list_entry ${x} \
+						"($(package ${x}))$(highlight "${active}")"
 				done
 				echo
 			fi
@@ -226,7 +264,6 @@ do_set() {
 		|| die -q "Illegal implementation: ${impl}"
 
 	for param in ${@} ; do
-		echo "param: ${param}"
 		if has ${param} ${libdirs} ; then
 			mylibdirs=(${mylibdirs[@]} ${param})
 		elif has ${param} ${BLAS_PROFILES} ; then
@@ -243,9 +280,11 @@ do_set() {
 	write_list_start "Affected language interfaces"
 	for libdir in ${libdirs} ; do
 		for prof in ${profiles} ; do
+			has ${prof} $(check_${impl} ${ROOT}/usr/${libdir}) || continue
 			if setup_${impl} ${ROOT}/usr/${libdir} ${prof} ; then
-				has ${prof} ${myprofiles} \
-					|| myprofiles=( ${myprofiles[@]} ${prof} )
+				if ! has ${prof} ${myprofiles[@]} ; then
+					myprofiles=( ${myprofiles[@]} ${prof} )
+				fi
 				store_config ${BLAS_CONFIG} "${prof}_${libdir}_CURRENT" ${impl}
 			fi
 		done
@@ -271,8 +310,9 @@ do_show() {
 			[[ ${prof} == F77 ]] && lib=libblas.so
 			impl=$(load_config ${BLAS_CONFIG} "${prof}_${libdir}_CURRENT")
 			if [[ -z ${impl} ]] ; then
-				[[ -n $(load_config ${BLAS_CONFIG} "${prof}_${libdir}") ]] \
-					&& die -q "Configuration file is broken. Please run scan."
+				write_kv_list_entry "${prefix} (${prof})" "(none)"
+				#[[ -n $(load_config ${BLAS_CONFIG} "${prof}_${libdir}") ]] \
+				#	&& die -q "Configuration file is broken. Please run scan.${prof}_${libdir}"
 			else
 				if is_active_${impl} ${ROOT}/usr/${libdir}/${lib} ; then
 					write_kv_list_entry "${prefix} (${prof})" "${impl} ($(package ${impl}))"
@@ -295,11 +335,13 @@ do_scan() {
 	[[ -e ${ROOT}/etc/eselect/blas/blas.config ]] \
 		&& rm ${ROOT}/etc/eselect/blas/blas.config
 	for libdir in $(list_libdirs) ; do
-		[[ -e ${ROOT}/usr/${libdir}/ ]] || continue
+		[[ -d ${ROOT}/usr/${libdir} ]] \
+			&& [[ ! -h ${ROOT}/usr/${libdir} ]] \
+			|| continue
 		for impl in ${BLAS_IMPLEMENTATIONS} ; do
 			for prof in $(check_${impl} ${ROOT}/usr/${libdir}/) ; do
 				if has ${prof} ${BLAS_PROFILES} ; then
-					add_config ${BLAS_CONFIG} "${prof}_${libdir}" ${impl}
+					append_config ${BLAS_CONFIG} "${prof}_${libdir}" ${impl}
 					[[ ${prof} == C ]] && lib=${ROOT}/usr/${libdir}/libcblas.so
 					[[ ${prof} == F77 ]] && lib=${ROOT}/usr/${libdir}/libblas.so
 					is_active_${impl} ${lib} \

@@ -2,15 +2,15 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-inherit config multilib
+inherit config multilib portage
 
 DESCRIPTION="Manage installed LAPACK implementations"
 MAINTAINER="Danny van Dyk <kugelfang@gentoo.org>"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}")
 
-LAPACK_CONFIG="${ROOT}/etc/eselect/lapack/lapack.config"
-LAPACK_IMPLEMENTATIONS="ACML ATLAS reference"
+LAPACK_CONFIG="${ROOT}/var/lib/eselect/lapack/lapack.config"
+LAPACK_IMPLEMENTATIONS="ACML ATLAS MKL72 reference"
 LAPACK_PROFILES="F77"
 
 # check_* $libdir
@@ -25,6 +25,16 @@ check_ATLAS() {
 	[[ -f ${1}/lapack/atlas/liblapack.so ]] && echo "F77"
 }
 
+check_MKL72() {
+	local dir
+	case $(arch) in
+		amd64)	dir="em64t";;
+		ia64)	dir="64";;
+		x86)	dir="32";;
+	esac
+	[[ -f ${ROOT}/opt/intel/mkl72/lib/${dir}/libmkl.so ]] && echo "F77"
+}
+
 check_reference() {
 	[[ -d ${1}/lapack/reference ]] || return
 	[[ -f ${1}/lapack/reference/liblapack.so ]] && echo "F77"
@@ -36,7 +46,7 @@ package() {
 	case ${1} in
 		ACML)		echo "sci-libs/ACML";;
 		ATLAS)		echo "sci-libs/lapack-atlas";;
-		MKL)		echo "sci-libs/mkl";;
+		MKL*)		echo "sci-libs/mkl";;
 		reference)	echo "sci-libs/lapack-reference";;
 		*) ;;
 	esac
@@ -59,6 +69,18 @@ is_active_ATLAS() {
 	[[ ${dir##*/} == atlas ]] \
 		&& return 0
 	return 1
+}
+
+is_active_MKL() {
+	[[ -L ${1} ]] || return 1
+	local lib=$(readlink -sn ${1})
+	[[ $(basename ${lib}) == libmkl.so ]] \
+		&& return 0
+	return 1
+}
+
+is_active_MKL72() {
+	is_active_MKL $@
 }
 
 is_active_reference() {
@@ -92,6 +114,24 @@ setup_ATLAS() {
 	fi
 }
 
+setup_MKL72() {
+	local dir
+	case $(arch) in
+		amd64)	dir="em64t";;
+		ia64)	dir="64";;
+		x86)	dir="32";;
+	esac
+	if [[ ${2} == F77 ]] ; then
+		ln -sf ${ROOT}/opt/intel/mkl72/lib/${dir}/libmkl.so \
+			${1}/liblapack.so
+		ln -sf ${ROOT}/opt/intel/mkl72/lib/${dir}/libmkl.so \
+			${1}/liblapack.so.0
+		rm ${1}/liblapack.a &> /dev/null
+	else
+		die "Illegal profile: ${2}"
+	fi
+}
+
 setup_reference() {
 	if [[ ${2} == F77 ]] ; then
 		ln -sf ${1}/lapack/reference/liblapack.so ${1}/liblapack.so
@@ -118,15 +158,12 @@ do_list() {
 		F77_PROFILES=$(load_config ${LAPACK_CONFIG} F77_${libdir})
 		if [[ -n ${F77_PROFILES} ]] ; then
 			write_list_start "FORTRAN 77 profiles in ${ROOT}/usr/${libdir}"
-			n=1
 			for x in ${F77_PROFILES} ; do
 					active=''
 					is_active_${x} ${ROOT}/usr/${libdir}/liblapack.so \
 						&& active=' *'
-					write_numbered_list_entry \
-						$n \
-						"${x}$(space $(( 12 - ${#x})))($(package ${x}))$(highlight "${active}")"
-					n=$(( n + 1))
+					write_kv_list_entry ${x} \
+						"($(package ${x}))$(highlight "${active}")"
 			done
 			echo
 		fi
@@ -149,7 +186,6 @@ do_set() {
 		|| die -q "Illegal implementation: ${impl}"
 
 	for param in ${@} ; do
-		echo "param: ${param}"
 		if has ${param} ${libdirs} ; then
 			mylibdirs=(${mylibdirs[@]} ${param})
 		elif has ${param} ${LAPACK_PROFILES} ; then
@@ -167,6 +203,7 @@ do_set() {
 	echo "  ${profiles}"
 	for libdir in ${libdirs} ; do
 		for prof in ${profiles} ; do
+			has ${prof} $(check_${impl} ${ROOT}/usr/${libdir}) || continue
 			setup_${impl} ${ROOT}/usr/${libdir} ${prof} \
 				&& store_config ${LAPACK_CONFIG} \
 					"${prof}_${libdir}_CURRENT" ${impl} \
@@ -216,11 +253,13 @@ do_scan() {
 	[[ -e ${ROOT}/etc/eselect/lapack/lapack.config ]] \
 		&& rm ${ROOT}/etc/eselect/lapack/lapack.config
 	for libdir in $(list_libdirs) ; do
-		[[ -e ${ROOT}/usr/${libdir}/ ]] || continue
+		[[ -d ${ROOT}/usr/${libdir} ]] \
+			&& [[ ! -h ${ROOT}/usr/${libdir} ]] \
+			|| continue
 		for impl in ${LAPACK_IMPLEMENTATIONS} ; do
 			for prof in $(check_${impl} ${ROOT}/usr/${libdir}/) ; do
 				if has ${prof} ${LAPACK_PROFILES} ; then
-					add_config ${LAPACK_CONFIG} "${prof}_${libdir}" ${impl}
+					append_config ${LAPACK_CONFIG} "${prof}_${libdir}" ${impl}
 					[[ ${prof} == F77 ]] && lib=${ROOT}/usr/${libdir}/liblapack.so
 					is_active_${impl} ${lib} \
 						&& store_config ${LAPACK_CONFIG} \

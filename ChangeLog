@@ -1,5 +1,14 @@
 ChangeLog for eselect
 
+2005-11-16 Danny van Dyk <kugelfang@gentoo.org>
+
+	* libs/config.bash.in, docs/developer-guide.txt: Changed add_config()
+	to append_config(). Function now doesn't append data if it occours
+	already in the value.
+	* libs/multilib.bash.in: Removed lib from list of amd64 libdirs.
+	* modules/blas.eselect, modules/lapack.eselect: Added support for
+	MKL72. Some cleanup of Bugs and untidy work.
+
 2005-11-01 Ciaran McCreesh <ciaranm@gentoo.org>
 
 	* bin/eselect.in: Add read- and -reader symlink module name decoding

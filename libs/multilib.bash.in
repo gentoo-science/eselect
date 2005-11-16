@@ -23,7 +23,7 @@ list_libdirs() {
     local libdirs=() arch=$(uname -m)
     case ${arch} in
         x86_64)
-            libdirs=("lib lib32 lib64")
+            libdirs=("lib32 lib64")
             ;;
         *)
             libdirs=("lib")
