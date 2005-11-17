@@ -1,5 +1,10 @@
 ChangeLog for eselect
 
+2005-11-17 Aaron Walker <ka0ttic@gentoo.org>
+
+	* docs/developer-guide.txt: Fix title underline length since the
+	length of the title changed (add_config => append_config).
+
 2005-11-16 Danny van Dyk <kugelfang@gentoo.org>
 
 	* libs/config.bash.in, docs/developer-guide.txt: Changed add_config()

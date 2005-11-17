@@ -366,7 +366,7 @@ configuration file. It is invoked as ``load_config filename key``
 and prints the associated value.
 
 The ``append_config`` Function
-,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``append_config`` function appends an item to an already stored value in the
 modules configuration file. It uses ``load_config`` / ``store_config``
