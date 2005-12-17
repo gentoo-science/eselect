@@ -1,5 +1,9 @@
 ChangeLog for eselect
 
+2005-12-17 Ciaran McCreesh <ciaranm@gentoo.org>
+
+	* modules/output.bash.in: Fix nocolour, Gentoo bug #115677.
+
 2005-12-06 Danny van Dyk <kugelfang@gentoo.org>
 
 	* modules/rc.eselect: Fixed Bug in is_script() to detect symlinked

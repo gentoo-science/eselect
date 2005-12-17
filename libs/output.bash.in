@@ -28,14 +28,15 @@ COLOUR_WARN="\033[1;31m"
 
 # set all colours to COLOURS_NORMAL
 nocolours() {
-COLOUR_LIST_HEADER="\033[00m"
-COLOUR_LIST_LEFT="\033[00m"
-COLOUR_LIST_RIGHT="\033[00m"
-COLOUR_ERROR="\033[00m"
-COLOUR_HI="\033[00m"
-COLOUR_WARN="\033[00m"
+    COLOUR_LIST_HEADER=""
+    COLOUR_LIST_LEFT=""
+    COLOUR_LIST_RIGHT=""
+    COLOUR_ERROR=""
+    COLOUR_NORMAL=""
+    COLOUR_HI=""
+    COLOUR_WARN=""
 }
-	
+
 # write_error_msg PUBLIC
 # write an error
 write_error_msg() {
@@ -87,7 +88,7 @@ write_kv_list_entry() {
     echo -n -e "  ${lindent}${left}"
     echo -n -e $(apply_text_highlights "${left}" "${key}")
     echo -n -e "${COLOUR_NORMAL} "
-    
+
     text=${key//\%%%??%%%/}
     n=$(( 25 - ${#text} ))
 
