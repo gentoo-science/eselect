@@ -155,7 +155,7 @@ do_list() {
 		|| libdirs="$@"
 
 	[[ -f ${LAPACK_CONFIG} ]] \
-		|| die -q "Please run \"eselect lapack scan\" first!"
+		|| eselect lapack scan
 
 	for libdir in ${libdirs} ; do
 		F77_PROFILES=$(load_config ${LAPACK_CONFIG} F77_${libdir})
@@ -187,7 +187,7 @@ do_set() {
 	shift
 
 	[[ -f ${LAPACK_CONFIG} ]] \
-		|| die -q "Please run \"eselect lapack scan\" first!"
+		|| eselect lapack scan
 
 	has ${impl} ${LAPACK_IMPLEMENTATIONS} \
 		|| die -q "Illegal implementation: ${impl}"
@@ -229,7 +229,7 @@ do_show() {
 	local libdirs=$(list_libdirs) profiles=${LAPACK_PROFILES} libdir lib prefix
 
 	[[ -f ${LAPACK_CONFIG} ]] \
-		|| die -q "Run \"eselect lapack scan\" first!"
+		|| eselect lapack scan
 
 	[[ -n ${1} ]] && has ${1} ${libdirs} ${1} && libdirs=${1}
 	[[ -n ${2} ]] && has ${2} ${profiles} ${2} && profiles=${2}

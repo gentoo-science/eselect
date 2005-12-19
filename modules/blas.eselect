@@ -219,7 +219,7 @@ do_list() {
 		|| libdirs="$@"
 
 	[[ -f ${BLAS_CONFIG} ]] \
-		|| die -q "Please run \"eselect blas scan\" first!"
+		|| eselect blas scan
 
 	for libdir in ${libdirs} ; do
 		C_PROFILES=$(load_config ${BLAS_CONFIG} C_${libdir})
@@ -265,7 +265,7 @@ do_set() {
 	shift
 	
 	[[ -f ${BLAS_CONFIG} ]] \
-		|| die -q "Please run \"eselect blas scan\" first!"
+		|| eselect blas scan
 
 	has ${impl} ${BLAS_IMPLEMENTATIONS} \
 		|| die -q "Illegal implementation: ${impl}"
@@ -309,7 +309,7 @@ do_show() {
 	local libdirs=$(list_libdirs) profiles=${BLAS_PROFILES} libdir lib prefix
 	
 	[[ -f ${BLAS_CONFIG} ]] \
-		|| die -q "Run \"eselect blas scan\" first!"
+		|| eselect blas scan
 
 	[[ -n ${1} ]] && has ${1} ${libdirs} && libdirs=${1}
 	[[ -n ${2} ]] && has ${2} ${profiles} && profiles=${2}

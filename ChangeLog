@@ -7,7 +7,7 @@ ChangeLog for eselect
 	* libs/multilib.bash.in: Fixed bug #114274: don't rely on a hardcoded
 	table of libdirs but scan ld.so.conf for them instead.
 	* modules/blas.eselect, modules/lapack.eselect: Fixed bug #115548:
-	make commands list, show and set fail if scan hasn't been previously
+	make commands list, show and set scan if scan hasn't been previously
 	run.
 
 2005-12-17 Ciaran McCreesh <ciaranm@gentoo.org>
