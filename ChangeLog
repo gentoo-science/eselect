@@ -1,5 +1,15 @@
 ChangeLog for eselect
 
+2005-12-18 Danny van Dyk <kugelfang@gentoo.org>
+
+	* modules/env.eselect: Fixed bug #114778: restrict load_config()
+	to textfiles with proper contents.
+	* libs/multilib.bash.in: Fixed bug #114274: don't rely on a hardcoded
+	table of libdirs but scan ld.so.conf for them instead.
+	* modules/blas.eselect, modules/lapack.eselect: Fixed bug #115548:
+	make commands list, show and set fail if scan hasn't been previously
+	run.
+
 2005-12-17 Ciaran McCreesh <ciaranm@gentoo.org>
 
 	* modules/output.bash.in: Fix nocolour, Gentoo bug #115677.

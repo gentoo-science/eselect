@@ -17,18 +17,23 @@
 # eselect; if not, write to the Free Software Foundation, Inc., 59 Temple
 # Place, Suite 330, Boston, MA  02111-1307  USA
 
+ES_VALID_MULTILIB_DIRS="lib lib32 lib64"
+
 # list_libdirs PUBLIC
 # Returns a space separated list of libdirs available on this machine
 list_libdirs() {
-    local libdirs=() arch=$(uname -m)
-    case ${arch} in
-        x86_64)
-            libdirs=("lib32 lib64")
-            ;;
-        *)
-            libdirs=("lib")
-            ;;
-    esac
+    local dir libdirs
+    libdirs=""
+    for dir in ${ES_VALID_MULTILIB_DIRS} ; do
+        if grep -q "^/${dir}\(\|/\)$" ${ROOT}/etc/ld.so.conf &> /dev/null ; then
+            libdirs=( ${libdirs[@]} ${dir} )
+        fi
+    done
+    if [[ -z ${libdirs[@]} ]] ; then
+    	# Broken or non-existing ld.so.conf
+    	libdirs=( ${ROOT}/lib* )
+	libdirs=( ${libdirs[@]/\/lib/lib} )
+    fi
     echo "${libdirs[@]}"
 }
 

@@ -213,11 +213,14 @@ describe_list() {
 }
 
 do_list() {
-	local libdirs libdir n
+	local libdirs libdir x
 	[[ -z "$@" ]] \
 		&& libdirs="$(list_libdirs)" \
 		|| libdirs="$@"
-		
+
+	[[ -f ${BLAS_CONFIG} ]] \
+		|| die -q "Please run \"eselect blas scan\" first!"
+
 	for libdir in ${libdirs} ; do
 		C_PROFILES=$(load_config ${BLAS_CONFIG} C_${libdir})
 		F77_PROFILES=$(load_config ${BLAS_CONFIG} F77_${libdir})
@@ -256,10 +259,14 @@ describe_set() {
 
 do_set() {
 	local libdirs=$(list_libdirs) profiles=${BLAS_PROFILES} impl libdir prof
-	[[ ${#1} == 0 ]] && die -q "Please specify the implementation to setup as active."
+	[[ ${#1} == 0 ]] \
+		&& die -q "Please specify the implementation to setup as active."
 	impl=${1}
 	shift
 	
+	[[ -f ${BLAS_CONFIG} ]] \
+		|| die -q "Please run \"eselect blas scan\" first!"
+
 	has ${impl} ${BLAS_IMPLEMENTATIONS} \
 		|| die -q "Illegal implementation: ${impl}"
 
@@ -300,8 +307,13 @@ describe_show() {
 
 do_show() {
 	local libdirs=$(list_libdirs) profiles=${BLAS_PROFILES} libdir lib prefix
+	
+	[[ -f ${BLAS_CONFIG} ]] \
+		|| die -q "Run \"eselect blas scan\" first!"
+
 	[[ -n ${1} ]] && has ${1} ${libdirs} && libdirs=${1}
 	[[ -n ${2} ]] && has ${2} ${profiles} && profiles=${2}
+	
 	write_list_start "Active BLAS implementations"
 	for libdir in ${libdirs} ; do
 		[[ ${#libdirs} -eq 1 ]] || prefix="${ROOT}/usr/${libdir}"

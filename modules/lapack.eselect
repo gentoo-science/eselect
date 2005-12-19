@@ -149,11 +149,14 @@ describe_list() {
 }
 
 do_list() {
-	local libdirs libdir n
+	local libdirs libdir x
 	[[ -z "$@" ]] \
 		&& libdirs="$(list_libdirs)" \
 		|| libdirs="$@"
-		
+
+	[[ -f ${LAPACK_CONFIG} ]] \
+		|| die -q "Please run \"eselect lapack scan\" first!"
+
 	for libdir in ${libdirs} ; do
 		F77_PROFILES=$(load_config ${LAPACK_CONFIG} F77_${libdir})
 		if [[ -n ${F77_PROFILES} ]] ; then
@@ -178,10 +181,14 @@ describe_set() {
 
 do_set() {
 	local libdirs=$(list_libdirs) profiles=${LAPACK_PROFILES} impl libdir prof
-	[[ ${#1} == 0 ]] && die -q "Please specify the implementation to setup as active."
+	[[ ${#1} == 0 ]] \
+		&& die -q "Please specify the implementation to setup as active."
 	impl=${1}
 	shift
-	
+
+	[[ -f ${LAPACK_CONFIG} ]] \
+		|| die -q "Please run \"eselect lapack scan\" first!"
+
 	has ${impl} ${LAPACK_IMPLEMENTATIONS} \
 		|| die -q "Illegal implementation: ${impl}"
 
@@ -220,8 +227,13 @@ describe_show() {
 
 do_show() {
 	local libdirs=$(list_libdirs) profiles=${LAPACK_PROFILES} libdir lib prefix
+
+	[[ -f ${LAPACK_CONFIG} ]] \
+		|| die -q "Run \"eselect lapack scan\" first!"
+
 	[[ -n ${1} ]] && has ${1} ${libdirs} ${1} && libdirs=${1}
 	[[ -n ${2} ]] && has ${2} ${profiles} ${2} && profiles=${2}
+
 	write_list_start "Active LAPACK implementations"
 	for libdir in ${libdirs} ; do
 		[[ ${#libdddirs} -eq 1 ]] || prefix="${ROOT}/usr/${libdir}"
