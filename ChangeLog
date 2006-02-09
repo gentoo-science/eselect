@@ -2,6 +2,7 @@ ChangeLog for eselect
 
 2006-02-09 Ciaran McCreesh <ciaranm@gentoo.org>
 
+	* Tagged 1.0 release.
 	* libs/core.bash.in: Fix die filenames, thanks to Donnie Berkholz.
 
 2005-12-18 Danny van Dyk <kugelfang@gentoo.org>
