@@ -46,7 +46,7 @@ describe_show() {
 do_show() {
 	write_list_start "Current kernel symlink:"
 	if [[ -L "${ROOT}/usr/src/linux" ]] ; then
-		write_kv_list_entry "$(readlink ${ROOT}/usr/src/linux )" ""
+		write_kv_list_entry "$(readlink ${ROOT}/usr/src/linux | tr -d / )" ""
 	else
 		write_kv_list_entry "(unset)" ""
 	fi
