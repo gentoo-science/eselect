@@ -257,6 +257,14 @@ describe_set() {
 	echo "Activate one of the installed BLAS implementations"
 }
 
+describe_set_parameters() {
+    echo "<implementation>"
+}
+
+describe_set_options() {
+    echo "implementation : BLAS implementation to activate"
+}
+
 do_set() {
 	local libdirs=$(list_libdirs) profiles=${BLAS_PROFILES} impl libdir prof
 	[[ ${#1} == 0 ]] \

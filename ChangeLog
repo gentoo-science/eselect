@@ -1,5 +1,12 @@
 ChangeLog for eselect
 
+2006-03-08 Danny van Dyk <kugelfang@gentoo.org>
+
+	* modules/env.eselect: Fixed a typo (chmod g+r instead of chmod a+r).
+	* modules/blas.eselect, modules/lapack.eselect: Added option
+	descriptions for action 'set'.
+	* modules/env.eselect: Added FreeBSD patch written by Diego Petteno.
+
 2006-03-04 Danny van Dyk <kugelfang@gentoo.org>
 
 	* modules/rc.eselect: Fixed a bug in the is_script() function.

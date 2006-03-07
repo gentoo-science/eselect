@@ -179,6 +179,14 @@ describe_set() {
 	echo "Setup one of the installed LAPACK implementations as the active implementation"
 }
 
+describe_set_parameters() {
+	echo "<implementation>"
+}
+
+describe_set_options() {
+	echo "implementation : LAPACK implementation to activate"
+}
+
 do_set() {
 	local libdirs=$(list_libdirs) profiles=${LAPACK_PROFILES} impl libdir prof
 	[[ ${#1} == 0 ]] \
