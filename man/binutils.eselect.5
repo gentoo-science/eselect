@@ -47,6 +47,15 @@ Please remember to run:
   # source /etc/profile
 
 in order to let changes take effect!
+.SH "ACTION: SHOW"
+\fBeselect binutils show\fR [\fItarget\fR]
+.br 
+Prints the currently activated binutils version for the given target. If no target is
+supplied then the CHOST environment variable is used to evaluate the native target.
+
+phi / # eselect binutils show
+.br 
+x86_64\-pc\-linux\-gnu\-2.16.1
 .SH "AUTHOR"
 Danny van Dyk <kugelfang@gentoo.org>
 .SH "REVISION"

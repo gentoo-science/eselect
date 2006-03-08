@@ -224,4 +224,29 @@ do_set() {
 		[[ ${fail} == 1 ]] && die -q "One or more actions have failed!"
 }
 
+### show action
+
+describe_show() {
+	echo "Print the currently active binutils version"
+}
+
+do_show() {
+	local chost=${1:-$(portageq envvar CHOST)} version config
+
+	[[ -n ${chost} ]] \
+		|| die -q "Portage returned empty CHOST!"
+
+	config=${ROOT}/etc/env.d/binutils/config-${chost}
+	[[ ${#config[@]} -eq 1 ]] \
+		|| return
+	[[ -e ${config} ]] \
+		|| return
+
+	version=$(load_config ${ROOT}/etc/env.d/binutils/config-${chost} CURRENT)
+	[[ -e ${ROOT}/etc/env.d/binutils/${chost}-${version} ]] \
+		|| die "File \"${ROOT}/etc/env.d/binutils/${chost}-${version}\" is missing!"
+
+	echo "${chost}-${version}"
+}
+
 # vim: set ft=eselect :

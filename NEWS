@@ -1,11 +1,20 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+HEAD(1.0.1):
+    Bug fixes:
+    - Fix creation of /etc/profile.env in env.eselect.
+    - Fix portability problems on *BSD in env.eselect.
+    - Synchronized man pages with modules.
+
+    New features:
+    - binutils.eselect now features a show action.
+
 1.0:
     Bug fixes:
     - Make no-color behave.
     - Fixed die filename reporting.
-    - Restrict load_config to textfiles with prp[er contents.
+    - Restrict load_config to textfiles with proper contents.
     - Scan ld.so.conf rather than hardcoding libdirs.
     - Fix blas, lapack to work even if scan hasn't been called.
 
