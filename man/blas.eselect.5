@@ -6,11 +6,12 @@ blas.eselect \- The BLAS management module for Gentoo's eselect
 .br 
 \fBeselect blas\fR \fBlist\fR [\fIoptions\fR]
 .br 
+\fBeselect blas\fR \fBscan\fR
+.br 
 \fBeselect blas\fR \fBset\fR \fIimplementation\fR [\fIoptions\fR]
 .br 
 \fBeselect blas\fR \fBshow\fR [\fIoptions\fR]
-.br 
-\fBeselect blas\fR \fBupdate\fR
+
 .SH "DESCRIPTION"
 \fBeselect\fR is Gentoo's configuration and management tool. It features
 modules that care for the individual administrative tasks.
@@ -20,21 +21,23 @@ modules that care for the individual administrative tasks.
 Displays an orderd list of installed BLAS implementations. It distinguishes between versions with different
 Application Binary Interfaces (e.g. x86/AMD64). Further it distinguishes
 between interfaces to highlevel programming languages. Each line holds
-a number, the implementation's name and the providing package's name.
+a number, the implementation's name and the providing package's name. An asterisk next to one of the list
+elements denotes a currently active implementation.
 
 phi / # eselect blas list
 .br 
-\-\-\- Installed in /usr/lib \-\-\-
+C/C++ profiles in /usr/lib64
 .br 
-C/C++ profiles
-  [1]   ACML        (sci\-libs/ACML)
-  [2]   ATLAS       (sci\-libs/blas\-atlas)
+  ACML                      (sci\-libs/ACML)
+  ATLAS                     (sci\-libs/blas\-atlas) *
+  MKL72                     (sci\-libs/mkl)
 
-FORTRAN 77 profiles
-  [1]   ACML        (sci\-libs/ACML)
-  [2]   ATLAS       (sci\-libs/blas\-atlas)
-  [3]   reference   (sci\-libs/blas\-reference)
-
+FORTRAN 77 profiles in /usr/lib64
+.br 
+  ACML                      (sci\-libs/ACML)
+  ATLAS                     (sci\-libs/blas\-atlas) *
+  MKL72                     (sci\-libs/mkl)
+  reference                 (sci\-libs/blas\-reference)
 
 Possible \fIoptions\fR to the \fBlist\fR action are restrictions to
 handle only certain profiles or ABI\-specific library directories. For example,

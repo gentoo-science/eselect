@@ -13,7 +13,7 @@ modules that care for the individual administrative tasks.
 .SH "ACTION: LIST"
 \fBeselect env list\fR [\fIpatterns\fR]
 .br 
-List all installed version of binutils. If \fIpatterns\fR are given, only version that match patterns
+List all installed version of binutils. If \fIpatterns\fR are given, only versions that match the patterns
 will be listed.
 
 phi / # eselect binutils list powerpc*
@@ -34,7 +34,7 @@ Installed binutils for target x86_64\-pc\-linux\-gnu
 \fBeselect binutils set\fR \fIselection\fR
 .br 
 Activates the selected version of binutils. \fIselection\fR can be either an identification number
-given by <fb>eselect binutils list\fR or a pattern that uniquely describes one installed version.
+given by \fBeselect binutils list\fR or a pattern that uniquely describes one installed version.
 
 phi / # eselect binutils set x86_64*2.16.1
 .br 

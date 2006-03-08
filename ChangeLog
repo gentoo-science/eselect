@@ -6,6 +6,9 @@ ChangeLog for eselect
 	* modules/blas.eselect, modules/lapack.eselect: Added option
 	descriptions for action 'set'.
 	* modules/env.eselect: Added FreeBSD patch written by Diego Petteno.
+	* man/binutils.eselect.5, man/blas.eselect.5, man/env.eselect.5,
+	lapack.eselect.5, man/rc.eselect.5: Synchronized the manpages with the
+	current state of the repository.
 
 2006-03-04 Danny van Dyk <kugelfang@gentoo.org>
 

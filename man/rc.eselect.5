@@ -10,7 +10,15 @@ rc.eselect \- Runlevel configuration module
 .br 
 \fBeselect rc\fR \fBlist\fR [\fIrunlevel\fR]
 .br 
+\fBeselect rc\fR \fBpause\fR \fIscript\fR [\fIscript\fR [\fIscript\fR ...]]
+.br 
+\fBeselect rc\fR \fBrestart\fR \fIscript\fR [\fIscript\fR [\fIscript\fR ...]]
+.br 
 \fBeselect rc\fR \fBshow\fR
+.br 
+\fBeselect rc\fR \fBstart\fR \fIscript\fR [\fIscript\fR [\fIscript\fR ...]]
+.br 
+\fBeselect rc\fR \fBstop\fR \fIscript\fR [\fIscript\fR [\fIscript\fR ...]]
 .SH "DESCRIPTION"
 \fBeselect\fR is Gentoo's configuration and management tool. It features
 modules that care for the individual administrative tasks.
@@ -85,6 +93,16 @@ Init scripts to be started by runlevel default
   vixie\-cron
   xdm
   xfs
+.SH "ACTION: PAUSE"
+\fBeselect rc pause\fR \fIscript\fR [\fIscript\fR ...]
+.br 
+Pauses the given set of init scripts.
+
+phi / # eselect rc pause net.eth0
+.br 
+ * Stopping eth0
+ *   Bringing down eth0
+ *     Shutting down eth0 ...
 .SH "ACTION: RESTART"
 \fBeselect rc restart\fR \fIscript\fR [\fIscript\fR ...]
 .br 
@@ -142,13 +160,13 @@ Restarting init script
  * Starting local ...                                                    [ ok ]
  * WARNING:  "sshd" has already been started.
 .SH "ACTION: STOP"
-\fBeselect rc stop\fR \fIscript\fR [\fIscript\fR ...]
+\fBeselect rc restart\fR \fIscript\fR [\fIscript\fR ...]
 .br 
-Stops the given set of init scripts manually, regardless of the current runlevel.
+Restarts the given set of init scripts.
 
-phi / # eselect rc stop local sshd
+phi / # eselect rc restart sshd
 .br 
-Stopping init script local sshd
+Restarting init script
  * ERROR:  "local" has not yet been started.
  * Stopping sshd ...                                                      [ ok ]
 .SH "AUTHOR"

@@ -20,17 +20,17 @@ modules that care for the individual administrative tasks.
 Displays an orderd list of installed LAPACK implementations. It distinguishes between versions with different
 Application Binary Interfaces (e.g. x86/AMD64). Further it distinguishes
 between interfaces to highlevel programming languages. Each line holds
-a number, the implementation's name and the providing package's name.
+a number, the implementation's name and the providing package's name. An asterisk next to one of the list
+elements denotes a currently active implementation.
 
 phi / # eselect lapack list
 .br 
-\-\-\- Installed in /usr/lib \-\-\-
+FORTRAN 77 profiles in /usr/lib64
 .br 
-FORTRAN 77 profiles
-  [1]   ACML        (sci\-libs/ACML)
-  [2]   ATLAS       (sci\-libs/lapack\-atlas)
-  [3]   reference   (sci\-libs/lapack\-reference)
-
+  ACML                      (sci\-libs/ACML)
+  ATLAS                     (sci\-libs/lapack\-atlas) *
+  MKL72                     (sci\-libs/mkl)
+  reference                 (sci\-libs/lapack\-reference)
 
 Possible \fIoptions\fR to the \fBlist\fR action are restrictions to
 handle only certain profiles or ABI\-specific library directories. For example,
