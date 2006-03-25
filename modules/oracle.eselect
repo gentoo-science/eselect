@@ -6,7 +6,7 @@ inherit config
 
 DESCRIPTION="Manage the /usr/bin/sqlplus symlink"
 MAINTAINER="dertobi123@gentoo.org"
-SVN_DATE='$Date:  $'
+SVN_DATE='$Date: 2006-03-25 23:03:14 +0100 (Sa, 25 Mär 2006) $'
 VERSION=$(svn_date_to_version "${SVN_DATE}" )
 ORACLE_ENVFILE="${ROOT}/etc/env.d/50oracle-instantclient-basic"
 
