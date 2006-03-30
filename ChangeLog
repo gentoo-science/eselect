@@ -1,5 +1,10 @@
 ChangeLog for eselect
 
+2006-03-31 Danny van Dyk <kugelfang@gentoo.org>
+
+	* configure.ac: Fixed some BSD issues in regard to CANONICALISE.
+	Thanks to Diego Petteno <flameeyes@gentoo.org> for the patch.
+
 2006-03-30 Danny van Dyk <kugelfang@gentoo.org>
 
 	* modules/binutils.eselect: Cleaned up the Coding Style a bit.
