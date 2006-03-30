@@ -46,7 +46,7 @@ describe_show() {
 do_show() {
 	write_list_start "Current kernel symlink:"
 	if [[ -L "${ROOT}/usr/src/linux" ]] ; then
-		write_kv_list_entry "$(readlink ${ROOT}/usr/src/linux | tr -d / )" ""
+		write_kv_list_entry "$(canonicalise ${ROOT}/usr/src/linux | tr -d / )" ""
 	else
 		write_kv_list_entry "(unset)" ""
 	fi
@@ -64,7 +64,7 @@ do_list() {
 	if [[ -n ${targets[@]} ]] ; then
 		local i
 		for (( i = 0 ; i < ${#targets[@]} ; i = i + 1 )) ; do
-			[[ ${targets[${i}]} == $(readlink ${ROOT}/usr/src/linux ) ]] && \
+			[[ ${targets[${i}]} == $(canonicalise ${ROOT}/usr/src/linux ) ]] && \
 				targets[${i}]="${targets[${i}]} $(highlight '*' )"
 		done
 		write_numbered_list "${targets[@]}"

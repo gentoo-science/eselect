@@ -27,6 +27,10 @@ dirname() {
     echo ${1%/*}
 }
 
+canonicalise() {
+    @CANONICALISE@ $*
+}
+
 # vim: set sw=4 et sts=4 tw=80 :
 
 

@@ -325,6 +325,11 @@ The ``dirname`` Function
 The ``dirname`` function is a transparent bash-only replacement for the external
 ``dirname`` application.
 
+The ``canonicalise`` Function
+,,,,,,,,,,,,,,,,,,,,,,,,
+
+The ``canonicalise`` function is a wrapper to either GNU readlink or realpath.
+
 Manipulation Functions
 ----------------------
 
@@ -382,7 +387,9 @@ The ``list_libdirs`` Function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``list_libdirs`` function returns a set of valid libdirs for the used
-architecture. It uses ``uname`` to determine the architecture.
+architecture. By default it uses /etc/ld.so.conf to obtain all valid libdirs. If
+this fails due to a missing or broken file, this function uses ``uname`` to
+determine the architecture.
 
 Portage Functions
 -----------------

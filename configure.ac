@@ -24,6 +24,22 @@ fi
 
 AC_PATH_PROG(PORTAGEQ, portageq)
 
+AC_PATH_PROG(GREADLINK, greadlink)
+if test x$GREADLINK = "x" ; then
+    AC_CHECK_PROG(READLINK, readlink -f ., yes, no, [$PATH])
+    if test x$READLINK = "xyes" ; then
+    	AC_PATH_PROG(CANONICALISE, readlink)
+	CANONICALISE="$CANONICALISE -f"
+    else
+        AC_PATH_PROG(CANONICALISE, realpath)
+        if test x$CANONICALISE = "x" ; then
+            AC_MSG_ERROR([Either GNU readlink or realpath is required])
+	fi
+    fi
+else
+    CANONICALISE="$GREADLINK -f"
+fi
+
 # Gentoo uses rst2html.py but most other
 # distro's/OS's install it w/o the .py extension
 AC_PATH_PROG(RST2HTML, rst2html)

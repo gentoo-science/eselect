@@ -82,7 +82,7 @@ describe_show() {
 do_show() {
 	write_list_start "Current make.profile symlink:"
 	if [[ -L "${ROOT}/etc/make.profile" ]] ; then
-		local link=$(readlink ${ROOT}/etc/make.profile)
+		local link=$(canonicalise ${ROOT}/etc/make.profile)
 		local portdir=$(portageq portdir)
 		link=${link##..${ROOT}/${portdir}/profiles/}
 		write_kv_list_entry "${link}" ""
@@ -103,7 +103,7 @@ do_list() {
 
 	[[ -z "${targets}" ]] && die -q "Failed to get a list of valid profiles"
 
-	active=$(readlink ${ROOT}/etc/make.profile)
+	active=$(canonicalise ${ROOT}/etc/make.profile)
 	active=${active##*profiles/}
 	if [[ -n ${targets[@]} ]] ; then
 		local i

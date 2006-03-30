@@ -60,7 +60,7 @@ describe_show() {
 do_show() {
 	[[ -L ${ROOT}/usr/bin/ruby ]] \
 		|| die -q "No current Ruby symlinks found."
-	local profile=$(readlink "${ROOT}/usr/bin/ruby")
+	local profile=$(canonicalise "${ROOT}/usr/bin/ruby")
 	echo "Your current Ruby version is ${profile/\/usr\/bin\/}."
 }
 

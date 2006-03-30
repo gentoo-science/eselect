@@ -53,7 +53,7 @@ describe_show() {
 do_show() {
 	write_list_start "Current sqlplus symlink:"
 	if [[ -L "${ROOT}/usr/bin/sqlplus" ]] ; then
-		write_kv_list_entry "$(readlink ${ROOT}/usr/bin/sqlplus )" ""
+		write_kv_list_entry "$(canonicalise ${ROOT}/usr/bin/sqlplus )" ""
 	else
 		write_kv_list_entry "(unset)" ""
 	fi
@@ -67,13 +67,16 @@ describe_list() {
 
 do_list() {
 	local -a targets=( $(find_targets ) )
+	local target symlink
 
 	write_list_start "Available sqlplus symlink targets:"
 	if [[ -n ${targets[@]} ]] ; then
 		local i
 		for (( i = 0 ; i < ${#targets[@]} ; i = i + 1 )) ; do
-			[[ "../lib/oracle/${targets[${i}]}/client/bin/sqlplus" == $(readlink ${ROOT}/usr/bin/sqlplus ) ]] && \
-				targets[${i}]="${targets[${i}]} $(highlight '*' )"
+			symlink=$(canonicalise ${ROOT}/usr/bin/sqlplus )
+			target=$(canonicalise "${ROOT}"/usr/lib/oracle/${targets[${i}]}/client/bin/sqlplus )
+			[[ ${symlink} == ${target} ]] \
+				&& targets[${i}]="${targets[${i}]} $(highlight '*' )"
 		done
 		write_numbered_list "${targets[@]}"
 	else

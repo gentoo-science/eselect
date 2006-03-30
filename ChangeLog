@@ -1,5 +1,19 @@
 ChangeLog for eselect
 
+2006-03-30 Danny van Dyk <kugelfang@gentoo.org>
+
+	* modules/binutils.eselect: Cleaned up the Coding Style a bit.
+	* libs/path-manipulation.bash.in, doc/developer-guide.txt,
+	configure.ac: Added support for the canonicalise function, a wrapper
+	to either GNU readlink or realpath.
+	*  modules/binutils.eselect, modules/blas.eselect,
+	modules/config.eselect, modules/env.eselect, modules/kernel.eselect,
+	modules/lapack.eselect, modules/mailer.eselect,
+	modules/oracle.eselect, modules/profile.eselect, modules/rc.eselect,
+	modules/ruby.eselect, modules/vi.eselect: Converted to use
+	canonicalise() instead of readlink -f. This ensure portability of
+	eselect to *BSD.
+
 2006-03-25 Tobias Scherbaum <dertobi123@gentoo.org>
 
 	* modules/oracle.eselect: Added oracle module.  Not adding to

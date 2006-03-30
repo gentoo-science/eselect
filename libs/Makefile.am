@@ -11,7 +11,7 @@ noinst_SCRIPTS = \
 
 EXTRA_DIST = $(foreach f, $(noinst_SCRIPTS), $(f).in)
 
-dosed = @SED@ -e 's,\@SED\@,@SED@,g' -e 's,\@PORTAGEQ\@,@PORTAGEQ@,g'
+dosed = @SED@ -e 's,\@SED\@,@SED@,g' -e 's,\@PORTAGEQ\@,@PORTAGEQ@,g' -e 's,\@CANONICALISE\@,@CANONICALISE@,g'
 
 %.bash : %.bash.in
 	@$(dosed) $< > $@

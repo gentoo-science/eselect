@@ -9,6 +9,8 @@ MAINTAINER="kugelfang@gentoo.org"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}" )
 
+BINUTILS_ENVFILE="${ROOT}/etc/env.d/05binutils"
+
 # find_targets [patterns]
 # find all possible targets [that match one of ${@}]
 find_targets() {
@@ -123,12 +125,11 @@ switch_profile() {
 	# Update the environment
 	if [[ ${target} == ${chost} ]] ; then
 		datapath=/usr/share/binutils-date/${target}/${version}
-		envfile="${ROOT}/etc/env.d/05binutils"
 		[[ -d ${datapath}/man ]] \
-			&& store_config ${envfile} MANPATH "${datapath}/man"
+			&& store_config ${BINUTILS_ENVFILE} MANPATH "${datapath}/man"
 		[[ -d ${datapath}/info ]] \
-			&& store_config ${envfile} INFOPATH "${datapath}/info"
-		store_config ${envfile} LDPATH "/usr/${target}/lib"
+			&& store_config ${BINUTILS_ENVFILE} INFOPATH "${datapath}/info"
+		store_config ${BINUTILS_ENVFILE} LDPATH "/usr/${target}/lib"
 	fi
 
 	store_config \

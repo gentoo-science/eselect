@@ -80,7 +80,7 @@ package() {
 # return 0 if $lib points to an active BLAS implementation of profile *
 is_active_ACML() {
 	[[ -L ${1} ]] || return 1
-	local lib=$(readlink -sn ${1})
+	local lib=$(canonicalise ${1})
 	[[ $(basename ${lib}) == libacml.so ]] \
 		&& return 0
 	return 1
@@ -88,7 +88,7 @@ is_active_ACML() {
 
 is_active_ATLAS() {
 	[[ -L ${1} ]] || return 1
-	local lib=$(readlink -sn ${1})
+	local lib=$(canonicalise ${1})
 	local dir=${lib%/*}
 	[[ ${dir##*/} == atlas ]] \
 		&& return 0
@@ -97,7 +97,7 @@ is_active_ATLAS() {
 
 is_active_threaded-ATLAS() {
 	[[ -L ${1} ]] || return 1
-	local lib=$(readlink -sn ${1})
+	local lib=$(canonicalise ${1})
 	local dir=${lib%/*}
 	[[ ${dir##*/} == threaded-atlas ]] \
 		&& return 0
@@ -106,7 +106,7 @@ is_active_threaded-ATLAS() {
 
 is_active_MKL() {
 	[[ -L ${1} ]] || return 1
-	local lib=$(readlink -sn ${1})
+	local lib=$(canonicalise ${1})
 	[[ $(basename ${lib}) == libmkl.so ]] \
 		&& return 0
 	return 1
@@ -118,7 +118,7 @@ is_active_MKL72() {
 
 is_active_reference() {
 	[[ -L ${1} ]] || return 1
-	local lib=$(readlink -sn ${1})
+	local lib=$(canonicalise ${1})
 	local dir=${lib%/*}
 	[[ ${dir##*/} == reference ]] \
 		&& return 0

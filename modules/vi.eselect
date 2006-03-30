@@ -52,7 +52,7 @@ do_show() {
 
 	write_list_start "Current vi implementation:"
 	if [[ -L "${ROOT}/usr/bin/vi" ]] ; then
-		write_kv_list_entry "$(basename $(readlink ${ROOT}/usr/bin/vi ) )" ""
+		write_kv_list_entry "$(basename $(canonicalise ${ROOT}/usr/bin/vi ) )" ""
 	elif [[ -e "${ROOT}/usr/bin/vi" ]] ; then
 		write_kv_list_entry "(not a symlink)" ""
 	else
@@ -73,7 +73,7 @@ do_list() {
 	targets=( $(find_targets ) )
 	if [[ -n ${targets[@]} ]] ; then
 		for (( i = 0 ; i < ${#targets[@]} ; i = i + 1 )) ; do
-			[[ ${targets[${i}]} == $(basename $(readlink ${ROOT}/usr/bin/vi ) ) ]] && \
+			[[ ${targets[${i}]} == $(basename $(canonicalise ${ROOT}/usr/bin/vi ) ) ]] && \
 				targets[${i}]="${targets[${i}]} $(highlight '*' )"
 		done
 		write_list_start "Available vi implementations:"
