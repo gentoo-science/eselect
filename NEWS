@@ -1,7 +1,7 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
-HEAD(1.0.1):
+1.0.1:
     Bug fixes:
     - Fix creation of /etc/profile.env in env.eselect.
     - Fix portability problems on *BSD in env.eselect.
@@ -9,6 +9,8 @@ HEAD(1.0.1):
 
     New features:
     - binutils.eselect now features a show action.
+    - Added arch-independant function to canonicalise paths.
+    - eselect now supports *BSD.
 
 1.0:
     Bug fixes:

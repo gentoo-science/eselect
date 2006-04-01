@@ -44,9 +44,12 @@ describe_show() {
 }
 
 do_show() {
+	local kernel
+
 	write_list_start "Current kernel symlink:"
 	if [[ -L "${ROOT}/usr/src/linux" ]] ; then
-		write_kv_list_entry "$(canonicalise ${ROOT}/usr/src/linux | tr -d / )" ""
+		kernel=$(canonicalise ${ROOT}/usr/src/linux )
+		write_kv_list_entry "${kernel%/}" ""
 	else
 		write_kv_list_entry "(unset)" ""
 	fi

@@ -48,6 +48,7 @@ if test x$READLINK != "x"; then
 else
     CANONICALISE="$REALPATH"
 fi
+AC_SUBST(CANONICALISE)
 
 # Gentoo uses rst2html.py but most other
 # distro's/OS's install it w/o the .py extension
