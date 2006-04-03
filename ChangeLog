@@ -1,5 +1,10 @@
 ChangeLog for eselect
 
+2005-04-03 Danny van Dyk <kugelfang@gentoo.org>
+
+	* modules/env.eselect: Don't die if ${ROOT}/etc/profile.env does not
+	exist.
+
 2005-04-01 Danny van Dyk <kugelfang@gentoo.org>
 
 	* Tagged 1.0.1 release.
