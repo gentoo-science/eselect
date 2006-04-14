@@ -51,7 +51,7 @@ store_config() {
     if [[ -z ${content[@]} ]] ; then
         store_config_header
         echo "${key}=\"${value}\"" \
-	    >> ${configfile}.config
+	    >> ${configfile}
         return
     fi
 

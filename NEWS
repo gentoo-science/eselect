@@ -1,6 +1,13 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.0.2:
+    Bug fixes:
+    - Fix env.eselect to not bail on missing /etc/profile.env.
+    
+    New features:
+    - kernel.eselect now understands 'set $(uname -r)'.
+
 1.0.1:
     Bug fixes:
     - Fix creation of /etc/profile.env in env.eselect.

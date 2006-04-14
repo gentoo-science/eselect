@@ -32,6 +32,10 @@ set_symlink() {
 		pushd "${ROOT}/usr/src" 1>/dev/null
 		ln -s "${target}" "linux"
 		popd 1>/dev/null
+	elif [[ -d "${ROOT}/usr/src/linux-${target}" ]] ; then
+		pushd "${ROOT}/usr/src" 1>/dev/null
+		ln -s "linux-${target}" "linux"
+		popd 1>/dev/null
 	else
 		die -q "Target \"${1}\" doesn't appear to be valid!"
 	fi

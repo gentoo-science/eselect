@@ -1,5 +1,13 @@
 ChangeLog for eselect
 
+2005-04-14 Danny van Dyk <kugelfang@gentoo.org>
+
+	* libs/config.bash: Fixed creation of empty configfile.
+	* modules/kernel.eselect: Applied enhancement patch by Diego Petteno
+	<flameeyes@gentoo.org>. kernel.eselect can now be called using 'uname
+	-r' as an argument. See bug #128703.
+	* Tagged 1.0.2 release.
+
 2005-04-03 Danny van Dyk <kugelfang@gentoo.org>
 
 	* modules/env.eselect: Don't die if ${ROOT}/etc/profile.env does not
