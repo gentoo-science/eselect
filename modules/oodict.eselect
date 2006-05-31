@@ -1,10 +1,10 @@
 # Copyright 1999-2006 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id: $
+# $Id$
 
 DESCRIPTION="Manages configuration of dictionaries for OpenOffice.Org."
 MAINTAINER="kevquinn@gentoo.org"
-SVN_DATE='$Date: $'
+SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}" )
 
 # Supports myspell(hunspell) dictionaries; designed to be extensible to
