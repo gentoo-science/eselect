@@ -8,13 +8,19 @@ SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}" )
 
 # Supports myspell(hunspell) dictionaries; designed to be extensible to
-# manage other types of dictionaries should they become applicable
+# manage other classes of dictionaries should they become applicable
 # to OpenOffice.org.
 
 OOO_DICTBASE="/usr/lib/openoffice/share/dict/ooo"
 OOO_DICTLIST="dictionary.lst"
 
+OODICT_CLASSES="myspell"
+
 MYSPELL_BASE="/usr/share/myspell"
+
+oodict_info() {
+	echo "Note - $1"
+}
 
 # set array "fields" to the elements of $1, separated by $2.
 # This saves having to muck about with IFS all over the place.
@@ -47,10 +53,10 @@ oodict_get_myspell_suffixes() {
 # language codes (indented 6 spaces)
 oodict_display_langs() {
 	local count lang
-	printf "    $1:\n"
+	echo "    $1:"
 	shift
 	if [[ $1 == "" ]]; then
-		printf "      (none)\n"
+		echo "      (none)"
 	else
 		count=0
 		for lang in $*; do
@@ -103,13 +109,16 @@ describe_show() {
 }
 
 do_show() {
-	local lang sources suffix suffixes
-	[[ -f ${OOO_DICTBASE}/${OOO_DICTLIST} ]] || return
+	local lang myspell_sources listn suffix
+	write_list_start "OpenOffice.org configured dictionaries"
+	if [[ ! -f ${OOO_DICTBASE}/${OOO_DICTLIST} ]]; then
+		echo "  (none)"
+		return
+	fi
+	listn=1
+	# myspell dictionary source
 	lang=""
 	myspell_sources=""
-	unknown_sources=""
-	listn=1
-	write_list_start "OpenOffice.org configured dictionaries"
 	while read entry; do
 		fields=(${entry})
 		[[ ${fields[0]:0:1} == "#" ]] && continue
@@ -121,17 +130,22 @@ do_show() {
 					has ${lang} ${myspell_sources} ||
 						myspell_sources="${myspell_sources} ${lang}"
 				else
-					write_warning_msg "Unrecognised link to ${src} ignored\n"
+					oodict_info "unrecognised link to ${src} ignored\n"
 				fi
 			else
-				write_warning_msg "${OOO_DICTBASE}/${fields[3]}${suffix} is not a softlink, ignored\n"
+				oodict_info "${OOO_DICTBASE}/${fields[3]}${suffix} is not a softlink, ignored\n"
 			fi
 		done
 	done <<-EOF
 		$(sort --key=2 ${OOO_DICTBASE}/${OOO_DICTLIST})
 	EOF
-	write_numbered_list_entry 1 "myspell"
-	oodict_display_langs "Configured language codes" ${myspell_sources}
+	if [[ -n ${myspell_sources} ]]; then
+		write_numbered_list_entry ${listn} "myspell"
+		oodict_display_langs "Configured language codes" ${myspell_sources}
+		(( listn = ${listn} + 1 ))
+	fi
+	# show none if no sources found
+	[[ ${listn} == "1" ]] && echo "  (none)"
 }
 ## }}}
 
@@ -144,14 +158,22 @@ describe_list() {
 }
 
 do_list() {
-	local known_langs
+	local known_langs dict dictlist listn
 	write_list_start "Installed dictionary sources:"
-	write_numbered_list_entry 1 "myspell"
-	known_langs=""
-	for dict in ${MYSPELL_BASE}/${OOO_DICTLIST}.*; do
-		known_langs="${known_langs} ${dict/${MYSPELL_BASE}\/${OOO_DICTLIST}.}"
-	done
-	oodict_display_langs "Installed language codes" ${known_langs}
+	listn=1
+	# myspell dictionary source
+	dictlist=$(ls ${MYSPELL_BASE}/${OOO_DICTLIST}.* 2> /dev/null)
+	if [[ -n ${dictlist} ]]; then
+		write_numbered_list_entry ${listn} "myspell"
+		known_langs=""
+		for dict in ${MYSPELL_BASE}/${OOO_DICTLIST}.*; do
+			known_langs="${known_langs} ${dict/${MYSPELL_BASE}\/${OOO_DICTLIST}.}"
+		done
+		oodict_display_langs "Installed language codes" ${known_langs}
+		(( listn = ${listn} + 1 ))
+	fi
+	# show none if no sources found
+	[[ ${listn} == "1" ]] && echo "  (none)"
 }
 ## }}}
 
@@ -174,12 +196,12 @@ describe_unset_options() {
 do_unset() {
 	# Check OOo dictionary area exists
 	[[ -d ${OOO_DICTBASE} ]] || return
-	local dict dlang dtype suffix filen dictlst entry fields
+	local dict dlang dclass suffix filen dictlst entry fields
 	dict=$1
 	dlang=${dict/*-}
-	dtype=${dict/-*}
+	dclass=${dict/-*}
 	dictlst="${OOO_DICTLIST}.${dlang}"
-	case ${dtype} in
+	case ${dclass} in
 	myspell)
 		# Remove softlinks and entries in dictionary.lst - uses
 		# dictionary.<lang>.lst from /usr/share/myspell
@@ -193,7 +215,7 @@ do_unset() {
 					${OOO_DICTBASE}/${OOO_DICTLIST} ||
 						die "Could not edit ${OOO_DICTBASE}/${OOO_DICTLIST}"
 				# See if any other entries in dictionary.lst match the current
-				# dictionary type and filename
+				# dictionary class and filename
 				grep "^${fields[0]} .* ${fields[3]}$" ${OOO_DICTBASE}/${OOO_DICTLIST} \
 					2>&1 > /dev/null && continue
 				# If no other entries match, remove relevant symlinks
@@ -204,16 +226,16 @@ do_unset() {
 						rm -f ${OOO_DICTBASE}/${filen} ||
 							die "Failed t remove ${OOO_DICTBASE}/${filen}"
 					else
-						write_warning_msg "File ${OOO_DICTBASE}/${filen} is not a softlink so left untouched"
+						oodict_info "file ${OOO_DICTBASE}/${filen} is not a softlink so left untouched"
 					fi
 				done
 			done < ${MYSPELL_BASE}/${dictlst}
 		else
-			write_warning_msg "Source ${dict} is not installed; nothing changed"
+			oodict_info "source ${dict} is not installed; nothing changed"
 		fi
 		;;
 	*)
-		die "Unknown dictionary type ${dtype}"
+		die "Unknown dictionary class ${dclass}"
 		;;
 	esac
 }
@@ -235,12 +257,12 @@ describe_set_options() {
 }
 
 do_set() {
-	local dict dlang dtype filen dictlst entry fields suffix
+	local dict dlang dclass filen dictlst entry fields suffix
 	dict=$1
 	dlang=${dict/*-}
-	dtype=${dict/-*}
+	dclass=${dict/-*}
 	dictlst="${OOO_DICTLIST}.${dlang}"
-	case ${dtype} in
+	case ${dclass} in
 	myspell)
 		# Clear out any existing entry
 		do_unset ${dict}
@@ -268,13 +290,13 @@ do_set() {
 					ln -s ${MYSPELL_BASE}/${filen} ${OOO_DICTBASE}/${filen} ||
 						die "Failed to create symlink from ${MYSPELL_BASE}/${filen} to ${OOO_DICTBASE}/${filen}"
 				else
-					write_warning_msg "File ${OOO_DICTBASE}/${filen} is not a softlink so left untouched"
+					oodict_info "file ${OOO_DICTBASE}/${filen} is not a softlink so left untouched"
 				fi
 			done
 		done < ${MYSPELL_BASE}/${dictlst}
 		;;
 	*)
-		die "Unknown dictionary type $1"
+		die "Unknown dictionary class $1"
 		;;
 	esac
 }
@@ -293,23 +315,24 @@ describe_update_parameters() {
 }
 
 describe_update_options() {
-	echo "class: type of dictionary (e.g. myspell) - omit to update everything"
+	echo "class: type of dictionary (e.g. ${OODICT_CLASSES/ /, }) - omit to update everything"
 }
 
 do_update() {
 	local dlang dtype dictlst dtypes
 	dtypes=$1
-	[[ -z ${dtypes} ]] && dtypes="myspell"
+	[[ -z ${dtypes} ]] && dtypes=${OODICT_CLASSES}
 	for dtype in ${dtypes}; do
 		case ${dtype} in
 		myspell)
-			for dictlst in ${MYSPELL_BASE}/${OOO_DICTLIST}.*; do
+			dictlsts=$(ls ${MYSPELL_BASE}/${OOO_DICTLIST}.* 2> /dev/null)
+			for dictlst in ${dictlists}; do
 				dlang=${dictlst/*.lst.}
 				do_set ${dtype}-${dlang}
 			done
 			;;
 		*)
-			die "Unknown dictionary type $1"
+			die "Unknown dictionary class $1"
 			;;
 		esac
 	done
