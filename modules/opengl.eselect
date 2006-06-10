@@ -221,7 +221,7 @@ set_new_implementation() {
 		store_config ${ENV_FILE} LDPATH "${ldpath}"
 		store_config ${ENV_FILE} OPENGL_PROFILE "${gl_implem}"
 
-		eselect env update >& /dev/null
+		do_action env update &> /dev/null
 
 	echo " done"
 }

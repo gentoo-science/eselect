@@ -3,12 +3,14 @@
 # $Id$
 # Author: Jeremy Huddleston <eradicator@gentoo.org>
 
+inherit config
+
 # Eselect data
 DESCRIPTION="Manage the installed compilers."
 MAINTAINER="toolchain@gentoo.org"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}" )
-EBUILD_VERSION="2.0.0_rc1"
+EBUILD_VERSION="@PACKAGE_VERSION@"
 
 # Our data
 ROOT=${ROOT:-/}
@@ -386,7 +388,7 @@ do_set() {
 				olddefaultbins="$(get_bins "${ROOT}/${COMPILER_CONFIG_BINPATH}") ${COMPILER_CONFIG_ALIASES}"
 			else
 				write_error_msg "Could not get data on the previous profile for the default CTARGET (${oldprofile})."
- 	 		write_error_msg "You may have extra wrappers installed that you did not intend."
+				write_error_msg "You may have extra wrappers installed that you did not intend."
 			fi
 		fi
 	fi
@@ -440,6 +442,8 @@ do_set() {
 	fi
 
 	set_env ${preopts} || die -q "Could not set ${ENV_FILE}"
+
+	do_action env update &> /dev/null
 
 	echo "Successfully set compiler for ${ctarget} to ${profile}."
 }
@@ -620,7 +624,7 @@ do_update() {
 
 ### migrate action ###
 describe_migrate() {
-	echo "Convert gcc-1.x profiles.  This will not overwrite existing profiles."
+	echo "Convert gcc-1.x profiles.  This will not overwrite existing profiles, so you should backup ${CONFIG_D} first."
 }
 
 do_migrate() {
