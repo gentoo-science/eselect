@@ -1,5 +1,12 @@
 ChangeLog for eselect
 
+2006-06-11 Danny van Dyk <kugelfang@gentoo.org>
+
+	* modules/env.eselect: Fixed handling of files in /etc/env.d/ which
+	are untruly detected as non-plain-text by file utility (see bug
+	#130098). Fixed generation of /etc/profile.csh (see bug #136111).
+	Thanks to Patrick MacLean <chutzpah@gentoo.org> for both fixes.
+
 2006-06-10 Jeremy Huddleston <eradicator@gentoo.org>
 
 	* modules/opengl.eselect: Added env update, added inherit config
