@@ -7,6 +7,11 @@ MAINTAINER="kevquinn@gentoo.org"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}" )
 
+# TODO
+# 1) implement eselect oodict unset direct-<lang>
+# 2) make eselect oodict unset myspell-<lang> abort cleanly if not installed from
+# myspell
+
 # Supports myspell(hunspell) dictionaries; designed to be extensible to
 # manage other classes of dictionaries should they become applicable
 # to OpenOffice.org.
@@ -17,10 +22,6 @@ OOO_DICTLIST="dictionary.lst"
 OODICT_CLASSES="myspell"
 
 MYSPELL_BASE="/usr/share/myspell"
-
-oodict_info() {
-	echo "Note - $1"
-}
 
 # set array "fields" to the elements of $1, separated by $2.
 # This saves having to muck about with IFS all over the place.
@@ -119,6 +120,7 @@ do_show() {
 	# myspell dictionary source
 	lang=""
 	myspell_sources=""
+	direct_sources=""
 	while read entry; do
 		fields=(${entry})
 		[[ ${fields[0]:0:1} == "#" ]] && continue
@@ -130,10 +132,11 @@ do_show() {
 					has ${lang} ${myspell_sources} ||
 						myspell_sources="${myspell_sources} ${lang}"
 				else
-					oodict_info "unrecognised link to ${src} ignored\n"
+					write_warning_msg "unrecognised link to ${src} ignored"
 				fi
 			else
-				oodict_info "${OOO_DICTBASE}/${fields[3]}${suffix} is not a softlink, ignored\n"
+				has ${lang} ${direct_sources} ||
+					direct_sources="${direct_sources} ${lang}"
 			fi
 		done
 	done <<-EOF
@@ -141,7 +144,12 @@ do_show() {
 	EOF
 	if [[ -n ${myspell_sources} ]]; then
 		write_numbered_list_entry ${listn} "myspell"
-		oodict_display_langs "Configured language codes" ${myspell_sources}
+		oodict_display_langs "Configured language codes from ${MYSPELL_BASE}" ${myspell_sources}
+		(( listn = ${listn} + 1 ))
+	fi
+	if [[ -n ${direct_sources} ]]; then
+		write_numbered_list_entry ${listn} "direct"
+		oodict_display_langs "Language codes installed directly in ${OOO_DICTBASE}" ${direct_sources}
 		(( listn = ${listn} + 1 ))
 	fi
 	# show none if no sources found
@@ -159,7 +167,7 @@ describe_list() {
 
 do_list() {
 	local known_langs dict dictlist listn
-	write_list_start "Installed dictionary sources:"
+	write_list_start "Installed dictionary sources that can be set:"
 	listn=1
 	# myspell dictionary source
 	dictlist=$(ls ${MYSPELL_BASE}/${OOO_DICTLIST}.* 2> /dev/null)
@@ -201,6 +209,7 @@ do_unset() {
 	dlang=${dict/*-}
 	dclass=${dict/-*}
 	dictlst="${OOO_DICTLIST}.${dlang}"
+	notmyfiles=""
 	case ${dclass} in
 	myspell)
 		# Remove softlinks and entries in dictionary.lst - uses
@@ -224,15 +233,26 @@ do_unset() {
 					[[ -f ${OOO_DICTBASE}/${filen} ]] &&
 					if [[ -h ${OOO_DICTBASE}/${filen} ]]; then
 						rm -f ${OOO_DICTBASE}/${filen} ||
-							die "Failed t remove ${OOO_DICTBASE}/${filen}"
+							die "Failed to remove ${OOO_DICTBASE}/${filen}"
 					else
-						oodict_info "file ${OOO_DICTBASE}/${filen} is not a softlink so left untouched"
+						has ${filen} ${notmyfiles} ||
+							notmyfiles="${notmyfiles} ${filen}"
 					fi
 				done
 			done < ${MYSPELL_BASE}/${dictlst}
 		else
-			oodict_info "source ${dict} is not installed; nothing changed"
+			write_warning_msg "source ${dict} is not installed; nothing changed"
 		fi
+		[[ -n ${notmyfiles} ]] &&
+			write_warning_msg \
+				"Files ${notmyfiles} in ${OOO_DICTBASE} were not previously " \
+				"installed by eselect oodict.  Remove them manually if you" \
+				"are sure you do not want them."
+		;;
+	direct)
+		write_warning_msg \
+			"eselect oodict does not manage files installed directly to " \
+			"${OOO_DICTBASE}.  Remove them manually."
 		;;
 	*)
 		die "Unknown dictionary class ${dclass}"
@@ -262,10 +282,9 @@ do_set() {
 	dlang=${dict/*-}
 	dclass=${dict/-*}
 	dictlst="${OOO_DICTLIST}.${dlang}"
+	alreadyexists=""
 	case ${dclass} in
 	myspell)
-		# Clear out any existing entry
-		do_unset ${dict}
 		# Ensure OOo dictionary area exists
 		[[ -d ${OOO_DICTBASE} ]] || mkdir -p ${OOO_DICTBASE}
 		# Set new entries & links
@@ -274,26 +293,52 @@ do_set() {
 		[[ -f ${OOO_DICTBASE}/${OOO_DICTLIST} ]] ||
 			touch ${OOO_DICTBASE}/${OOO_DICTLIST} ||
 				die "Unable to create ${OOO_DICTBASE}/${OOO_DICTLIST}"
+		# Check for already existing files
 		while read entry; do
 			fields=(${entry})
 			[[ ${fields[0]:0:1} == "#" ]] && continue
-			grep "^${fields[0]} ${fields[1]} ${fields[2]} " \
-				${OOO_DICTBASE}/${OOO_DICTLIST} > /dev/null 2>&1 ||
-					echo "${entry}" >> ${OOO_DICTBASE}/${OOO_DICTLIST}
 			for suffix in $(oodict_get_myspell_suffixes ${fields[0]}); do
 				filen="${fields[3]}${suffix}"
-				if [[ -h ${OOO_DICTBASE}/${filen} ]]; then
-					rm -f ${OOO_DICTBASE}/${filen} ||
-						die "Failed to remove ${OOO_DICTBASE}/${filen}"
-				fi
-				if [[ ! -f ${OOO_DICTBASE}/${filen} ]]; then
-					ln -s ${MYSPELL_BASE}/${filen} ${OOO_DICTBASE}/${filen} ||
-						die "Failed to create symlink from ${MYSPELL_BASE}/${filen} to ${OOO_DICTBASE}/${filen}"
-				else
-					oodict_info "file ${OOO_DICTBASE}/${filen} is not a softlink so left untouched"
+				if [[ ! -h ${OOO_DICTBASE}/${filen} ]] &&
+				   [[ -f ${OOO_DICTBASE}/${filen} ]]; then
+					has ${filen} ${alreadyexists} ||
+						alreadyexists="${alreadyexists} ${filen}"
 				fi
 			done
 		done < ${MYSPELL_BASE}/${dictlst}
+		if [[ -n ${alreadyexists} ]]; then
+			write_warning_msg \
+				"Files${alreadyexists} in ${OOO_DICTBASE} already exist." \
+				"Remove them manually and re-run eselect oodict to put them" \
+				"under eselect management."
+		else
+			# Clear out any existing entry
+			do_unset ${dict}
+			while read entry; do
+				fields=(${entry})
+				[[ ${fields[0]:0:1} == "#" ]] && continue
+				grep "^${fields[0]} ${fields[1]} ${fields[2]} " \
+					${OOO_DICTBASE}/${OOO_DICTLIST} > /dev/null 2>&1 ||
+						echo "${entry}" >> ${OOO_DICTBASE}/${OOO_DICTLIST}
+				for suffix in $(oodict_get_myspell_suffixes ${fields[0]}); do
+					filen="${fields[3]}${suffix}"
+					if [[ -h ${OOO_DICTBASE}/${filen} ]]; then
+						rm -f ${OOO_DICTBASE}/${filen} ||
+							die "Failed to remove ${OOO_DICTBASE}/${filen}"
+					fi
+					if [[ ! -f ${OOO_DICTBASE}/${filen} ]]; then
+						ln -s ${MYSPELL_BASE}/${filen} ${OOO_DICTBASE}/${filen} ||
+							die "Failed to create symlink from ${MYSPELL_BASE}/${filen} to ${OOO_DICTBASE}/${filen}"
+					else
+						has ${filen} ${alreadyexists} ||
+							alreadyexists="${alreadyexists} ${filen}"
+					fi
+				done
+			done < ${MYSPELL_BASE}/${dictlst}
+		fi
+		;;
+	direct)
+		write_warning_msg "eselect oodict does not manage files installed directly to ${OOO_DICTBASE}."
 		;;
 	*)
 		die "Unknown dictionary class $1"
