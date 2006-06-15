@@ -1,5 +1,10 @@
 ChangeLog for eselect
 
+2006-06-13 Kevin F. Quinn <kevquinn@gentoo.org>
+
+	* modules/oodict.eselect: Clean up output when dictionaries are installed
+	outside of myspell ebuilds. See bug #135520 comment 4.
+
 2006-06-11 Danny van Dyk <kugelfang@gentoo.org>
 
 	* modules/env.eselect: Fixed handling of files in /etc/env.d/ which
@@ -11,6 +16,16 @@ ChangeLog for eselect
 
 	* modules/opengl.eselect: Added env update, added inherit config
 	* modules/compiler.eselect.in: Added env update
+
+2006-06-03 Kevin F. Quinn <kevquinn@gentoo.org>
+
+	* modules/oodict.eselect: Tidy up info messages, clean up handling of
+	nothing-installed and configured cases
+
+2006-05-31 Kevin F. Quinn <kevquinn@gentoo.org>
+
+	* modules/oodict.eselect: New module for managing dictionaries with
+	OpenOffice.org.  See bug #132247.
 
 2006-04-14 Danny van Dyk <kugelfang@gentoo.org>
 
