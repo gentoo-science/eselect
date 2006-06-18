@@ -409,4 +409,28 @@ The ``portageq`` Function
 The ``portageq`` function transparently wraps the corresponding Portage script
 whilst redirecting stderr to ``/dev/null``.
 
+A Basic Skeleton Library
+========================
+
+The ``libs/skel.bash`` library provides for a simple eselect module to switch
+between implementations of anything that installs to a ``lib*`` directory
+(i.e., lib, lib32, lib64). This will satisfy the requirements for most cases in
+which one must switch between providers of a certain library or any package
+installing a library.
+
+Creating a simple module
+------------------------
+
+To use this library, all you need to do is create an eselect module containing
+settings for the MODULE and IFACE variables. The MODULE variable is the name
+used to refer to the implementations being switched in help text. The IFACE
+variable indicates the subdirectory of /etc/env.d/ in which eselect files for
+these implementations will be stored.
+
+Each package must install a symlink map using the ``add`` action. The map must
+use relative symlinks, one source-destination mapping per line in the form
+``source destination``. The source must be relative to the destination, not
+absolute. Instead of using ``lib`` or ``lib64`` etc., you must use @LIBDIR@.
+The ``libs/skel.bash`` library detects the proper library directory at runtime.
+
 .. vim: set ft=glep tw=80 sw=4 et spell spelllang=en : ..

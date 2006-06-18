@@ -1,10 +1,8 @@
 safe_scripts = \
 		 bashcomp.eselect \
 		 binutils.eselect \
-		 blas.eselect \
 		 env.eselect \
 		 kernel.eselect \
-		 lapack.eselect \
 		 mailer.eselect \
 		 profile.eselect \
 		 rc.eselect

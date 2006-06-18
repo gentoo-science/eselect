@@ -1,4 +1,4 @@
-.TH "ESELECT" "5" "April 2005" "Gentoo Linux" "eselect"
+.TH "ESELECT" "5" "June 2006" "Gentoo Linux" "eselect"
 .SH "NAME"
 lapack.eselect \- The LAPACK management module for Gentoo's eselect
 .SH "SYNOPSIS"
@@ -6,43 +6,38 @@ lapack.eselect \- The LAPACK management module for Gentoo's eselect
 .br 
 \fBeselect lapack\fR \fBlist\fR [\fIoptions\fR]
 .br 
+\fBeselect lapack\fR \fBadd\fR
+.br 
 \fBeselect lapack\fR \fBset\fR \fIimplementation\fR [\fIoptions\fR]
 .br 
 \fBeselect lapack\fR \fBshow\fR [\fIoptions\fR]
-.br 
-\fBeselect lapack\fR \fBupdate\fR
+
 .SH "DESCRIPTION"
 \fBeselect\fR is Gentoo's configuration and management tool. It features
 modules that care for the individual administrative tasks.
 .SH "ACTION: LIST"
 \fBeselect lapack list\fR [\fIoptions\fR]
 .br 
-Displays an orderd list of installed LAPACK implementations. It distinguishes between versions with different
-Application Binary Interfaces (e.g. x86/AMD64). Further it distinguishes
-between interfaces to highlevel programming languages. Each line holds
-a number, the implementation's name and the providing package's name. An asterisk next to one of the list
-elements denotes a currently active implementation.
+Displays an ordered list of installed LAPACK implementations. It distinguishes between versions with different
+Application Binary Interfaces (e.g. x86/AMD64). Furthermore, it also distinguishes
+between interfaces to high-level programming languages. Each line holds
+a number and the implementation's name. An asterisk next to one of the list
+elements denotes an active implementation.
 
 phi / # eselect lapack list
 .br 
-FORTRAN 77 profiles in /usr/lib64
+Installed LAPACK for libdir \fBlib\fR
 .br 
-  ACML                      (sci\-libs/ACML)
-  ATLAS                     (sci\-libs/lapack\-atlas) *
-  MKL72                     (sci\-libs/mkl)
-  reference                 (sci\-libs/lapack\-reference)
+  [1]   atlas *
+  [2]   reference
 
 Possible \fIoptions\fR to the \fBlist\fR action are restrictions to
-handle only certain profiles or ABI\-specific library directories. For example,
+handle only certain ABI\-specific library directories. For example,
  
 \fBeselect lapack list lib64\fR
 
-lists only LAPACK implementations found in \fB/usr/lib64\fR while
+lists only LAPACK implementations found in \fB/usr/lib64\fR.
 
-\fBeselect lapack list lib32 F77\fR
-
-lists only LAPACK implementations that provide a FORTRAN 77 interface
-and are located in \fB/usr/lib32\fR.
 .SH "ACTION: SHOW"
 \fBeselect lapack show\fR [\fIoptions\fR]
 .br 
@@ -50,34 +45,23 @@ Shows your system's currently active LAPACK implementations.
 
 phi / # eselect lapack show
 .br 
-Active LAPACK implementations
-  /usr/lib (F77)            ACML (sci\-libs/ACML)
-  /usr/lib64 (F77)          ACML (sci\-libs/ACML)
+lib: atlas
+.br
+lib64: reference
 
 The same \fIoptions\fR that apply to the \fBlist\fR action can be used
-with the \fBshow\fR action to restrict it to given ABIs and language interfaces.
+with the \fBshow\fR action to restrict it to given ABIs.
 .SH "ACTION: SET"
 \fBeselect lapack set\fR \fIimplementation\fR [\fIoptions\fR]
 .br 
 Sets your system's currently active LAPACK implementations to \fIimplementation\fR. 
 The same \fIoptions\fR that apply to the \fBlist\fR action can be used
-with the \fBset\fR action to restrict it to given ABIs and language interfaces.
+with the \fBset\fR action to restrict it to given ABIs.
 
-phi / # eselect lapack set ACML
-.br 
-Changing LAPACK implementation to ACML in
-.br 
-  lib lib32 lib64
-.br 
-Affected language interfaces
-  F77
-.SH "ACTION: SCAN"
-\fBeselect lapack scan\fR
-.br 
-Browses your system for installed LAPACK implementations
-and save the data for further actions. During this process it automatically
-detects the currently active LAPACK implementation which will be memorized as well.
+phi / # eselect lapack set atlas
 .SH "AUTHOR"
 Danny van Dyk <kugelfang@gentoo.org>
+.br
+Donnie Berkholz <spyderous@gentoo.org>
 .SH "REVISION"
 $Id$
