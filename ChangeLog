@@ -1,5 +1,9 @@
 ChangeLog for eselect
 
+2006-06-19 Kevin F. Quinn <kevquinn@gentoo.org>
+
+	* modules/oodict.eselect: Align description with other modules
+
 2006-06-18 Donnie Berkholz <spyderous@gentoo.org>
 
 	* libs/skel.bash.in, libs/Makefile.am, doc/developer-guide.txt:
