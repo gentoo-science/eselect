@@ -70,9 +70,16 @@ oodict_display_langs() {
 	fi
 }
 
-# Format of dictionary.lst files (from OOo standard
-# dictionary.lst file):
-#
+# Create OpenOffice.org dictionary list file if it does not exist
+oodict_create_dictlist() {
+	[[ -f ${OOO_DICTBASE}/${OOO_DICTLIST} ]] && return
+	# Ensure OOo dictionary area exists
+	[[ -d ${OOO_DICTBASE} ]] || mkdir -p ${OOO_DICTBASE}
+	touch ${OOO_DICTBASE}/${OOO_DICTLIST} ||
+		die "Unable to create ${OOO_DICTBASE}/${OOO_DICTLIST}" 
+	# Format of dictionary.lst files is from OOo standard
+	# dictionary.lst file:
+	cat > ${OOO_DICTBASE}/${OOO_DICTLIST} <<EOF
 # List of All Dictionaries to be Loaded by OpenOffice
 # ---------------------------------------------------
 # Each Entry in the list have the following space delimited fields
@@ -87,6 +94,9 @@ oodict_display_langs() {
 #
 # Field 3: Root name of file(s) "en_US" or "hyph_de" or "th_en_US"
 #          (do not add extensions to the name)
+
+EOF
+}
 
 # Format of MYSPELL_[SPELLING|HYPHENATION|THESAURUS]_DICTIONARIES:
 #
@@ -204,6 +214,7 @@ describe_unset_options() {
 do_unset() {
 	# Check OOo dictionary area exists
 	[[ -d ${OOO_DICTBASE} ]] || return
+	[[ -f  ${OOO_DICTBASE}/${OOO_DICTLIST} ]] || return
 	local dict dlang dclass suffix filen dictlst entry fields
 	dict=$1
 	dlang=${dict/*-}
@@ -233,7 +244,7 @@ do_unset() {
 					[[ -f ${OOO_DICTBASE}/${filen} ]] &&
 					if [[ -h ${OOO_DICTBASE}/${filen} ]]; then
 						rm -f ${OOO_DICTBASE}/${filen} ||
-							die "Failed to remove ${OOO_DICTBASE}/${filen}"
+						die "Failed to remove ${OOO_DICTBASE}/${filen}"
 					else
 						has ${filen} ${notmyfiles} ||
 							notmyfiles="${notmyfiles} ${filen}"
@@ -285,14 +296,11 @@ do_set() {
 	alreadyexists=""
 	case ${dclass} in
 	myspell)
-		# Ensure OOo dictionary area exists
-		[[ -d ${OOO_DICTBASE} ]] || mkdir -p ${OOO_DICTBASE}
 		# Set new entries & links
 		[[ -f ${MYSPELL_BASE}/${dictlst} ]] ||
 			die "Dictionary $1 not found in ${MYSPELL_BASE}"
-		[[ -f ${OOO_DICTBASE}/${OOO_DICTLIST} ]] ||
-			touch ${OOO_DICTBASE}/${OOO_DICTLIST} ||
-				die "Unable to create ${OOO_DICTBASE}/${OOO_DICTLIST}"
+		# Create OOo dictionary list file if it doesn't already exist
+		oodict_create_dictlist
 		# Check for already existing files
 		while read entry; do
 			fields=(${entry})
@@ -371,7 +379,7 @@ do_update() {
 		case ${dtype} in
 		myspell)
 			dictlsts=$(ls ${MYSPELL_BASE}/${OOO_DICTLIST}.* 2> /dev/null)
-			for dictlst in ${dictlists}; do
+			for dictlst in ${dictlsts}; do
 				dlang=${dictlst/*.lst.}
 				do_set ${dtype}-${dlang}
 			done
