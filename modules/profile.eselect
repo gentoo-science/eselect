@@ -2,6 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
+# This is a portage-only module.
 inherit portage
 
 DESCRIPTION="Manage the /etc/make.profile symlink"

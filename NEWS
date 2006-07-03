@@ -1,10 +1,21 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.0.3:
+    Bug fixes:
+    - Fix env.eselect by white-listing allowed mime-types for files in
+    /etc/env.d/.
+
+    New features:
+    - blas.eselect and lapack.eselect have been rewritten, cblas.eselect has
+    been split out of blas.eselect. All three modules now use skel.bash
+    library.
+    - rc.eselect now supports a non-default service directory.
+
 1.0.2:
     Bug fixes:
     - Fix env.eselect to not bail on missing /etc/profile.env.
-    
+
     New features:
     - kernel.eselect now understands 'set $(uname -r)'.
 

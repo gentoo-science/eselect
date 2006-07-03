@@ -23,24 +23,25 @@ if test x$SED = "x" ; then
 fi
 
 AC_PATH_PROG(PORTAGEQ, portageq)
+AC_PATH_PROG(PALUDIS, paludis)
 
 AC_PATH_PROG(READLINK, greadlink)
 if test x$CANONICALISE = "x" ; then
     AC_CHECK_PROG(READLINK, readlink -f ., yes, no, [$PATH])
     if test x$READLINK = "xyes" ; then
-    	AC_PATH_PROG(READLINK, readlink)
+        AC_PATH_PROG(READLINK, readlink)
     fi
- 
+
     CANONICALISE_TEST=`$READLINK -f . > /dev/null 2>&1`
     if ! test x$? = "x0" ; then
-    	unset READLINK
+        unset READLINK
     fi
- 
+
     if test x$READLINK = "x" ; then
-	AC_PATH_PROG(REALPATH, realpath)
+        AC_PATH_PROG(REALPATH, realpath)
         if test x$REALPATH = "x" ; then
             AC_MSG_ERROR([Either GNU readlink or realpath is required])
-	fi
+        fi
     fi
 fi
 if test x$READLINK != "x"; then

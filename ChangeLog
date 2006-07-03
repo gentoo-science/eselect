@@ -1,13 +1,30 @@
 ChangeLog for eselect
 
+2006-07-01 Danny van Dyk <kugelfang@gentoo.org>
+
+	* libs/portage.bash.in, libs/paludis.bash.in,
+	libs/package-manager.bash.in, libs/Makefile.am, configure.ac: Added
+	support for other package managers than portage. Public functions are
+	part of package-manager.bash. paludis.bash and portage.bash provide
+	private backend functions.
+
+	* modules/profile.eselect: Marked as portage-only module.
+
+	* modules/opengl.eselect, modules/binutils.eselect: Change from
+	inherit portage to inherit package-manager.
+
+	* modules/rc.eselect: Fix bug in list_runlevels(). Respect setting of
+	${svcdir} in /etc/rc.conf. Add support to show() runlevels other than
+	the current.
+
 2006-06-21 Kevin F. Quinn <kevquinn@gentoo.org>
 
 	* modules/oodict.eselect: Fix update action (variable name typo), and
-	handle missing OOo dictionary.lst properly
+	handle missing OOo dictionary.lst properly.
 
 2006-06-19 Kevin F. Quinn <kevquinn@gentoo.org>
 
-	* modules/oodict.eselect: Align description with other modules
+	* modules/oodict.eselect: Align description with other modules.
 
 2006-06-18 Donnie Berkholz <spyderous@gentoo.org>
 
@@ -44,7 +61,7 @@ ChangeLog for eselect
 2006-06-03 Kevin F. Quinn <kevquinn@gentoo.org>
 
 	* modules/oodict.eselect: Tidy up info messages, clean up handling of
-	nothing-installed and configured cases
+	nothing-installed and configured cases.
 
 2006-05-31 Kevin F. Quinn <kevquinn@gentoo.org>
 

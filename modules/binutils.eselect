@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-inherit config portage
+inherit config package-manager
 
 DESCRIPTION="Manage installed versions of sys-devel/binutils"
 MAINTAINER="kugelfang@gentoo.org"

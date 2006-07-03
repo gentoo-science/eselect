@@ -1,0 +1,125 @@
+#!/bin/bash
+
+# Copyright (c) 2005 Gentoo Foundation.
+# $Id$
+# This file is part of the 'eselect' tools framework.
+#
+# eselect is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 2 of the License, or (at your option) any later
+# version.
+#
+# eselect is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# eselect; if not, write to the Free Software Foundation, Inc., 59 Temple
+# Place, Suite 330, Boston, MA  02111-1307  USA
+
+inherit paludis portage
+
+# arch
+# Return the architecture we're running on...
+arch() {
+    local ret=$(envvar ARCH) suffix
+
+    # $arch will be null if there's no current make.profile symlink
+    # we cannot get a list of valid profiles without it.
+    if [[ -z ${ret} ]] ; then
+
+        if [[ -n "${ROOT}" && ${ROOT} != "/" ]] ; then
+            write_warning_msg "Failed to determine \${ARCH}. Is your make.profile symlink valid?"
+            return 1
+        fi
+
+        ret=$(uname -m)
+        case ${ret} in
+            alpha|ia64|ppc) ;;
+            i?86) ret=x86 ;;
+            mips*) ret=mips ;;
+            sparc*) ret=sparc ;;
+            x86_64) ret=amd64 ;;
+            *) write_warning_msg \
+                "Unknown architecture. Please submit a bug including the output of 'uname -m'!"
+                return 1
+                ;;
+            esac
+
+            case $(uname -s) in
+                Linux) ;;
+                FreeBSD) suffix="-fbsd" ;;
+                NetBSD) suffix="-nbsd" ;;
+                OpenBSD) suffix="-obsd" ;;
+                DragonFly) suffix="-dfly" ;;
+                *) write_warning_msg \
+                    "Unknown OS. Please submit a bug including the output of 'uname -s'!"
+                    return 1
+                    ;;
+            esac
+    fi
+
+    echo ${ret}${suffix}
+}
+
+
+# envvar
+# Return the contents of environment variable $1 as seen by package manager(s)
+envvar() {
+    [[ ${#@} -eq 1 ]] || die "envvar expects exactly 1 argument!"
+
+    local manager=$(package-manager)
+    case ${manager} in
+        paludis)
+            paludis_envvar "${1}" 2>/dev/null
+            ;;
+        portage)
+            portageq envvar "${1}" 2>/dev/null
+            ;;
+        *)
+            die "Unknown package manager: \"${manager}\"!"
+    esac
+}
+
+# has-version
+# Return true if package $2 is available in root $1
+has-version() {
+    [[ ${#@} -eq 2 ]] || die "has_version expects exactly 1 arguments!"
+
+    local manager=$(package-manager)
+    case ${manager} in
+        paludis)
+            paludis_has-version $* 2>/dev/null
+            ;;
+        portage)
+            portageq has_version $* 2>/dev/null
+            ;;
+        *)
+            die "Unknown package manager: \"${manager}\"!"
+    esac
+}
+
+# package-manager PRIVATE
+# Return the package manager we're going to use.
+package-manager() {
+    local manager
+
+    if [[ -n ${ESELECT_PACKAGE_MANAGER_CACHE} ]] ; then
+        echo ${ESELECT_PACKAGE_MANAGER_CACHE}
+        return
+    fi
+
+    # We prefer paludis over portage
+    if ${PALUDIS_COMMAND:-@PALUDIS@} --list-repositories > /dev/null 2>&1 ; then
+        manager="paludis"
+    else
+        manager="portage"
+    fi
+
+    echo ${manager}
+    export ESELECT_PACKAGE_MANAGER_CACHE=${manager}
+}
+
+# vim: set sw=4 et sts=4 tw=80 :
+
+

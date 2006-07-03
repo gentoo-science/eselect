@@ -7,7 +7,7 @@
 # Further modifications by Jeremy Huddleston <eradicator@gentoo.org>
 # Made into eselect module by Jeremy Huddleston <eradicator@gentoo.org>
 
-inherit multilib portage config
+inherit multilib package-manager config
 
 # Eselect data
 DESCRIPTION="Manage the OpenGL implementation used by your system"

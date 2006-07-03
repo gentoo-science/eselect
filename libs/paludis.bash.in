@@ -17,10 +17,27 @@
 # eselect; if not, write to the Free Software Foundation, Inc., 59 Temple
 # Place, Suite 330, Boston, MA  02111-1307  USA
 
-# portageq ...
-# Run portageq with safe filename as set by configure
-portageq() {
-    @PORTAGEQ@ $* 2> /dev/null
+# paludis-envvar PRIVATE
+# Run paludis --envvar with safe filename as set by configure
+paludis-envvar() {
+    ${PALUDIS_COMMAND:-@PALUDIS@} --envvar "${1}" --repository $(paludis-repo) 2> /dev/null
+}
+
+# paludis-repo PRIVATE
+# Return the repository to use
+paludis-repo() {
+    echo "gentoo" # TODO: 
+    return
+
+    local repo
+    if [[ -n ${ESELECT_PALUDIS_REPO_CACHE} ]] ; then
+        echo ${ESELECT_PALUDIS_REPO_CACHE}
+        return
+    fi
+
+    repo=$(${PALUDIS_COMMAND:-@PALUDIS@} --installed-by "sys-devel/binutils")
+    echo ${repo}
+    export ESELECT_PALUDIS_REPO_CACHE=${repo}
 }
 
 # vim: set sw=4 et sts=4 tw=80 :
