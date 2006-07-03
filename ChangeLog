@@ -1,5 +1,9 @@
 ChangeLog for eselect
 
+2006-07-03 Danny van Dyk <kugelfang@gentoo.org>
+
+	* Tagged 1.0.3 release.
+
 2006-07-01 Danny van Dyk <kugelfang@gentoo.org>
 
 	* libs/portage.bash.in, libs/paludis.bash.in,
@@ -84,7 +88,7 @@ ChangeLog for eselect
 2006-04-01 Danny van Dyk <kugelfang@gentoo.org>
 
 	* Tagged 1.0.1 release.
-	* configure.ac: Fixed substituation of CANONICLAISE.
+	* configure.ac: Fixed substituation of CANONICALISE.
 	* modules/env.eselect: Fixed calls to canonicalise().
 	* modules/kernel.eselect: Fixed output of show action.
 

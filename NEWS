@@ -5,12 +5,15 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
     Bug fixes:
     - Fix env.eselect by white-listing allowed mime-types for files in
     /etc/env.d/.
+    - Fix env.eselect to create proper /etc/profile.csh.
 
     New features:
     - blas.eselect and lapack.eselect have been rewritten, cblas.eselect has
     been split out of blas.eselect. All three modules now use skel.bash
     library.
     - rc.eselect now supports a non-default service directory.
+    - Add oodict.eselect as a separately-shipped module.
+    - kernel.eselect now understands target $(uname -r).
 
 1.0.2:
     Bug fixes:
