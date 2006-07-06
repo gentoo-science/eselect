@@ -26,46 +26,36 @@ show_extra_help_text() {
 
 ### Helpers ###
 
-eval_pm() {
-	local tmp=$(mktemp -t tmp.XXXXXX)
-	local retval
-
-	${PROFILE_MANAGER} --config-dir="${CONFIG_D}" "${@}" > ${tmp}
-	retval=${?}
-	source ${tmp}
-	rm -f ${tmp}
-	return ${retval}
+run_profile-manager() {
+	${PROFILE_MANAGER} --config-dir="${CONFIG_D}" $* \
+		|| die "Executing ${PROFILE_MANAGER} failed."
 }
 
-list_all_profiles() {
-	local preopts="${@}"
-	local ctarget
-	local profiles_v
-	local i=0
-
-	for ctarget in ${COMPILER_CONFIG_ALL_CTARGETS} ; do
-		if (( i == 0 )) ; then
-			(( i++ ))
-		else
-			echo -n " "
-		fi
-
-		profiles_v="COMPILER_CONFIG_PROFILES_${ctarget//[-.]/_}"
-		echo -n ${!profiles_v}
+eval_profile-manager() {
+	run_profile_manager $* 2>/dev/null | while read line ; do
+		[[ ${line} == ${line/=/} ]] \
+			&& die "Unexpected line in profile-manager output"
 	done
+}
 
-	echo ""
+list_profiles() {
+	local preopts=${@} ctarget profile
+	set ${COMPILER_CONFIG_ALL_CTARGETS[@]}
+	shift 1
+
+	for ctarget in ${@} ; do
+		profile="COMPILER_CONFIG_PROFILES_${ctarget//[-.]/_}"
+		echo -n ${!profile}
+	done
 }
 
 # Return the binaries in the passed directory, but don't include any with a CTARGET prefix
 # Currently this just extracts the prefix from the directory by assuming
 # the directory matches */usr/<CTARGET>/gcc-bin/*
 # TODO: Cleanup to work better with non-gcc
-get_bins() {
-	local dir=${1}
-	local file
-	local basefile
-	local prefix
+get_binaries() {
+	local basefile dir=${1} f prefix
+	local -a output
 
 	if [[ ${dir#*/usr/} != ${dir} && ${dir%/gcc-bin/*} != ${dir} ]] ; then
 		prefix=${dir#*/usr/}
@@ -73,20 +63,17 @@ get_bins() {
 	fi
 
 	local i=0
-	for file in ${dir}/* ; do
+	for f in "${dir}"/* ; do
 		basefile=$(basename ${file})
 		basefile=${basefile#${prefix}-}
 
-		if [[ -x ${file} && ! -h ${file} ]] && ! has ${basefile} ${retval} ; then
-			if (( i == 0 )) ; then
-				(( i++ ))
-			else
-				echo -n " "
-			fi
-			echo -n ${basefile}
-		fi
+		[[ -x ${file} ]] || continue
+		[[ -h ${file} ]] && continue
+		has ${basefile} ${retval[@]} \
+			|| retval=( ${retval[@]} "${basefile}" )
 	done
-	echo ""
+
+	echo ${retval[@]}
 }
 
 ### ACTIONS ###
@@ -97,49 +84,39 @@ describe_list() {
 }
 
 do_list() {
-	local ctarget
-	local profiles_v
-	local set_v
-	local profile
-	local i
-	local active='*'
-	local preopts=""
+	local active='*' config ctarget preopts profile profiles
 
-	while [[ ${#} -gt 0 ]]; do
-		local opt=${1}
-		shift
-		case ${opt} in
+	while [[ -n ${1} ]]; do
+		case ${1} in
 			--user|-u)
 				preopts="${preopts} --user"
 			;;
 			*)
-				die -q "Invalid option: ${opt}"
+				die -q "Invalid option: ${1}"
 			;;
 		esac
+		shift
 	done
 
-	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles."
+	eval_profile-manager ${preopts} get-profiles
 
-	((i = 0))
 	for ctarget in ${COMPILER_CONFIG_ALL_CTARGETS} ; do
 		write_list_start "Available compilers for CTARGET $(highlight "${ctarget}")"
 
-		profiles_v="COMPILER_CONFIG_PROFILES_${ctarget//[-.]/_}"
-		for profile in ${!profiles_v} ; do
-			((i++))
-			write_numbered_list_entry $i "${profile}"
-		done
+		profiles="COMPILER_CONFIG_PROFILES_${ctarget//[-.]/_}"
+		profiles=( ${!profiles} )
+		write_numbered_list "${profiles[@]}"
 	done
 
-	echo ""
+	echo
 
 	write_list_start "Activated profiles:"
 	for ctarget in ${COMPILER_CONFIG_SET_CTARGETS} ; do
-		set_v="COMPILER_CONFIG_SET_${ctarget//[-.]/_}"
+		config="COMPILER_CONFIG_SET_${ctarget//[-.]/_}"
 		if [[ ${ctarget} == ${COMPILER_CONFIG_DEFAULT_CTARGET} ]] ; then
-			write_kv_list_entry "${ctarget} $(highlight "${active}")" "${!set_v}"
+			write_kv_list_entry "${ctarget} $(highlight "${active}")" "${!config}"
 		else
-			write_kv_list_entry "${ctarget}" "${!set_v}"
+			write_kv_list_entry "${ctarget}" "${!config}"
 		fi
 	done
 }
@@ -150,8 +127,7 @@ describe_show() {
 }
 
 do_show() {
-	local ctarget
-	local preopts=""
+	local ctarget config preopts=""
 
 	while [[ ${#} -gt 0 ]]; do
 		local opt=${1}
@@ -166,13 +142,11 @@ do_show() {
 		esac
 	done
 
-	eval_pm ${preopts} get-profiles || die -q "Failed to get data on installed profiles."
+	eval_profile-manager ${preopts} get-profiles
 
-	if [[ -z ${ctarget} ]] ; then
-		ctarget=${COMPILER_CONFIG_DEFAULT_CTARGET}
-	fi
+	ctarget=${ctarget:-${COMPILER_CONFIG_DEFAULT_CTARGET}}
 
-	local set_v="COMPILER_CONFIG_SET_${ctarget//[-.]/_}"
+	local config="COMPILER_CONFIG_SET_${ctarget//[-.]/_}"
 	if [[ -n ${!set_v} ]] ; then
 		echo ${!set_v}
 		return 0
