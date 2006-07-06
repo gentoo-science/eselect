@@ -16,6 +16,9 @@ VERSION=$(svn_date_to_version "${SVN_DATE}" )
 # manage other classes of dictionaries should they become applicable
 # to OpenOffice.org.
 
+# Base directory where OpenOffice stores its dictionary information.
+# Default is non-multilib /usr/lib - if given, the --libdir option changes
+# this to the supplied library subdirectory name.
 OOO_DICTBASE="/usr/lib/openoffice/share/dict/ooo"
 OOO_DICTLIST="dictionary.lst"
 
@@ -110,6 +113,32 @@ EOF
 # thesavail.lst files on the openoffice.org repository.
 
 
+oodict_describe_options() {
+	echo "--libdir <libdir>: OpenOffice.org library subdirectory is <libdir>, e.g. lib32 (default 'lib')"
+}
+
+# Process options
+# Notes:
+# 1) this dies if it sees an option it doesn't understand.
+# 2) Copy and consume (shift) parameters before calling this, otherwise it
+#    considers extra parameters as potential options.
+oodict_process_options() {
+	while [[ -n $1 && "--" != ${1:0:2} ]]; do
+		shift
+	done
+	while [[ "--" == ${1:0:2} ]]; do
+		if [[ "--libdir" == $1 ]]; then
+			shift
+			OOO_DICTBASE="/usr/$1/openoffice/share/dict/ooo"
+			libdir=$1
+			shift
+		elif [[ "--" == $1 ]]; then
+			break
+		else
+			die -q "Unknown parameter ${1}"
+		fi
+	done
+}
 
 
 ### show action
@@ -119,8 +148,13 @@ describe_show() {
 	echo "Show which dictionaries are configured for use with OpenOffice.org."
 }
 
+describe_show_options() {
+	oodict_describe_options
+}
+
 do_show() {
 	local lang myspell_sources listn suffix
+	oodict_process_options $*
 	write_list_start "OpenOffice.org configured dictionaries"
 	if [[ ! -f ${OOO_DICTBASE}/${OOO_DICTLIST} ]]; then
 		echo "  (none)"
@@ -209,13 +243,15 @@ describe_unset_parameters() {
 
 describe_unset_options() {
 	echo "dictionary: <class>-<lang> e.g. myspell-en"
+	oodict_describe_options
 }
 
 do_unset() {
 	# Check OOo dictionary area exists
+	local dict dlang dclass suffix filen dictlst entry fields
+	oodict_process_options $*
 	[[ -d ${OOO_DICTBASE} ]] || return
 	[[ -f  ${OOO_DICTBASE}/${OOO_DICTLIST} ]] || return
-	local dict dlang dclass suffix filen dictlst entry fields
 	dict=$1
 	dlang=${dict/*-}
 	dclass=${dict/-*}
@@ -285,10 +321,12 @@ describe_set_parameters() {
 
 describe_set_options() {
 	echo "dictionary: <class>-<lang> e.g. myspell-en"
+	oodict_describe_options
 }
 
 do_set() {
 	local dict dlang dclass filen dictlst entry fields suffix
+	oodict_process_options $*
 	dict=$1
 	dlang=${dict/*-}
 	dclass=${dict/-*}
@@ -298,7 +336,7 @@ do_set() {
 	myspell)
 		# Set new entries & links
 		[[ -f ${MYSPELL_BASE}/${dictlst} ]] ||
-			die "Dictionary $1 not found in ${MYSPELL_BASE}"
+			die "Dictionary ${dict} not found in ${MYSPELL_BASE}"
 		# Create OOo dictionary list file if it doesn't already exist
 		oodict_create_dictlist
 		# Check for already existing files
@@ -349,7 +387,7 @@ do_set() {
 		write_warning_msg "eselect oodict does not manage files installed directly to ${OOO_DICTBASE}."
 		;;
 	*)
-		die "Unknown dictionary class $1"
+		die "Unknown dictionary class ${dict}"
 		;;
 	esac
 }
@@ -369,23 +407,27 @@ describe_update_parameters() {
 
 describe_update_options() {
 	echo "class: type of dictionary (e.g. ${OODICT_CLASSES/ /, }) - omit to update everything"
+	oodict_describe_options
 }
 
 do_update() {
-	local dlang dtype dictlst dtypes
-	dtypes=$1
-	[[ -z ${dtypes} ]] && dtypes=${OODICT_CLASSES}
-	for dtype in ${dtypes}; do
-		case ${dtype} in
+	local dlang class dictlst classes
+	oodict_process_options $*
+	# <class> is an optional parameter
+	classes=$1
+	[[ -z ${classes} || "--" == ${classes:0:2} ]] &&
+		classes=${OODICT_CLASSES}
+	for class in ${classes}; do
+		case ${class} in
 		myspell)
 			dictlsts=$(ls ${MYSPELL_BASE}/${OOO_DICTLIST}.* 2> /dev/null)
 			for dictlst in ${dictlsts}; do
 				dlang=${dictlst/*.lst.}
-				do_set ${dtype}-${dlang}
+				do_set ${class}-${dlang}
 			done
 			;;
 		*)
-			die "Unknown dictionary class $1"
+			die "Unknown dictionary class ${class}"
 			;;
 		esac
 	done
