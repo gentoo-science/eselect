@@ -2,6 +2,11 @@ ChangeLog for eselect
 
 2006-07-07 Kevin F. Quinn <kevquinn@gentoo.org>
 
+	* modules/tbirddict.eselect: Fixed default thunderbird;
+	directory; bug #139422 - thanks Rodolphe Rocca
+
+2006-07-07 Kevin F. Quinn <kevquinn@gentoo.org>
+
 	* modules/tbirddict.eselect: new module to support dictionary
 	installation for Mozilla Thunderbird; bug #139422
 

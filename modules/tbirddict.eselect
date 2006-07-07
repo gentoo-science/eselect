@@ -20,7 +20,7 @@ VERSION=$(svn_date_to_version "${SVN_DATE}" )
 # The --base option can be set to override this; for example in the -bin package
 # which uses /opt/thunderbird or multilib which uses
 # /usr/$(get_libdir)/thunderbird.
-TBIRDDICT_DICTBASE="/usr/lib/thunderbird/components/myspell"
+TBIRDDICT_DICTBASE="/usr/lib/mozilla-thunderbird/components/myspell"
 MYSPELL_DICTLIST_BASE="dictionary.lst"
 
 DICT_CLASSES="myspell"
