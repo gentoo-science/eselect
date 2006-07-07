@@ -1,0 +1,380 @@
+# Copyright 1999-2006 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Id: tbirddict.eselect 283 2006-07-06 15:34:27Z kevquinn $
+
+DESCRIPTION="Manage the configuration of dictionaries for Mozilla Thunderbird."
+MAINTAINER="kevquinn@gentoo.org"
+SVN_DATE='$Date: 2006-07-06 17:34:27 +0200 (Thu, 06 Jul 2006) $'
+VERSION=$(svn_date_to_version "${SVN_DATE}" )
+
+# TODO
+# 1) implement eselect tbirddict unset direct-<lang>
+# 2) make eselect tbirddict unset myspell-<lang> abort cleanly if not installed from
+# myspell
+
+# Supports myspell(hunspell) dictionaries; designed to be extensible to
+# manage other classes of dictionaries should they become applicable
+# to Mozilla Thunderbird.
+
+# Base directory where Mozilla Thunderbird stores its dictionary information.
+# The --base option can be set to override this; for example in the -bin package
+# which uses /opt/thunderbird or multilib which uses
+# /usr/$(get_libdir)/thunderbird.
+TBIRDDICT_DICTBASE="/usr/lib/thunderbird/components/myspell"
+MYSPELL_DICTLIST_BASE="dictionary.lst"
+
+DICT_CLASSES="myspell"
+
+MYSPELL_BASE="/usr/share/myspell"
+
+# return suffixes for dictionary type; spelling dictionary,
+# hyphenation dictionary and thesaurus.
+tbirddict_get_myspell_suffixes() {
+	case $1 in
+		DICT) echo ".aff .dic" ;;
+		HYPH) echo ".dic" ;;
+		THES) echo ".dat .idx" ;;
+	esac
+}
+
+# display a heading (indented 4 spaces) and a wrapped list of
+# language codes (indented 6 spaces)
+tbirddict_display_langs() {
+	local count lang
+	echo "    $1:"
+	shift
+	if [[ $1 == "" ]]; then
+		echo "      (none)"
+	else
+		count=0
+		for lang in $*; do
+			[[ ${count} == 0 ]] && printf "     "
+			printf " %s" ${lang}
+			((count = count+1))
+			[[ ${count} == 22 ]] && printf "\n" && count=0
+		done
+		[[ ${count} == 0 ]] || printf "\n"
+	fi
+}
+
+# Format of dictionary.lst files is from OpenOffice.org standard
+# dictionary.lst file:
+
+# List of All Dictionaries to be Loaded by OpenOffice
+# ---------------------------------------------------
+# Each Entry in the list have the following space delimited fields
+#
+# Field 0: Entry Type "DICT" - spellchecking dictionary
+#                     "HYPH" - hyphenation dictionary
+#                     "THES" - thesaurus files
+#
+# Field 1: Language code from Locale "en" or "de" or "pt" ...
+#
+# Field 2: Country Code from Locale "US" or "GB" or "PT"
+#
+# Field 3: Root name of file(s) "en_US" or "hyph_de" or "th_en_US"
+#          (do not add extensions to the name)
+
+tbirddict_describe_options() {
+	echo "--basedir <libdir>: Thunderbird installation directory, e.g. /opt/thunderbird or /usr/lib/thunderbird"
+}
+
+# Process options
+# Notes:
+# 1) this dies if it sees an option it doesn't understand.
+# 2) Copy and consume (shift) parameters before calling this, otherwise it
+#    considers extra parameters as potential options.
+tbirddict_process_options() {
+	while [[ -n $1 && "--" != ${1:0:2} ]]; do
+		shift
+	done
+	while [[ "--" == ${1:0:2} ]]; do
+		if [[ "--basedir" == $1 ]]; then
+			shift
+			TBIRDDICT_DICTBASE="$1/components/myspell"
+			shift
+		elif [[ "--" == $1 ]]; then
+			break
+		else
+			die -q "Unknown parameter ${1}"
+		fi
+	done
+}
+
+
+### show action
+
+## {{{ show stuff
+describe_show() {
+	echo "Show which dictionaries are configured for use with Mozilla
+	Thunderbird."
+}
+
+describe_show_options() {
+	tbirddict_describe_options
+}
+
+do_show() {
+	local lang myspell_sources listn suffix
+	tbirddict_process_options $*
+	write_list_start "Mozilla Thunderbird configured dictionaries"
+	if [[ ! -d ${TBIRDDICT_DICTBASE} ]]; then
+		echo "  (none)"
+		return
+	fi
+	listn=1
+	lang=""
+	myspell_sources=""
+	direct_sources=""
+	for dic in ${TBIRDDICT_DICTBASE}/*.dic; do
+		lang=$(basename ${dic})
+		lang=${lang/-*}
+		lang=${lang/.*}
+		if [[ -h ${dic} ]]; then
+			src=$(canonicalise ${dic})
+			if [[ ${src/${MYSPELL_BASE}} != ${src} ]]; then
+				has ${lang} ${myspell_sources} ||
+					myspell_sources="${myspell_sources} ${lang}"
+			else
+				write_warning_msg "unrecognised link to ${src} ignored"
+			fi
+		else
+			has ${lang} ${direct_sources} ||
+				direct_sources="${direct_sources} ${lang}"
+		fi
+	done
+	if [[ -n ${myspell_sources} ]]; then
+		write_numbered_list_entry ${listn} "myspell"
+		tbirddict_display_langs "Configured language codes from ${MYSPELL_BASE}" ${myspell_sources}
+		(( listn = ${listn} + 1 ))
+	fi
+	if [[ -n ${direct_sources} ]]; then
+		write_numbered_list_entry ${listn} "direct"
+		tbirddict_display_langs "Language codes installed directly in ${TBIRDDICT_DICTBASE}" ${direct_sources}
+		(( listn = ${listn} + 1 ))
+	fi
+	# show none if no sources found
+	[[ ${listn} == "1" ]] && echo "  (none)"
+}
+## }}}
+
+
+### list action
+
+## {{{ list stuff
+describe_list() {
+	echo "List the dictionaries that can be configured for use with OpenOffice."
+}
+
+do_list() {
+	local known_langs dict dictlist listn
+	write_list_start "Installed dictionary sources that can be set:"
+	listn=1
+	# myspell dictionary source
+	dictlist=$(ls ${MYSPELL_BASE}/${MYSPELL_DICTLIST_BASE}.* 2> /dev/null)
+	if [[ -n ${dictlist} ]]; then
+		write_numbered_list_entry ${listn} "myspell"
+		known_langs=""
+		for dict in ${MYSPELL_BASE}/${MYSPELL_DICTLIST_BASE}.*; do
+			known_langs="${known_langs} ${dict/${MYSPELL_BASE}\/${MYSPELL_DICTLIST_BASE}.}"
+		done
+		tbirddict_display_langs "Installed language codes" ${known_langs}
+		(( listn = ${listn} + 1 ))
+	fi
+	# show none if no sources found
+	[[ ${listn} == "1" ]] && echo "  (none)"
+}
+## }}}
+
+
+### unset action
+
+## {{{ unset stuff
+describe_unset() {
+	echo "Unconfigure a dictionary from use with Mozilla Thunderbird."
+}
+
+describe_unset_parameters() {
+	echo "<dictionary>"
+}
+
+describe_unset_options() {
+	echo "dictionary: <class>-<lang> e.g. myspell-en"
+	tbirddict_describe_options
+}
+
+do_unset() {
+	local dict dlang dclass suffix filen dictlst entry fields
+	tbirddict_process_options $*
+	# Check thunderbird dictionary area exists
+	[[ -d ${TBIRDDICT_DICTBASE} ]] || return
+	dict=$1
+	dlang=${dict/*-}
+	dclass=${dict/-*}
+	dictlst="${MYSPELL_DICTLIST_BASE}.${dlang}"
+	case ${dclass} in
+	myspell)
+		# Remove softlinks and entries in dictionary.lst - uses
+		# dictionary.<lang>.lst from /usr/share/myspell
+		if [[ -f ${MYSPELL_BASE}/${dictlst} ]]; then
+			while read entry; do
+				fields=(${entry})
+				[[ ${fields[0]:0:1} == "#" ]] && continue
+				[[ ${fields[3]} == "" ]] && continue
+				[[ ${fields[0]} == "DICT" ]] || continue
+				mozfilen=${fields[3]/_/-}
+				# If remove relevant symlinks
+				for suffix in $(tbirddict_get_myspell_suffixes DICT); do
+					filen="${mozfilen}${suffix}"
+					[[ -f ${TBIRDDICT_DICTBASE}/${filen} ]] &&
+					if [[ -h ${TBIRDDICT_DICTBASE}/${filen} ]]; then
+						rm -f ${TBIRDDICT_DICTBASE}/${filen} ||
+						die "Failed to remove ${TBIRDDICT_DICTBASE}/${filen}"
+					else
+						has ${filen} ${notmyfiles} ||
+							notmyfiles="${notmyfiles} ${filen}"
+					fi
+				done
+			done < ${MYSPELL_BASE}/${dictlst}
+		else
+			write_warning_msg "source ${dict} is not installed; nothing changed"
+		fi
+		;;
+	direct)
+		write_warning_msg \
+			"eselect tbirddict does not manage files installed directly to " \
+			"${TBIRDDICT_DICTBASE}.  Remove them manually."
+		;;
+	*)
+		die "Unknown dictionary class ${dclass}"
+		;;
+	esac
+}
+## }}}
+
+### set action
+
+## {{{ set stuff
+describe_set() {
+	echo "Configure a dictionary for use with Mozilla Thunderbird."
+}
+
+describe_set_parameters() {
+	echo "<dictionary>"
+}
+
+describe_set_options() {
+	echo "dictionary: <class>-<lang> e.g. myspell-en"
+	tbirddict_describe_options
+}
+
+do_set() {
+	local dict dlang dclass filen dictlst entry fields suffix
+	tbirddict_process_options $*
+	dict=$1
+	dlang=${dict/*-}
+	dclass=${dict/-*}
+	dictlst="${MYSPELL_DICTLIST_BASE}.${dlang}"
+	alreadyexists=""
+	case ${dclass} in
+	myspell)
+		# Set new entries & links
+		[[ -f ${MYSPELL_BASE}/${dictlst} ]] ||
+			die "Dictionary ${dict} not found in ${MYSPELL_BASE}"
+		# Check for already existing files
+		while read entry; do
+			fields=(${entry})
+			[[ ${fields[0]:0:1} == "#" ]] && continue
+			[[ ${fields[0]} == "DICT" ]] || continue
+			mozfilen=${fields[3]/_/-}
+			for suffix in $(tbirddict_get_myspell_suffixes ${fields[0]}); do
+				filen="${mozfilen}${suffix}"
+				if [[ ! -h ${TBIRDDICT_DICTBASE}/${filen} ]] &&
+				   [[ -f ${TBIRDDICT_DICTBASE}/${filen} ]]; then
+					has ${filen} ${alreadyexists} ||
+						alreadyexists="${alreadyexists} ${filen}"
+				fi
+			done
+		done < ${MYSPELL_BASE}/${dictlst}
+		if [[ -n ${alreadyexists} ]]; then
+			write_warning_msg \
+				"Files${alreadyexists} in ${TBIRDDICT_DICTBASE} already exist." \
+				"Remove them manually and re-run eselect tbirddict to put them" \
+				"under eselect management."
+		else
+			# Clear out any existing entry
+			do_unset ${dict}
+			while read entry; do
+				fields=(${entry})
+				[[ ${fields[0]:0:1} == "#" ]] && continue
+				[[ ${fields[0]} == "DICT" ]] || continue
+				mozfilen=${fields[3]/_/-}
+				for suffix in $(tbirddict_get_myspell_suffixes DICT); do
+					filen="${mozfilen}${suffix}"
+					if [[ -h ${TBIRDDICT_DICTBASE}/${filen} ]]; then
+						rm -f ${TBIRDDICT_DICTBASE}/${filen} ||
+							die "Failed to remove ${TBIRDDICT_DICTBASE}/${filen}"
+					fi
+					if [[ ! -f ${TBIRDDICT_DICTBASE}/${filen} ]]; then
+						ln -s ${MYSPELL_BASE}/${fields[3]}${suffix} ${TBIRDDICT_DICTBASE}/${filen} ||
+							die "Failed to create symlink from ${MYSPELL_BASE}/${filen} to ${TBIRDDICT_DICTBASE}/${filen}"
+					else
+						has ${filen} ${alreadyexists} ||
+							alreadyexists="${alreadyexists} ${filen}"
+					fi
+				done
+			done < ${MYSPELL_BASE}/${dictlst}
+		fi
+		;;
+	direct)
+		write_warning_msg "eselect tbirddict does not manage files installed directly to ${TBIRDDICT_DICTBASE}."
+		;;
+	*)
+		die "Unknown dictionary class ${dict}"
+		;;
+	esac
+}
+## }}}
+
+
+### update action
+
+## {{{ update stuff
+describe_update() {
+	echo "(Re)build Mozilla Thunderbird dictionary configuration."
+}
+
+describe_update_parameters() {
+	echo "[<class>]"
+}
+
+describe_update_options() {
+	echo "class: type of dictionary (e.g. ${DICT_CLASSES/ /, }) - omit to update everything"
+	tbirddict_describe_options
+}
+
+do_update() {
+	local dlang class dictlst classes
+	tbirddict_process_options $*
+	# <class> is an optional parameter
+	classes=$1
+	[[ -z ${classes} || "--" == ${classes:0:2} ]] &&
+		classes=${DICT_CLASSES}
+	for class in ${classes}; do
+		case ${class} in
+		myspell)
+			dictlsts=$(ls ${MYSPELL_BASE}/${MYSPELL_DICTLIST_BASE}.* 2> /dev/null)
+			for dictlst in ${dictlsts}; do
+				dlang=${dictlst/*.lst.}
+				do_set ${class}-${dlang}
+			done
+			;;
+		*)
+			die "Unknown dictionary class ${class}"
+			;;
+		esac
+	done
+}
+## }}}
+
+# vim: ts=4 sw=4 noet fdm=marker
