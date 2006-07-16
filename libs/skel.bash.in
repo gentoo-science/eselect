@@ -228,13 +228,8 @@ do_set() {
             else
                 # Only attempt to switch to an implementation if it's available
                 # for that libdir
-                if has ${file##*/} $(find_implems ${iface} ${libdir}); then
-                    if ! [[ -f ${file} ]] ; then
-	                    fail=1
-	                    echo "Pattern doesn't match anything in ${libdir}: ${item}" 
-	                    continue
-                    fi
-                    if ! switch_implem ${iface} ${libdir} ${file##*/}; then
+                if has ${item} $(find_implems ${iface} ${libdir}); then
+                    if ! switch_implem ${iface} ${libdir} ${item}; then
 	                    fail=1
 	                    echo "Failed to switch to implementation \"${item}\" for libdir \"${libdir}\"!"
 	                    continue
