@@ -1,6 +1,12 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.0.4:
+    Bug fixes:
+    - Fixed list bug in libs/skel.bash.in.
+
+    New Features:
+    - eselect is now independent of the used package-manager.
 1.0.3:
     Bug fixes:
     - Fix env.eselect by white-listing allowed mime-types for files in
