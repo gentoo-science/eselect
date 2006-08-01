@@ -1,5 +1,21 @@
 ChangeLog for eselect
 
+2006-08-02 Danny van Dyk <kugelfang@gentoo.org>
+
+	* libs/paludis.bash.in, libs/package-manager.bash.in: Remove
+	paludis-repo(). Fix paludis-envvar(). Finish envvar() unction.
+	* configure.ac: Set version to 1.0.4. 
+	* modules/config.eselect, modules/binutils.eselect: Convert to
+	envvar().
+	* autogen.bash: Fix autogen.bash to be able to use autoconf-2.60.
+
+2006-07-16 Danny van Dyk <kugelfang@gentoo.org>
+
+	* libs/paludis.bash.in, libs/package-manager.bash.in: Convert to
+	envvar() call. envvar() now needs a package qualifier as first
+	parameter.
+	* autogen.bash: New autogen tool to correctly use autoconf-2.60.
+
 2006-07-15 Donnie Berkholz <spyderous@gentoo.org>
 
 	* libs/skel.bash.in:

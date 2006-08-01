@@ -66,7 +66,7 @@ switch_profile() {
 	target=$(load_config ${profile_file} TARGET)
 	is_active ${target} ${version} \
 		&& die -q "Profile \"${profile}\" is already active!"
-	chost=$(portageq envvar CHOST)
+	chost=$(envvar sys-devel/binutils CHOST)
 	libpath=$(load_config ${profile_file} LIBPATH)
 	libpath=${libpath:-/usr/lib/binutils/${TARGET}/${VER}}
 	faketargets=( $(load_config ${profile_file} FAKE_TARGETS) )
@@ -232,7 +232,7 @@ describe_show() {
 }
 
 do_show() {
-	local chost=${1:-$(portageq envvar CHOST)} version config
+	local chost=${1:-$(envvar sys-devel/binutils CHOST)} version config
 
 	[[ -n ${chost} ]] \
 		|| die -q "Portage returned empty CHOST!"

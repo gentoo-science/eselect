@@ -37,7 +37,7 @@ ENDOFTEXT
 
 config_protect_dirs() {
 	if [[ -z ${CONFIG_UPDATE_DIRS} ]] ; then
-		export CONFIG_UPDATE_DIRS=$(portageq envvar CONFIG_PROTECT )
+		export CONFIG_UPDATE_DIRS=$(envvar sys-devel/gcc CONFIG_PROTECT )
 	fi
 	echo ${CONFIG_UPDATE_DIRS}
 }

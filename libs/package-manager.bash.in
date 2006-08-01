@@ -22,7 +22,7 @@ inherit paludis portage
 # arch
 # Return the architecture we're running on...
 arch() {
-    local ret=$(envvar ARCH) suffix
+    local ret=$(envvar sys-devel/gcc ARCH) suffix
 
     # $arch will be null if there's no current make.profile symlink
     # we cannot get a list of valid profiles without it.
@@ -64,17 +64,19 @@ arch() {
 
 
 # envvar
-# Return the contents of environment variable $1 as seen by package manager(s)
+# Return the contents of environment variable $2 as seen by package manager(s)
+# for package $1.
 envvar() {
-    [[ ${#@} -eq 1 ]] || die "envvar expects exactly 1 argument!"
+    [[ ${#@} -eq 2 ]] || die "envvar expects exactly 2 arguments!"
 
     local manager=$(package-manager)
     case ${manager} in
         paludis)
-            paludis_envvar "${1}" 2>/dev/null
+            paludis_envvar $* 2>/dev/null
             ;;
         portage)
-            portageq envvar "${1}" 2>/dev/null
+            # portage does not support per-package envvar lookup.
+            portageq envvar "${2}" 2>/dev/null
             ;;
         *)
             die "Unknown package manager: \"${manager}\"!"
@@ -92,7 +94,7 @@ has-version() {
             paludis_has-version $* 2>/dev/null
             ;;
         portage)
-            portageq has_version $* 2>/dev/null
+            portageq has_version "${2}" 2>/dev/null
             ;;
         *)
             die "Unknown package manager: \"${manager}\"!"

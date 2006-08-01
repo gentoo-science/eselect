@@ -18,26 +18,9 @@
 # Place, Suite 330, Boston, MA  02111-1307  USA
 
 # paludis-envvar PRIVATE
-# Run paludis --envvar with safe filename as set by configure
+# Run paludis --environment-variable with safe filename as set by configure
 paludis-envvar() {
-    ${PALUDIS_COMMAND:-@PALUDIS@} --envvar "${1}" --repository $(paludis-repo) 2> /dev/null
-}
-
-# paludis-repo PRIVATE
-# Return the repository to use
-paludis-repo() {
-    echo "gentoo" # TODO: 
-    return
-
-    local repo
-    if [[ -n ${ESELECT_PALUDIS_REPO_CACHE} ]] ; then
-        echo ${ESELECT_PALUDIS_REPO_CACHE}
-        return
-    fi
-
-    repo=$(${PALUDIS_COMMAND:-@PALUDIS@} --installed-by "sys-devel/binutils")
-    echo ${repo}
-    export ESELECT_PALUDIS_REPO_CACHE=${repo}
+    ${PALUDIS_COMMAND:-@PALUDIS@} --environment-variable $* 2> /dev/null
 }
 
 # vim: set sw=4 et sts=4 tw=80 :
