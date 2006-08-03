@@ -71,7 +71,7 @@ do_list() {
 	if [[ -n ${targets[@]} ]] ; then
 		local i
 		for (( i = 0 ; i < ${#targets[@]} ; i = i + 1 )) ; do
-			[[ ${targets[${i}]} == $(canonicalise ${ROOT}/usr/src/linux ) ]] && \
+			[[ ${targets[${i}]} == $(basename $(canonicalise ${ROOT}/usr/src/linux)) ]] && \
 				targets[${i}]="${targets[${i}]} $(highlight '*' )"
 		done
 		write_numbered_list "${targets[@]}"

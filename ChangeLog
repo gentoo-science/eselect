@@ -1,5 +1,10 @@
 ChangeLog for eselect
 
+2006-08-04 Danny van Dyk <kugelfang@gentoo.org>
+
+	* modules/kernel.eselect: Fix Bug #141106: list action doesn't
+	highligh currently the currently selected sources.
+
 2006-08-03 Danny van Dyk <kugelfang@gentoo.org>
 
 	* Tagged 1.0.4 release.
