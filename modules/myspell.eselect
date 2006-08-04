@@ -1,0 +1,625 @@
+# Copyright 1999-2006 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Id: $
+
+DESCRIPTION="Manage the configuration of myspell/hunspell dictionaries for applications"
+MAINTAINER="kevquinn@gentoo.org"
+SVN_DATE='$Date: $'
+VERSION=$(svn_date_to_version "${SVN_DATE}" )
+
+inherit config
+
+MYSPELL_BASE="/usr/share/myspell"
+MYSPELL_LIST="dictionary.lst"
+MYSPELL_CFG="/etc/eselect/myspell"
+VALID_OPTIONS=""
+
+############################################################################
+# COMMON: Help text for option --app
+myspell_describe_option_app() {
+	echo "--app <app name>: the application to be processed (defaults to all known applications)"
+}
+
+
+############################################################################
+# UTILITY: DISPLAY_LANGS
+# display a heading (indented 4 spaces) and a wrapped list of
+# language codes (indented 6 spaces)
+myspell_display_langs() {
+	local count lang
+	echo "    $1:"
+	shift
+	if [[ $1 == "" ]]; then
+		echo "      (none)"
+	else
+		count=0
+		for lang in $*; do
+			[[ ${count} == 0 ]] && printf "     "
+			printf " %s" ${lang}
+			((count = count+1))
+			[[ ${count} == 22 ]] && printf "\n" && count=0
+		done
+		[[ ${count} == 0 ]] || printf "\n"
+	fi
+}
+
+############################################################################
+# UTILITY: PROCESS_ARGS
+myspell_process_args() {
+	local arg
+	while [[ -n $1 ]]; do
+		arg=$1
+		shift
+		if [[ "--" == ${arg:0:2} ]]; then
+			opt=${arg/=*}
+			value=${arg/*=}
+			[[ ${value} == ${arg} ]] && value="set"
+			# sanitise opt to lowercase letters only (this also removes the leading '--')
+			# to ensure the user hasn't passed anything nasty. value doesn't need to
+			# be santised as it's not used 
+			opt=${opt//[^a-z]}
+			has ${opt} ${VALID_OPTIONS} ||
+				die -q "Option ${opt} is not valid for the selected action"
+			export OPTION_${opt}=${value}
+		else
+			[[ -n ${PARAMETER} ]] && 
+				die -q "Syntax error - only one parameter may be supplied; already have ${PARAMETER} so ${arg} cannot be accepted."
+			PARAMETER=${arg}
+		fi
+	done
+}
+
+############################################################################
+# UTILITY: MYSPELL_SET_FIELDS
+# set array "fields" to the elements of $1, separated by $2.
+# This saves having to muck about with IFS all over the place.
+myspell_set_fields() {
+	local old_IFS
+	old_IFS="${IFS}"
+	IFS=$2
+	fields=($1)
+	IFS="${old_IFS}"
+}
+
+############################################################################
+# UTILITY: MYSPELL_GET_LANG
+# dictionary names are <class>-<lang>
+myspell_get_lang() {
+	local fields
+	myspell_set_fields "${P}" "-"
+	echo ${fields[1]}
+}
+
+############################################################################
+# UTILITY: MYSPELL_LOAD_CFG
+myspell_load_cfg() {
+	local item fields
+	APP_DIRECTORY=$(load_config ${MYSPELL_CFG}/${app} "DIRECTORY" ||\
+		die -q "Failed to load DIRECTORY from config file ${MYSPELL_CFG}/${app}")
+	APP_OPTIONS=$(load_config ${MYSPELL_CFG}/${app} "OPTIONS" ||\
+		die -q "Failed to load OPTIONS from config file ${MYSPELL_CFG}/${app}")
+	unset ${!APP_OPTION_*}
+	myspell_set_fields "${APP_OPTIONS}" ","
+	for item in ${fields[@]}; do
+		export APP_OPTION_${item//[-\.]/_}="set"
+	done
+}
+
+############################################################################
+# UTILITY: MYSPELL_GET_SUFFIXES
+# return suffixes for dictionary type; spelling dictionary,
+# hyphenation dictionary and thesaurus.
+myspell_get_suffixes() {
+	case $1 in
+		DICT) echo ".aff .dic" ;;
+		HYPH) echo ".dic" ;;
+		THES) echo ".dat .idx" ;;
+	esac
+}
+
+############################################################################
+# UTILITY: MYSPELL_CREATE_DICTLIST
+# Create OpenOffice.org-style dictionary list file if it does not exist
+myspell_create_dictlist() {
+	local dir lst
+	dir=$1
+	lst=$2
+	[[ -f ${dir}/${lst} ]] && return
+	# Ensure dictionary area exists
+	[[ -d ${dir} ]] || mkdir -p ${dir}
+	touch ${dir}/${lst} ||
+		die -q "Unable to create ${dir}/${lst}" 
+	# Format of dictionary.lst files is from OOo standard
+	# dictionary.lst file:
+	cat > ${dir}/${lst} <<EOF
+# List of All Dictionaries to be Loaded by OpenOffice
+# ---------------------------------------------------
+# Each Entry in the list have the following space delimited fields
+#
+# Field 0: Entry Type "DICT" - spellchecking dictionary
+#                     "HYPH" - hyphenation dictionary
+#                     "THES" - thesaurus files
+#
+# Field 1: Language code from Locale "en" or "de" or "pt" ...
+#
+# Field 2: Country Code from Locale "US" or "GB" or "PT"
+#
+# Field 3: Root name of file(s) "en_US" or "hyph_de" or "th_en_US"
+#          (do not add extensions to the name)
+
+EOF
+}
+
+# Format of MYSPELL_[SPELLING|HYPHENATION|THESAURUS]_DICTIONARIES:
+#
+# Field 0: Language code
+# Field 1: Country code
+# Field 2: Root name of dictionary files
+# Field 3: Description
+# Field 4: Archive filename
+#
+# This format is from the available.lst, hyphavail.lst and
+# thesavail.lst files on the openoffice.org repository.
+
+############################################################################
+# UTILITY: MYSPELL_CALC_BASENAME
+# myspell_calc_basename <name> <dictionary type>
+# replace _ in between language and country with -
+myspell_calc_basename() {
+	local bn
+	if [[ -n ${APP_OPTION_dashnames} ]]; then
+		case $2 in
+			DICT)
+				# Replace first occurrence
+				echo ${1/_/-} ;;
+			HYPH)
+				# Replace second occurrence - by replacing first then
+				# second, then putting first back.
+				bn=${1/_/-}
+				bn=${bn/_/-}
+				echo ${bn/-/_} ;;
+			THES)
+				# Replace second occurrence - by replacing first then
+				# second, then putting first back.
+				bn=${1/_/-}
+				bn=${bn/_/-}
+				echo ${bn/-/_} ;;
+		esac	
+	else
+		echo ${1}
+	fi
+}
+
+
+
+############################################################################
+# ACTION: LIST
+
+describe_list() {
+	echo "List the available dictionaries"
+}
+
+do_list() {
+	local known_langs dict dictlist listn
+	write_list_start "Installed dictionary sources that can be used:"
+	listn=1
+	# myspell dictionary source
+	dictlist=$(ls ${MYSPELL_BASE}/${MYSPELL_LIST}.* 2> /dev/null)
+	if [[ -n ${dictlist} ]]; then
+		write_numbered_list_entry ${listn} "myspell"
+		known_langs=""
+		for dict in ${MYSPELL_BASE}/${MYSPELL_LIST}.*; do
+			known_langs="${known_langs} ${dict/${MYSPELL_BASE}\/${MYSPELL_LIST}.}"
+		done
+		myspell_display_langs "Installed language codes" ${known_langs}
+		(( listn = ${listn} + 1 ))
+	fi
+	# show none if no sources found
+	[[ ${listn} == "1" ]] && echo "  (none)"
+}
+
+
+############################################################################
+# ACTION: SHOW
+describe_show() {
+	echo "Show which dictionaries are configured for applications"
+}
+describe_show_options() {
+	myspell_describe_option_app;
+}
+myspell_show() {
+	local app lang myspell_sources direct_sources listn
+	write_list_start "Configured myspell dictionaries"
+	listn=0
+	for app in $*; do
+		(( listn = ${listn} + 1 ))
+
+		myspell_load_cfg ${app}
+		write_numbered_list_entry ${listn} "Application ${app}"
+		if [[ ! -d ${APP_DIRECTORY} ]]; then
+			echo "    (none - directory ${APP_DIRECTORY} missing)"
+			continue
+		fi
+
+		if [[ -n ${APP_OPTION_dictionary_lst} ]]; then
+
+			# Configured dictionaries are those in the dictionary.lst file
+			if [[ ! -f ${APP_DIRECTORY}/dictionary.lst ]]; then
+				echo "    (none - dictionary list ${APP_DIRECTORY}/dictionary.lst missing)"
+				continue
+			fi
+			lang=""
+			myspell_sources=""
+			direct_sources=""
+			while read entry; do
+				fields=(${entry})
+				[[ ${fields[0]:0:1} == "#" ]] && continue
+				lang=${fields[1]}
+				for suffix in $(myspell_get_suffixes ${fields[0]}); do
+					if [[ -h ${APP_DIRECTORY}/${fields[3]}${suffix} ]]; then
+						src=$(canonicalise ${APP_DIRECTORY}/${fields[3]}${suffix})
+						if [[ ${src/${MYSPELL_BASE}} != ${src} ]]; then
+							has ${lang} ${myspell_sources} ||
+								myspell_sources="${myspell_sources} ${lang}"
+						else
+							write_warning_msg "unrecognised link to ${src} ignored"
+						fi
+					else
+						has ${lang} ${direct_sources} ||
+							direct_sources="${direct_sources} ${lang}"
+					fi
+				done
+			done <<-EOF
+				$(sort --key=2 ${APP_DIRECTORY}/dictionary.lst)
+			EOF
+
+		else
+
+			# Configured dictionaries are those that are softlinked in the directory
+			lang=""
+			myspell_sources=""
+			direct_sources=""
+			for dic in ${APP_DIRECTORY}/*.dic; do
+				lang=$(basename ${dic})
+				lang=${lang/-*}
+				lang=${lang/.*}
+				if [[ -h ${dic} ]]; then
+					src=$(canonicalise ${dic})
+					if [[ ${src/${MYSPELL_BASE}} != ${src} ]]; then
+						has ${lang} ${myspell_sources} ||
+							myspell_sources="${myspell_sources} ${lang}"
+					else
+						write_warning_msg "unrecognised link to ${src} ignored"
+					fi
+				else
+					has ${lang} ${direct_sources} ||
+						direct_sources="${direct_sources} ${lang}"
+				fi
+			done
+
+		fi
+
+		[[ -n ${myspell_sources} ]] &&
+			myspell_display_langs "Configured language codes linked from ${MYSPELL_BASE}" ${myspell_sources}
+
+		[[ -n ${direct_sources} ]] &&
+			myspell_display_langs "Language codes installed directly in ${APP_DIRECTORY}" ${direct_sources}
+
+	done
+
+	# show none if no sources found
+	[[ ${listn} == "1" ]] && echo "  (none)"
+}
+
+do_show() {
+	local apps
+	VALID_OPTIONS="app"
+	myspell_process_args "$@"
+	[[ -n ${OPTION_app} ]] && apps=${OPTION_app} || apps=$(ls ${MYSPELL_CFG})
+	myspell_show ${apps}
+}
+
+
+############################################################################
+# ACTION: INSTALL
+describe_install() {
+	echo "Configure eselect-myspell for an application (for use by ebuilds in postinst)"
+}
+
+describe_install_parameters() {
+	echo "<app>"
+}
+
+describe_install_options() {
+	echo "app: the application to configure"
+	echo "--directory=<directory>: the directory the application uses for dictionaries"
+	echo "--options={options}: comma-separated list of things the application needs in its dictionary directory; one or more of:"
+	echo "  all-softlinks: soft links from the spelling, hyphenation and thesaurus dictionaries in ${MYSPELL_BASE}"
+	echo "  spelling-softlinks: soft links from just the spelling dictionaries in ${MYSPELL_BASE}"
+	echo "  dictionary.lst: OpenOffice dictionary.lst database file"
+	echo "  dashnames: soft links will separate language and country by '-' instead of '_' (e.g. en-US instead of en_US)"
+}
+
+do_install() {
+	VALID_OPTIONS="directory options"
+	myspell_process_args "$@"
+	[[ -z ${PARAMETER} ]] && die -q "No application name specified"
+
+	store_config ${MYSPELL_CFG}/${PARAMETER} "DIRECTORY" "${OPTION_directory-none}" ||
+		die -q "Unable to write to ${MYSPELL_CFG}/${PARAMETER}"
+
+	store_config ${MYSPELL_CFG}/${PARAMETER} "OPTIONS" "${OPTION_options-none}" ||
+		die -q "Unable to write to ${MYSPELL_CFG}/${PARAMETER}"
+
+	myspell_update ${PARAMETER}
+}
+
+
+############################################################################
+# ACTION: SET
+describe_set() {
+	echo "Configure a dictionary for use with application(s)"
+}
+
+describe_set_parameters() {
+	echo "<dictionary>"
+}
+
+describe_set_options() {
+	echo "dictionary: <class>-<lang> e.g. myspell-en"
+	myspell_describe_option_app;
+}
+myspell_set() {
+	local dict app dir options dlang dictlst lfilen linkfilebase filen entry fields suffix alreadyexists
+	dict=$1
+	shift
+	dlang=${dict/*-}
+	dictlst="${MYSPELL_LIST}.${dlang}"
+	# check for myspell dictionary data file
+	[[ -f ${MYSPELL_BASE}/${dictlst} ]] ||
+		die -q "Dictionary ${dict} not found in ${MYSPELL_BASE}"
+
+	for app in $*; do
+		#echo "setting dictionary ${dict} for application ${app}"
+		myspell_load_cfg ${app}
+
+		# Ensure dictionary area exists
+		if [[ ! -d ${APP_DIRECTORY} ]]; then
+			mkdir -p ${APP_DIRECTORY} || write_error_msg \
+				"Failed to create dictionary directory ${APP_DIRECTORY} for application ${app}."
+			continue
+		fi
+
+		if [[ -n ${APP_OPTION_dictionary_lst} ]]; then
+			# Create OOo dictionary list file if it doesn't already exist
+			myspell_create_dictlist ${APP_DIRECTORY} ${MYSPELL_LIST}
+		fi
+
+		alreadyexists=""
+		# Check for already existing files
+		while read entry; do
+			fields=(${entry})
+			[[ ${fields[0]:0:1} == "#" ]] && continue
+
+			if [[ -n ${APP_OPTION_all_softlinks} || \
+					( -n ${APP_OPTION_spelling_softlinks} && "DICT" == ${fields[0]} ) ]]; then
+
+				# Work out softlink base name
+				linkfilebase=$(myspell_calc_basename ${fields[3]} ${fields[0]})
+
+				# Check whether files exist for given base name
+				for suffix in $(myspell_get_suffixes ${fields[0]}); do
+					lfilen="${linkfilebase}${suffix}"
+					if [[ ! -h ${APP_DIRECTORY}/${lfilen} ]] &&
+					   [[ -f ${APP_DIRECTORY}/${lfilen} ]]; then
+						has ${lfilen} ${alreadyexists} ||
+							alreadyexists="${alreadyexists} ${lfilen}"
+					fi
+				done # next file suffix
+
+			fi # dictionary type is to be softlinked
+
+		done < ${MYSPELL_BASE}/${dictlst}
+		# Warn user about existing files
+		if [[ -n ${alreadyexists} ]]; then
+			write_warning_msg \
+				"Files${alreadyexists} in ${APP_DIRECTORY} already exist." \
+				"Remove them manually and re-run eselect myspell to put them" \
+					"under eselect myspell management."
+			continue
+		fi
+
+		# Clear out any existing entry
+		myspell_unset ${dict} ${app}
+
+		# Install new entry
+		while read entry; do
+
+			fields=(${entry})
+			[[ ${fields[0]:0:1} == "#" ]] && continue
+
+			# Setup dictionary.lst entry unless it's already there
+			if [[ -n ${APP_OPTION_dictionary_lst} ]]; then
+				grep "^${fields[0]} ${fields[1]} ${fields[2]} ${fields[3]}" \
+					${APP_DIRECTORY}/${MYSPELL_LIST} > /dev/null 2>&1 ||
+						echo "${entry}" >> ${APP_DIRECTORY}/${MYSPELL_LIST}
+			fi # dictionary.lst is to be maintained
+
+			# Setup softlinks
+			if [[ -n ${APP_OPTION_all_softlinks} || \
+					( -n ${APP_OPTION_spelling_softlinks} && "DICT" == ${fields[0]} ) ]]; then
+
+				# Work out softlink base name
+				linkfilebase=$(myspell_calc_basename ${fields[3]} ${fields[0]})
+
+				# Remove old softlinks and install new ones
+				for suffix in $(myspell_get_suffixes ${fields[0]}); do
+					filen="${fields[3]}${suffix}"
+					lfilen="${linkfilebase}${suffix}"
+					# remove old softlink *** shouldn't be necessary with unset called above!
+					if [[ -h ${APP_DIRECTORY}/${lfilen} ]]; then
+						rm -f ${APP_DIRECTORY}/${lfilen} ||
+							write_error_msg "Failed to remove ${APP_DIRECTORY}/${lfilen}"
+					fi
+					# install new softlink
+					if [[ ! -f ${APP_DIRECTORY}/${lfilen} ]]; then
+						ln -s ${MYSPELL_BASE}/${filen} ${APP_DIRECTORY}/${lfilen} ||
+							write_error_msg "Failed to create symlink from ${MYSPELL_BASE}/${filen} to ${APP_DIRECTORY}/${lfilen}"
+					fi
+				done # next file suffix
+
+			fi # dictionary is to be softlinked
+
+		done < ${MYSPELL_BASE}/${dictlst}
+
+	done # next app
+}
+
+do_set() {
+	local apps
+	VALID_OPTIONS="app"
+	myspell_process_args "$@"
+	[[ -z ${PARAMETER} ]] && die -q "Dictionary parameter missing"
+	[[ -n ${OPTION_app} ]] && apps=${OPTION_app} || apps=$(ls ${MYSPELL_CFG})
+	myspell_set ${PARAMETER} ${apps}
+}
+
+
+############################################################################
+# ACTION: UNSET
+describe_unset() {
+	echo "Unconfigure a dictionary from an application"
+}
+
+describe_unset_parameters() {
+	echo "<dictionary>"
+}
+
+describe_unset_options() {
+	echo "dictionary: <class>-<lang> e.g. myspell-en"
+	myspell_describe_option_app;
+}
+
+myspell_unset() {
+	local dict app dlang dclass suffix lfilen linkfilebase dictlst entry fields
+	dict=$1
+	shift
+	for app in $*; do
+		#echo "unsetting dictionary ${dict} from application ${app}"
+		myspell_load_cfg ${app}
+		[[ -d ${APP_DIRECTORY} ]] || continue
+
+		if [[ -n ${APP_OPTION_dictionary_lst} ]]; then
+			[[ -f  ${APP_DIRECTORY}/${MYSPELL_LIST} ]] || continue
+		fi
+
+		dlang=${dict/*-}
+		dclass=${dict/-*}
+		dictlst="${MYSPELL_LIST}.${dlang}"
+		notmyfiles=""
+
+		# Remove softlinks and entries in dictionary.lst - uses
+		# dictionary.<lang>.lst from /usr/share/myspell
+		if [[ -f ${MYSPELL_BASE}/${dictlst} ]]; then
+			while read entry; do
+				fields=(${entry})
+				[[ ${fields[0]:0:1} == "#" ]] && continue
+				[[ ${fields[3]} == "" ]] && continue
+
+				# Remove entry from dictionary.lst
+				if [[ -n ${APP_OPTION_dictionary_lst} ]]; then
+					sed -i -e "/^${fields[0]} ${fields[1]} ${fields[2]} ${fields[3]}$/ { d }" \
+						${APP_DIRECTORY}/${MYSPELL_LIST} ||
+							die "Could not edit ${APP_DIRECTORY}/${MYSPELL_LIST}"
+					# See if any other entries in dictionary.lst match the current
+					# dictionary class and filename
+					grep "^${fields[0]} .* ${fields[3]}$" ${APP_DIRECTORY}/${MYSPELL_LIST} \
+						2>&1 > /dev/null && continue
+				fi
+
+				if [[ -n ${APP_OPTION_all_softlinks} || \
+						( -n ${APP_OPTION_spelling_softlinks} && "DICT" == ${fields[0]} ) ]]; then
+
+					# Work out softlink base name
+					linkfilebase=$(myspell_calc_basename ${fields[3]} ${fields[0]})
+
+					# Remove relevant symlinks
+					for suffix in $(myspell_get_suffixes ${fields[0]}); do
+						lfilen="${linkfilebase}${suffix}"
+						if [[ -f ${APP_DIRECTORY}/${lfilen} ]]; then
+							if [[ -h ${APP_DIRECTORY}/${lfilen} ]]; then
+								rm -f ${APP_DIRECTORY}/${lfilen} ||
+									die -q "Failed to remove ${APP_DIRECTORY}/${lfilen}"
+							else
+								has ${lfilen} ${notmyfiles} ||
+									notmyfiles="${notmyfiles} ${lfilen}"
+							fi
+						fi
+					done
+
+				fi
+
+			done < ${MYSPELL_BASE}/${dictlst}
+
+		else
+			write_warning_msg "source ${dict} is not installed; nothing changed"
+		fi
+
+		# Warn user about files that were skipped; not softlinks
+		[[ -n ${notmyfiles} ]] &&
+			write_warning_msg \
+				"Files ${notmyfiles} in ${APP_DIRECTORY} were not previously " \
+				"installed by eselect myspell.  Remove them manually if you" \
+				"are sure you do not want them."
+
+
+	done
+}
+
+do_unset() {
+	local apps
+	VALID_OPTIONS="app"
+	myspell_process_args "$@"
+	[[ -z ${PARAMETER} ]] && die -q "Dictionary parameter missing"
+	[[ -n ${OPTION_app} ]] && apps=${OPTION_app} || apps=$(ls ${MYSPELL_CFG})
+	myspell_unset ${PARAMETER} ${apps}
+}
+
+
+############################################################################
+# ACTION: UPDATE
+describe_update() {
+	echo "Update application(s) with available dictionaries"
+}
+
+describe_update_options() {
+	myspell_describe_option_app;
+}
+
+myspell_update() {
+	local dictlsts dlang count
+	echo "Updating languages:"
+	count=0
+	dictlsts=$(ls ${MYSPELL_BASE}/${MYSPELL_LIST}.* 2> /dev/null)
+	for dictlst in ${dictlsts}; do
+		if [[ ${count} == "22" ]]; then
+			echo
+			count=0
+		fi
+		dlang=${dictlst/*.lst.}
+		echo -n " ${dlang}"
+		myspell_set myspell-${dlang} $*
+		(( count = ${count} + 1 ))
+	done
+	echo
+}
+
+do_update() {
+	local apps
+	VALID_OPTIONS="app"
+	myspell_process_args "$@"
+	[[ -n ${PARAMETER} ]] && apps=${PARAMETER} || apps=$(ls ${MYSPELL_CFG})
+	myspell_update ${apps}
+}
+
+# vim: ts=4 sw=4 noet fdm=marker
