@@ -17,7 +17,7 @@ VALID_OPTIONS=""
 ############################################################################
 # COMMON: Help text for option --app
 myspell_describe_option_app() {
-	echo "--app <app name>: the application to be processed (defaults to all known applications)"
+	echo "--app=<app name>: the application to be processed (defaults to all known applications)"
 }
 
 
@@ -327,11 +327,11 @@ describe_install() {
 }
 
 describe_install_parameters() {
-	echo "<app>"
+	echo "<application>"
 }
 
 describe_install_options() {
-	echo "app: the application to configure"
+	echo "application: the application to configure"
 	echo "--directory=<directory>: the directory the application uses for dictionaries"
 	echo "--options={options}: comma-separated list of things the application needs in its dictionary directory; one or more of:"
 	echo "  all-softlinks: soft links from the spelling, hyphenation and thesaurus dictionaries in ${MYSPELL_BASE}"

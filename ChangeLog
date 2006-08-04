@@ -6,6 +6,7 @@ ChangeLog for eselect
 	eselect module, to support all applications that have their own
 	directory for myspell dictionaries via symlinks to the shared
 	installation area.  Bug #139422
+	Set properties, cleaned up help text.
 
 2006-08-04 Danny van Dyk <kugelfang@gentoo.org>
 
