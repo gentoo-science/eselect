@@ -363,7 +363,7 @@ do_set() {
 			while read entry; do
 				fields=(${entry})
 				[[ ${fields[0]:0:1} == "#" ]] && continue
-				grep "^${fields[0]} ${fields[1]} ${fields[2]} " \
+				grep "^${fields[0]} ${fields[1]} ${fields[2]} ${fields[3]}" \
 					${OOO_DICTBASE}/${OOO_DICTLIST} > /dev/null 2>&1 ||
 						echo "${entry}" >> ${OOO_DICTBASE}/${OOO_DICTLIST}
 				for suffix in $(oodict_get_myspell_suffixes ${fields[0]}); do
