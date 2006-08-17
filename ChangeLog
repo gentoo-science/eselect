@@ -2,6 +2,11 @@ ChangeLog for eselect
 
 2006-08-17 Donnie Berkholz <dberkholz@gentoo.org>
 
+	* libs/skel.bash.in: Small usability tweak -- change printed references from
+	"libdir" to "library directory."
+
+2006-08-17 Donnie Berkholz <dberkholz@gentoo.org>
+
 	* libs/skel.bash.in: Ensure that there are implementations available
 	in a given libdir before executing code that assumes so. Reported
 	by Danny van Dyk. Add some comments in this area too, since the code

@@ -54,7 +54,7 @@ switch_implem() {
     local current_file="${ROOT}/etc/env.d/${iface}/${libdir}/${current}"
     local dest src
     if is_active ${iface} ${libdir} ${implem}; then
-        echo "Implementation \"${implem}\" already active for libdir \"${libdir}\"!"
+        echo "Implementation \"${implem}\" already active for library directory \"${libdir}\"!"
         return 1
     fi
 
@@ -101,7 +101,7 @@ iface_do_list() {
     [[ -z ${implems[@]} ]] \
         && return
 
-    write_list_start "Installed $MODULE for libdir $(highlight ${libdir})"
+    write_list_start "Installed $MODULE for library directory $(highlight ${libdir})"
     for implem in ${implems[@]} ; do
         (( i++ ))
         active=''
@@ -222,7 +222,7 @@ do_set() {
                     if [[ ${item} -ge ${libdir_min} ]] && [[ ${item} -le ${libdir_max} ]] ; then
                         if ! switch_implem ${iface} ${libdir} ${implems[$(( ${item} -1 ))]}; then
                             fail=1
-                            echo "Failed to switch to implementation \"${item}\" for libdir \"${libdir}\"!"
+                            echo "Failed to switch to implementation \"${item}\" for library directory \"${libdir}\"!"
                             continue
                         fi
                     else
@@ -236,7 +236,7 @@ do_set() {
                     if has ${item} $(find_implems ${iface} ${libdir}); then
                         if ! switch_implem ${iface} ${libdir} ${item}; then
                             fail=1
-                            echo "Failed to switch to implementation \"${item}\" for libdir \"${libdir}\"!"
+                            echo "Failed to switch to implementation \"${item}\" for library directory \"${libdir}\"!"
                             continue
                         fi
                     fi
@@ -291,7 +291,7 @@ describe_add_options() {
 
 do_add() {
     [[ ${#@} -ne 3 ]] \
-        && die -q "Please specify 1 libdir, 1 file to install and 1 implementation!"
+        && die -q "Please specify 1 library directory, 1 file to install and 1 implementation!"
 
     # If $D is set, we're adding from portage so we want to respect sandbox.
     # Otherwise, respect the ROOT variable.
