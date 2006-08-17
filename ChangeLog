@@ -1,5 +1,13 @@
 ChangeLog for eselect
 
+2006-08-17 Donnie Berkholz <dberkholz@gentoo.org>
+
+	* libs/skel.bash.in: Ensure that there are implementations available
+	in a given libdir before executing code that assumes so. Reported
+	by Danny van Dyk. Add some comments in this area too, since the code
+	can take a little time to parse.
+	* ChangeLog: Change a couple references to my old nick.
+
 2006-08-06 Kevin F. Quinn <kevquinn@gentoo.org>
 
 	* modules/oodict.eselect: Modify to install all dictionaries files for
@@ -38,7 +46,7 @@ ChangeLog for eselect
 	parameter.
 	* autogen.bash: New autogen tool to correctly use autoconf-2.60.
 
-2006-07-15 Donnie Berkholz <spyderous@gentoo.org>
+2006-07-15 Donnie Berkholz <dberkholz@gentoo.org>
 
 	* libs/skel.bash.in:
 	Fix check for whether implementations are available before attempting to
@@ -94,7 +102,7 @@ ChangeLog for eselect
 
 	* modules/oodict.eselect: Align description with other modules.
 
-2006-06-18 Donnie Berkholz <spyderous@gentoo.org>
+2006-06-18 Donnie Berkholz <dberkholz@gentoo.org>
 
 	* libs/skel.bash.in, libs/Makefile.am, doc/developer-guide.txt:
 	Add a new skel.bash library for easy implementation of the simpler cases of

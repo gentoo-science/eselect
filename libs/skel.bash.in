@@ -206,37 +206,43 @@ do_set() {
 
     i=0
     for libdir in ${libdirs}; do
-        for item in ${@} ; do
-            if is_number ${item} ; then
-                if [[ -n ${libdir_min} ]]; then
-                    libdir_min=$(( ${libdir_min} + ${libdir_ct[$(( $i - 1 ))]} ))
-                else
-                    libdir_min="1"
-                fi
-                libdir_max=$(( ${libdir_min} + ${libdir_ct[$i]} - 1 ))
-                if [[ ${item} -ge ${libdir_min} ]] && [[ ${item} -le ${libdir_max} ]] ; then
-                    if ! switch_implem ${iface} ${libdir} ${implems[$(( ${item} -1 ))]}; then
-	                    fail=1
-	                    echo "Failed to switch to implementation \"${item}\" for libdir \"${libdir}\"!"
-	                    continue
+        # Only move on if we actually have implems here, otherwise we screw up
+        # $libdir_max and waste time executing pointless code
+        if [[ ${libdir_ct[$i]} -gt 0 ]]; then
+            for item in ${@} ; do
+                if is_number ${item} ; then
+                    # On the first libdir, minimum must be 1. Maxes and later
+                    # mins are incremented by the size of the previous libdir_ct
+                    if [[ -n ${libdir_min} ]]; then
+                        libdir_min=$(( ${libdir_min} + ${libdir_ct[$(( $i - 1 ))]} ))
+                    else
+                        libdir_min="1"
+                    fi
+                    libdir_max=$(( ${libdir_min} + ${libdir_ct[$i]} - 1 ))
+                    if [[ ${item} -ge ${libdir_min} ]] && [[ ${item} -le ${libdir_max} ]] ; then
+                        if ! switch_implem ${iface} ${libdir} ${implems[$(( ${item} -1 ))]}; then
+                            fail=1
+                            echo "Failed to switch to implementation \"${item}\" for libdir \"${libdir}\"!"
+                            continue
+                        fi
+                    else
+                        fail=1
+                        echo "Item not in range ${libdir_min}-${libdir_max} for ${libdir}: ${item}"
+                        continue
                     fi
                 else
-                    fail=1
-                    echo "Item not in range ${libdir_min}-${libdir_max} for ${libdir}: ${item}"
-                    continue
-                fi
-            else
-                # Only attempt to switch to an implementation if it's available
-                # for that libdir
-                if has ${item} $(find_implems ${iface} ${libdir}); then
-                    if ! switch_implem ${iface} ${libdir} ${item}; then
-	                    fail=1
-	                    echo "Failed to switch to implementation \"${item}\" for libdir \"${libdir}\"!"
-	                    continue
+                    # Only attempt to switch to an implementation if it's available
+                    # for that libdir
+                    if has ${item} $(find_implems ${iface} ${libdir}); then
+                        if ! switch_implem ${iface} ${libdir} ${item}; then
+                            fail=1
+                            echo "Failed to switch to implementation \"${item}\" for libdir \"${libdir}\"!"
+                            continue
+                        fi
                     fi
                 fi
-            fi
-        done
+            done
+        fi
         (( i++ ))
     done
 
