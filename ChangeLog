@@ -1,5 +1,10 @@
 ChangeLog for eselect
 
+2006-08-21 Danny van Dyk <kugelfang@gentoo.org>
+
+	* modules/compiler.eselect.in: Fix previous accidental commit of local
+	changes. Reverted to r271.
+
 2006-08-17 Donnie Berkholz <dberkholz@gentoo.org>
 
 	* libs/skel.bash.in: Small usability tweak -- change printed references from
