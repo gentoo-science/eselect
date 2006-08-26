@@ -1,6 +1,11 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.0.5:
+    Bug fixes:
+    - Fixed bug in libs/skel.bash.in regarding set action with numerical paramters.
+    - Fixed bug #141106.
+
 1.0.4:
     Bug fixes:
     - Fixed list bug in libs/skel.bash.in.
