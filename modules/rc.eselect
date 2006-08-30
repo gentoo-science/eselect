@@ -271,6 +271,26 @@ do_pause() {
 	run_runscript pause "Pausing init script$([[ ${#@} -gt 1 ]] && echo -ne 's')" ${@}
 }
 
+### reload action
+
+describe_reload() {
+	echo "Reload given set of init scripts"
+}
+
+describe_reload_parameters() {
+	echo "<scripts>"
+}
+
+describe_reload_options() {
+	echo "scripts : Init scripts to reload"
+}
+
+do_reload() {
+	[[ ${#@} -gt 0 ]] \
+		|| die -q "Please specify the init script to be reloaded!"
+	run_runscript reload "Reloading init script$([[ ${#@} -gt 1 ]] && echo -ne 's')" ${@}
+}
+
 ### restart action
 
 describe_restart() {

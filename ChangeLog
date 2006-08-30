@@ -4,6 +4,7 @@ ChangeLog for eselect
 
 	* libs/output.bash.in: Fix bug #140633 by adding missing quoting in
 	write_{kv,numbered}_list_entry.
+	* modules/rc.eselect: Add 'reload' action as requested in bug #144152.
 
 2006-08-26 Danny van Dyk <kugelfang@gentoo.org>
 
