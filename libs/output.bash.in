@@ -86,7 +86,7 @@ write_kv_list_entry() {
     val=${2##*([[:space:]])}
 
     echo -n -e "  ${lindent}${left}"
-    echo -n -e $(apply_text_highlights "${left}" "${key}")
+    echo -n -e "$(apply_text_highlights "${left}" "${key}")"
     echo -n -e "${COLOUR_NORMAL} "
 
     text=${key//\%%%??%%%/}
@@ -166,7 +166,7 @@ write_numbered_list_entry() {
     echo -n -e "${COLOUR_NORMAL}"
     space $(( 4 - ${#1} ))
     echo -n -e "${right}"
-    echo -n -e $(apply_text_highlights "${right}" "$2")
+    echo -n -e "$(apply_text_highlights "${right}" "$2")"
     echo -n -e "${COLOUR_NORMAL}"
     echo
 }

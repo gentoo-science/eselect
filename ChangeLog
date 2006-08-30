@@ -1,5 +1,10 @@
 ChangeLog for eselect
 
+2006-08-30 Danny van Dyk <kugelfang@gentoo.org>
+
+	* libs/output.bash.in: Fix bug #140633 by adding missing quoting in
+	write_{kv,numbered}_list_entry.
+
 2006-08-26 Danny van Dyk <kugelfang@gentoo.org>
 
 	* Tagged 1.0.5 release.
