@@ -52,12 +52,12 @@ The result\-tags are as following
 .SH "ACTION: DELETE"
 \fBeselect rc delete\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
 .br 
-Delete \fIscript\fR to given \fIrunlevels\fR. If no \fIrunlevel\fR is given,
+Delete \fIscript\fR from given \fIrunlevels\fR. If no \fIrunlevel\fR is given,
 this action will delete \fIscript\fR from the \fBdefault\fR runlevel.
 
 phi ~ # eselect rc delete local nonetwork notexisting
 .br 
-Adding local to following runlevels
+Deleting local from following runlevels
   nonetwork                 [done]
   notexisting               [invalid]
 
@@ -65,10 +65,10 @@ The result\-tags are as following
 .TP 
 \fB[done]\fR
 .br 
-\fIscript\fR succesfully deleted to \fIrunlevel\fR
+\fIscript\fR succesfully deleted from \fIrunlevel\fR
 .TP 
 \fB[failed]\fR
-\fIscript\fR couldnot be deleted to \fIrunlevel\fR
+\fIscript\fR could not be deleted from \fIrunlevel\fR
 .TP 
 \fB[skipped]\fR
 \fIscript\fR not part of \fIrunlevel\fR
@@ -78,7 +78,7 @@ The result\-tags are as following
 .SH "ACTION: LIST"
 \fBeselect rc list\fR [\fIrunlevel\fR]
 .br 
-Displays an orderd list of init scripts that belong to \fIrunlevel\fR. In case that
+Displays an ordered list of init scripts that belong to \fIrunlevel\fR. In case that
 \fIrunlevel\fR is given, this action will list all scripts from /etc/init.d/.
 
 phi / # eselect rc list default

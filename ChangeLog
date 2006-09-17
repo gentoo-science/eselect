@@ -1,5 +1,9 @@
 ChangeLog for eselect
 
+2006-09-17 Danny van Dyk <kugelfang@gentoo.org>
+
+	* man/rc.eselect.5: Fixed bug #144882.
+
 2006-08-30 Danny van Dyk <kugelfang@gentoo.org>
 
 	* libs/output.bash.in: Fix bug #140633 by adding missing quoting in
