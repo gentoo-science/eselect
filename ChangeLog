@@ -1,5 +1,11 @@
 ChangeLog for eselect
 
+2006-09-19 Mike Kelly <pioto@gentoo.org>
+
+	* modules/vi.eselect: Add support for vile, xvile, and elvis.
+	* modules/Makefile.am: Remove the vi.eselect module, so it isn't
+	distributed with the main eselect code.
+
 2006-09-17 Danny van Dyk <kugelfang@gentoo.org>
 
 	* man/rc.eselect.5: Fixed bug #144882.

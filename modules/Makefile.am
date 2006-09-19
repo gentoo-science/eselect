@@ -9,8 +9,7 @@ safe_scripts = \
 
 dodgy_scripts = \
 		 config.eselect \
-		 cow.eselect \
-		 vi.eselect
+		 cow.eselect
 
 EXTRA_DIST = $(safe_scripts) $(dodgy_scripts)
 
