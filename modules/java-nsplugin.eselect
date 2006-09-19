@@ -2,6 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id: $
 
+inherit tests multilib
+
 DESCRIPTION="Manage the Java plugin for Netscape-like Browsers"
 MAINTAINER="java@gentoo.org"
 SVN_DATE='$Date: $'
@@ -16,14 +18,12 @@ SYSTEM_PLUGIN="${SYSTEM_PLUGIN_DIR}/javaplugin.so"
 SYSTEM_PLUGIN_32="${SYSTEM_PLUGIN_DIR_32}/javaplugin.so"
 SYSTEM_PLUGIN_64="${SYSTEM_PLUGIN_DIR_64}/javaplugin.so"
 
-if [[ -z ${IS_MULTILIB} ]]; then
-	if [[ -d ${ROOT}/lib32 && -d ${ROOT}/lib64 ]]; then
-		IS_MULTILIB="true"
-	else
-		IS_MULTILIB="false"
-	fi
+libdirs=$(list_libdirs)
+if has lib32 ${libdirs} && has lib64 ${libdirs}; then
+	IS_MULTILIB="true"
+else
+	IS_MULTILIB="false"
 fi
-
 ### show action
 
 ## {{{ show stuff
