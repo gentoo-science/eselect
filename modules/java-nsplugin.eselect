@@ -16,12 +16,12 @@ SYSTEM_PLUGIN="${SYSTEM_PLUGIN_DIR}/javaplugin.so"
 SYSTEM_PLUGIN_32="${SYSTEM_PLUGIN_DIR_32}/javaplugin.so"
 SYSTEM_PLUGIN_64="${SYSTEM_PLUGIN_DIR_64}/javaplugin.so"
 
-if [[ -n ${IS_MULTILIB} ]]; then
-if [[ -d ${ROOT}/usr/lib32 && -d ${ROOT}/usr/lib64 ]]; then
-	IS_MULTILIB="true"
-else
-	IS_MULTILIB="false"
-fi
+if [[ -z ${IS_MULTILIB} ]]; then
+	if [[ -d ${ROOT}/lib32 && -d ${ROOT}/lib64 ]]; then
+		IS_MULTILIB="true"
+	else
+		IS_MULTILIB="false"
+	fi
 fi
 
 ### show action
@@ -78,7 +78,7 @@ fi
 			local system_name=$(get_system_plugin_vm)
 			local targets=( $(get_targets) )
 			for (( i = 0 ; i < ${#targets[@]} ; i = i + 1 )) ; do
-				targets[${i}]=$(twaek_list_item ${targets[${i}]} ${system_name})
+				targets[${i}]=$(tweak_list_item ${targets[${i}]} ${system_name})
 			done
 
 			write_list_start "Available Java browser plugins"
