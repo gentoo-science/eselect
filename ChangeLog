@@ -1,5 +1,12 @@
 ChangeLog for eselect
 
+2006-09-20 Danny van Dyk <kugelfang@gentoo.org>
+
+	* libs/config.bash.in: Fixed whitespaces and bug #147930.
+	* libs/core.bash.in: Enhanced die function to SIGKILL eselect if
+	SIGTERM failed.
+
+
 2006-09-19 Mike Kelly <pioto@gentoo.org>
 
 	* modules/vi.eselect: Add support for vile, xvile, and elvis.

@@ -31,7 +31,7 @@ store_config() {
             || die -q \
             "Couldn't create directory ${configfile%/*}"
     fi
-    
+
     store_config_header() {
         echo "# Configuration file for eselect" \
             > ${configfile}
@@ -42,43 +42,44 @@ store_config() {
     if [[ ! -f ${configfile} ]] ; then
         store_config_header
         echo "${key}=\"${value}\"" \
-	    >> ${configfile}
+            >> ${configfile}
         return
     fi
-        
+
     content=$(<${configfile})
 
     if [[ -z ${content[@]} ]] ; then
         store_config_header
         echo "${key}=\"${value}\"" \
-	    >> ${configfile}
+            >> ${configfile}
         return
     fi
 
     (
         # parse the names of all settings in the file
         for line in ${content[@]} ; do
-    	    [[ ${line/=/} != ${line} ]] || continue
+            [[ ${line/=/} != ${line} ]] || continue
             line=${line/=*/}
             local ${line}=""
             vars=(${vars[@]} ${line})
         done
 
-        source ${configfile}
+        source ${configfile} 2>&1 > /dev/null \
+            || die "Failed to source ${configfile}."
 
         store_config_header
         for var in ${vars[@]} ; do
-	    if [[ ${var} == ${key} ]] ; then
+            if [[ ${var} == ${key} ]] ; then
                 echo "${var}=\"${value}\"" \
                     >> ${configfile}
-	        changed=1
-	    else
+                changed=1
+            else
                 echo "${var}=\"${!var}\"" \
                     >> ${configfile}
-	    fi
+            fi
         done
         [[ ${changed} == 1 ]] \
-    	    || echo "${key}=\"${value}\"" \
+            || echo "${key}=\"${value}\"" \
             >> ${configfile}
     )
 }
@@ -94,8 +95,9 @@ load_config() {
     [[ ! -e ${configfile} ]] \
         && return 1
     value=$(
-        source ${configfile}
-    	echo ${!key}
+        source ${configfile} 1>&2 > /dev/null \
+            || die "Failed to source ${configfile}."
+        echo ${!key}
     )
     echo ${value}
 }

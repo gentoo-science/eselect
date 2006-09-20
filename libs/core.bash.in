@@ -61,6 +61,12 @@ die() {
 
     # Evil, but effective.
     kill ${ESELECT_KILL_TARGET}
+    echo "Killing the hard way..." 1>&2
+    childs=$(ps -eo pid= -o ppid= | awk "\$2 == ${ESELECT_KILL_TARGET} { print \$1 }")
+    for child in ${childs} ; do
+        kill -9 ${child}
+    done
+    kill -9 ${ESELECT_KILL_TARGET}
     exit 249
 }
 
