@@ -3,7 +3,7 @@
 # $Id$
 
 DESCRIPTION="Manage /usr/bin/vi implementations"
-MAINTAINER="ciaranm@gentoo.org"
+MAINTAINER="pioto@gentoo.org"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}" )
 
@@ -23,22 +23,40 @@ find_targets() {
 	done
 }
 
-# try to remove the vi symlink
-remove_symlink() {
+# try to remove the vi, ex, view and man vi symlinks
+remove_symlinks() {
 	rm "${ROOT}/usr/bin/vi" &>/dev/null
+	rm "${ROOT}/usr/bin/ex" &>/dev/null
+	rm "${ROOT}/usr/bin/view" &>/dev/null
+	rm "${ROOT}/usr/share/man/man1/vi.1.gz" &>/dev/null
+	rm "${ROOT}/usr/share/man/man1/ex.1.gz" &>/dev/null
+	rm "${ROOT}/usr/share/man/man1/view.1.gz" &>/dev/null
 }
 
-# set the vi symlink
-set_symlink() {
+# set the vi, ex, view, and man vi symlinks
+set_symlinks() {
 	target=${1}
 	if is_number "${target}" && [[ ${target} -ge 1 ]] ; then
 		targets=( $(find_targets ) )
 		target=${targets[$(( ${target} - 1 ))]}
 	fi
 	if [[ -f "${ROOT}/usr/bin/${target}" ]] ; then
-		remove_symlink
+		remove_symlinks
 		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/vi" || \
-			die "Couldn't set ${target} symlink"
+			die "Couldn't set ${target} /usr/bin/vi symlink"
+		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/ex" || \
+			die "Couldn't set ${target} /usr/bin/ex symlink"
+		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/vi" || \
+			die "Couldn't set ${target} /usr/bin/vi symlink"
+		ln -s "${ROOT}/usr/share/man/man1/${target}.1.gz" \
+			"${ROOT}/usr/share/man/man1/vi.1.gz" || \
+			die "Couldn't set ${target} /usr/share/man/man1/vi.1.gz symlink"
+		ln -s "${ROOT}/usr/share/man/man1/${target}.1.gz"
+			"${ROOT}/usr/share/man/man1/ex.1.gz" || \
+			die "Couldn't set ${target} /usr/share/man/man1/ex.1.gz symlink"
+		ln -s "${ROOT}/usr/share/man/man1/${target}.1.gz"
+			"${ROOT}/usr/share/man/man1/view.1.gz" || \
+			die "Couldn't set ${target} /usr/share/man/man1/view.1.gz symlink"
 	else
 		die -q  "Target \"${1}\" doesn't appear to be valid!"
 	fi
@@ -108,9 +126,9 @@ do_set() {
 		die -q "Too many parameters"
 
 	elif [[ -L "${ROOT}/usr/bin/vi" ]] ; then
-		if ! remove_symlink ; then
+		if ! remove_symlinks ; then
 			die -q "Can't remove existing provider"
-		elif ! set_symlink "${1}" ; then
+		elif ! set_symlinks "${1}" ; then
 			die -q "Can't set new provider"
 		fi
 
@@ -118,7 +136,7 @@ do_set() {
 		die -q "Sorry, ${ROOT}/usr/bin/vi confuses me"
 
 	else
-		set_symlink "${1}" || die -q "Can't set a new provider"
+		set_symlinks "${1}" || die -q "Can't set a new provider"
 	fi
 }
 
@@ -138,12 +156,12 @@ do_update() {
 
 	if [[ -L "${ROOT}/usr/bin/vi" ]] ; then
 		[[ ${1} == "--if-unset" ]] && return
-		remove_symlink || die -q "Can't remove existing link"
+		remove_symlinks || die -q "Can't remove existing link"
 	fi
 	if [[ -e "${ROOT}/usr/bin/vi" ]] ; then
 		die -q "Can't set a new provider"
 	elif ! [[ -z $(find_targets ) ]] ; then
-		set_symlink 1 || die -q "Can't set a new provider"
+		set_symlinks 1 || die -q "Can't set a new provider"
 	fi
 }
 
