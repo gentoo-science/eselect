@@ -3,7 +3,7 @@
 # $Id$
 
 # This is a portage-only module.
-inherit portage
+inherit package-manager
 
 DESCRIPTION="Manage the /etc/make.profile symlink"
 MAINTAINER="ka0ttic@gentoo.org"
