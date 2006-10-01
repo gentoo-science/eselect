@@ -30,11 +30,15 @@ find_targets() {
 # find_versions
 # find all installed version of installed binutils
 find_versions() {
-	local versions
+	local versions last_versions_count
 	for target in $(find_targets) ; do
+		last_version_count=${#versions[@]}
 		for file in ${ROOT}/etc/env.d/binutils/${target}-* ; do
+			[[ -f ${file} ]] || continue
 			versions=(${versions[@]} "${file##*/}")
 		done
+		[[ ${last_version_count} == ${#versions[@]} ]] \
+			&& die -q "Please remove stray file: ${ROOT}/etc/env.d/binutils/config-${target}"
 	done
 	echo ${versions[@]}
 }
@@ -152,7 +156,8 @@ describe_list() {
 }
 
 do_list() {
-	local targets i=0 active version processed
+	local targets i=0 active version files last_processed_count
+	local -a processed
 	targets=( $(find_targets ${@}) )
 	
 	[[ -z ${targets[@]} ]] \
@@ -161,7 +166,9 @@ do_list() {
 	for target in $(find_targets) ; do
 		[[ ${targets[@]/${target}/} == ${targets[@]} ]] \
 			|| write_list_start "Installed binutils for target $(highlight ${target})"
+		last_processed_count=${#processed[@]}
 		for file in ${ROOT}/etc/env.d/binutils/${@:-*} ; do
+			[[ -f ${file} ]] || continue
 			version=${file##*/${target}-}
 			[[ ${version} == ${file} ]] && continue
 			[[ ${processed[@]/${file}/} == ${processed[@]} ]] || continue
@@ -174,6 +181,8 @@ do_list() {
 				
 			write_numbered_list_entry $i "${version}$(highlight "${active}")"
 		done
+		[[ ${last_processed_count} == ${#processed[@]} ]] \
+			&& die -q "Please remove stray file: ${ROOT}/etc/env.d/binutils/config-${target}"
 	done
 }
 
