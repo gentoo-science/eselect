@@ -1,5 +1,9 @@
 ChangeLog for eselect
 
+2006-10-02 Mike Kelly <pioto@gentoo.org>
+
+	* modules/vi.eselect: Apply fix from bug #147857.
+
 2006-01-10 Danny van Dyk <kugelfang@gentoo.org>
 
 	* modules/binutils.eselect: Fixed bug #149627. Thanks to

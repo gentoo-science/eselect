@@ -46,15 +46,15 @@ set_symlinks() {
 			die "Couldn't set ${target} /usr/bin/vi symlink"
 		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/ex" || \
 			die "Couldn't set ${target} /usr/bin/ex symlink"
-		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/vi" || \
-			die "Couldn't set ${target} /usr/bin/vi symlink"
+		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/view" || \
+			die "Couldn't set ${target} /usr/bin/view symlink"
 		ln -s "${ROOT}/usr/share/man/man1/${target}.1.gz" \
 			"${ROOT}/usr/share/man/man1/vi.1.gz" || \
 			die "Couldn't set ${target} /usr/share/man/man1/vi.1.gz symlink"
-		ln -s "${ROOT}/usr/share/man/man1/${target}.1.gz"
+		ln -s "${ROOT}/usr/share/man/man1/${target}.1.gz" \
 			"${ROOT}/usr/share/man/man1/ex.1.gz" || \
 			die "Couldn't set ${target} /usr/share/man/man1/ex.1.gz symlink"
-		ln -s "${ROOT}/usr/share/man/man1/${target}.1.gz"
+		ln -s "${ROOT}/usr/share/man/man1/${target}.1.gz" \
 			"${ROOT}/usr/share/man/man1/view.1.gz" || \
 			die "Couldn't set ${target} /usr/share/man/man1/view.1.gz symlink"
 	else
