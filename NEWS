@@ -1,6 +1,18 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.0.6:
+    Bug fixes:
+    - Fixed bug #144152: Added reload action to rc module.
+    - Fixed bug #140633: Fixed quoting in libs/output.bash.in
+    - Fixed bug #144882: Corrected copy'n'paste errors
+    - Fixed bug #147930: Die on un-sourceable files when handling config files.
+    - Fixed bug #148534: inherit package-manager in profiles module.
+    - Fixed bug #149627: Die on stray binutils targets.
+    - Fixed bug #147857: Don't install vi module as part of eselect.
+
+    New Features:
+    - Enhance die function to work in deep subshells.
 1.0.5:
     Bug fixes:
     - Fixed bug in libs/skel.bash.in regarding set action with numerical paramters.
