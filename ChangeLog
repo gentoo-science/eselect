@@ -5,6 +5,7 @@ ChangeLog for eselect
 	* modules/binutils.eselect: Finally fixed bug #149627.
 	* libs/paludis.bash.in: Fixed typo.
 	* configure.ac: Changed version to 1.0.6.
+	* libs/core.bash.in: Tweaked die function to have a nicer output.
 
 2006-10-02 Mike Kelly <pioto@gentoo.org>
 
