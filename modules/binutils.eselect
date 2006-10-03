@@ -30,7 +30,8 @@ find_targets() {
 # find_versions
 # find all installed version of installed binutils
 find_versions() {
-	local versions last_versions_count
+	local -a versions
+	local last_versions_count
 	for target in $(find_targets) ; do
 		last_version_count=${#versions[@]}
 		for file in ${ROOT}/etc/env.d/binutils/${target}-* ; do
