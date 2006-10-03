@@ -3,6 +3,8 @@ ChangeLog for eselect
 2006-10-03 Danny van Dyk <kugelfang@gentoo.org>
 
 	* modules/binutils.eselect: Finally fixed bug #149627.
+	* libs/paludis.bash.in: Fixed typo.
+	* configure.ac: Changed version to 1.0.6.
 
 2006-10-02 Mike Kelly <pioto@gentoo.org>
 

@@ -19,7 +19,7 @@
 
 # paludis-envvar PRIVATE
 # Run paludis --environment-variable with safe filename as set by configure
-paludis-envvar() {
+paludis_envvar() {
     ${PALUDIS_COMMAND:-@PALUDIS@} --environment-variable $* 2> /dev/null
 }
 
