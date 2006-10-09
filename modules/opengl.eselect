@@ -49,6 +49,7 @@ get_current_implementation() {
 get_implementations() {
 	local ret dir
 	for x in $(list_libdirs) ; do
+		[[ ${ROOT} != / ]] && x=${x//${ROOT}}
 		for dir in "${PREFIX}/${x}"/opengl/* ; do
 			[[ -d ${dir} && $(basename "${dir}") != "global" ]] || continue
 			has $(basename "${dir}") ${ret} && continue
@@ -63,6 +64,7 @@ setup_lib_symlinks() {
 	local profile_libdir=${1}
 	local libdir=${2}
 	local file
+	local rootfile
 
 	mkdir -p "${libdir}" || die "Failed to create ${libdir}"
 
@@ -78,6 +80,11 @@ setup_lib_symlinks() {
 		# loader knows to look in the profile dir, and the
 		# linked just needs the .so
 		for file in ${profile_libdir}/libGL{,core}.{so,a,la}; do
+			if [[ ${ROOT} != / ]] ; then
+				rootfile="${file//${ROOT}}"
+			else
+				rootfile="${file}"
+			fi
 			[[ -f ${file} ]] || continue
 			if [[ -f $(basename "${file}") ]] ; then
 				rm -f "$(basename "${file}")" || die -q "Failed to delete ${libdir}/$(basename "${file}")"
@@ -87,7 +94,7 @@ setup_lib_symlinks() {
 			if [[ ${file%.la} != ${file} ]] ; then
 				sed "s:${profile_libdir}:${libdir}:g" "${file}" > "$(basename "${file}")" || die -q "Failed to create ${libdir}/$(basename "${file}")"
 			else
-				ln -s "${file}" || die -q "Failed to create ${libdir}/$(basename "${file}")"
+				ln -s "${rootfile}" || die -q "Failed to create ${libdir}/$(basename "${file}")"
 			fi
 		done
 	popd &> /dev/null
@@ -113,6 +120,7 @@ set_new_implementation() {
 
 		local libdir
 		for libdir in $(list_libdirs); do
+			[[ ${ROOT} != / ]] && libdir=${libdir//${ROOT}}
 			# Special case handling of lib32 because it can be a symlink to
 			# emul libs
 			# Kill this special case once amd64's 2004.3 crap is gone =) --eradicator
