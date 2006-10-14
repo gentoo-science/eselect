@@ -1,5 +1,10 @@
 ChangeLog for eselect
 
+2006-10-09 Joshua Nichols <nichoj@gentoo.org>
+
+	* modules/java.eselect: Removed obsolete module, in favor of
+	java-vm.eselect.
+
 2006-10-09 Donnie Berkholz <dberkholz@gentoo.org>
 
 	* modules/opengl.eselect: Fix when ROOT != /.
