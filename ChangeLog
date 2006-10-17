@@ -1,5 +1,10 @@
 ChangeLog for eselect
 
+2006-10-17 Mike Kelly <pioto@pioto.org>
+
+	* modules/vi.eselect: Make sure that the return value of
+	remove_symlinks() is meaningful.
+
 2006-10-09 Joshua Nichols <nichoj@gentoo.org>
 
 	* modules/java.eselect: Removed obsolete module, in favor of

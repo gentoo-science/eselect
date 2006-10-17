@@ -25,12 +25,12 @@ find_targets() {
 
 # try to remove the vi, ex, view and man vi symlinks
 remove_symlinks() {
-	rm "${ROOT}/usr/bin/vi" &>/dev/null
-	rm "${ROOT}/usr/bin/ex" &>/dev/null
-	rm "${ROOT}/usr/bin/view" &>/dev/null
-	rm "${ROOT}/usr/share/man/man1/vi.1.gz" &>/dev/null
-	rm "${ROOT}/usr/share/man/man1/ex.1.gz" &>/dev/null
-	rm "${ROOT}/usr/share/man/man1/view.1.gz" &>/dev/null
+	rm -f "${ROOT}/usr/bin/vi" &>/dev/null && \
+	rm -f "${ROOT}/usr/bin/ex" &>/dev/null && \
+	rm -f "${ROOT}/usr/bin/view" &>/dev/null && \
+	rm -f "${ROOT}/usr/share/man/man1/vi.1.gz" &>/dev/null && \
+	rm -f "${ROOT}/usr/share/man/man1/ex.1.gz" &>/dev/null && \
+	rm -f "${ROOT}/usr/share/man/man1/view.1.gz" &>/dev/null
 }
 
 # set the vi, ex, view, and man vi symlinks
