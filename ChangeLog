@@ -1,6 +1,10 @@
 ChangeLog for eselect
 
-2006-10-17 Mike Kelly <pioto@pioto.org>
+2006-10-21 Danny van Dyk <kugelfang@gentoo.org>
+
+	* modules/env.eselect: Clean up and fix bug #151701.
+
+2006-10-17 Mike Kelly <pioto@gentoo.org>
 
 	* modules/vi.eselect: Make sure that the return value of
 	remove_symlinks() is meaningful.
