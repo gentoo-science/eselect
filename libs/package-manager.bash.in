@@ -62,6 +62,23 @@ arch() {
     echo ${ret}${suffix}
 }
 
+# best-version
+# Return true if package $2 is available in ${ROOT}
+best-version() {
+    [[ ${#@} -eq 1 ]] || die "has_version expects exactly 1 arguments!"
+
+    local manager=$(package-manager)
+    case ${manager} in
+        paludis)
+            paludis_has-version "${1}" 2>/dev/null
+            ;;
+        portage)
+            portageq has_version "${ROOT}" "${1}" 2>/dev/null
+            ;;
+        *)
+            die "Unknown package manager: \"${manager}\"!"
+    esac
+}
 
 # envvar
 # Return the contents of environment variable $2 as seen by package manager(s)
@@ -84,17 +101,19 @@ envvar() {
 }
 
 # has-version
-# Return true if package $2 is available in root $1
+# Return true if package $2 is available in ${ROOT}
 has-version() {
-    [[ ${#@} -eq 2 ]] || die "has_version expects exactly 1 arguments!"
+    [[ ${#@} -eq 1 ]] || die "has_version expects exactly 1 arguments!"
 
     local manager=$(package-manager)
     case ${manager} in
         paludis)
-            paludis_has-version $* 2>/dev/null
+            paludis_has-version "${1}" 2>/dev/null
+            return $?
             ;;
         portage)
-            portageq has_version "${2}" 2>/dev/null
+            portageq has_version "${ROOT}" "${1}" 2>/dev/null
+            return $?
             ;;
         *)
             die "Unknown package manager: \"${manager}\"!"

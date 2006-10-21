@@ -182,6 +182,9 @@ The following categories of function are available by default:
 * Output Utility Functions
 * Manipulation Functions
 * Path-Manipulation Functions
+* Configuration Functions
+* Multilib Functions
+* Package-Manager Functions
 * Test Functions
 
 To use any of the other functions, you have first to ``inherit`` the corresponding
@@ -326,7 +329,7 @@ The ``dirname`` function is a transparent bash-only replacement for the external
 ``dirname`` application.
 
 The ``canonicalise`` Function
-,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``canonicalise`` function is a wrapper to either GNU readlink or realpath.
 
@@ -391,23 +394,36 @@ architecture. By default it uses /etc/ld.so.conf to obtain all valid libdirs. If
 this fails due to a missing or broken file, this function uses ``uname`` to
 determine the architecture.
 
-Portage Functions
------------------
+Package-Manager Functions
+-------------------------
 
-These are implemented in ``libs/portage.bash``.
+These are implemented in ``libs/package-manager.bash``.
 
 The ``arch`` Function
 ,,,,,,,,,,,,,,,,,,,,,
 
 The ``arch`` function returns the correct value of ${ARCH} for the current
-system. If Portage cannot provide this information, ``arch`` falls back to a
-``uname -m`` and ``uname -s`` based lookup-table.
+system. If the package manager cannot provide this information, ``arch`` falls
+back to a ``uname -m`` and ``uname -s`` based lookup-table.
 
-The ``portageq`` Function
+The ``best-version`` Function
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+The ``best-version`` Function returns the highest available version for a
+given package dep atom.
+
+The ``envvar`` Function
 ,,,,,,,,,,,,,,,,,,,,,,,,,
 
-The ``portageq`` function transparently wraps the corresponding Portage script
-whilst redirecting stderr to ``/dev/null``.
+The ``envvar`` function retrieves the contents of a configuration-environemnt
+variable for a given package. The syntax is ``envvar ${package-name}
+${var-name}``.
+
+The ``has-version`` Function
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+The ``has-version`` function checks whether a given versioned package dep atom
+is installed.
 
 A Basic Skeleton Library
 ========================

@@ -3,6 +3,10 @@ ChangeLog for eselect
 2006-10-21 Danny van Dyk <kugelfang@gentoo.org>
 
 	* modules/env.eselect: Clean up and fix bug #151701.
+	* libs/paludis.bash.in, libs/package-manager.bash.in: Fix some bugs
+	and general cleanup. Complete package manager abstraction.
+	* doc/developer-guide.txt: Update developer documentation to reflect
+	API changes.
 
 2006-10-17 Mike Kelly <pioto@gentoo.org>
 
