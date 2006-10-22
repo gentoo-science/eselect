@@ -1,10 +1,16 @@
 ChangeLog for eselect
 
+2006-10-22 Danny van Dyk <kugelfang@gentoo.org>
+
+	* configure.ac: Changed version to 1.1.0. (development branch)
+	* libs/config.bash.in: Fix quotation in load_config().
+
 2006-10-22 Mike Kelly <pioto@gentoo.org>
 
 	* modules/vi.eselect: Clean up and add proper support for non-gzip- or
 	bzip2-compressed man pages.
 
+>>>>>>> .r327
 2006-10-21 Danny van Dyk <kugelfang@gentoo.org>
 
 	* modules/env.eselect: Clean up and fix bug #151701.

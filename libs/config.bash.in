@@ -97,9 +97,9 @@ load_config() {
     value=$(
         source ${configfile} 1>&2 > /dev/null \
             || die "Failed to source ${configfile}."
-        echo ${!key}
+        echo "${!key}"
     )
-    echo ${value}
+    echo "${value}"
 }
 
 # append_config file key item ... PUBLIC
