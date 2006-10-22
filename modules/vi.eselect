@@ -9,6 +9,7 @@ VERSION=$(svn_date_to_version "${SVN_DATE}" )
 
 # find a list of vi symlink targets, best first
 find_targets() {
+	local f
 	for f in \
 			${ROOT}/usr/bin/vim \
 			${ROOT}/usr/bin/nvi \
@@ -25,38 +26,51 @@ find_targets() {
 
 # try to remove the vi, ex, view and man vi symlinks
 remove_symlinks() {
-	rm -f "${ROOT}/usr/bin/vi" &>/dev/null && \
-	rm -f "${ROOT}/usr/bin/ex" &>/dev/null && \
-	rm -f "${ROOT}/usr/bin/view" &>/dev/null && \
-	rm -f "${ROOT}/usr/share/man/man1/vi.1.gz" &>/dev/null && \
-	rm -f "${ROOT}/usr/share/man/man1/ex.1.gz" &>/dev/null && \
-	rm -f "${ROOT}/usr/share/man/man1/view.1.gz" &>/dev/null
+	rm -f "${ROOT}"/usr/bin/{vi,ex,view} &>/dev/null && \
+	rm -f "${ROOT}"/usr/share/man/man1/{vi,ex,view}.1{,.gz,.bz2} &>/dev/null
+}
+
+# set a man page symlink
+set_man_symlink() {
+	local target="${1}" link_name="${2}" x extension
+
+	for x in ".1" ".1.bz2" ".1.gz" ; do
+		if [[ -e /usr/share/man/man1/${target}${x} ]] ; then
+			extension="${x}"
+			break
+		fi
+	done
+
+	[[ -z "${extension}" ]] \
+		&& die -q "Couldn't find a man page for ${target}."
+
+	ln -s "${target}${extension}" \
+		"${ROOT}/usr/share/man/man1/${link_name}${extension}"
 }
 
 # set the vi, ex, view, and man vi symlinks
 set_symlinks() {
-	target=${1}
+	local target="${1}" targets
 	if is_number "${target}" && [[ ${target} -ge 1 ]] ; then
 		targets=( $(find_targets ) )
 		target=${targets[$(( ${target} - 1 ))]}
 	fi
 	if [[ -f "${ROOT}/usr/bin/${target}" ]] ; then
 		remove_symlinks
+
 		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/vi" || \
 			die "Couldn't set ${target} /usr/bin/vi symlink"
 		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/ex" || \
 			die "Couldn't set ${target} /usr/bin/ex symlink"
 		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/view" || \
 			die "Couldn't set ${target} /usr/bin/view symlink"
-		ln -s "${ROOT}/usr/share/man/man1/${target}.1.gz" \
-			"${ROOT}/usr/share/man/man1/vi.1.gz" || \
-			die "Couldn't set ${target} /usr/share/man/man1/vi.1.gz symlink"
-		ln -s "${ROOT}/usr/share/man/man1/${target}.1.gz" \
-			"${ROOT}/usr/share/man/man1/ex.1.gz" || \
-			die "Couldn't set ${target} /usr/share/man/man1/ex.1.gz symlink"
-		ln -s "${ROOT}/usr/share/man/man1/${target}.1.gz" \
-			"${ROOT}/usr/share/man/man1/view.1.gz" || \
-			die "Couldn't set ${target} /usr/share/man/man1/view.1.gz symlink"
+
+		set_man_symlink "${target}" "vi" \
+			|| die "Couldn't set ${target} /usr/share/man/man1/vi.1.gz symlink"
+		set_man_symlink "${target}" "ex" \
+			|| die "Couldn't set ${target} /usr/share/man/man1/vi.1.gz symlink"
+		set_man_symlink "${target}" "view" \
+			|| die "Couldn't set ${target} /usr/share/man/man1/vi.1.gz symlink"
 	else
 		die -q  "Target \"${1}\" doesn't appear to be valid!"
 	fi
