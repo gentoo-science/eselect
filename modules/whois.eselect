@@ -1,0 +1,153 @@
+# Copyright 1999-2006 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Id$
+
+DESCRIPTION="Manage /usr/bin/whois implementations"
+MAINTAINER="drizzt@gentoo.org"
+SVN_DATE='$Date$'
+VERSION=$(svn_date_to_version "${SVN_DATE}" )
+
+# find a list of whois symlink targets, best first
+find_targets() {
+	for f in \
+			"${ROOT}"/usr/bin/bsdwhois \
+			"${ROOT}"/usr/bin/jwhois \
+			"${ROOT}"/usr/bin/bwwhois \
+			"${ROOT}"/usr/bin/gwhois \
+			"${ROOT}"/usr/bin/mdwhois \
+		; do
+		if [[ -f "${f}" ]] ; then
+			echo $(basename "${f}")
+		fi
+	done
+}
+
+# try to remove the whois symlinks
+remove_symlinks() {
+	rm "${ROOT}/usr/bin/whois" &>/dev/null
+	rm "${ROOT}/usr/share/man/man1/whois.1.gz" &>/dev/null
+}
+
+# set the whois
+set_symlinks() {
+	target=${1}
+	if is_number "${target}" && [[ ${target} -ge 1 ]] ; then
+		targets=( $(find_targets ) )
+		target=${targets[$(( ${target} - 1 ))]}
+	fi
+	if [[ -f "${ROOT}/usr/bin/${target}" ]] ; then
+		remove_symlinks
+		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/whois" || \
+			die "Couldn't set ${target} /usr/bin/whois symlink"
+		ln -s "${ROOT}/usr/share/man/man1/${target}.1.gz" \
+			"${ROOT}/usr/share/man/man1/whois.1.gz" || \
+			die "Couldn't set ${target} /usr/share/man/man1/whois.1.gz symlink"
+	else
+		die -q  "Target \"${1}\" doesn't appear to be valid!"
+	fi
+}
+
+### show action ###
+
+describe_show() {
+	echo "Show the current whois implementation"
+}
+
+do_show() {
+	[[ -z "${@}" ]] || die -q "Too many parameters"
+
+	write_list_start "Current whois implementation:"
+	if [[ -L "${ROOT}/usr/bin/whois" ]] ; then
+		write_kv_list_entry "$(basename $(canonicalise ${ROOT}/usr/bin/whois ) )" ""
+	elif [[ -e "${ROOT}/usr/bin/whois" ]] ; then
+		write_kv_list_entry "(not a symlink)" ""
+	else
+		write_kv_list_entry "(unset)" ""
+	fi
+}
+
+### list action ###
+
+describe_list() {
+	echo "List available whois implementations"
+}
+
+do_list() {
+	[[ -z "${@}" ]] || die -q "Too many parameters"
+
+	local i targets
+	targets=( $(find_targets ) )
+	if [[ -n ${targets[@]} ]] ; then
+		for (( i = 0 ; i < ${#targets[@]} ; i = i + 1 )) ; do
+			[[ ${targets[${i}]} == $(basename $(canonicalise ${ROOT}/usr/bin/whois ) ) ]] && \
+				targets[${i}]="${targets[${i}]} $(highlight '*' )"
+		done
+		write_list_start "Available whois implementations:"
+		write_numbered_list "${targets[@]}"
+	else
+		write_kv_list_entry "(none found)" ""
+	fi
+}
+
+### set action ###
+
+describe_set() {
+	echo "Set a new whois implementation provider"
+}
+
+describe_set_options() {
+	echo "target : Target name or number (from 'list' action)"
+}
+
+describe_set_parameters() {
+	echo "<target>"
+}
+
+do_set() {
+	if [[ -z "${1}" ]] ; then
+		die -q "You didn't give me a provider name"
+
+	elif [[ -n "${2}" ]] ; then
+		die -q "Too many parameters"
+
+	elif [[ -L "${ROOT}/usr/bin/whois" ]] ; then
+		if ! remove_symlinks ; then
+			die -q "Can't remove existing provider"
+		elif ! set_symlinks "${1}" ; then
+			die -q "Can't set new provider"
+		fi
+
+	elif [[ -e "${ROOT}/usr/bin/whois" ]] ; then
+		die -q "Sorry, ${ROOT}/usr/bin/whois confuses me"
+
+	else
+		set_symlinks "${1}" || die -q "Can't set a new provider"
+	fi
+}
+
+### update action ###
+
+describe_update() {
+	echo "Automatically update the whois provider"
+}
+
+describe_update_options() {
+	echo "--if-unset : Do not override existing implementation"
+}
+
+do_update() {
+	[[ -z "${1}" ]] || ( [[ -z "${2}" ]] && [[ "${1}" == "--if-unset" ]] ) || \
+		die -q "Usage error"
+
+	if [[ -L "${ROOT}/usr/bin/whois" ]] ; then
+		[[ ${1} == "--if-unset" ]] && return
+		remove_symlinks || die -q "Can't remove existing link"
+	fi
+	if [[ -e "${ROOT}/usr/bin/whois" ]] ; then
+		die -q "Can't set a new provider"
+	elif ! [[ -z $(find_targets ) ]] ; then
+		set_symlinks 1 || die -q "Can't set a new provider"
+	fi
+}
+
+# vim: set ft=eselect :
