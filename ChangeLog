@@ -1,5 +1,13 @@
 ChangeLog for eselect
 
+2006-10-24 Danny van Dyk <kugelfang@gentoo.org>
+
+	* libs/core.bash.in: Fix bug #152662. Thanks to Roy Marples
+	<uberlord@gentoo.org> for finding and Mike Kelly <pioto@gentoo.org>
+	for reporting it.
+	* modules/env.eselect: Fix bug #152318. Thanks to Jason Stubbs
+	<jstubbs@gentoo.org> for report and patch.
+
 2006-10-23 Timothy Redaelli <drizzt@gentoo.org>
 
 	* modules/whois.eselect: Added whois module.

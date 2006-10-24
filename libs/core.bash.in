@@ -61,11 +61,10 @@ die() {
 
     # Evil, but effective.
     kill ${ESELECT_KILL_TARGET}
-    childs=$(ps -eo pid= -o ppid= | awk "\$2 == ${ESELECT_KILL_TARGET} { print \$1 }")
-    for child in ${ESELECT_KILL_TARGET} ${childs} ; do
-        kill -9 ${child}
+    childs=$(pgrep -P ${ESELECT_KILL_TARGET})
+    for process in ${ESELECT_KILL_TARGET} ${childs} ; do
+        kill -9 ${process}
     done
-    kill -9 ${ESELECT_KILL_TARGET}
     exit 249
 }
 
