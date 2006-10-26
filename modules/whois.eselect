@@ -9,6 +9,7 @@ VERSION=$(svn_date_to_version "${SVN_DATE}" )
 
 # find a list of whois symlink targets, best first
 find_targets() {
+	local f
 	for f in \
 			"${ROOT}"/usr/bin/bsdwhois \
 			"${ROOT}"/usr/bin/jwhois \
@@ -24,24 +25,44 @@ find_targets() {
 
 # try to remove the whois symlinks
 remove_symlinks() {
-	rm "${ROOT}/usr/bin/whois" &>/dev/null
-	rm "${ROOT}/usr/share/man/man1/whois.1.gz" &>/dev/null
+	rm -f "${ROOT}/usr/bin/whois" &>/dev/null
+	rm -f "${ROOT}/usr/share/man/man1/whois.1"{,.gz,.bz2}
+}
+
+# set a man page symlink
+set_man_symlink() {
+	local target="${1}" link_name="${2}" x extension
+
+	for x in ".1" ".1.bz2" ".1.gz" ; do
+		if [[ -e /usr/share/man/man1/"${target}${x}" ]] ; then
+			extension="${x}"
+			break
+		fi
+	done
+
+	if [[ -z "${extension}" ]] ; then
+		echo "Couldn't find a man page for ${target}; skipping." 1>&2
+		return 1
+	fi
+
+	ln -s "${target}${extension}" \
+		"${ROOT}/usr/share/man/man1/${link_name}${extension}"
 }
 
 # set the whois
 set_symlinks() {
-	target=${1}
+	local target="${1}" targets
 	if is_number "${target}" && [[ ${target} -ge 1 ]] ; then
 		targets=( $(find_targets ) )
 		target=${targets[$(( ${target} - 1 ))]}
 	fi
 	if [[ -f "${ROOT}/usr/bin/${target}" ]] ; then
 		remove_symlinks
+
 		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/whois" || \
 			die "Couldn't set ${target} /usr/bin/whois symlink"
-		ln -s "${ROOT}/usr/share/man/man1/${target}.1.gz" \
-			"${ROOT}/usr/share/man/man1/whois.1.gz" || \
-			die "Couldn't set ${target} /usr/share/man/man1/whois.1.gz symlink"
+	
+		set_man_symlink "${target}" "whois"
 	else
 		die -q  "Target \"${1}\" doesn't appear to be valid!"
 	fi
