@@ -41,8 +41,10 @@ set_man_symlink() {
 		fi
 	done
 
-	[[ -z "${extension}" ]] \
-		&& die -q "Couldn't find a man page for ${target}."
+	if [[ -z "${extension}" ]] ; then
+		echo "Couldn't find a man page for ${target}; skipping." 1>&2
+		return 1
+	fi
 
 	ln -s "${target}${extension}" \
 		"${ROOT}/usr/share/man/man1/${link_name}${extension}"
@@ -65,12 +67,9 @@ set_symlinks() {
 		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/view" || \
 			die "Couldn't set ${target} /usr/bin/view symlink"
 
-		set_man_symlink "${target}" "vi" \
-			|| die "Couldn't set ${target} /usr/share/man/man1/vi.1.gz symlink"
-		set_man_symlink "${target}" "ex" \
-			|| die "Couldn't set ${target} /usr/share/man/man1/vi.1.gz symlink"
-		set_man_symlink "${target}" "view" \
-			|| die "Couldn't set ${target} /usr/share/man/man1/vi.1.gz symlink"
+		set_man_symlink "${target}" "vi" &&
+		set_man_symlink "${target}" "ex" &&
+		set_man_symlink "${target}" "view"
 	else
 		die -q  "Target \"${1}\" doesn't appear to be valid!"
 	fi
