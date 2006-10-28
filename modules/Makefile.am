@@ -5,7 +5,8 @@ safe_scripts = \
 		 kernel.eselect \
 		 mailer.eselect \
 		 profile.eselect \
-		 rc.eselect
+		 rc.eselect \
+		 modules.eselect
 
 dodgy_scripts = \
 		 config.eselect \
