@@ -1,0 +1,113 @@
+# Copyright 1999-2006 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Id: $
+
+DESCRIPTION="A module for querying modules. By default, it lists all available modules"
+MAINTAINER="eselect@gentoo.org"
+SVN_DATE='$Date: $'
+VERSION=$(svn_date_to_version "${SVN_DATE}" )
+
+DEFAULT_ACTION="list"
+
+inherit output
+
+### list action
+
+## {{{ list
+
+describe_list() {
+	echo "Lists all available modules."
+}
+
+# Yanked from ec_do_list-modules
+do_list() {
+    local path file module name desc
+
+    write_list_start "Built-in modules:"
+    write_kv_list_entry "help"          "Display a help message"
+    write_kv_list_entry "usage"         "Display a usage message"
+    write_kv_list_entry "version"       "Display version information"
+
+    extra_modules=()
+    for path in "${ESELECT_MODULES_PATH[@]}" ; do
+        [[ -d ${path} ]] || continue
+        for file in ${path}/*.eselect ; do
+            [[ -f ${file} ]] || continue
+            extra_modules=( ${extra_modules[@]} "${file}" )
+        done
+    done
+
+    if [[ ${#extra_modules[@]} -gt 0 ]] ; then
+        echo
+        write_list_start "Extra modules:"
+        for module in ${extra_modules[@]} ; do
+            name=${module##*/}
+            name=${name%%.eselect}
+            desc=$(
+                source "$ESELECT_DEFAULT_ACTIONS" 2>/dev/null \
+                    || die "Couldn't source ${ESELECT_DEFAULT_ACTIONS}"
+                source "${module}" 2>/dev/null \
+                    || die "Couldn't source ${module}"
+                echo "${DESCRIPTION}"
+            )
+            write_kv_list_entry "${name}" "${desc}"
+        done
+    fi
+}
+
+# }}}
+
+### has action
+
+## {{{ has 
+describe_has() {
+	echo "Gives no output. Returns true if the module is installed, and false otherwise."
+}
+
+describe_has_parameters() {
+	echo "<module>"
+}
+
+do_has() {
+	local modname="$1" modpath
+	[[ -z "$modname" ]] && die -q "Required option (module name) missing."
+	for modpath in "${ESELECT_MODULES_PATH[@]}" ; do
+		[[ -f "${modpath}/${modname}.eselect" ]] && return 0
+	done
+	return 1
+}
+## }}}
+
+### add action
+
+## {{{ add
+
+describe_add() {
+	echo "Installs the given module file somewhere that eselect can find it." \
+	"By default, installs to \$HOME/.eselect/modules/, unless running as" \
+	"root. Then, it installs to ${ESELECT_DATA_PATH}/modules/."
+}
+
+describe_add_parameters() {
+	echo "<module_file>"
+}
+
+do_add() {
+	local install_path="${ROOT}${HOME}/.eselect/modules/" module_file="${1}"
+
+	## XXX: Add some optional option to let the user choose to install
+	## to root's home dir instead of just putting it in the global location.
+	## Not quite sure how we wanna do this.
+	[[ $EUID == 0 ]] && install_path="${ROOT}${ESELECT_DATA_PATH}/modules/."
+
+	[[ -z "${module_file}" ]] && die -q "Required option (module file) missing."
+
+	mkdir -p "${install_path}" \
+		|| die -q "Failed to create module install directory."
+	cp "${module_file}" "${install_path}" \
+		|| die -q "Failed to install module file."
+}
+
+## }}}
+
+# vim: ts=4 sw=4 noet fdm=marker

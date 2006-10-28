@@ -1,5 +1,10 @@
 ChangeLog for eselect
 
+2006-10-28 Mike Kelly <pioto@gentoo.org>
+
+	* modules/modules.eselect: Add a new module, for listing, querying,
+	and installing eselect modules.
+
 2006-10-26 Timothy Redaelli <drizzt@gentoo.org>
 	* modules/whois.eselect: Make a missing man page just cause a warning (to
 	work with folks who use FEATURES=noman, etc). (modifications taken from
