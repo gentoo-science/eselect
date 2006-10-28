@@ -4,6 +4,7 @@ safe_scripts = \
 		 env.eselect \
 		 kernel.eselect \
 		 mailer.eselect \
+		 modules.eselect \
 		 profile.eselect \
 		 rc.eselect \
 		 modules.eselect

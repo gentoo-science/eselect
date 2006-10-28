@@ -20,10 +20,13 @@
 # Where is our data?
 ESELECT_DATA_PATH="%DATADIR%/eselect/"
 
+# Where are modules installed by default?
+ESELECT_DEFAULT_MODULES_PATH="${ESELECT_DATA_PATH}/modules"
+
 # Look in these places for modules
 ESELECT_MODULES_PATH=( \
     "${HOME}/.eselect/modules" \
-    "${ESELECT_DATA_PATH}/modules" )
+    "${ESELECT_DEFAULT_MODULES_PATH}" )
 
 # Look in this place for libraries
 ESELECT_CORE_PATH="${ESELECT_DATA_PATH}/libs"
@@ -91,7 +94,7 @@ ec_do_help() {
 ec_do_version() {
     echo "eselect ${ESELECT_VERSION}"
     echo
-    echo "Copyright (c) 2005 Gentoo Foundation. Distributed under the"
+    echo "Copyright (c) 2005,2006 Gentoo Foundation. Distributed under the"
     echo "terms of the GNU General Public License v2."
 }
 
@@ -103,41 +106,9 @@ ec_do_list-options() {
 }
 
 # ec_do_list-modules
-# Display all available eselect modules
+# Display all available eselect modules DEPRECATED
 ec_do_list-modules() {
-    local path file module name desc
-
-    write_list_start "Built-in modules:"
-    write_kv_list_entry "help"          "Display a help message"
-    write_kv_list_entry "list-modules"  "Find and display available modules"
-    write_kv_list_entry "usage"         "Display a usage message"
-    write_kv_list_entry "version"       "Display version information"
-
-    extra_modules=()
-    for path in "${ESELECT_MODULES_PATH[@]}" ; do
-        [[ -d ${path} ]] || continue
-        for file in ${path}/*.eselect ; do
-            [[ -f ${file} ]] || continue
-            extra_modules=( ${extra_modules[@]} "${file}" )
-        done
-    done
-
-    if [[ ${#extra_modules[@]} -gt 0 ]] ; then
-        echo
-        write_list_start "Extra modules:"
-        for module in ${extra_modules[@]} ; do
-            name=${module##*/}
-            name=${name%%.eselect}
-            desc=$(
-                source "$ESELECT_DEFAULT_ACTIONS" 2>/dev/null \
-                    || die "Couldn't source ${ESELECT_DEFAULT_ACTIONS}"
-                source "${module}" 2>/dev/null \
-                    || die "Couldn't source ${module}"
-                echo "${DESCRIPTION}"
-            )
-            write_kv_list_entry "${name}" "${desc}"
-        done
-    fi
+    eselect modules list $@
 }
 
 ### main code ###

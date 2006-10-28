@@ -1,5 +1,13 @@
 ChangeLog for eselect
 
+2006-10-28 Danny van Dyk <kugelfang@gentoo.org>
+
+	* bin/eselect.in: Add a new envvar for the default modules path.
+	* libs/core.bash.in: Make inherit() remember the libs it already
+	processed and don't source them again.
+	* modules/modules.eselect: Clean up a bit. Change add action to not
+	check for root.
+
 2006-10-28 Mike Kelly <pioto@gentoo.org>
 
 	* modules/Makefile.am: Add modules.eselect to Makefile.am.
