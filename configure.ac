@@ -1,5 +1,5 @@
 AC_INIT(eselect, 1.1.0, eselect@gentoo.org, eselect)
-AC_PREREQ(2.53)
+AC_PREREQ(2.59)
 AC_CONFIG_SRCDIR(bin/eselect.in)
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE(1.9)
@@ -68,6 +68,7 @@ AC_ARG_ENABLE(dodgy_modules,
   fi)
 AC_SUBST(DODGY_MODULES)
 AC_MSG_RESULT(${DODGY_MODULES:-nope})
+AM_CONDITIONAL([DODGY_MODULES], test "x$DODGY_MODULES" = "xyes")
 
 AC_OUTPUT(Makefile
 	  doc/Makefile

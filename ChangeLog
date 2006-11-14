@@ -1,5 +1,10 @@
 ChangeLog for eselect
 
+2006-11-13 Mike Kelly <pioto@gentoo.org>
+
+	* configure.ac, libs/Makefile.am, Makefile.am, modules/Makefile.am:
+	Fix distcheck.
+
 2006-10-28 Danny van Dyk <kugelfang@gentoo.org>
 
 	* bin/eselect.in: Add a new envvar for the default modules path.

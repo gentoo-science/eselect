@@ -1,18 +1,32 @@
-noinst_SCRIPTS = \
-		 config.bash \
-		 core.bash \
-		 default.eselect \
-		 manip.bash \
-		 multilib.bash \
-		 output.bash \
-		 package-manager.bash \
-		 paludis.bash \
-		 path-manipulation.bash \
-		 portage.bash \
-		 skel.bash \
-		 tests.bash
+eselectlibsdir = $(datadir)/$(PACKAGE_NAME)/libs/
 
-EXTRA_DIST = $(foreach f, $(noinst_SCRIPTS), $(f).in)
+eselectlibs_SCRIPTS = \
+		      config.bash \
+		      core.bash \
+		      default.eselect \
+		      manip.bash \
+		      multilib.bash \
+		      output.bash \
+		      package-manager.bash \
+		      paludis.bash \
+		      path-manipulation.bash \
+		      portage.bash \
+		      skel.bash \
+		      tests.bash
+
+EXTRA_DIST = \
+	     config.bash.in \
+	     core.bash.in \
+	     default.eselect.in \
+	     manip.bash.in \
+	     multilib.bash.in \
+	     output.bash.in \
+	     package-manager.bash.in \
+	     paludis.bash.in \
+	     path-manipulation.bash.in \
+	     portage.bash.in \
+	     skel.bash.in \
+	     tests.bash.in
 
 dosed = @SED@ \
 	-e 's,\@SED\@,@SED@,g' \
@@ -27,9 +41,4 @@ dosed = @SED@ \
 	cp $? $@
 
 MAINTAINERCLEANFILES = Makefile.in
-
-CLEANFILES = $(noinst_SCRIPTS)
-
-install-data-local:
-	$(mkinstalldirs) $(DESTDIR)$(datadir)/@PACKAGE_NAME@/libs/
-	$(INSTALL_DATA) $(noinst_SCRIPTS) $(DESTDIR)$(datadir)/@PACKAGE_NAME@/libs/
+CLEANFILES = $(eselectlibs_SCRIPTS)

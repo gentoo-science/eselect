@@ -1,3 +1,5 @@
+modulesdir=$(datadir)/$(PACKAGE_NAME)/modules/
+
 safe_scripts = \
 		 bashcomp.eselect \
 		 binutils.eselect \
@@ -13,18 +15,16 @@ dodgy_scripts = \
 		 config.eselect \
 		 cow.eselect
 
+if DODGY_MODULES
+
+modules_DATA=$(safe_scripts) $(dodgy_scripts)
+
+else
+
+modules_DATA=$(safe_scripts)
+
+endif
+
 EXTRA_DIST = $(safe_scripts) $(dodgy_scripts)
 
 MAINTAINERCLEANFILES = Makefile.in
-
-install-data-local : $(safe_scripts) $(dodgy_scripts)
-	$(mkinstalldirs) $(DESTDIR)$(datadir)/@PACKAGE_NAME@/modules/
-	$(INSTALL_DATA) $(safe_scripts) \
-		$(DESTDIR)$(datadir)/@PACKAGE_NAME@/modules/
-	if ! test x$(DODGY_MODULES) = "x" ; then \
-		$(INSTALL_DATA) $(dodgy_scripts) \
-			$(DESTDIR)$(datadir)/@PACKAGE_NAME@/modules/ ; \
-	fi
-
-
-

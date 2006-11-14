@@ -9,9 +9,7 @@ SUBDIRS = doc man misc bin libs modules
 MAINTAINERCLEANFILES = aclocal.m4 \
 		       configure \
 		       Makefile.in \
-		       config/config.guess \
-		       config/ltmain.sh \
-		       config/config.sub \
+		       config/ \
 		       *.html
 
 EXTRA_DIST = autogen.bash \
