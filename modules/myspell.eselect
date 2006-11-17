@@ -440,7 +440,7 @@ myspell_set() {
 
 			# Setup dictionary.lst entry unless it's already there
 			if [[ -n ${APP_OPTION_dictionary_lst} ]]; then
-				grep "^${fields[0]} ${fields[1]} ${fields[2]} ${fields[3]}" \
+				grep "^${fields[0]} ${fields[1]} ${fields[2]} ${fields[3]}$" \
 					${APP_DIRECTORY}/${MYSPELL_LIST} > /dev/null 2>&1 ||
 						echo "${entry}" >> ${APP_DIRECTORY}/${MYSPELL_LIST}
 			fi # dictionary.lst is to be maintained
@@ -620,6 +620,32 @@ do_update() {
 	myspell_process_args "$@"
 	[[ -n ${PARAMETER} ]] && apps=${PARAMETER} || apps=$(ls ${MYSPELL_CFG})
 	myspell_update ${apps}
+}
+
+############################################################################
+# ACTION: DEFAULT
+describe_default() {
+	echo "Set default dictionary for myspell apps"
+}
+
+describe_default_parameters() {
+	echo "<dictionary>"
+}
+
+describe_default_options() {
+	:
+}
+
+do_default() {
+	VALID_OPTIONS=""
+	myspell_process_args "$@"
+	[[ -z ${PARAMETER} ]] && die -q "Dictionary parameter missing"
+	[[ -f ${MYSPELL_BASE}/${PARAMETER}.dic ]] ||
+		die -q "Dictionary ${PARAMATER} does not exist"
+	for suffix in aff dic; do
+		[[ -f ${MYSPELL_BASE}/${PARAMETER}.${suffix} ]] &&
+			ln -sf ${MYSPELL_BASE}/${PARAMETER}.${suffix} ${MYSPELL_BASE}/default.${suffix}
+	done
 }
 
 # vim: ts=4 sw=4 noet fdm=marker

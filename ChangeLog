@@ -1,5 +1,11 @@
 ChangeLog for eselect
 
+2006-11-17 Kevin F. Quinn <kevquinn@gentoo.org>
+	* modules/oodict.eselect: Allow more than one dictionary file for
+	a language to be entered into OOo's dictionary list.
+	* modules/myspell.eselect: As for oodict.eselect; also add a
+	command "default" for setting system-wide default dictionary.
+
 2006-11-13 Mike Kelly <pioto@gentoo.org>
 
 	* configure.ac, libs/Makefile.am, Makefile.am, modules/Makefile.am:
