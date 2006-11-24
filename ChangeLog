@@ -1,5 +1,9 @@
 ChangeLog for eselect
 
+2006-11-24 Diego Pettenò <flameeyes@gentoo.org>
+	* modules/esd.eselect: Add the esound selection module, that I
+	forgot to add before.
+	
 2006-11-17 Kevin F. Quinn <kevquinn@gentoo.org>
 	* modules/oodict.eselect: Allow more than one dictionary file for
 	a language to be entered into OOo's dictionary list.

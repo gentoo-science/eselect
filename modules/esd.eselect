@@ -1,0 +1,154 @@
+# Copyright 1999-2006 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Id: vi.eselect 261 2006-03-30 21:11:55Z kugelfang $
+
+DESCRIPTION="Select esound daemon or wrapper"
+MAINTAINER="flameeyes@gentoo.org"
+SVN_DATE='$Date: 2006-03-30 23:11:55 +0200 (gio, 30 mar 2006) $'
+VERSION=$(svn_date_to_version "${SVN_DATE}" )
+
+# find a list of esd symlink targets, best first
+find_targets() {
+	for f in \
+			${ROOT}/usr/bin/esound-esd \
+			${ROOT}/usr/bin/esdcompat \
+		; do
+		if [[ -f ${f} ]] ; then
+			echo $(basename ${f} )
+		fi
+	done
+}
+
+# try to remove the esd symlink
+remove_symlink() {
+	rm "${ROOT}/usr/bin/esd" &>/dev/null
+}
+
+# set the esd symlink
+set_symlink() {
+	target=${1}
+	if is_number "${target}" && [[ ${target} -ge 1 ]] ; then
+		targets=( $(find_targets ) )
+		target=${targets[$(( ${target} - 1 ))]}
+	fi
+	if [[ -f "${ROOT}/usr/bin/${target}" ]] ; then
+		remove_symlink
+		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/esd" || \
+			die "Couldn't set ${target} symlink"
+	else
+		die -q  "Target \"${1}\" doesn't appear to be valid!"
+	fi
+}
+
+### show action ###
+
+describe_show() {
+	echo "Show the current ESoundD implementation"
+}
+
+do_show() {
+	[[ -z "${@}" ]] || die -q "Too many parameters"
+
+	write_list_start "Current ESounD implementation:"
+	if [[ -L "${ROOT}/usr/bin/esd" ]] ; then
+		write_kv_list_entry "$(basename $(canonicalise ${ROOT}/usr/bin/esd ) )" ""
+	elif [[ -e "${ROOT}/usr/bin/esd" ]] ; then
+		write_kv_list_entry "(not a symlink)" ""
+	else
+		write_kv_list_entry "(unset)" ""
+	fi
+}
+
+### list action ###
+
+describe_list() {
+	echo "List available ESounD implementations"
+}
+
+do_list() {
+	[[ -z "${@}" ]] || die -q "Too many parameters"
+
+	local targetname_esound_esd="ESounD original"
+	local targetname_esdcompat="PulseAudio"
+
+	local i targets
+	targets=( $(find_targets ) )
+	if [[ -n ${targets[@]} ]] ; then
+		for (( i = 0 ; i < ${#targets[@]} ; i = i + 1 )) ; do
+			targetname="targetname_${targets[${i}]/-/_}"
+			if [[ ${targets[${i}]} == $(basename $(canonicalise ${ROOT}/usr/bin/esd ) ) ]]; then
+				targets[${i}]="${!targetname} $(highlight '*' )"
+			else
+				targets[${i}]="${!targetname}"
+			fi
+		done
+		write_list_start "Available ESounD implementations:"
+		write_numbered_list "${targets[@]}"
+	else
+		write_kv_list_entry "(none found)" ""
+	fi
+}
+
+### set action ###
+
+describe_set() {
+	echo "Set a new ESounD implementation provider"
+}
+
+describe_set_options() {
+	echo "target : Target name or number (from 'list' action)"
+}
+
+describe_set_parameters() {
+	echo "<target>"
+}
+
+do_set() {
+	if [[ -z "${1}" ]] ; then
+		die -q "You didn't give me a provider name"
+
+	elif [[ -n "${2}" ]] ; then
+		die -q "Too many parameters"
+
+	elif [[ -L "${ROOT}/usr/bin/esd" ]] ; then
+		if ! remove_symlink ; then
+			die -q "Can't remove existing provider"
+		elif ! set_symlink "${1}" ; then
+			die -q "Can't set new provider"
+		fi
+
+	elif [[ -e "${ROOT}/usr/bin/esd" ]] ; then
+		die -q "Sorry, ${ROOT}/usr/bin/esd confuses me"
+
+	else
+		set_symlink "${1}" || die -q "Can't set a new provider"
+	fi
+}
+
+### update action ###
+
+describe_update() {
+	echo "Automatically update the ESounD provider"
+}
+
+describe_update_options() {
+	echo "--if-unset : Do not override existing implementation"
+}
+
+do_update() {
+	[[ -z "${1}" ]] || ( [[ -z "${2}" ]] && [[ "${1}" == "--if-unset" ]] ) || \
+		die -q "Usage error"
+
+	if [[ -L "${ROOT}/usr/bin/esd" ]] ; then
+		[[ ${1} == "--if-unset" ]] && return
+		remove_symlink || die -q "Can't remove existing link"
+	fi
+	if [[ -e "${ROOT}/usr/bin/esd" ]] ; then
+		die -q "Can't set a new provider"
+	elif ! [[ -z $(find_targets ) ]] ; then
+		set_symlink 1 || die -q "Can't set a new provider"
+	fi
+}
+
+# vim: set ft=eselect :
+
