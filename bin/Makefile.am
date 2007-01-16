@@ -15,7 +15,7 @@ MAINTAINERCLEANFILES = Makefile.in
 
 install-data-local : $(foreach f, $(symlinks), install-symlink-$(f))
 
-install-symlink-% :
+install-symlink-% : install-binSCRIPTS
 	ln -snf $(DESTDIR)$(bindir)/eselect \
 		$(DESTDIR)$(bindir)/$*
 
