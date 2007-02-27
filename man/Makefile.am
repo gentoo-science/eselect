@@ -18,4 +18,4 @@ install-data-local : install-man $(foreach f, $(symlinks), install-symlink-$(f))
 install-symlink-% :
 	ln -snf \
 		$(mandir)/man5/$(shell echo $* | $(dosed)) \
-		$(DESTDIR)$(mandir)/man1/$*.1
+		$(mandir)/man1/$*.1
