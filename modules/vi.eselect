@@ -60,16 +60,18 @@ set_symlinks() {
 	if [[ -f "${ROOT}/usr/bin/${target}" ]] ; then
 		remove_symlinks
 
+		# it's okay if these fail
+		set_man_symlink "${target}" "vi"
+		set_man_symlink "${target}" "ex"
+		set_man_symlink "${target}" "view"
+
+		# it's not okay if these fail
 		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/vi" || \
 			die "Couldn't set ${target} /usr/bin/vi symlink"
 		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/ex" || \
 			die "Couldn't set ${target} /usr/bin/ex symlink"
 		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/view" || \
 			die "Couldn't set ${target} /usr/bin/view symlink"
-
-		set_man_symlink "${target}" "vi" &&
-		set_man_symlink "${target}" "ex" &&
-		set_man_symlink "${target}" "view"
 	else
 		die -q  "Target \"${1}\" doesn't appear to be valid!"
 	fi

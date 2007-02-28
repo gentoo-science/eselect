@@ -1,5 +1,9 @@
 ChangeLog for eselect
 
+2007-02-28 Mike Kelly <pioto@gentoo.org>
+
+	* modules/vi.eselect: Clean up vi.eselect a bit.
+
 2007-02-27 Danny van Dyk <kugelfang@gentoo.org>
 
 	* bin/Makefile.am, man/Makefile.am: Fix symlink creation for real now.
