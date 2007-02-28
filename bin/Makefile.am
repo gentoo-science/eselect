@@ -17,6 +17,6 @@ install-data-local : $(foreach f, $(symlinks), install-symlink-$(f))
 
 install-symlink-% : install-binSCRIPTS
 	ln -snf $(bindir)/eselect \
-		$(bindir)/$*
+		$(DESTDIR)$(bindir)/$*
 
 CLEANFILES = $(bin_SCRIPTS)
