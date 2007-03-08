@@ -13,9 +13,9 @@ MAINTAINERCLEANFILES = Makefile.in
 # turn foo-<suffix> into foo.eselect.5
 dosed = @SED@ -e 's,^\(.*\)-.*,\1\.eselect\.5,'
 
-install-data-local : install-man $(foreach f, $(symlinks), install-symlink-$(f))
+install-data-local : $(foreach f, $(symlinks), install-symlink-$(f))
 
-install-symlink-% :
+install-symlink-% : install-man
 	ln -snf \
 		$(mandir)/man5/$(shell echo $* | $(dosed)) \
 		$(DESTDIR)$(mandir)/man1/$*.1
