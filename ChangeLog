@@ -1,5 +1,10 @@
 ChangeLog for eselect
 
+2007-09-21 Donnie Berkholz <dberkholz@gentoo.org>
+
+	* libs/skel.bash.in: (#189942) Allow resetting to the current 
+	implementation, so changes to the symlink map can propogate.
+
 2007-03-08 Mike Kelly <pioto@gentoo.org>
 
 	* man/Makefile.am: Really really really fix parallel install.

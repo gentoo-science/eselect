@@ -53,10 +53,6 @@ switch_implem() {
     local current=$(load_config "${ROOT}"/etc/env.d/${iface}/${libdir}/config CURRENT)
     local current_file="${ROOT}/etc/env.d/${iface}/${libdir}/${current}"
     local dest src
-    if is_active ${iface} ${libdir} ${implem}; then
-        echo "Implementation \"${implem}\" already active for library directory \"${libdir}\"!"
-        return 1
-    fi
 
     # Get rid of old symlinks, if we have a current config
     if [[ -f "${current_file}" ]]; then
