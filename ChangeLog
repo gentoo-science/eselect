@@ -1,5 +1,11 @@
 ChangeLog for eselect
 
+2007-10-27 Jeremy Huddleston <eradicator@gentoo.org>
+
+	* modules/opengl.eselect: Cleaned out old cruft which supported the
+	2004.3 amd64 profile.  Improved support for cleaning up after
+	switching away from newer nvidia drivers.
+
 2007-09-21 Donnie Berkholz <dberkholz@gentoo.org>
 
 	* libs/skel.bash.in: (#189942) Allow resetting to the current 
