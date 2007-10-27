@@ -71,7 +71,7 @@ setup_lib_symlinks() {
 	pushd "${libdir}" &> /dev/null
 		# First remove old symlinks
 		for file in libGL{,core}.{a,so,la} ; do
-			if [[ -h ${file} ]] ; then
+			if [[ -e ${file} ]] ; then
 				rm -f "${file}" || die -q "Failed to delete ${file}"
 			fi
 		done
@@ -151,7 +151,7 @@ set_new_implementation() {
 				pushd "${DST_PREFIX}/${libdir}/${moduledir}/extensions" &> /dev/null
 					# First remove old symlinks
 					for file in lib{wfb,glx}.{a,so,la}; do
-						if [[ -h ${file} ]] ; then
+						if [[ -e ${file} ]] ; then
 							rm -f "${file}" || die -q "Failed to delete ${DST_PREFIX}/${libdir}/${moduledir}/extensions/${file}"
 						fi
 					done
