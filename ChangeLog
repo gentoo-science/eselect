@@ -1,5 +1,10 @@
 ChangeLog for eselect
 
+2007-11-27 Piotr Jaroszyński <peper@gentoo.org>
+
+	* libs/package-manager.bash.in, libs/paludis.bash.in,
+	libs/portage.bash.in: Add stuff to be used by new eselect-news.
+
 2007-10-27 Jeremy Huddleston <eradicator@gentoo.org>
 
 	* modules/opengl.eselect: Cleaned out old cruft which supported the

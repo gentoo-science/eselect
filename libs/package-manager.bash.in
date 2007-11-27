@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (c) 2005 Gentoo Foundation.
+# Copyright (c) 2005, 2007 Gentoo Foundation.
 # $Id$
 # This file is part of the 'eselect' tools framework.
 #
@@ -120,6 +120,39 @@ has-version() {
     esac
 }
 
+get_repositories() {
+    local manager=$(package-manager)
+    case ${manager} in
+        paludis)
+            $(paludis_command) --list-repositories | cut -d' ' -f 2
+            ;;
+        portage)
+            for i in $(portageq envvar PORTDIR PORTDIR_OVERLAY); do
+                portage_get_repo_name $i
+            done
+            ;;
+        *)
+            die "Unknown package manager: \"${manager}\"!"
+    esac
+}
+
+get_news_dir_name() {
+    [[ ${#@} -eq 1 ]] || die "get_news_dir_name expects exactly 1 argument!"
+
+    local name=${1%::*} repo=${1##*::}
+    local manager=$(package-manager)
+    case ${manager} in
+        paludis)
+            echo "$($(paludis_command) --configuration-variable ${repo} newsdir)/${name}"
+            ;;
+        portage)
+            echo "$(portage_get_repository ${repo})/metadata/news/${name}"
+            ;;
+        *)
+            die "Unknown package manager: \"${manager}\"!"
+    esac
+}
+
 # package-manager PRIVATE
 # Return the package manager we're going to use.
 package-manager() {
@@ -131,7 +164,7 @@ package-manager() {
     fi
 
     # We prefer paludis over portage
-    if ${PALUDIS_COMMAND:-@PALUDIS@} --list-repositories > /dev/null 2>&1 ; then
+    if $(paludis_command) --list-repositories > /dev/null 2>&1 ; then
         manager="paludis"
     else
         manager="portage"
@@ -140,7 +173,4 @@ package-manager() {
     echo ${manager}
     export ESELECT_PACKAGE_MANAGER_CACHE=${manager}
 }
-
 # vim: set sw=4 et sts=4 tw=80 :
-
-
