@@ -1,6 +1,27 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.0.9:
+    Bug fixes:
+    - Really make the makefiles parallel-safe.
+    - Fixed bug #163915: eselect doesn't fully honour DESTDIR
+    - Fix parsing of *_SEPERATED in env.eselect
+
+1.0.8:
+    Bug fixes:
+    - Fixed bug #162008: make install isn't parallel-safe.
+
+1.0.7:
+    Bug fixes:
+    - Fixed bug in modules/opengl.eselect: Fix when ROOT != /.
+    - Fixed bug #151701: Generate {SPACE,COLON}_SEPERATED vars in update.
+    - Fixed bug #152318: Fix env.eselect for envvar values containing '='.
+    - Fixed bug #152662: Fixed new die() function on *BSD.
+    - Updated developer documentation.
+
+    Removed modules:
+    - java.eselect is now superseeded by java-{vm,nsplugin}.eselect.
+
 1.0.6:
     Bug fixes:
     - Fixed bug #144152: Added reload action to rc module.
@@ -13,6 +34,7 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
 
     New Features:
     - Enhance die function to work in deep subshells.
+
 1.0.5:
     Bug fixes:
     - Fixed bug in libs/skel.bash.in regarding set action with numerical paramters.
@@ -24,6 +46,7 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
 
     New Features:
     - eselect is now independent of the used package-manager.
+
 1.0.3:
     Bug fixes:
     - Fix env.eselect by white-listing allowed mime-types for files in

@@ -1,0 +1,201 @@
+# Copyright 1999-2006 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Id$
+
+DESCRIPTION="Select default system patchset for TiMidity++"
+MAINTAINER="flameeyes@gentoo.org"
+SVN_DATE='$Date$'
+VERSION=$(svn_date_to_version "${SVN_DATE}" )
+
+TIMIDITYDIR="${ROOT}/usr/share/timidity"
+
+# find a list of patchsets symlink targets, best first
+find_targets() {
+	for f in \
+			"${TIMIDITYDIR}/eawpatches" \
+			"${TIMIDITYDIR}/shompatches" \
+			"${TIMIDITYDIR}/freepats" \
+		; do
+		if [[ -d ${f} ]] ; then
+			echo $(basename ${f} )
+		fi
+	done
+}
+
+destination() {
+    if [[ ${global} == "yes" ]]; then
+		echo "${TIMIDITYDIR}/current"
+	else
+		# Ensure the presence of ~/.timidity
+		mkdir -p "${HOME}/.timidity"
+		echo "${HOME}/.timidity/current"
+	fi
+}
+
+# try to remove the symlink to the current patchset
+remove_symlink() {
+	rm -f $(destination) &>/dev/null
+}
+
+# set the patchset symlink
+set_symlink() {
+	target=${1}
+	if is_number "${target}" && [[ ${target} -ge 1 ]] ; then
+		targets=( $(find_targets ) )
+		target=${targets[$(( ${target} - 1 ))]}
+	fi
+	if [[ -d "${TIMIDITYDIR}/${target}" ]] ; then
+		remove_symlink
+		ln -s "${TIMIDITYDIR}/${target}" $(destination) || \
+			die "Couldn't set ${target} symlink"
+	else
+		die -q  "Target \"${1}\" doesn't appear to be valid!"
+	fi
+}
+
+### show action ###
+
+describe_show() {
+	echo "Show the current TiMidity++ patchset"
+}
+
+describe_show_options() {
+	echo "--global : Change the global patchset instead of the user's patchset"
+}
+
+do_show() {
+	local global
+	while [[ -n "${@}" ]]; do
+		case "${1}" in
+			--global)
+				global=yes; shift ;;
+			--*)
+				die -q "Usage error, invalid option ${1}" ;;
+			*)
+				die -q "Too many parameters" ;;
+		esac
+	done
+
+	write_list_start "Current TiMidity++ patchset:"
+	if [[ -L "$(destination)" ]] ; then
+		write_kv_list_entry "$(basename $(canonicalise $(destination) ) )" ""
+	elif [[ -e "$(destination)" ]] ; then
+		write_kv_list_entry "(not a symlink)" ""
+	else
+		write_kv_list_entry "(unset)" ""
+	fi
+}
+
+### list action ###
+
+describe_list() {
+	echo "List available TiMidity++ patchsets"
+}
+
+do_list() {
+	[[ -z "${@}" ]] || die -q "Too many parameters"
+
+	local i targets
+	targets=( $(find_targets ) )
+	if [[ -n ${targets[@]} ]] ; then
+		for (( i = 0 ; i < ${#targets[@]} ; i = i + 1 )) ; do
+			if [[ ${targets[${i}]} == $(basename $(canonicalise $(destination) ) ) ]]; then
+				targets[${i}]="${targets[${i}]} $(highlight '*' )"
+			fi
+		done
+		write_list_start "Available TiMidity++ patchsets:"
+		write_numbered_list "${targets[@]}"
+	else
+		write_kv_list_entry "(none found)" ""
+	fi
+}
+
+### set action ###
+
+describe_set() {
+	echo "Set a new TiMidity++ patchset"
+}
+
+describe_set_options() {
+	echo "--global : Change the global patchset instead of the user's patchset"
+	echo "target : Target name or number (from 'list' action)"
+}
+
+describe_set_parameters() {
+	echo "<target>"
+}
+
+do_set() {
+	local global
+	while [[ -n "${@}" ]]; do
+		case "${1}" in
+			--global)
+				global=yes; shift ;;
+			--*)
+				die -q "Usage error, invalid option ${1}" ;;
+			*)
+				break ;;
+		esac
+	done
+
+	if [[ -z "${1}" ]] ; then
+		die -q "You didn't give me a provider name"
+
+	elif [[ -n "${2}" ]] ; then
+		die -q "Too many parameters"
+
+	elif [[ -L "$(destination)" ]] ; then
+		if ! remove_symlink ; then
+			die -q "Can't remove existing provider"
+		elif ! set_symlink "${1}" ; then
+			die -q "Can't set new provider"
+		fi
+
+	elif [[ -e "$(destination)" ]] ; then
+		die -q "Sorry, $(destination) confuses me"
+
+	else
+		set_symlink "${1}" || die -q "Can't set a new provider"
+	fi
+}
+
+### update action ###
+
+describe_update() {
+	echo "Automatically update the TiMidity++ patchset"
+}
+
+describe_update_options() {
+	echo "--global : Change the global patchset instead of the user's patchset"
+	echo "--if-unset : Do not override existing implementation"
+}
+
+do_update() {
+	local ifunset="no"
+	local global
+	while [[ -n "${@}" ]]; do
+		case "${1}" in
+			--global)
+				global=yes; shift ;;
+			--if-unset)
+				ifunset=yes; shift ;;
+			--*)
+				die -q "Usage error, invalid option ${1}" ;;
+			*)
+				break ;;
+		esac
+	done
+
+	if [[ -L "$(destination)" ]] ; then
+		[[ ${ifunset} == "yes" ]] && return
+		remove_symlink || die -q "Can't remove existing link"
+	fi
+	if [[ -e "$(destination)" ]] ; then
+		die -q "Can't set a new provider"
+	elif ! [[ -z $(find_targets ) ]] ; then
+		set_symlink 1 || die -q "Can't set a new provider"
+	fi
+}
+
+# vim: set ft=eselect :
+

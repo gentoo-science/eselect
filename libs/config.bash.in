@@ -95,6 +95,7 @@ load_config() {
     [[ ! -e ${configfile} ]] \
         && return 1
     value=$(
+        unset ${key}
         source ${configfile} 1>&2 > /dev/null \
             || die "Failed to source ${configfile}."
         echo "${!key}"
