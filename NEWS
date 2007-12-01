@@ -1,6 +1,13 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.0.10:
+    Bug fixes:
+    - Fix load_config to ignore influence of environment variables.
+
+    New features:
+    - Add noldconfig option.
+
 1.0.9:
     Bug fixes:
     - Really make the makefiles parallel-safe.
