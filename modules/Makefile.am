@@ -8,8 +8,7 @@ safe_scripts = \
 		 mailer.eselect \
 		 modules.eselect \
 		 profile.eselect \
-		 rc.eselect \
-		 modules.eselect
+		 rc.eselect
 
 dodgy_scripts = \
 		 config.eselect \
