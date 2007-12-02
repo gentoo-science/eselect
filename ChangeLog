@@ -1,5 +1,10 @@
 ChangeLog for eselect
 
+2007-12-02 Piotr Jaroszyński <peper@gentoo.org>
+
+	* NEWS: Merge NEWS from branch-1.0.x and add trunk section with
+	current changes.
+
 2007-12-01 Piotr Jaroszyński <peper@gentoo.org>
 
 	* NEWS: Add missing news entry for 1.0.10.

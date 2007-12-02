@@ -1,6 +1,22 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+trunk:
+    Bug fixes:
+    - Various improvements in opengl module.
+
+    New features:
+    - Add a new module, for listing, querying, and installing eselect modules.
+    - Allow setting system-wide default dictionary.
+
+1.0.11:
+    Bug fixes:
+    - Allow resetting to the current implementation, so changes to the symlink
+      map can propagate (bug #189942).
+
+    New features:
+    - Add stuff to be used by new package manager independent eselect-news.
+
 1.0.10:
     Bug fixes:
     - Fix load_config to ignore influence of environment variables.
@@ -27,7 +43,7 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
     - Updated developer documentation.
 
     Removed modules:
-    - java.eselect is now superseeded by java-{vm,nsplugin}.eselect.
+    - java.eselect is now superseded by java-{vm,nsplugin}.eselect.
 
 1.0.6:
     Bug fixes:
@@ -44,7 +60,7 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
 
 1.0.5:
     Bug fixes:
-    - Fixed bug in libs/skel.bash.in regarding set action with numerical paramters.
+    - Fixed bug in libs/skel.bash.in regarding set action with numerical parameters.
     - Fixed bug #141106.
 
 1.0.4:
@@ -83,7 +99,7 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
 
     New features:
     - binutils.eselect now features a show action.
-    - Added arch-independant function to canonicalise paths.
+    - Added arch-independent function to canonicalise paths.
     - eselect now supports *BSD.
 
 1.0:
@@ -100,7 +116,7 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
     - Fixed behaviour of append_config to not add duplicate items.
 
     New features:
-    - blas.eselect and lapack.eselect now fully support MKL72 (yet to be commited
+    - blas.eselect and lapack.eselect now fully support MKL72 (yet to be committed
     to portage tree).
 
 1.0_rc1:
@@ -118,7 +134,7 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
     - Fixed unportable uses of absolute paths to binaries.
     - Exit with an error if the user doesn't provide parameters to the various
       rc module actions (start, stop, restart, etc).
-    - Our autogen script now works on non-linux boxen.
+    - Our autogen script now works on non-linux boxes.
     - Added symlinks for the manual pages of the modules we already provide
       symlinks for.
     - Added missing manual page for kernel module.
@@ -158,17 +174,17 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
       on systems whose GNU sed is 'gsed'.
     - bashcomp module now properly supports using corresponding numbers
       (from list action) when running enable/disable action.
-    - eselect bash-completion now recogizes (and completes on) global options.
+    - eselect bash-completion now recognizes (and completes on) global options.
 
 0.9.4:
     Bug Fixes:
     - fixed call to lapack config file in blas module.
-    
+
     New Features:
     - added a testing version of binutils.eselect.
     - added (start|stop|restart) subactions to rc module.
     - implemented global options handling generally and a --no-colour
-    option specificly.
+    option specifically.
     - all modules mark currently active options with a * in list subaction.
 
 0.9.3:
@@ -189,3 +205,5 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
     - mailer module now works (previously broken due to typo and
       missing test in find_targets glob loop).
     - bashcomp module's show sub-command no longer returns 1.
+
+/* vim: set sw=4 et sts=4 tw=80 spell spelllang=en : */
