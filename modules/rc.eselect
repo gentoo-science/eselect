@@ -105,7 +105,7 @@ do_add() {
 			else
 				ln -sf \
 					${ROOT}/etc/init.d/${script} \
-					${ROOTi}/etc/runlevels/${runlevel}/${script} \
+					${ROOT}/etc/runlevels/${runlevel}/${script} \
 					&& write_kv_list_entry ${runlevel} "[done]" \
 					|| write_kv_list_entry ${runlevel} "[failed]"
 			fi
