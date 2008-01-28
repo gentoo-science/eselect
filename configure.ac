@@ -23,7 +23,6 @@ if test x$SED = "x" ; then
 fi
 
 AC_PATH_PROG(PORTAGEQ, portageq)
-AC_PATH_PROG(PALUDIS, paludis)
 
 AC_PATH_PROG(READLINK, greadlink)
 if test x$CANONICALISE = "x" ; then
