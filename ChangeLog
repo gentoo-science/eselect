@@ -1,5 +1,13 @@
 ChangeLog for eselect
 
+2008-03-24  Ulrich Mueller  <ulm@gentoo.org>
+
+	* man/emacs.eselect.5, man/ctags.eselect.5: Ditto for man pages.
+
+	* modules/emacs.eselect, modules/ctags.eselect: Import the
+	emacs and ctags modules from the Emacs SVN repository (r1030),
+	corresponding to the eselect-emacs-1.3 release.
+
 2008-01-28 Piotr Jaroszyński <peper@gentoo.org>
 
 	* configure.ac, libs/paludis.bash.in: Check for paludis binary at
