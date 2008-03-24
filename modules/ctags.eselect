@@ -1,6 +1,6 @@
 # Copyright 1999-2007 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id: ctags.eselect 614 2007-08-22 18:06:41Z ulm $
+# $Id$
 #
 # DOCUMENTATION
 # Following actions possible
@@ -21,7 +21,7 @@
 
 DESCRIPTION="Manage /usr/bin/ctags implementations"
 MAINTAINER="emacs@gentoo.org"
-SVN_DATE='$Date: 2007-08-22 20:06:41 +0200 (Wed, 22 Aug 2007) $'
+SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}" )
 
 find_targets() {

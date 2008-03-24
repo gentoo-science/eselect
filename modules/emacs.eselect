@@ -1,6 +1,6 @@
 # Copyright 1999-2007 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id: emacs.eselect 885 2007-12-20 07:20:54Z ulm $
+# $Id$
 #
 # DOCUMENTATION
 # Following actions possible
@@ -22,7 +22,7 @@
 
 DESCRIPTION="Manage /usr/bin/emacs version"
 MAINTAINER="emacs@gentoo.org"
-SVN_DATE='$Date: 2007-12-20 08:20:54 +0100 (Thu, 20 Dec 2007) $'
+SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}" )
 
 # ctags is handled in an own module now
