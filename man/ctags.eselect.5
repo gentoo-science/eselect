@@ -1,10 +1,11 @@
-.\" Copyright 1999-2007 Gentoo Foundation
+.\" Copyright 1999-2008 Gentoo Foundation
 .\" Distributed under the terms of the GNU General Public License v2
 .\" $Id$
 .\"
-.TH "ESELECT" "5" "August 2007" "Gentoo Linux" "eselect"
+.TH "ESELECT" "5" "May 2008" "Gentoo Linux" "eselect"
 .SH "NAME"
-ctags.eselect \- The ctags management module for Gentoo's eselect
+ctags.eselect, etags.eselect \- The ctags and etags management module
+for Gentoo's eselect
 .SH "SYNOPSIS"
 \fBeselect ctags\fR [\fBhelp\fR|\fBusage\fR]
 .br
@@ -18,6 +19,9 @@ ctags.eselect \- The ctags management module for Gentoo's eselect
 .SH "DESCRIPTION"
 \fBeselect\fR is Gentoo's configuration and management tool. It features
 modules that care for the individual administrative tasks.
+
+The \fBctags\fR and \fBetags\fR eselect modules share a common syntax,
+therefore this man page collectively refers to them as \fBctags\fR.
 .SH "ACTION: LIST"
 \fBeselect ctags list\fR
 .br
@@ -38,7 +42,7 @@ one installed version.
 
 # eselect ctags set 2
 .br
-Switching to exuberant-ctags ...
+Switching ctags to exuberant-ctags ...
 .SH "ACTION: SHOW"
 \fBeselect ctags show\fR
 .br
@@ -58,10 +62,16 @@ but not the provider (i.e. Emacs vs Exuberant). At the moment only
 
 # eselect ctags update
 .br
-Switching to exuberant-ctags ...
+Switching ctags to exuberant-ctags ...
+.br
+Switching etags to etags-emacs-22 ...
 .SH "BUGS"
 Under FreeBSD, \fBeselect ctags\fR does not work since \fBctags\fR is
-a real binary (owned by package freebsd-ubin).
+a real binary, owned by package freebsd-ubin. (\fBeselect etags\fR
+does work though.)
+
+\fBeselect etags\fR does not display any valid targets if there is no
+Emacs variant installed. This is a feature.
 .SH "AUTHOR"
 Ulrich Mueller <ulm@gentoo.org>
 .SH "SEE ALSO"

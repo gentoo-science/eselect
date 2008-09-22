@@ -1,4 +1,4 @@
-# Copyright 1999-2007 Gentoo Foundation
+# Copyright 1999-2008 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 #
@@ -19,7 +19,11 @@
 # do_set(): Set a version to be target of the symlink.
 # do_update(): Set the target to the "best" available version. See below.
 
-DESCRIPTION="Manage /usr/bin/ctags implementations"
+# This module is used for ctags and etags
+#CTAGS=$(basename ${BASH_SOURCE%.*})
+CTAGS=ctags
+
+DESCRIPTION="Manage /usr/bin/${CTAGS} implementations"
 MAINTAINER="emacs@gentoo.org"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}" )
@@ -34,9 +38,15 @@ find_targets() {
 	if [[ -L "${ROOT}/usr/bin/emacs" && \
 		  -e $(canonicalise "${ROOT}/usr/bin/emacs") ]]; then
 		emacs=$(basename $(canonicalise "${ROOT}/usr/bin/emacs") )
-		[[ -f "${ROOT}/usr/bin/ctags-${emacs}" ]] && echo "ctags-${emacs}"
+		[[ -f "${ROOT}/usr/bin/${CTAGS}-${emacs}" ]] && echo ${CTAGS}-${emacs}
 	elif [[ -f "${ROOT}/usr/bin/xemacs" ]]; then
-		[[ -f "${ROOT}/usr/bin/ctags-xemacs" ]] && echo ctags-xemacs
+		[[ -f "${ROOT}/usr/bin/${CTAGS}-xemacs" ]] && echo ${CTAGS}-xemacs
+	elif [[ ${CTAGS} == etags ]]; then
+		# We are called as etags module, but no (X)Emacs is installed.
+		# Return an empty list in this case, because we don't want
+		# exuberant-ctags as default for etags (for ctags it's fine).
+		# Also, vi purists wouldn't want an etags symlink.
+		return
 	fi
 
 	# Exuberant ctags
@@ -45,15 +55,15 @@ find_targets() {
 
 remove_symlinks() {
 	# Remove existing symlinks to binary and man page
-	rm -f "${ROOT}"/usr/bin/ctags
-	rm -f "${ROOT}"/usr/share/man/man1/ctags.1*
+	rm -f "${ROOT}"/usr/bin/${CTAGS}
+	rm -f "${ROOT}"/usr/share/man/man1/${CTAGS}.1*
 }
 
 set_bin_symlinks() {
 	# Set symlink to binary
 	local target=${1}
-	ln -s "${target}" "${ROOT}/usr/bin/ctags" \
-		|| die "Couldn't set ${target} ${ROOT}/usr/bin/ctags symlink"
+	ln -s "${target}" "${ROOT}/usr/bin/${CTAGS}" \
+		|| die "Couldn't set ${target} ${ROOT}/usr/bin/${CTAGS} symlink"
 }
 
 set_man_symlinks() {
@@ -64,7 +74,7 @@ set_man_symlinks() {
 			# target file exists; determine compress extension
 			extension=${i##*/${target}.1}
 			ln -s "${target}.1${extension}" \
-				"${ROOT}/usr/share/man/man1/ctags.1${extension}"
+				"${ROOT}/usr/share/man/man1/${CTAGS}.1${extension}"
 		fi
 	done
 }
@@ -85,7 +95,7 @@ set_symlinks() {
 	[[ -f "${ROOT}/usr/bin/${target}" ]] \
 		|| die -q "Target \"${1}\" doesn't appear to be valid!"
 
-	echo "Switching to ${target} ..."
+	echo "Switching ${CTAGS} to ${target} ..."
 	remove_symlinks || die -q "Couldn't remove existing symlink"
 	set_bin_symlinks "${target}"
 	set_man_symlinks "${target}"
@@ -100,18 +110,18 @@ test_for_root() {
 ### show action ###
 
 describe_show() {
-	echo "Show the current target of the ctags symlink"
+	echo "Show the current target of the ${CTAGS} symlink"
 }
 
 do_show() {
 	[[ ${#@} -gt 0 ]] && die -q "Too many parameters"
 
-	write_list_start "Current target of ctags symlink:"
-	if [[ -L "${ROOT}/usr/bin/ctags" && \
-		  -e $(canonicalise "${ROOT}/usr/bin/ctags") ]]; then
+	write_list_start "Current target of ${CTAGS} symlink:"
+	if [[ -L "${ROOT}/usr/bin/${CTAGS}" && \
+		  -e $(canonicalise "${ROOT}/usr/bin/${CTAGS}") ]]; then
 		write_kv_list_entry \
-			$(basename $(canonicalise "${ROOT}/usr/bin/ctags") ) ""
-	elif [[ -e "${ROOT}/usr/bin/ctags" ]]; then
+			$(basename $(canonicalise "${ROOT}/usr/bin/${CTAGS}") ) ""
+	elif [[ -e "${ROOT}/usr/bin/${CTAGS}" ]]; then
 		write_kv_list_entry \
 			"(not a symlink or target of symlink does not exist)" ""
 	else
@@ -122,7 +132,7 @@ do_show() {
 ### list action ###
 
 describe_list() {
-	echo "List available ctags symlink targets"
+	echo "List available ${CTAGS} symlink targets"
 }
 
 do_list() {
@@ -135,10 +145,10 @@ do_list() {
 		for (( i = 0; i < ${#targets[@]}; i = i + 1 )); do
 			# Display a star to indicate the currently chosen version
 			[[ ${targets[${i}]} = \
-				$(basename $(canonicalise "${ROOT}/usr/bin/ctags") ) ]] \
+				$(basename $(canonicalise "${ROOT}/usr/bin/${CTAGS}") ) ]] \
 				&& targets[${i}]="${targets[${i}]} $(highlight '*')"
 		done
-		write_list_start "Available ctags symlink targets:"
+		write_list_start "Available ${CTAGS} symlink targets:"
 		write_numbered_list "${targets[@]}"
 	else
 		write_kv_list_entry "(none found)" ""
@@ -148,7 +158,7 @@ do_list() {
 ### set action ###
 
 describe_set() {
-	echo "Set a new ctags symlink"
+	echo "Set a new ${CTAGS} symlink"
 }
 
 describe_set_options() {
@@ -164,13 +174,9 @@ do_set() {
 	[[ ${#@} -gt 1 ]] && die -q "Too many parameters"
 	test_for_root
 
-	if [[ -e "${ROOT}/usr/bin/ctags" && ! -L "${ROOT}/usr/bin/ctags" ]]; then
-		if [[ -f "${ROOT}/usr/bin/ctags" && $(uname) == FreeBSD ]]; then
-			# On FreeBSD ctags is a real file, installed by freebsd-ubin
-			echo "${ROOT}/usr/bin/ctags is a real file - no action"
-			return
-		fi
-		die -q "Sorry, ${ROOT}/usr/bin/ctags exists but is not a symlink"
+	if [[ -e "${ROOT}/usr/bin/${CTAGS}" && ! -L "${ROOT}/usr/bin/${CTAGS}" ]]
+	then
+		die -q "Sorry, ${ROOT}/usr/bin/${CTAGS} exists but is not a symlink"
 	fi
 
 	set_symlinks "${1}" || die -q "Couldn't set a new symlink"
@@ -179,26 +185,27 @@ do_set() {
 ### update action ###
 
 describe_update() {
-	echo "Automatically update the ctags symlink"
+	echo "Automatically update the ${CTAGS} symlink"
 }
 
 do_update() {
-	[[ ${#@} -gt 0 ]] && die -q "Too many parameters"
+	[[ -z "${1}" || "${1}" == norecursion ]] || die -q "Usage error"
+	[[ ${#@} -gt 1 ]] && die -q "Too many parameters"
 	test_for_root
 
-	local ctags=""
-	if [[ -L "${ROOT}/usr/bin/ctags" ]]; then
-		ctags=$(basename $(canonicalise "${ROOT}/usr/bin/ctags") )
-		if [[ ! -e $(canonicalise "${ROOT}/usr/bin/ctags") ]]; then
+	local current=""
+	if [[ -L "${ROOT}/usr/bin/${CTAGS}" ]]; then
+		current=$(basename $(canonicalise "${ROOT}/usr/bin/${CTAGS}") )
+		if [[ ! -e $(canonicalise "${ROOT}/usr/bin/${CTAGS}") ]]; then
 			# clean up dead symlinks
 			remove_symlinks || die -q "Couldn't remove existing symlink"
 		fi
-	elif [[ -e "${ROOT}/usr/bin/ctags" ]]; then
-		if [[ -f "${ROOT}/usr/bin/ctags" && $(uname) == FreeBSD ]]; then
-			# On FreeBSD ctags is a real file, installed by freebsd-ubin
-			return
+	elif [[ -e "${ROOT}/usr/bin/${CTAGS}" ]]; then
+		if ! [[ ${CTAGS} == ctags && $(uname) == FreeBSD ]]; then
+			die -q "Sorry, ${ROOT}/usr/bin/${CTAGS} exists but is not a symlink"
 		fi
-		die -q "Sorry, ${ROOT}/usr/bin/ctags exists but is not a symlink"
+		# On FreeBSD ctags is a real file, installed by freebsd-ubin
+		current=nolink
 	fi
 
 	# For an "update" only the version should be changed, but not the
@@ -206,12 +213,19 @@ do_update() {
 	# offers several concurrent versions.
 
 	local i target targets=( $(find_targets) )
-	if [[ ${#targets[@]} -gt 0 ]]; then
+	if [[ ${#targets[@]} -gt 0 && ${current} != nolink ]]; then
 		target=${targets[0]}
-		[[ "${ctags}" == ctags-*emacs* ]] && ctags="ctags-*emacs*"
+		[[ "${current}" == ${CTAGS}-*emacs* ]] && current="${CTAGS}-*emacs*"
 		for i in ${targets[@]}; do
-			[[ "${i}" == "${ctags}" ]] && target="${i}"
+			[[ "${i}" == "${current}" ]] && target="${i}"
 		done
 		set_symlinks "${target}" || die -q "Couldn't set a new symlink"
 	fi
+
+	# Call "eselect etags update" from the ctags module and vice versa
+	[[ "${1}" == norecursion ]] && return
+	case ${CTAGS} in
+		ctags) CTAGS=etags do_update norecursion ;;
+		etags) CTAGS=ctags do_update norecursion ;;
+	esac
 }
