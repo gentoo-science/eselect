@@ -58,7 +58,15 @@ set_symlinks() {
 		targets=( $(find_targets ) )
 		target=${targets[$(( ${target} - 1 ))]}
 	fi
-	if [[ -f "${ROOT}/usr/bin/${target}" ]] ; then
+
+	local dir
+	if [[ ${target} == "busybox" ]]; then
+		dir="${ROOT}/bin"
+	else
+		dir="${ROOT}/usr/bin"
+	fi
+
+	if [[ -f "${dir}/${target}" ]] ; then
 		remove_symlinks
 
 		# it's okay if these fail
@@ -67,11 +75,11 @@ set_symlinks() {
 		set_man_symlink "${target}" "view"
 
 		# it's not okay if these fail
-		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/vi" || \
+		ln -s "${dir}/${target}" "${ROOT}/usr/bin/vi" || \
 			die "Couldn't set ${target} /usr/bin/vi symlink"
-		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/ex" || \
+		ln -s "${dir}/${target}" "${ROOT}/usr/bin/ex" || \
 			die "Couldn't set ${target} /usr/bin/ex symlink"
-		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/view" || \
+		ln -s "${dir}/${target}" "${ROOT}/usr/bin/view" || \
 			die "Couldn't set ${target} /usr/bin/view symlink"
 	else
 		die -q  "Target \"${1}\" doesn't appear to be valid!"
