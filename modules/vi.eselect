@@ -11,15 +11,15 @@ VERSION=$(svn_date_to_version "${SVN_DATE}" )
 find_targets() {
 	local f
 	for f in \
-			${ROOT}/usr/bin/vim \
-			${ROOT}/usr/bin/nvi \
-			${ROOT}/usr/bin/elvis \
-			${ROOT}/usr/bin/vile \
-			${ROOT}/usr/bin/gvim \
-			${ROOT}/usr/bin/xvile \
+			"${ROOT}"/usr/bin/vim \
+			"${ROOT}"/usr/bin/nvi \
+			"${ROOT}"/usr/bin/elvis \
+			"${ROOT}"/usr/bin/vile \
+			"${ROOT}"/usr/bin/gvim \
+			"${ROOT}"/usr/bin/xvile \
 		; do
-		if [[ -f ${f} ]] ; then
-			echo $(basename ${f} )
+		if [[ -f "${f}" ]] ; then
+			echo $(basename "${f}" )
 		fi
 	done
 }
