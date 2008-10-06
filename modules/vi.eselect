@@ -17,6 +17,7 @@ find_targets() {
 			"${ROOT}"/usr/bin/vile \
 			"${ROOT}"/usr/bin/gvim \
 			"${ROOT}"/usr/bin/xvile \
+			"${ROOT}"/bin/busybox \
 		; do
 		if [[ -f "${f}" ]] ; then
 			echo $(basename "${f}" )
