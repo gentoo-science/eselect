@@ -14,7 +14,8 @@ XVMCLIBS=(
 "libchromeXvMC.so.1"
 "libviaXvMCPro.so.1"
 "libchromeXvMCPro.so.1"
-"libI810XvMC.so.1" )
+"libI810XvMC.so.1"
+"libAMDXvBA.so.1" )
 XVMCPRETTY=(
 "nvidia"
 "xorg-x11"
@@ -22,7 +23,8 @@ XVMCPRETTY=(
 "openchrome"
 "via-pro"
 "openchrome-pro"
-"intel" )
+"intel"
+"ati" )
 
 get_implementation_indices() {
 	local ret n
