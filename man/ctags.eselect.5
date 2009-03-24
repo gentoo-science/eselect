@@ -1,29 +1,37 @@
-.\" Copyright 1999-2008 Gentoo Foundation
+.\" Copyright 2007-2008 Gentoo Foundation
 .\" Distributed under the terms of the GNU General Public License v2
 .\" $Id$
 .\"
-.TH "ESELECT" "5" "May 2008" "Gentoo Linux" "eselect"
-.SH "NAME"
+.TH ESELECT 5 "December 2008" "Gentoo Linux" eselect
+.SH NAME
 ctags.eselect, etags.eselect \- The ctags and etags management module
 for Gentoo's eselect
-.SH "SYNOPSIS"
-\fBeselect ctags\fR [\fBhelp\fR|\fBusage\fR]
+.SH SYNOPSIS
+.B eselect ctags
+.RB [ help | usage ]
 .br
-\fBeselect ctags list\fR
+.B eselect ctags list
 .br
-\fBeselect ctags set\fR \fItarget\fR
+.B eselect ctags set
+.I target
 .br
-\fBeselect ctags show\fR
+.B eselect ctags show
 .br
-\fBeselect ctags update\fR
-.SH "DESCRIPTION"
-\fBeselect\fR is Gentoo's configuration and management tool. It features
-modules that care for the individual administrative tasks.
+.B eselect ctags update
+.SH DESCRIPTION
+.B eselect
+is Gentoo's configuration and management tool.  It features modules
+that care for the individual administrative tasks.
 
-The \fBctags\fR and \fBetags\fR eselect modules share a common syntax,
-therefore this man page collectively refers to them as \fBctags\fR.
-.SH "ACTION: LIST"
-\fBeselect ctags list\fR
+The
+.B ctags
+and
+.B etags
+eselect modules share a common syntax, therefore this man page
+collectively refers to them as
+.BR ctags .
+.SH ACTION: LIST
+.B eselect ctags list
 .br
 List all installed ctags versions.
 
@@ -33,31 +41,34 @@ Available ctags symlink targets:
 .br
   [1]   ctags-emacs-22 *
   [2]   exuberant-ctags
-.SH "ACTION: SET"
-\fBeselect ctags set\fR \fItarget\fR
+.SH ACTION: SET
+.B eselect ctags set
+.I target
 .br
-Activates the selected ctags version. \fItarget\fR can be either an
-identification number given by \fBeselect ctags list\fR or the name of
-one installed version.
+Activate the selected ctags version.
+.I target
+can be either an identification number given by
+.B eselect ctags list
+or the name of one installed version.
 
 # eselect ctags set 2
 .br
 Switching ctags to exuberant-ctags ...
-.SH "ACTION: SHOW"
-\fBeselect ctags show\fR
+.SH ACTION: SHOW
+.B eselect ctags show
 .br
-Prints the currently activated ctags version.
+Print the currently activated ctags version.
 
 # eselect ctags show
 .br
 Current target of symlink:
 .br
   exuberant-ctags
-.SH "ACTION: UPDATE"
-\fBeselect ctags update\fR
+.SH ACTION: UPDATE
+.B eselect ctags update
 .br
-Update the ctags symlink. For an update only the version is changed,
-but not the provider (i.e. Emacs vs Exuberant). At the moment only
+Update the ctags symlink.  For an update only the version is changed,
+but not the provider (i.e. Emacs vs Exuberant).  At the moment only
 (X)Emacs offers several concurrent versions.
 
 # eselect ctags update
@@ -65,17 +76,22 @@ but not the provider (i.e. Emacs vs Exuberant). At the moment only
 Switching ctags to exuberant-ctags ...
 .br
 Switching etags to etags-emacs-22 ...
-.SH "BUGS"
-Under FreeBSD, \fBeselect ctags\fR does not work since \fBctags\fR is
-a real binary, owned by package freebsd-ubin. (\fBeselect etags\fR
+.SH BUGS
+Under FreeBSD,
+.B eselect ctags
+does not work since
+.B ctags
+is a real binary, owned by package freebsd-ubin.
+.RB ( "eselect etags"
 does work though.)
 
-\fBeselect etags\fR does not display any valid targets if there is no
-Emacs variant installed. This is a feature.
-.SH "AUTHOR"
+.B eselect etags
+does not display any valid targets if there is no Emacs variant
+installed.  This is a feature.
+.SH AUTHOR
 Ulrich Mueller <ulm@gentoo.org>
-.SH "SEE ALSO"
+.SH SEE ALSO
 .BR eselect (1),
 .BR emacs.eselect (5)
-.SH "REVISION"
+.SH REVISION
 $Id$

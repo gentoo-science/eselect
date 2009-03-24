@@ -1,25 +1,29 @@
-.\" Copyright 1999-2008 Gentoo Foundation
+.\" Copyright 2007-2008 Gentoo Foundation
 .\" Distributed under the terms of the GNU General Public License v2
 .\" $Id$
 .\"
-.TH "ESELECT" "5" "May 2008" "Gentoo Linux" "eselect"
-.SH "NAME"
+.TH ESELECT 5 "December 2008" "Gentoo Linux" eselect
+.SH NAME
 emacs.eselect \- The Emacs management module for Gentoo's eselect
-.SH "SYNOPSIS"
-\fBeselect emacs\fR [\fBhelp\fR|\fBusage\fR]
+.SH SYNOPSIS
+.B eselect emacs
+.RB [ help | usage ]
 .br
-\fBeselect emacs list\fR
+.B eselect emacs list
 .br
-\fBeselect emacs set\fR \fItarget\fR
+.B eselect emacs set
+.I target
 .br
-\fBeselect emacs show\fR
+.B eselect emacs show
 .br
-\fBeselect emacs update\fR [\fIifunset\fR]
-.SH "DESCRIPTION"
-\fBeselect\fR is Gentoo's configuration and management tool. It features
-modules that care for the individual administrative tasks.
-.SH "ACTION: LIST"
-\fBeselect emacs list\fR
+.B eselect emacs update
+.RI [ ifunset ]
+.SH DESCRIPTION
+.B eselect
+is Gentoo's configuration and management tool.  It features modules
+that care for the individual administrative tasks.
+.SH ACTION: LIST
+.B eselect emacs list
 .br
 List all installed Emacs versions and even informs you if XEmacs has
 been found on your system.
@@ -31,12 +35,18 @@ Available GNU Emacs symlink targets:
   [1]   emacs-18
   [2]   emacs-21 *
   [3]   emacs-22
-.SH "ACTION: SET"
-\fBeselect emacs set\fR \fItarget\fR
+.SH ACTION: SET
+.B eselect emacs set
+.I target
 .br
-Activates the selected Emacs version. \fItarget\fR can be either an
-identification number given by \fBeselect emacs list\fR or the name of
-one installed version.
+Activate the selected Emacs version.
+.I target
+can be either an identification number given by
+.B eselect emacs list
+or the name of one installed version.  To avoid runtime issues with
+incompatible byte-code from the previously selected Emacs version, run 
+.B emacs-updater -a rebuild
+to remerge all needed packages.
 
 # eselect emacs set 3
 .br
@@ -45,22 +55,23 @@ Switching emacs to emacs-22 ...
 Switching ctags to ctags-emacs-22 ...
 .br
 Switching etags to etags-emacs-22 ...
-.SH "ACTION: SHOW"
-\fBeselect emacs show\fR
+.SH ACTION: SHOW
+.B eselect emacs show
 .br
-Prints the currently activated Emacs version.
+Print the currently activated Emacs version.
 
 # eselect emacs show
 .br
 Current target of GNU Emacs symlink:
 .br
   emacs-22
-.SH "ACTION: UPDATE"
-\fBeselect emacs update\fR [\fIifunset\fR]
+.SH ACTION: UPDATE
+.B eselect emacs update
+.RI [ ifunset ]
 .br
-Update the emacs symlink to the last available version. If option
-[\fIifunset\fR] is given, an existing implementation is not
-overridden.
+Update the emacs symlink to the last available version.  If option
+.I ifunset
+is given, an existing implementation is not overridden.
 
 # eselect emacs update
 .br
@@ -69,12 +80,12 @@ Switching emacs to emacs-22 ...
 Switching ctags to ctags-emacs-22 ...
 .br
 Switching etags to etags-emacs-22 ...
-.SH "AUTHORS"
-Christian Faulhammer <opfer@gentoo.org>
+.SH AUTHORS
+Christian Faulhammer <fauli@gentoo.org>
 .br
 Ulrich Mueller <ulm@gentoo.org>
-.SH "SEE ALSO"
+.SH SEE ALSO
 .BR eselect (1),
 .BR ctags.eselect (5)
-.SH "REVISION"
+.SH REVISION
 $Id$

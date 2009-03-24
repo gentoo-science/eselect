@@ -1,4 +1,4 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 2005-2008 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 #
@@ -19,11 +19,15 @@
 # do_set(): Set a version to be target of the symlink.
 # do_update(): Set the target to the "best" available version. See below.
 
-# This module is used for ctags and etags
-#CTAGS=$(basename ${BASH_SOURCE%.*})
+# This module is used for ctags and etags.
+# Determine our name from ESELECT_MODULE_NAME, with BASH_SOURCE as fallback.
+#CTAGS=${ESELECT_MODULE_NAME:-$(basename "${BASH_SOURCE[0]%.*}")}
 CTAGS=ctags
 
-DESCRIPTION="Manage /usr/bin/${CTAGS} implementations"
+bindir=/usr/bin
+man1dir=/usr/share/man/man1
+
+DESCRIPTION="Manage ${bindir}/${CTAGS} implementations"
 MAINTAINER="emacs@gentoo.org"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}" )
@@ -35,12 +39,12 @@ find_targets() {
 	# currently active Emacs version (selected by emacs.eselect)
 	# The logic here is the same as in emacs.eselect, don't change it!
 	local emacs
-	if [[ -L "${ROOT}/usr/bin/emacs" && \
-		  -e $(canonicalise "${ROOT}/usr/bin/emacs") ]]; then
-		emacs=$(basename $(canonicalise "${ROOT}/usr/bin/emacs") )
-		[[ -f "${ROOT}/usr/bin/${CTAGS}-${emacs}" ]] && echo ${CTAGS}-${emacs}
-	elif [[ -f "${ROOT}/usr/bin/xemacs" ]]; then
-		[[ -f "${ROOT}/usr/bin/${CTAGS}-xemacs" ]] && echo ${CTAGS}-xemacs
+	if [[ -L "${ROOT}${bindir}/emacs" && \
+		  -e $(canonicalise "${ROOT}${bindir}/emacs") ]]; then
+		emacs=$(basename $(readlink "${ROOT}${bindir}/emacs") )
+		[[ -f "${ROOT}${bindir}/${CTAGS}-${emacs}" ]] && echo ${CTAGS}-${emacs}
+	elif [[ -f "${ROOT}${bindir}/xemacs" ]]; then
+		[[ -f "${ROOT}${bindir}/${CTAGS}-xemacs" ]] && echo ${CTAGS}-xemacs
 	elif [[ ${CTAGS} == etags ]]; then
 		# We are called as etags module, but no (X)Emacs is installed.
 		# Return an empty list in this case, because we don't want
@@ -50,31 +54,31 @@ find_targets() {
 	fi
 
 	# Exuberant ctags
-	[[ -f "${ROOT}"/usr/bin/exuberant-ctags ]] && echo exuberant-ctags
+	[[ -f "${ROOT}${bindir}/exuberant-ctags" ]] && echo exuberant-ctags
 }
 
 remove_symlinks() {
 	# Remove existing symlinks to binary and man page
-	rm -f "${ROOT}"/usr/bin/${CTAGS}
-	rm -f "${ROOT}"/usr/share/man/man1/${CTAGS}.1*
+	rm -f "${ROOT}${bindir}/${CTAGS}" \
+		"${ROOT}${man1dir}"/${CTAGS}.1*
 }
 
 set_bin_symlinks() {
 	# Set symlink to binary
 	local target=${1}
-	ln -s "${target}" "${ROOT}/usr/bin/${CTAGS}" \
-		|| die "Couldn't set ${target} ${ROOT}/usr/bin/${CTAGS} symlink"
+	ln -s "${target}" "${ROOT}${bindir}/${CTAGS}" \
+		|| die "Couldn't set ${target} ${ROOT}${bindir}/${CTAGS} symlink"
 }
 
 set_man_symlinks() {
 	# Set symlink to man page
 	local target=${1} extension i
-	for i in "${ROOT}"/usr/share/man/man1/${target}.1*; do
+	for i in "${ROOT}${man1dir}"/${target}.1*; do
 		if [[ -f ${i} ]]; then
 			# target file exists; determine compress extension
 			extension=${i##*/${target}.1}
 			ln -s "${target}.1${extension}" \
-				"${ROOT}/usr/share/man/man1/${CTAGS}.1${extension}"
+				"${ROOT}${man1dir}/${CTAGS}.1${extension}"
 		fi
 	done
 }
@@ -92,7 +96,7 @@ set_symlinks() {
 	fi
 
 	# is the target valid, i.e. does a ctags binary with this name exist?
-	[[ -f "${ROOT}/usr/bin/${target}" ]] \
+	[[ -f "${ROOT}${bindir}/${target}" ]] \
 		|| die -q "Target \"${1}\" doesn't appear to be valid!"
 
 	echo "Switching ${CTAGS} to ${target} ..."
@@ -104,7 +108,7 @@ set_symlinks() {
 
 test_for_root() {
 	# checks if the user has rights to modify /usr/bin/
-	[[ -w "${ROOT}/usr/bin" ]] || die -q "You need to be root!"
+	[[ -w "${ROOT}${bindir}" ]] || die -q "You need root privileges!"
 }
 
 ### show action ###
@@ -117,11 +121,11 @@ do_show() {
 	[[ ${#@} -gt 0 ]] && die -q "Too many parameters"
 
 	write_list_start "Current target of ${CTAGS} symlink:"
-	if [[ -L "${ROOT}/usr/bin/${CTAGS}" && \
-		  -e $(canonicalise "${ROOT}/usr/bin/${CTAGS}") ]]; then
+	if [[ -L "${ROOT}${bindir}/${CTAGS}" && \
+		  -e $(canonicalise "${ROOT}${bindir}/${CTAGS}") ]]; then
 		write_kv_list_entry \
-			$(basename $(canonicalise "${ROOT}/usr/bin/${CTAGS}") ) ""
-	elif [[ -e "${ROOT}/usr/bin/${CTAGS}" ]]; then
+			$(basename $(readlink "${ROOT}${bindir}/${CTAGS}") ) ""
+	elif [[ -e "${ROOT}${bindir}/${CTAGS}" ]]; then
 		write_kv_list_entry \
 			"(not a symlink or target of symlink does not exist)" ""
 	else
@@ -145,7 +149,7 @@ do_list() {
 		for (( i = 0; i < ${#targets[@]}; i = i + 1 )); do
 			# Display a star to indicate the currently chosen version
 			[[ ${targets[${i}]} = \
-				$(basename $(canonicalise "${ROOT}/usr/bin/${CTAGS}") ) ]] \
+				$(basename $(readlink "${ROOT}${bindir}/${CTAGS}") ) ]] \
 				&& targets[${i}]="${targets[${i}]} $(highlight '*')"
 		done
 		write_list_start "Available ${CTAGS} symlink targets:"
@@ -174,9 +178,9 @@ do_set() {
 	[[ ${#@} -gt 1 ]] && die -q "Too many parameters"
 	test_for_root
 
-	if [[ -e "${ROOT}/usr/bin/${CTAGS}" && ! -L "${ROOT}/usr/bin/${CTAGS}" ]]
+	if [[ -e "${ROOT}${bindir}/${CTAGS}" && ! -L "${ROOT}${bindir}/${CTAGS}" ]]
 	then
-		die -q "Sorry, ${ROOT}/usr/bin/${CTAGS} exists but is not a symlink"
+		die -q "${ROOT}${bindir}/${CTAGS} exists but is not a symlink"
 	fi
 
 	set_symlinks "${1}" || die -q "Couldn't set a new symlink"
@@ -194,15 +198,15 @@ do_update() {
 	test_for_root
 
 	local current=""
-	if [[ -L "${ROOT}/usr/bin/${CTAGS}" ]]; then
-		current=$(basename $(canonicalise "${ROOT}/usr/bin/${CTAGS}") )
-		if [[ ! -e $(canonicalise "${ROOT}/usr/bin/${CTAGS}") ]]; then
+	if [[ -L "${ROOT}${bindir}/${CTAGS}" ]]; then
+		current=$(basename $(readlink "${ROOT}${bindir}/${CTAGS}") )
+		if [[ ! -e $(canonicalise "${ROOT}${bindir}/${CTAGS}") ]]; then
 			# clean up dead symlinks
 			remove_symlinks || die -q "Couldn't remove existing symlink"
 		fi
-	elif [[ -e "${ROOT}/usr/bin/${CTAGS}" ]]; then
+	elif [[ -e "${ROOT}${bindir}/${CTAGS}" ]]; then
 		if ! [[ ${CTAGS} == ctags && $(uname) == FreeBSD ]]; then
-			die -q "Sorry, ${ROOT}/usr/bin/${CTAGS} exists but is not a symlink"
+			die -q "${ROOT}${bindir}/${CTAGS} exists but is not a symlink"
 		fi
 		# On FreeBSD ctags is a real file, installed by freebsd-ubin
 		current=nolink
