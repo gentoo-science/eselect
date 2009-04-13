@@ -1,5 +1,15 @@
 ChangeLog for eselect
 
+2009-04-13  Ulrich Mueller  <ulm@gentoo.org>
+
+	* libs/output.bash.in (COLOUR_NORMAL, COLOUR_BOLD, COLOUR_HI)
+	(COLOUR_WARN, COLOUR_ERROR, COLOUR_LIST_HEADER)
+	(COLOUR_LIST_LEFT, COLOUR_LIST_RIGHT): Initialise with tput,
+	in a terminal independent way, bug 198461.
+
+	* bin/eselect.in: Disable colour output if stdout is not a tty,
+	bug 198461.
+
 2008-06-01  Ulrich Mueller  <ulm@gentoo.org>
 
 	* man/binutils.eselect.5: Fix typo, bug 172636.
