@@ -16,8 +16,8 @@
 # You should have received a copy of the GNU General Public License along with
 # eselect.  If not, see <http://www.gnu.org/licenses/>.
 
-# Where is our data?
-ESELECT_DATA_PATH="%DATADIR%/eselect/"
+# Where are our data?
+ESELECT_DATA_PATH="%DATADIR%/eselect"
 
 # Where are modules installed by default?
 ESELECT_DEFAULT_MODULES_PATH="${ESELECT_DATA_PATH}/modules"

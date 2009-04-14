@@ -1,4 +1,7 @@
-ChangeLog for eselect
+2009-04-14  Ulrich Mueller  <ulm@gentoo.org>
+
+	* bin/eselect.in (ESELECT_DATA_PATH): Remove trailing slant,
+	fixes bug 203114.
 
 2009-04-13  Ulrich Mueller  <ulm@gentoo.org>
 
