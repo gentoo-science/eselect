@@ -60,7 +60,7 @@ write_list_start() {
         shift
     fi
     echo -n -e "${colour}"
-    echo -n -e $(apply_text_highlights "${colour}" "$*")
+    echo -n -e "$(apply_text_highlights "${colour}" "$*")"
     echo -n -e "${COLOUR_NORMAL}"
     echo
 }

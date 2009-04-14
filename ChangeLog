@@ -1,5 +1,8 @@
 2009-04-14  Ulrich Mueller  <ulm@gentoo.org>
 
+	* libs/output.bash.in (write_list_start): Add quotes to	prevent
+	globbing, fixes bug 232874.
+
 	* bin/eselect.in (ESELECT_DATA_PATH): Remove trailing slant,
 	fixes bug 203114.
 
