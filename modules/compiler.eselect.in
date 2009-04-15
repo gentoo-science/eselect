@@ -21,7 +21,7 @@ PROFILE_MANAGER="@evallibexecdir@/eselect/compiler/profile-manager"
 
 show_extra_help_text() {
 	write_list_start "Extra options for all actions:"
-	write_kv_list_entry "-u, --user" "Use ${HOME}/@userconfigdir@ to override global settings."	
+	write_kv_list_entry "-u, --user" "Use ${HOME}/@userconfigdir@ to override global settings."
 }
 
 ### Helpers ###
@@ -207,7 +207,7 @@ describe_getval_options() {
 	#write_list_start "Extra options for 'getval' action:"
 	#write_kv_list_entry "-c, --ctarget=<CTARGET>" "Get the variable for the active profile of the given CTARGET."
 	#write_kv_list_entry "-p, --profile=<PROFILE>" "Get the variable for the given profile."
-	#echo	
+	#echo
 	#write_list_start "Possible values to pass to 'getval' action:"
 	#write_kv_list_entry "BINPATH" "The location of the binaries."
 	#write_kv_list_entry "INFOPATH" "The location of the info documentation."
@@ -466,8 +466,8 @@ set_bins() {
 
 	local newbins="$(get_bins "${ROOT}/${COMPILER_CONFIG_BINPATH}") ${COMPILER_CONFIG_ALIASES}"
 	for bin in ${newbins} ; do
-		# We want to figure out the 'reference file' for each 
-		# wrapper (the binary we're 'wrapping') so that we can 
+		# We want to figure out the 'reference file' for each
+		# wrapper (the binary we're 'wrapping') so that we can
 		# sync mtimes together.  This makes things like ccache
 		# happy.  See Bug #70548 for more info.
 		if has ${bin} ${COMPILER_CONFIG_ALIASES} ; then
@@ -518,7 +518,7 @@ set_env() {
 				env_ldpath="${env_ldpath:+"${env_ldpath}:"}${COMPILER_CONFIG_LDPATH}"
 		else
 			write_error_msg "Unable to get profile information for ${!set_v} which is set for CTARGET ${ctarget}"
- 		fi
+		fi
 	done
 
 	# Now write it

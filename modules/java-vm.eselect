@@ -62,7 +62,7 @@ do_list() {
 	write_list_start "Available Java Virtual Machines:"
 	if [[ -n ${targets[@]} ]] ; then
 		local i system_name user_name
-	
+
 		[[ -L ${VM_SYSTEM} ]] && system_name=$(sym_to_vm ${VM_SYSTEM})
 		[[ -L ${VM_USER} ]] && user_name=$(sym_to_vm ${VM_USER})
 
@@ -91,7 +91,7 @@ describe_set() {
 do_set() {
 	if [[ ${#} != 2 ]]; then
 		die -q "Usage [user|system] [vm]"
-		
+
 	elif [[ ${1} == "system" ]]; then
 		if [[ -w $(dirname ${VM_SYSTEM}) ]]; then
 			my_set ${VM_SYSTEM} ${2}
@@ -99,7 +99,7 @@ do_set() {
 			die -q "Sorry, you don't have enough premission to set system"
 		fi
 	elif [[ ${1} == "user" ]]; then
-		if [[ ${UID} != 0 ]]; then 
+		if [[ ${UID} != 0 ]]; then
 			my_set ${VM_USER} ${2}
 		else
 			die -q "Sorry, you cannot set a user vm as root. Set the system vm instead"

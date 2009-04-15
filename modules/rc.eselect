@@ -179,7 +179,7 @@ do_list() {
 	else
 		die -q "${1} is no valid runlevel!"
 	fi
-	
+
 	for file in $(find_scripts ${dir}) ; do
 			[[ ${dir##*/} = init.d ]] \
 				&& write_kv_list_entry ${file} "$(list_runlevels ${file})" \

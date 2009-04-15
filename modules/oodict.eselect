@@ -79,7 +79,7 @@ oodict_create_dictlist() {
 	# Ensure OOo dictionary area exists
 	[[ -d ${OOO_DICTBASE} ]] || mkdir -p ${OOO_DICTBASE}
 	touch ${OOO_DICTBASE}/${OOO_DICTLIST} ||
-		die "Unable to create ${OOO_DICTBASE}/${OOO_DICTLIST}" 
+		die "Unable to create ${OOO_DICTBASE}/${OOO_DICTLIST}"
 	# Format of dictionary.lst files is from OOo standard
 	# dictionary.lst file:
 	cat > ${OOO_DICTBASE}/${OOO_DICTLIST} <<EOF

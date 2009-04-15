@@ -54,7 +54,7 @@ do_list() {
 
 ### has action
 
-## {{{ has 
+## {{{ has
 describe_has() {
 	echo "Returns true if the module is installed, and false otherwise."
 }

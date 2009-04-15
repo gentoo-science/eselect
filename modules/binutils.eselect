@@ -56,7 +56,6 @@ is_active() {
 is_valid() {
 	([[ ${#@} -eq 1 ]] && [[ -e ${ROOT}/etc/env.d/binutils/${profile} ]]) \
 		|| die "Need exactly 1 argument!"
-	
 }
 
 # swtich_profile $profile
@@ -82,7 +81,7 @@ switch_profile() {
 		|| die -q "Can't cd ${ROOT}/usr/${target}/binutils-bin/${version}!"
 	mkdir -p "${ROOT}/usr/${target}/bin" \
 		|| die -q "Can't create ${ROOT}/usr/${target}/bin!"
-	
+
 	binutilspath="/usr/${target}/binutils-bin/${version}"
 	for app in "${ROOT}"/${binutilspath}/* ; do
 		app=${app##*/}
@@ -104,8 +103,8 @@ switch_profile() {
 			${target}-${app} \
 			"${ROOT}/usr/bin/${app}" \
 			|| die -q "Linking ${ROOT}/usr/bin/${app} failed!"
-	done	
-	
+	done
+
 	# Generate library and ldscripts symlinks
 	mkdir -p "${ROOT}"/usr/${target}/lib
 	rm -r "${ROOT}"/usr/${target}/lib/ldscripts
@@ -160,10 +159,10 @@ do_list() {
 	local targets i=0 active version files last_processed_count
 	local -a processed
 	targets=( $(find_targets ${@}) )
-	
+
 	[[ -z ${targets[@]} ]] \
 		&& die -q "Pattern ${@} does not match any installed version of binutils!"
-	
+
 	for target in $(find_targets) ; do
 		[[ ${targets[@]/${target}/} == ${targets[@]} ]] \
 			|| write_list_start "Installed binutils for target $(highlight ${target})"
@@ -178,8 +177,8 @@ do_list() {
 			[[ ${targets[@]/${target}/} == ${targets[@]} ]] && continue
 			active=''
 			is_active ${target} ${version} \
-				&& active=' *' 
-				
+				&& active=' *'
+
 			write_numbered_list_entry $i "${version}$(highlight "${active}")"
 		done
 		[[ ${last_processed_count} == ${#processed[@]} ]] \
@@ -225,7 +224,7 @@ do_set() {
 				fi
 				if ! [[ -f ${file} ]] ; then
 					fail=1
-					echo "Pattern doesn't match anything: ${item}" 
+					echo "Pattern doesn't match anything: ${item}"
 					continue
 				fi
 				switch_profile ${file##*/}

@@ -61,7 +61,7 @@ set_symlinks() {
 
 		ln -s "${ROOT}/usr/bin/${target}" "${ROOT}/usr/bin/whois" || \
 			die "Couldn't set ${target} /usr/bin/whois symlink"
-	
+
 		set_man_symlink "${target}" "whois"
 	else
 		die -q  "Target \"${1}\" doesn't appear to be valid!"

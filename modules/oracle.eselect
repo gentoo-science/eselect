@@ -12,7 +12,7 @@ ORACLE_ENVFILE="${ROOT}/etc/env.d/50oracle-instantclient-basic"
 
 # find a list of sqlplus symlink targets
 find_targets() {
-	for f in ${ROOT}/usr/lib/oracle/* ; do 
+	for f in ${ROOT}/usr/lib/oracle/* ; do
 		[[ -d "${ROOT}/${f}" ]] && echo $(basename ${f} )
 	done
 }

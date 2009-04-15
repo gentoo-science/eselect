@@ -34,7 +34,7 @@ get_current_implementation() {
 	local ret
 	local ldpath=$(load_config "${ENV_FILE}" LDPATH)
 	local opengl_profile=$(load_config "${ENV_FILE}" OPENGL_PROFILE)
-        
+
 	if [[ -n ${opengl_profile} ]] ; then
 		ret="${opengl_profile}"
 	elif [[ -n ${ldpath} ]] ; then
@@ -134,7 +134,7 @@ set_new_implementation() {
 			fi
 
 			setup_lib_symlinks "${PREFIX}/${libdir}/opengl/${gl_local}/lib" "${DST_PREFIX}/${libdir}"
-		
+
 			if [[ -e ${PREFIX}/${libdir}/opengl/${gl_local}/lib/tls ]] ; then
 				setup_lib_symlinks "${PREFIX}/${libdir}/opengl/${gl_local}/lib/tls" "${DST_PREFIX}/${libdir}/tls"
 			fi
@@ -318,7 +318,7 @@ do_set() {
 			*)
 				if [[ ${action} != "old-implementation" ]] ; then
 					action="set-implementation"
-				fi				
+				fi
 
 				if is_number ${opt} ; then
 					targets=( $(get_implementations) )

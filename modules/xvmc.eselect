@@ -145,7 +145,7 @@ do_set() {
 				;;
 			*)
 				[[ -z ${action} ]] && action="set-implementation"
-				
+
 				if is_number ${opt} ; then
 					new=${avail[opt - 1]}
 					if [[ -z ${new} ]]; then

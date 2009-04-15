@@ -35,7 +35,7 @@ set_symlinks() {
 		write_kv_list_entry \
 			"$(highlight '*')" \
 			"Linking ${ROOT}/usr/bin/${i}${suf} to ${ROOT}/usr/bin/${i}"
-		ln -s "${ROOT}/usr/bin/${i}${suf}" "${ROOT}/usr/bin/${i}"  
+		ln -s "${ROOT}/usr/bin/${i}${suf}" "${ROOT}/usr/bin/${i}"
 	done
 	write_kv_list_entry \
 		"$(highlight '*')" \
@@ -87,7 +87,7 @@ describe_set() {
 }
 
 do_set() {
-	local merge=1 
+	local merge=1
 	target=${1}
 	versions=( $(find_versions) )
 
@@ -96,14 +96,14 @@ do_set() {
 	fi
 	[[ -z ${target} ]] \
 		&& die -q "Target \"${1}\" doesn't appear to be valid!"
-	
+
 	for i in ${versions[@]} ; do
 		[[ ${target} = ${i} ]] \
 		&& merge=0
 	done
 	[[ ${merge} != 0 ]] \
 		&& die -q "Target \"${1}\" doesn't appear to be valid!"
-		
+
 	remove_symlinks \
 		|| die -q "Couldn't remove existing symlinks for ${i}."
 	set_symlinks "${1}" \

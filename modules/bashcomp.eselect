@@ -26,7 +26,7 @@ find_targets() {
 
 is_enabled() {
 	local bcdir="${ROOT}/${HOME}/.bash_completion.d"
-	
+
 	if [[ ${1} == "--global" ]] ; then
 		bcdir="${ROOT}/etc/bash_completion.d"
 		shift
@@ -112,7 +112,7 @@ do_enable() {
 
 		is_number "${target}" && \
 			target=${targets[$(( ${target} - 1 ))]}
-		
+
 		[[ -z "${target}" ]] && \
 			die -q "Target \"${bc}\" doesn't appear to be valid!"
 

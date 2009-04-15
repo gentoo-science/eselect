@@ -31,16 +31,16 @@ fi
 	describe_show() {
 		echo "Show the current Java browser plugin"
 	}
-	
+
 	do_show() {
 		local system_name=$(get_system_plugin_vm)
 		write_list_start "Current Java browser plugin"
 		if [[ -z "${system_name}" ]] ; then
-		    write_kv_list_entry "(unset)" ""
+			write_kv_list_entry "(unset)" ""
 		else
-		    write_kv_list_entry "${system_name}" ""
+			write_kv_list_entry "${system_name}" ""
 		fi
-   	}
+	}
 
 ## }}}
 
@@ -71,7 +71,7 @@ fi
 			twaek_list_item ${targets[${i}]} ${system_name}
 		done
 	}
-	
+
 	do_list() {
 		if [[ ${IS_MULTILIB} != "true" ]]; then
 			MULTILIB_MODE="none"
@@ -91,7 +91,7 @@ fi
 				targets_32[${i}]=$(tweak_list_item ${targets_32[${i}]} ${system_name_32})
 			done
 			write_list_start "Available 32-bit Java browser plugins"
-			write_numbered_list "${targets_32[@]}" 
+			write_numbered_list "${targets_32[@]}"
 
 			MULTILIB_MODE="64"
 			local system_name_64=$(get_system_plugin_vm)
@@ -132,7 +132,7 @@ fi
 			MULTILIB_MODE=${1%bit}
 			shift
 		fi
-		
+
 		local vm=${1}
 
 		if is_number "${vm}" ; then
@@ -143,7 +143,7 @@ fi
 		if [[ -z ${vm} ]] ; then
 			die -q "You didn't specify valid plugin number to set"
 		fi
-		
+
 		local plugin="${PLUGINS_HOME}/${vm}-javaplugin.so"
 
 		if [[ ! -f ${plugin} ]]; then
@@ -151,7 +151,7 @@ fi
 			write_error_msg "Perhaps \"${vm}\" isn't a valid name of VM built with nsplugin?"
 			return
 		fi
-		
+
 		local system_plugin
 		case ${MULTILIB_MODE} in
 			32) system_plugin=${SYSTEM_PLUGIN_32} ;;
@@ -194,7 +194,7 @@ plugin_to_vm() {
 
 get_system_plugin_vm() {
 	local plugin;
-	
+
 	if [[ ${MULTILIB_MODE} == "32" ]]; then
 		plugin=$(readlink ${SYSTEM_PLUGIN_32})
 	elif [[ ${MULTILIB_MODE} == "64" ]]; then

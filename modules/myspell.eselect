@@ -56,13 +56,13 @@ myspell_process_args() {
 			[[ ${value} == ${arg} ]] && value="set"
 			# sanitise opt to lowercase letters only (this also removes the leading '--')
 			# to ensure the user hasn't passed anything nasty. value doesn't need to
-			# be santised as it's not used 
+			# be santised as it's not used
 			opt=${opt//[^a-z]}
 			has ${opt} ${VALID_OPTIONS} ||
 				die -q "Option ${opt} is not valid for the selected action"
 			export OPTION_${opt}=${value}
 		else
-			[[ -n ${PARAMETER} ]] && 
+			[[ -n ${PARAMETER} ]] &&
 				die -q "Syntax error - only one parameter may be supplied; already have ${PARAMETER} so ${arg} cannot be accepted."
 			PARAMETER=${arg}
 		fi
@@ -128,7 +128,7 @@ myspell_create_dictlist() {
 	# Ensure dictionary area exists
 	[[ -d ${dir} ]] || mkdir -p ${dir}
 	touch ${dir}/${lst} ||
-		die -q "Unable to create ${dir}/${lst}" 
+		die -q "Unable to create ${dir}/${lst}"
 	# Format of dictionary.lst files is from OOo standard
 	# dictionary.lst file:
 	cat > ${dir}/${lst} <<EOF
@@ -184,7 +184,7 @@ myspell_calc_basename() {
 				bn=${1/_/-}
 				bn=${bn/_/-}
 				echo ${bn/-/_} ;;
-		esac	
+		esac
 	else
 		echo ${1}
 	fi
