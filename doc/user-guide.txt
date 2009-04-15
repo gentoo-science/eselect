@@ -10,7 +10,7 @@ Introduction
 
 eselect is a tool for administration and configuration on Gentoo systems. It
 _will_ modify the system's behaviour and should be used with care by the system
-administrator. eselect is a modular framework for writing configuration 
+administrator. eselect is a modular framework for writing configuration
 utilities. It consists of:
 
 * A main program named ``eselect``.
@@ -42,13 +42,13 @@ Consistent Help format
   All eselect modules provide easily accessible help documentation via the
   ``help`` and ``usage`` actions.
 Consistent tool naming
-  There is no need to remember dozens of ``foo-config`` and ``update-blah`` 
-  names. To see a list of available tools, simply run ``eselect`` with no 
-  arguments. Of course the foo-config style are still available (via symlinks) 
+  There is no need to remember dozens of ``foo-config`` and ``update-blah``
+  names. To see a list of available tools, simply run ``eselect`` with no
+  arguments. Of course the foo-config style are still available (via symlinks)
   if you prefer them.
 Guaranteed Support for ``$ROOT``
-  For those of you using $ROOT, you will not have to worry about whether a 
-  particular tool can handle it. Support for ``$ROOT`` is required for all 
+  For those of you using $ROOT, you will not have to worry about whether a
+  particular tool can handle it. Support for ``$ROOT`` is required for all
   eselect modules.
 
 Advantages for Developers and Package Maintainers
@@ -58,20 +58,20 @@ Writing your tool as an eselect module rather than starting from scratch gives
 you various benefits:
 
 Faster Development time
-  Much of the work has already been done for you. eselect provides a series 
-  of libraries for common tasks, and the main ``eselect`` program handles 
-  most of the hard work for you. All you need to do is provide the actions and 
+  Much of the work has already been done for you. eselect provides a series
+  of libraries for common tasks, and the main ``eselect`` program handles
+  most of the hard work for you. All you need to do is provide the actions and
   any domain specific functions you require.
 Automatic Actions
-  The ``help`` and ``usage`` actions are automatically generated from your 
-  actions, so there is no need to spend time worrying about keeping these 
+  The ``help`` and ``usage`` actions are automatically generated from your
+  actions, so there is no need to spend time worrying about keeping these
   written up to date.
 Easy, Consistent Behaviour
-  Because most of the input, output and command line handling is split off 
-  into library functions, writing a 'standard' module which behaves 
+  Because most of the input, output and command line handling is split off
+  into library functions, writing a 'standard' module which behaves
   consistently with other tools is very simple.
 Familiar Format
-  For Gentoo developers, the eselect module format will be very familiar -- it 
+  For Gentoo developers, the eselect module format will be very familiar -- it
   is a ``bash`` file with a structure that is quite similar to ebuilds.
 
 Using eselect
@@ -84,9 +84,9 @@ eselect should be called as shown below: ::
 
 	eselect [<global-options>] <module> <action> <options>
 
-eselect features consistently named actions among most of its modules. There 
-is only one global option as of now; --no-color, which asks eselect to stop 
-showing colored output. The following are standard action names -- each module 
+eselect features consistently named actions among most of its modules. There
+is only one global option as of now; --no-color, which asks eselect to stop
+showing colored output. The following are standard action names -- each module
 may provide a subset of these actions:
 
 help
@@ -106,10 +106,10 @@ enable
 disable
   Disable one of the module specific features.
 update
-  Like ``set``, but automatically selects an option rather than taking a 
+  Like ``set``, but automatically selects an option rather than taking a
   parameter.
 scan
-  Gather information about the system and store it for future usage by the 
+  Gather information about the system and store it for future usage by the
   module.
 
 A typical session will look like the following for most modules: ::
@@ -118,7 +118,7 @@ A typical session will look like the following for most modules: ::
     These selections are available:
       [1] <first>
       [2] <second>
-  
+
     # eselect <module> set <first>
     # eselect <module> show
     Active selection:
