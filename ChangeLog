@@ -1,3 +1,8 @@
+2009-04-15  Ulrich Mueller  <ulm@gentoo.org>
+
+	* libs/output.bash.in (get_column_width): Don't call stty if
+	standard output is not a terminal. Bug 198461.
+
 2009-04-14  Ulrich Mueller  <ulm@gentoo.org>
 
 	* libs/output.bash.in (write_list_start): Add quotes to	prevent
