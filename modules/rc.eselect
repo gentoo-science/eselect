@@ -1,4 +1,4 @@
-# Copyright 1999-2005 Gentoo Foundation
+# Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -104,7 +104,7 @@ do_add() {
 				write_kv_list_entry ${runlevel} "[skipped]"
 			else
 				ln -sf \
-					${ROOT}/etc/init.d/${script} \
+					/etc/init.d/${script} \
 					${ROOT}/etc/runlevels/${runlevel}/${script} \
 					&& write_kv_list_entry ${runlevel} "[done]" \
 					|| write_kv_list_entry ${runlevel} "[failed]"

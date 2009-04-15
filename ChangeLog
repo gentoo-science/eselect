@@ -1,5 +1,8 @@
 2009-04-15  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/rc.eselect (do_add): Don't symlink into ROOT. Patch by
+	Matthijs Kooijman in bug 204937.
+
 	* libs/output.bash.in (get_column_width): Don't call stty if
 	standard output is not a terminal. Bug 198461.
 
