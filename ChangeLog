@@ -16,6 +16,15 @@
 	* bin/eselect.in: Disable colour output if stdout is not a tty,
 	bug 198461.
 
+2009-04-08  Jeremy Olexa  <darkside@gentoo.org>
+
+	* modules/profile.eselect (do_show, do_list):
+	Make 'eselect profile show' show the relative path. Patch by
+	Thomas Bellman in bug 248487.
+
+	* modules/profile.eselect (set_symlink): Allow parent profiles
+	to be selectable, patch by Thomas Bellman in bug 248470.
+
 2008-06-01  Ulrich Mueller  <ulm@gentoo.org>
 
 	* man/binutils.eselect.5: Fix typo, bug 172636.
