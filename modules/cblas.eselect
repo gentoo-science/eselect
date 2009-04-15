@@ -1,6 +1,6 @@
 # Copyright 1999-2006 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id: $
+# $Id$
 
 inherit skel
 
@@ -9,7 +9,7 @@ IFACE="cblas"
 
 DESCRIPTION="Manage installed $MODULE implementations"
 MAINTAINER="spyderous@gentoo.org"
-SVN_DATE='$Date: 2006-05-15 20:36:55 +0200 (Mon, 15 May 2006) $'
+SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}" )
 
 # vim: set ft=eselect :

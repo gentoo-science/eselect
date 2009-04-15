@@ -1,12 +1,12 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id: $
+# $Id$
 
 # Based on kernel.eselect
 
 DESCRIPTION="Manage the Java system and user VM"
 MAINTAINER="java@gentoo.org"
-SVN_DATE='$Date: $'
+SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}" )
 
 VM_BASE=/usr/lib/jvm/
