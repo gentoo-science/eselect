@@ -1,5 +1,8 @@
 2009-04-16  Ulrich Mueller  <ulm@gentoo.org>
 
+	* libs/config.bash.in (store_config): Split config file content
+	on newlines only, not on all whitespace. Fixes bug 219864.
+
 	* misc/eselect.bashcomp (_eselect): Suppress 'Killed' message.
 	Don't match regexps on escape sequences. Fixes bug 218557.
 

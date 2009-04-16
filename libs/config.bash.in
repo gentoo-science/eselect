@@ -56,12 +56,14 @@ store_config() {
 
     (
         # parse the names of all settings in the file
+        IFS=$'\n'
         for line in ${content[@]} ; do
             [[ ${line/=/} != ${line} ]] || continue
             line=${line/=*/}
             local ${line}=""
             vars=(${vars[@]} ${line})
         done
+        unset IFS
 
         source ${configfile} 2>&1 > /dev/null \
             || die "Failed to source ${configfile}."
