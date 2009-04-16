@@ -1,5 +1,3 @@
-# $Id: Makefile.am 79 2004-12-03 13:56:26Z ka0ttic $
-
 AUTOMAKE_OPTIONS = dist-bzip2 no-dist-gzip
 
 doc_files = README TODO
