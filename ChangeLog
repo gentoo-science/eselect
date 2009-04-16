@@ -1,5 +1,8 @@
 2009-04-16  Ulrich Mueller  <ulm@gentoo.org>
 
+	* misc/eselect.bashcomp (_eselect): Suppress 'Killed' message.
+	Don't match regexps on escape sequences. Fixes bug 218557.
+
 	* libs/core.bash.in (die): Suppress error messages from pgrep
 	and kill, bugs 174354 and 264734.
 

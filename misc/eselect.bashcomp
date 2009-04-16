@@ -1,4 +1,4 @@
-# Copyright 1999-2005 Gentoo Foundation
+# Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -6,18 +6,22 @@
 # Author: Aaron Walker <ka0ttic@gentoo.org>
 
 _eselect() {
-    local cur prev sedcmd possibles
+    local cur sedcmd possibles
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
-    prev="${COMP_WORDS[COMP_CWORD-1]}"
-    sedcmd='sed -n -e s/^[[:space:]]\+.*1m\([^[:space:]][[:alnum:]-]\+\).*[[:space:]]\+.*$/\1/p'
+    sedcmd='s/^  \([[:alnum:]_-]\+\)[[:space:],].*$/\1/p'
 
-    if [[ ${COMP_CWORD} -eq 1 ]] || [[ -n "${prev}" && ${prev} == -* ]]
-    then
-        possibles="$(eselect help | ${sedcmd})"
-    elif eselect ${prev} usage &>/dev/null ; then
-        possibles=$(eselect ${prev} usage | ${sedcmd})
-    fi
+    set - "${COMP_WORDS[@]:1}"
+    while [[ $# -gt 1 && $1 == -* ]]; do
+        shift
+    done
+
+    case $# in
+        1) possibles=$(eselect --no-colour help 2>/dev/null \
+            | sed -n -e "${sedcmd}") ;;
+        2) possibles=$(eselect --no-colour "$1" usage 2>/dev/null \
+            | sed -n -e "${sedcmd}") ;;
+    esac
 
     [[ -n "${possibles}" ]] && \
         COMPREPLY=( $(compgen -W "${possibles}" -- ${cur}) )
