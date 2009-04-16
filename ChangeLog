@@ -80,7 +80,7 @@
 
 2007-09-21 Donnie Berkholz <dberkholz@gentoo.org>
 
-	* libs/skel.bash.in: (#189942) Allow resetting to the current 
+	* libs/skel.bash.in: (#189942) Allow resetting to the current
 	implementation, so changes to the symlink map can propogate.
 
 2007-03-08 Mike Kelly <pioto@gentoo.org>
@@ -117,7 +117,7 @@
 
 	* modules/esd.eselect: Add the esound selection module, that I
 	forgot to add before.
-	
+
 2006-11-17 Kevin F. Quinn <kevquinn@gentoo.org>
 
 	* modules/oodict.eselect: Allow more than one dictionary file for
@@ -293,7 +293,7 @@
 
 	* libs/paludis.bash.in, libs/package-manager.bash.in: Remove
 	paludis-repo(). Fix paludis-envvar(). Finish envvar() unction.
-	* configure.ac: Set version to 1.0.4. 
+	* configure.ac: Set version to 1.0.4.
 	* modules/config.eselect, modules/binutils.eselect: Convert to
 	envvar().
 	* autogen.bash: Fix autogen.bash to be able to use autoconf-2.60.
@@ -526,8 +526,8 @@
 
 2005-10-29 Thomas Matthijs <axxo@gentoo.org>
 
-	* modules/java.eselect: Dont assume uid 0 has super powers, 
-	* modules/java.eselect: Added simple java module, for configuring 
+	* modules/java.eselect: Dont assume uid 0 has super powers,
+	* modules/java.eselect: Added simple java module, for configuring
 	system and user vm.
 
 2005-10-19 Jeremy Huddleston <eradicator@gentoo.org>
@@ -567,7 +567,7 @@
 	find_targets() and bail if necessary.
 
 2005-10-17 Aaron Walker <ka0ttic@gentoo.org>
-	
+
 	* configure.ac: Update version to 1.0_rc1 for pending release.
 	* Makefile.am, man/Makefile.am, bin/Makefile.am: move 'symlinks'
 	variable declaration to top-level Makefile.am so both man/Makefile.am
@@ -726,12 +726,12 @@
 
 2005-08-23 Jeremy Huddleston <eradicator@gentoo.org>
 
-	* modules/opengl.eselect: Fixed a bug in creating symlinks to header 
+	* modules/opengl.eselect: Fixed a bug in creating symlinks to header
 	files.
 
 2005-08-17 Jeremy Huddleston <eradicator@gentoo.org>
 
-	* modules/opengl.eselect: Added opengl module.  Not adding to 
+	* modules/opengl.eselect: Added opengl module.  Not adding to
 	Makefile.am as it's not going to be installed with the base package.
 
 2005-08-08 Aaron Walker <ka0ttic@gentoo.org>
@@ -907,7 +907,7 @@
 
 2005-05-26 Danny van Dyk <kugelfang@gentoo.org>
 
-	* modules/rc.eselect: Added actions start, stop, restart and pause. 
+	* modules/rc.eselect: Added actions start, stop, restart and pause.
 
 2005-05-16 Ciaran McCreesh <ciaranm@gentoo.org>
 
@@ -1039,7 +1039,7 @@
 	for lapack-atlas and lapack-reference.
 
 2005-05-08 Tom Martin <slarti@gentoo.org>
-	
+
 	* modules/mailer.eselect: Fix find_targets. If the glob didn't
 	match, it was interpreted as a literal string. Fix a stupid typo
 	(findi_targets -> find_targets).
