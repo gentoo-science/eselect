@@ -1,5 +1,8 @@
 2009-04-16  Ulrich Mueller  <ulm@gentoo.org>
 
+	* libs/output.bash.in (write_kv_list_entry): Fix logic for
+	insertion of spaces between words, bug 260464.
+
 	* libs/config.bash.in (store_config): Split config file content
 	on newlines only, not on all whitespace. Fixes bug 219864.
 

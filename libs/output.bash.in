@@ -119,31 +119,22 @@ write_kv_list_entry() {
     text=${val//\%%%??%%%/}
     # only loop if it doesn't fit on the same line
     if [[ $(( ${n} + ${#text} )) -ge ${cols} ]] ; then
-        local i=0
+        local i=0 spc=""
         rindent="${rindent}$(space 28)"
         cwords=( ${cwords} )
         for text in ${val} ; do
             text=${text//\%%%??%%%/}
             # put the word on the same line if it fits
-            if [[ $(( ${n} + ${#text} + 1 )) -lt ${cols} ]] ; then
-                echo -n -e "${cwords[i]}"
-                n=$(( ${n} + ${#text} ))
-                # only append a space if we're not on the last word
-                if [[ ${i} -ne ${#cwords} ]] ; then
-                    echo -n ' '
-                    n=$(( ${n} + 1 ))
-                fi
+            if [[ $(( ${n} + ${#spc} + ${#text} )) -lt ${cols} ]] ; then
+                echo -n -e "${spc}${cwords[i]}"
+                n=$(( ${n} + ${#spc} + ${#text} ))
             # otherwise, start a new line and indent
             else
                 echo -n -e "\n${rindent}${cwords[i]}"
                 n=$(( ${#rindent} + ${#text} ))
-                # only append a space if we're not on the last word
-                if [[ ${i} -ne ${#cwords} ]] ; then
-                    echo -n ' '
-                    n=$(( ${n} + 1 ))
-                fi
             fi
             i=$(( ${i} + 1 ))
+            spc=" "
         done
     else
         echo -n -e "${cwords}"
