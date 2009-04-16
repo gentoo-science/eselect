@@ -1,3 +1,8 @@
+2009-04-16  Ulrich Mueller  <ulm@gentoo.org>
+
+	* libs/core.bash.in (die): Suppress error messages from pgrep
+	and kill, bugs 174354 and 264734.
+
 2009-04-15  Ulrich Mueller  <ulm@gentoo.org>
 
 	* modules/rc.eselect (do_add): Don't symlink into ROOT. Patch by
