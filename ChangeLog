@@ -1,9 +1,13 @@
 2009-04-17  Ulrich Mueller  <ulm@gentoo.org>
 
+	* libs/core.bash.in (die): Eliminate pgrep call; just kill the
+	main process and exit.
+
 	* bin/eselect.in (ec_do_list-modules): Use do_action for calling
 	the module, not eselect. Quote "$@".
 	(ESELECT_KNOWN_OPTIONS): Treat 'help' and 'version' options as if
 	they were actions. Fixes bug 153890.
+	(trap): Redirect exit message to stderr.
 
 	* modules/modules.eselect: Don't inherit 'output' and 'tests',
 	since they are already inherited by the main script, and for

@@ -55,7 +55,7 @@ inherit manip output path-manipulation tests
 
 # Sneaky trick to make die in subshells work. If you don't get
 # it, don't ask...
-trap 'echo "exiting." ; exit 250' 15
+trap 'echo "exiting." >&2; exit 250' 15
 
 # ec_find_module foo
 # Find and echo the filename of the foo module. If there's no foo module,

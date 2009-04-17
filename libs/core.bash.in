@@ -60,12 +60,6 @@ die() {
 
     # Evil, but effective.
     kill ${ESELECT_KILL_TARGET}
-    # Is this actually needed? Killing the parent should be enough.
-    local children process
-    children=$(pgrep -P ${ESELECT_KILL_TARGET} 2>/dev/null)
-    for process in ${ESELECT_KILL_TARGET} ${children} ; do
-        kill -9 ${process} &>/dev/null
-    done
     exit 249
 }
 
