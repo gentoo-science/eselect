@@ -42,7 +42,7 @@ ESELECT_BINARY_NAME="${0}"
 ESELECT_KILL_TARGET="$$"
 
 # Global options
-ESELECT_KNOWN_OPTIONS="no-colour no-color"
+ESELECT_KNOWN_OPTIONS="no-colour no-color help version"
 ESELECT_OPTIONS=""
 
 shopt -s extglob
@@ -152,12 +152,17 @@ if [[ -z ${action} ]] && [[ -n ${1##--} ]] ; then
             no-colour|no-color)
                 ESELECT_OPTIONS=(${ESELECT_OPTIONS[@]} "NOCOLOUR")
                 nocolours
-                shift
+                ;;
+            help|version)
+                action=${1##--}
                 ;;
         esac
+        shift
     done
-    action=${1}
-    shift
+    if [[ -z ${action} ]]; then
+        action=${1}
+        shift
+    fi
 fi
 
 if [[ -n "${action}" ]] ; then
