@@ -1,5 +1,10 @@
 2009-04-17  Ulrich Mueller  <ulm@gentoo.org>
 
+	* libs/output.bash.in (colours): New function, initialise colour
+	escape sequences. Don't initialise them in global scope any more.
+	* bin/eselect.in: Call 'colours' if stdout is a tty, otherwise
+	call 'nocolours'.
+
 	* modules/env.eselect (is_envfile): Define POSIXLY_CORRECT for
 	'file' in order to dereference symbolic links. Bug 240402.
 

@@ -17,14 +17,16 @@
 # eselect.  If not, see <http://www.gnu.org/licenses/>.
 
 # Colours
-COLOUR_NORMAL=$(tput sgr0)
-COLOUR_BOLD=$(tput bold)
-COLOUR_HI=$(tput setaf 4)${COLOUR_BOLD}
-COLOUR_WARN=$(tput setaf 1)${COLOUR_BOLD}
-COLOUR_ERROR=${COLOUR_WARN}
-COLOUR_LIST_HEADER=$(tput setaf 2)${COLOUR_BOLD}
-COLOUR_LIST_LEFT=${COLOUR_BOLD}
-COLOUR_LIST_RIGHT=${COLOUR_NORMAL}
+colours() {
+    COLOUR_NORMAL=$(tput sgr0)
+    COLOUR_BOLD=$(tput bold)
+    COLOUR_HI=$(tput setaf 4)${COLOUR_BOLD}
+    COLOUR_WARN=$(tput setaf 1)${COLOUR_BOLD}
+    COLOUR_ERROR=${COLOUR_WARN}
+    COLOUR_LIST_HEADER=$(tput setaf 2)${COLOUR_BOLD}
+    COLOUR_LIST_LEFT=${COLOUR_BOLD}
+    COLOUR_LIST_RIGHT=${COLOUR_NORMAL}
+}
 
 # disable all colours
 nocolours() {

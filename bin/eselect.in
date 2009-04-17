@@ -112,8 +112,12 @@ ec_do_list-modules() {
 
 ### main code ###
 
-# disable colour output if stdout is not a tty
-[[ -t 1 ]] || nocolours
+# enable colour output iff stdout is a tty
+if [[ -t 1 ]]; then
+    colours
+else
+    nocolours
+fi
 
 # figure out what the action is. we need to know whether we're
 # invoked as a something-config/something-update.
