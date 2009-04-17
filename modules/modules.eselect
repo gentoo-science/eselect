@@ -16,7 +16,7 @@ inherit config
 ## {{{ list
 
 describe_list() {
-	echo "Lists all available modules."
+	echo "List all available modules"
 }
 
 # List all installed modules
@@ -56,7 +56,7 @@ do_list() {
 
 ## {{{ has
 describe_has() {
-	echo "Returns true if the module is installed, and false otherwise."
+	echo "Return true if the module is installed, and false otherwise"
 }
 
 describe_has_parameters() {
@@ -65,7 +65,7 @@ describe_has_parameters() {
 
 do_has() {
 	local modname="$1" modpath
-	[[ -z "$modname" ]] && die -q "Required option (module name) missing."
+	[[ -z "$modname" ]] && die -q "Required option (module name) missing"
 	for modpath in "${ESELECT_MODULES_PATH[@]}" ; do
 		[[ -f "${modpath}/${modname}.eselect" ]] && return 0
 	done
@@ -74,41 +74,46 @@ do_has() {
 ## }}}
 
 ### add action
+# *** Commented out. Do we really want to have an eselect module that is
+# *** installing other modules in a system directory? Also, this should
+# *** go together with a "remove" action.
 
 ## {{{ add
 
-describe_add() {
-	echo "Installs the given module file somewhere that eselect can find it."
-	echo "By default, installs to \$HOME/.eselect/modules/, unless running as "
-	echo "root. Then, it installs to ${ESELECT_DATA_PATH}/modules/."
-}
+# describe_add() {
+# 	echo "Install the given module file somewhere that eselect can find it."
+# 	echo "By default, install to \$HOME/.eselect/modules/, unless running as "
+# 	echo "root. Then, install to ${ESELECT_DATA_PATH}/modules/."
+# }
 
-describe_add_parameters() {
-	echo "<module_file>"
-}
+# describe_add_parameters() {
+# 	echo "<module_file>"
+# }
 
-do_add() {
-	local local_path="${ROOT}${HOME}/.eselect/modules/" module_file
-	local force_default=0
-
-	if [[ ${1} == "--force-default-location" ]] ; then
-		force_default=1
-		shift
-	fi
-	module_file=${1}
-
-	[[ -z "${module_file}" ]] && die -q "Required option (module file) missing."
-
-	if ! cp "${module_file}" "${ESELECT_DEFAULT_MODULES_PATH}" &> /dev/null ; then
-		[[ ${force_default} == 1 ]] \
-			&& die -q "Failed to install module file to default modules path."
-
-		mkdir -p "${local_path}" \
-			|| die -q "Failed to create module install directory."
-		cp "${module_file}" "${local_path}" \
-			|| die -q "Failed to install module file."
-	fi
-}
+# do_add() {
+# 	local local_path="${ROOT}${HOME}/.eselect/modules/" module_file
+# 	local force_default=0
+#
+# 	if [[ ${1} == "--force-default-location" ]] ; then
+# 		force_default=1
+# 		shift
+# 	fi
+# 	module_file=${1}
+#
+# 	[[ -z "${module_file}" ]] && die -q "Required option (module file) missing"
+#
+# 	# TODO: Don't install the module "somewhere", depending on write access.
+# 	# Add an option to control if it goes to the user's or to the system dir.
+# 	if ! cp "${module_file}" "${ESELECT_DEFAULT_MODULES_PATH}" &> /dev/null ; then
+# 		[[ ${force_default} == 1 ]] \
+# 			&& die -q "Failed to install module file to default modules path"
+#
+# 		mkdir -p "${local_path}" \
+# 			|| die -q "Failed to create module install directory"
+# 		cp "${module_file}" "${local_path}" \
+# 			|| die -q "Failed to install module file"
+# 	fi
+# }
 
 ## }}}
 

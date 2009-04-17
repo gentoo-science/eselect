@@ -6,6 +6,7 @@
 	* modules/modules.eselect: Don't inherit 'output' and 'tests',
 	since they are already inherited by the main script, and for
 	consistency with other modules.
+	(describe_add, describe_add_parameters, do_add): Commented out.
 
 	* libs/output.bash.in (colours): New function, initialise colour
 	escape sequences. Don't initialise them in global scope any more.
