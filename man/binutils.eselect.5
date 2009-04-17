@@ -3,45 +3,45 @@
 binutils.eselect \- The binutils management module for Gentoo's eselect
 .SH "SYNOPSIS"
 \fBeselect binutils\fR [\fBhelp\fR|\fBusage\fR]
-.br 
+.br
 \fBeselect binutils\fR \fBlist\fR
-.br 
+.br
 \fBeselect binutils\fR \fBset\fR
 .SH "DESCRIPTION"
 \fBeselect\fR is Gentoo's configuration and management tool. It features
 modules that care for the individual administrative tasks.
 .SH "ACTION: LIST"
 \fBeselect binutils list\fR [\fIpatterns\fR]
-.br 
+.br
 List all installed version of binutils. If \fIpatterns\fR are given, only versions that match the patterns
 will be listed.
 
 phi / # eselect binutils list powerpc*
-.br 
+.br
 Installed binutils for target powerpc\-unknown\-linux\-gnu
   [1]   2.15.92.0.2 *
-.br 
+.br
 phi / # eselect binutils list
-.br 
+.br
 Installed binutils for target powerpc\-unknown\-linux\-gnu
   [1]   2.15.92.0.2 *
-.br 
+.br
 Installed binutils for target x86_64\-pc\-linux\-gnu
   [2]   2.15.92.0.2
   [3]   2.16
   [4]   2.16.1 *
 .SH "ACTION: SET"
 \fBeselect binutils set\fR \fIselection\fR
-.br 
+.br
 Activates the selected version of binutils. \fIselection\fR can be either an identification number
 given by \fBeselect binutils list\fR or a pattern that uniquely describes one installed version.
 
 phi / # eselect binutils set x86_64*2.16.1
-.br 
+.br
 Switching to x86_64\-pc\-linux\-gnu\-2.16.1...
-.br 
+.br
 Regenerating /etc/ld.so.cache...
-.br 
+.br
 Please remember to run:
 
   # source /etc/profile
@@ -49,12 +49,12 @@ Please remember to run:
 in order to let changes take effect!
 .SH "ACTION: SHOW"
 \fBeselect binutils show\fR [\fItarget\fR]
-.br 
+.br
 Prints the currently activated binutils version for the given target. If no target is
 supplied then the CHOST environment variable is used to evaluate the native target.
 
 phi / # eselect binutils show
-.br 
+.br
 x86_64\-pc\-linux\-gnu\-2.16.1
 .SH "AUTHOR"
 Danny van Dyk <kugelfang@gentoo.org>

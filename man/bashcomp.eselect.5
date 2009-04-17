@@ -3,11 +3,11 @@
 bashcomp\.eselect \- Manage contributed bash-completion scripts
 .SH "SYNOPSIS"
 \fBeselect bashcomp\fR [\fBhelp\fR|\fBusage\fR]
-.br 
+.br
 \fBeselect bashcomp\fR \fBlist\fR [\fB\-\-global\fR]
-.br 
+.br
 \fBeselect bashcomp\fR \fBenable\fR [\fB\-\-global\fR] \fIbashcomp1 bashcomp2\fR
-.br 
+.br
 \fBeselect bashcomp\fR \fBdisable\fR [\fB\-\-global\fR] \fIbashcomp1 bashcomp2\fR
 
 .SH "DESCRIPTION"
@@ -15,19 +15,19 @@ bashcomp\.eselect \- Manage contributed bash-completion scripts
 modules that care for individual administrative tasks.
 .SH "ACTION: LIST"
 \fBeselect bashcomp list\fR [\fB\-\-global\fR]
-.br 
+.br
 Displays a list of available contributed bash-completion scripts.  Enabled
 bash-completions are marked with a '*'.  If the \fB\-\-global\fR option is
 specified, list globally enabled completions.
 
 $ eselect bashcomp list
-.br 
+.br
 Available completions:
   [1]  bitkeeper
   [2]  cowsay *
 .SH "ACTION: ENABLE"
 \fBeselect bashcomp enable\fR [\fB\-\-global\fR] \fIbashcomp1 bashcomp2\fR
-.br 
+.br
 .br
 Enable the specified completion(s).  Arguments may be a completion name or
 a corresponding number produced by \fBeselect bashcomp list\fR.  If the \fB\-\-global\fR

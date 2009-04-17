@@ -3,11 +3,11 @@
 profile\.eselect \- The profile management module for Gentoo's eselect
 .SH "SYNOPSIS"
 \fBeselect profile\fR [\fBhelp\fR|\fBusage\fR]
-.br 
+.br
 \fBeselect profile\fR \fBlist\fR
-.br 
+.br
 \fBeselect profile\fR \fBset\fR [\fB\-\-force\fR] \fIprofile\fR
-.br 
+.br
 \fBeselect profile\fR \fBshow\fR
 
 .SH "DESCRIPTION"
@@ -15,22 +15,22 @@ profile\.eselect \- The profile management module for Gentoo's eselect
 modules that care for the individual administrative tasks.
 .SH "ACTION: LIST"
 \fBeselect profile list\fR
-.br 
-Displays an ordered list of available and (for your architecture) valid profiles. 
+.br
+Displays an ordered list of available and (for your architecture) valid profiles.
 
 phi / # eselect profile list
-.br 
+.br
 Available profile symlink targets:
   [1]   default\-linux/amd64/2005.0
 .SH "ACTION: SET"
 \fBeselect profile\ set\fR [\fB\-\-force\fR] [\fIprofile\fR]
-.br 
+.br
 Select a valid profile for future use with portage.  If the \-\-force flag
 is specified, set the profile even if it doesn't appear to be a valid one (doesn't
 exist in \fB${PORTDIR}\fR/profiles/profiles.desc).
 .SH "ACTION: SHOW"
 \fBeselect profile\ show\fR
-.br 
+.br
 Shows your system's currently active profile.
 
 phi / # eselect profile\ show

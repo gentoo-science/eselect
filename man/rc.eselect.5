@@ -3,81 +3,81 @@
 rc.eselect \- Runlevel configuration module
 .SH "SYNOPSIS"
 \fBeselect rc\fR [\fBhelp\fR|\fBusage\fR]
-.br 
+.br
 \fBeselect rc\fR \fBadd\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
-.br 
+.br
 \fBeselect rc\fR \fBdelete\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
-.br 
+.br
 \fBeselect rc\fR \fBlist\fR [\fIrunlevel\fR]
-.br 
+.br
 \fBeselect rc\fR \fBpause\fR \fIscript\fR [\fIscript\fR [\fIscript\fR ...]]
-.br 
+.br
 \fBeselect rc\fR \fBrestart\fR \fIscript\fR [\fIscript\fR [\fIscript\fR ...]]
-.br 
+.br
 \fBeselect rc\fR \fBshow\fR
-.br 
+.br
 \fBeselect rc\fR \fBstart\fR \fIscript\fR [\fIscript\fR [\fIscript\fR ...]]
-.br 
+.br
 \fBeselect rc\fR \fBstop\fR \fIscript\fR [\fIscript\fR [\fIscript\fR ...]]
 .SH "DESCRIPTION"
 \fBeselect\fR is Gentoo's configuration and management tool. It features
 modules that care for the individual administrative tasks.
 .SH "ACTION: ADD"
 \fBeselect rc add\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
-.br 
+.br
 Add \fIscript\fR to given \fIrunlevels\fR. If no \fIrunlevel\fR is given,
 this action will add \fIscript\fR to the \fBdefault\fR runlevel.
 
 phi ~ # eselect rc add local default nonetwork notexisting
-.br 
+.br
 Adding local to following runlevels
   default                   [done]
   nonetwork                 [skipped]
   notexisting               [invalid]
 
 The result\-tags are as following
-.TP 
+.TP
 \fB[done]\fR
-.br 
+.br
 \fIscript\fR succesfully added to \fIrunlevel\fR
-.TP 
+.TP
 \fB[failed]\fR
 \fIscript\fR couldnot be added to \fIrunlevel\fR
-.TP 
+.TP
 \fB[skipped]\fR
 \fIscript\fR already part of \fIrunlevel\fR
-.TP 
+.TP
 \fB[invalid]\fR
 \fIrunlevel\fR is not existing
 .SH "ACTION: DELETE"
 \fBeselect rc delete\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
-.br 
+.br
 Delete \fIscript\fR from given \fIrunlevels\fR. If no \fIrunlevel\fR is given,
 this action will delete \fIscript\fR from the \fBdefault\fR runlevel.
 
 phi ~ # eselect rc delete local nonetwork notexisting
-.br 
+.br
 Deleting local from following runlevels
   nonetwork                 [done]
   notexisting               [invalid]
 
 The result\-tags are as following
-.TP 
+.TP
 \fB[done]\fR
-.br 
+.br
 \fIscript\fR succesfully deleted from \fIrunlevel\fR
-.TP 
+.TP
 \fB[failed]\fR
 \fIscript\fR could not be deleted from \fIrunlevel\fR
-.TP 
+.TP
 \fB[skipped]\fR
 \fIscript\fR not part of \fIrunlevel\fR
-.TP 
+.TP
 \fB[invalid]\fR
 \fIrunlevel\fR is not existing
 .SH "ACTION: LIST"
 \fBeselect rc list\fR [\fIrunlevel\fR]
-.br 
+.br
 Displays an ordered list of init scripts that belong to \fIrunlevel\fR. In case that
 \fIrunlevel\fR is given, this action will list all scripts from /etc/init.d/.
 
@@ -95,31 +95,31 @@ Init scripts to be started by runlevel default
   xfs
 .SH "ACTION: PAUSE"
 \fBeselect rc pause\fR \fIscript\fR [\fIscript\fR ...]
-.br 
+.br
 Pauses the given set of init scripts.
 
 phi / # eselect rc pause net.eth0
-.br 
+.br
  * Stopping eth0
  *   Bringing down eth0
  *     Shutting down eth0 ...
 .SH "ACTION: RESTART"
 \fBeselect rc restart\fR \fIscript\fR [\fIscript\fR ...]
-.br 
+.br
 Restarts the given set of init scripts.
 
 phi / # eselect rc restart sshd
-.br 
+.br
 Restarting init script
  * ERROR:  "local" has not yet been started.
  * Stopping sshd ...                                                      [ ok ]
 .SH "ACTION: SHOW"
 \fBeselect rc show\fR
-.br 
+.br
 Shows the current runlevel's init script and lists them together with their status.
 
 phi / # eselect rc show
-.br 
+.br
 Status of init scripts in runlevel default
   cupsd                     [started]
   local                     [started]
@@ -133,39 +133,39 @@ Status of init scripts in runlevel default
 
 The status flags are as following
 
-.TP 
+.TP
 \fB[started]\fR
 \fIscript\fR has been successfully run.
-.TP 
+.TP
 \fB[stopping]\fR
 \fIscript\fR stop has been ordered, but it has not ceased yet.
-.TP 
+.TP
 \fB[stopped]\fR
 \fIscript\fR has manually been stopped.
-.TP 
+.TP
 \fB[failed]\fR
 One or more commands in \fIscript\fR have not succeeded.
-.TP 
+.TP
 \fB[broken]\fR
 \fIscript\fR has a syntax error.
 
 .SH "ACTION: START"
 \fBeselect rc start\fR \fIscript\fR [\fIscript\fR ...]
-.br 
+.br
 Starts the given set of init scripts manually, regardless of the current runlevel.
 
 phi / # eselect rc start local sshd
-.br 
+.br
 Restarting init script
  * Starting local ...                                                    [ ok ]
  * WARNING:  "sshd" has already been started.
 .SH "ACTION: STOP"
 \fBeselect rc restart\fR \fIscript\fR [\fIscript\fR ...]
-.br 
+.br
 Restarts the given set of init scripts.
 
 phi / # eselect rc restart sshd
-.br 
+.br
 Restarting init script
  * ERROR:  "local" has not yet been started.
  * Stopping sshd ...                                                      [ ok ]

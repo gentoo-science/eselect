@@ -3,49 +3,49 @@
 opengl.eselect \- The OpenGL management module for Gentoo's eselect
 .SH "SYNOPSIS"
 \fBeselect opengl\fR [\fBhelp\fR|\fBusage\fR]
-.br 
+.br
 \fBeselect opengl\fR \fBlist\fR
-.br 
+.br
 \fBeselect opengl\fR \fBset\fR [\fIoptions\fR] \fIimplementation\fR
-.br 
+.br
 \fBeselect opengl\fR \fBshow\fR
 .SH "DESCRIPTION"
 \fBeselect\fR is Gentoo's configuration and management tool. It features
 modules that care for the individual administrative tasks.
 .SH "ACTION: LIST"
 \fBeselect opengl list\fR
-.br 
+.br
 phi / # eselect opengl list
 Displays a numbered list of all available OpenGL implementations. The currently actived implementation
 is highlighted by a '*'.
-.br 
+.br
 Available OpenGL implementations:
   [1]   ati *
   [2]   xfree
   [3]   xorg\-x11
 .SH "ACTION: SHOW"
 \fBeselect opengl show\fR
-.br 
+.br
 Shows your system's currently active OpenGL implementation.
-.br 
+.br
 phi / # eselect opengl show
 ati
 .SH "ACTION: SET"
-\fBeselect opengl set\fR [\fIoptions\fR] \fIimplementation\fR 
-.br 
+\fBeselect opengl set\fR [\fIoptions\fR] \fIimplementation\fR
+.br
 Sets  your  system's currently active BLAS implementations to implementation.
-.br 
+.br
 Extra options:
-.TP 
+.TP
 \fI\-\-use\-old\fR
 If an implementation is already set, use that one.
-.TP 
+.TP
 \fI\-\-prefix=\fBvalue\fR
 Sets the source prefix to \fBvalue\fR (defaults to \fB/usr\fR)
-.TP 
+.TP
 \fI\-\-dst\-prefix=\fBvalue\fR
 Sets the destination prefix to \fBvalue\fR (defaults to \fB/usr\fR)
-.TP 
+.TP
 \fI\-\-impl\-headers\fR
 Use headers provided by this implementation to override golbal ones provided by
 opengl\-update. This was default in <opengl\-update\-2.2.
