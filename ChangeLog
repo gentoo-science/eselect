@@ -1,5 +1,8 @@
 2009-04-17  Ulrich Mueller  <ulm@gentoo.org>
 
+	* bin/eselect.in (ec_do_list-modules): Use do_action for calling
+	the module, not eselect. Quote "$@".
+
 	* modules/modules.eselect: Don't inherit 'output' and 'tests',
 	since they are already inherited by the main script, and for
 	consistency with other modules.

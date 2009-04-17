@@ -107,7 +107,7 @@ ec_do_list-options() {
 # ec_do_list-modules
 # Display all available eselect modules DEPRECATED
 ec_do_list-modules() {
-    eselect modules list $@
+    do_action modules list "$@"
 }
 
 ### main code ###
