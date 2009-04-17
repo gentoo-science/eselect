@@ -1,5 +1,9 @@
 2009-04-17  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/modules.eselect: Don't inherit 'output' and 'tests',
+	since they are already inherited by the main script, and for
+	consistency with other modules.
+
 	* libs/output.bash.in (colours): New function, initialise colour
 	escape sequences. Don't initialise them in global scope any more.
 	* bin/eselect.in: Call 'colours' if stdout is a tty, otherwise
