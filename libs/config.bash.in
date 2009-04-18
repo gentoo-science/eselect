@@ -47,7 +47,7 @@ store_config() {
 
     content=$(<${configfile})
 
-    if [[ -z ${content[@]} ]] ; then
+    if [[ -z ${content} ]] ; then
         store_config_header
         echo "${key}=\"${value}\"" \
             >> ${configfile}
@@ -58,7 +58,7 @@ store_config() {
         # parse the names of all settings in the file
         local ifs_save=${IFS-$' \t\n'}
         IFS=$'\n'
-        for line in ${content[@]} ; do
+        for line in ${content} ; do
             [[ ${line/=/} != ${line} ]] || continue
             line=${line/=*/}
             local ${line}=""
