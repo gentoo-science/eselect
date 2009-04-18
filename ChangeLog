@@ -1,6 +1,6 @@
 2009-04-18  Ulrich Mueller  <ulm@gentoo.org>
 
-	* NEWS: Merge NEWS from branch-1.0.x. And current changes.
+	* NEWS: Merge NEWS from branch-1.0.x. Add current changes.
 
 	* bin/eselect.in: Remove all alias definitions. Unset functions
 	and variables that are known to cause trouble. Fixes bug 155814.
