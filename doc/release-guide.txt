@@ -6,7 +6,7 @@ eselect Release Guide
 
 Update version in configure.ac.
 
-Make sure ChangeLog is tidy.  Add ChangeLog entry for updating configure.in
+Make sure ChangeLog is tidy.  Add ChangeLog entry for updating configure.ac
 and tagging the release.
 
 Update NEWS file with a summary of changes mentioned in ChangeLog since the
