@@ -45,6 +45,13 @@ ESELECT_KILL_TARGET="$$"
 ESELECT_KNOWN_OPTIONS="no-colour no-color help version"
 ESELECT_OPTIONS=""
 
+# Remove all alias definitions. Unset functions and variables that are
+# known to cause trouble.
+"unalias" -a
+unset -f rm
+unset CDPATH GLOBIGNORE
+IFS=$' \t\n'
+
 shopt -s extglob
 shopt -s expand_aliases
 

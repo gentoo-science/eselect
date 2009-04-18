@@ -1,3 +1,8 @@
+2009-04-18  Ulrich Mueller  <ulm@gentoo.org>
+
+	* bin/eselect.in: Remove all alias definitions. Unset functions
+	and variables that are known to cause trouble. Fixes bug 155814.
+
 2009-04-17  Ulrich Mueller  <ulm@gentoo.org>
 
 	* libs/core.bash.in (die): Eliminate pgrep call; just kill the
