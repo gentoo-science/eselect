@@ -3,11 +3,31 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
 
 trunk:
     Bug fixes:
+    - Fixed bug #155814: Clear aliases and shell functions.
     - Various improvements in opengl module.
 
     New features:
     - Add a new module, for listing and querying eselect modules.
     - Allow setting system-wide default dictionary.
+    - Treat 'help' and 'version' options as if they were actions.
+
+1.0.12:
+    Bug fixes:
+    - Fixed bug #172636: Man pages issues.
+    - Fixed bug #198461: Disable coloured output and setting of terminal width
+      if stdout is not a tty. Don't hardcode escape sequences for colours.
+    - Fixed bug #203114: Remove trailing slant from ESELECT_DATA_PATH.
+    - Fixed bug #204937: Honour ROOT in rc module.
+    - Fixed bug #218557: Suppress 'Killed' message in bash-completion module.
+    - Fixed bug #219864: Issue with whitespace in values of config variables.
+    - Fixed bug #232874: Disable filename expansion for highlighted text.
+    - Fixed bug #240402: Dereference symbolic links for env files.
+    - Fixed bug #248470: Fix selection of parent profiles in 'eselect profile'.
+    - Fixed bug #248487: Make 'eselect profile show' show the relative path.
+    - Fixed bug #260464: Bad whitespace in key/value list output.
+    - Fixed bug #264734: Suppress pgrep error message.
+    - Fix quotation in load_config().
+    - Fix paludis command.
 
 1.0.11:
     Bug fixes:

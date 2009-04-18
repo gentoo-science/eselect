@@ -35,7 +35,7 @@ Tag release. ::
 Build the final tarball. ::
 
     $ cd tags/release-${PV}
-    $ ./autogen.sh
+    $ ./autogen.bash
     $ ./configure
     $ make dist-bzip2
 
