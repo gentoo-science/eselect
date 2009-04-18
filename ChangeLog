@@ -1,5 +1,7 @@
 2009-04-18  Ulrich Mueller  <ulm@gentoo.org>
 
+	* AUTHORS: Add fauli and myself for the ctags and emacs modules.
+
 	* NEWS: Merge NEWS from branch-1.0.x. Add current changes.
 
 	* bin/eselect.in: Remove all alias definitions. Unset functions

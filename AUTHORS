@@ -29,3 +29,9 @@ Donnie Berkholz <spyderous@gentoo.org>
 
 Timothy Redaelli <drizzt@gentoo.org>
     Modules:    whois
+
+Christian Faulhammer <fauli@gentoo.org>
+    Modules:    emacs
+
+Ulrich Mueller <ulm@gentoo.org>
+    Modules:    ctags, emacs
