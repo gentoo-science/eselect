@@ -1,5 +1,10 @@
 2009-04-18  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/rc.eselect (do_delete): Don't die if the script is no
+	longer in /etc/init.d/. Fixes bug 156866.
+	(describe_add_parameters, describe_delete_parameters): Suppress
+	newlines.
+
 	* AUTHORS: Add fauli and myself for the ctags and emacs modules.
 
 	* NEWS: Merge NEWS from branch-1.0.x. Add current changes.

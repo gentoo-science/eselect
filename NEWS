@@ -4,6 +4,7 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
 trunk:
     Bug fixes:
     - Fixed bug #155814: Clear aliases and shell functions.
+    - Fixed bug #156886: Handle missing scripts in rc module.
     - Various improvements in opengl module.
 
     New features:
