@@ -71,9 +71,7 @@ setup_lib_symlinks() {
 	pushd "${libdir}" &> /dev/null
 		# First remove old symlinks
 		for file in libGL{,core}.{a,so,la} ; do
-			if [[ -e ${file} ]] ; then
-				rm -f "${file}" || die -q "Failed to delete ${file}"
-			fi
+			rm -f "${file}" || die -q "Failed to delete ${file}"
 		done
 
 		# Note that we don't do .so*, just .so on purpose.  The
@@ -151,9 +149,7 @@ set_new_implementation() {
 				pushd "${DST_PREFIX}/${libdir}/${moduledir}/extensions" &> /dev/null
 					# First remove old symlinks
 					for file in lib{wfb,glx}.{a,so,la}; do
-						if [[ -e ${file} ]] ; then
-							rm -f "${file}" || die -q "Failed to delete ${DST_PREFIX}/${libdir}/${moduledir}/extensions/${file}"
-						fi
+						rm -f "${file}" || die -q "Failed to delete ${DST_PREFIX}/${libdir}/${moduledir}/extensions/${file}"
 					done
 
 					for file in ${PREFIX}/${libdir}/opengl/${gl_local}/extensions/*.{so,a,la}; do
