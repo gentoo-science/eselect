@@ -9,6 +9,11 @@
 	* modules/Makefile.am (safe_scripts): Add the new files.
 	* NEWS: Mention the new feature.
 
+2009-04-19  Thomas Anderson <gentoofan23@gentoo.org>
+
+	* modules/opengl.eselect: Fix removal of symlinks when the symlink is
+	broken. Thanks to Maximilian Grothusmann in bug #228547. Fixes: #228547
+
 2009-04-18  Ulrich Mueller  <ulm@gentoo.org>
 
 	* modules/rc.eselect (do_delete): Don't die if the script is no
