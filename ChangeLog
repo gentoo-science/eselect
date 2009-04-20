@@ -6,6 +6,8 @@
 	(do_show): Function completely rewritten; use the common API
 	of baselayout-1 and OpenRC. Thanks to Sebastian Günther
 	<samson@guenther-roetgen.de> in bug 180966.
+	(describe_show, describe_show_parameters, describe_show_options):
+	Document optional "runlevel" parameter of do_show().
 
 	* libs/editor-variable.bash.in:
 	* modules/editor.eselect:

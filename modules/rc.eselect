@@ -205,7 +205,15 @@ do_list() {
 ### show action
 
 describe_show() {
-	echo "Show init script status for current runlevel"
+	echo "Show init script status"
+}
+
+describe_show_parameters() {
+	echo "<runlevels>"
+}
+
+describe_show_options() {
+	echo "runlevels : Runlevels to list (defaults to current runlevel)"
 }
 
 do_show() {
@@ -215,28 +223,36 @@ do_show() {
 		# functions.sh needs the bash builtin
 		unset -f eval
 		source_rc_functions
-		runlevel=$(get_runlevel)
-		write_list_start \
-			"Status of init scripts in runlevel \"${runlevel}\""
-		for script in $(find_scripts "${ROOT}/etc/runlevels/${runlevel}"); do
-			for x in stopping starting inactive started stopped; do
-				if service_${x} ${script}; then
-					case ${x} in
-						starting|inactive)
-							write_kv_list_entry ${script} \
-								"$(highlight_warning [${x}])"
-							;;
-						started)
-							write_kv_list_entry ${script} "$(highlight [${x}])"
-							;;
-						*)
-							write_kv_list_entry ${script} [${x}]
-							;;
-					esac
-					continue 2
-				fi
+		[[ -z $1 ]] && set - "$(get_runlevel)"
+
+		for runlevel in "$@"; do
+			[[ -d ${ROOT}/etc/runlevels/${runlevel} ]] \
+				|| die -q "${runlevel} is no valid runlevel"
+
+			write_list_start \
+				"Status of init scripts in runlevel \"${runlevel}\""
+			for script in $(find_scripts "${ROOT}/etc/runlevels/${runlevel}")
+			do
+				status=unknown
+				for x in stopping starting inactive started stopped; do
+					if service_${x} ${script}; then
+						status=${x}
+						break
+					fi
+				done
+				case ${status} in
+					starting|inactive|unknown)
+						write_kv_list_entry \
+							${script} "$(highlight_warning [${x}])"
+						;;
+					started)
+						write_kv_list_entry ${script} "$(highlight [${x}])"
+						;;
+					*)
+						write_kv_list_entry ${script} [${x}]
+						;;
+				esac
 			done
-			write_kv_list_entry ${script} "$(highlight_warning [unknown])"
 		done
 	)
 }
