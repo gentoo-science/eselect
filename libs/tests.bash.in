@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (c) 2005 Gentoo Foundation.
+# Copyright (c) 2005-2009 Gentoo Foundation.
 # $Id$
 # This file is part of the 'eselect' tools framework.
 #
@@ -21,7 +21,7 @@
 has() {
     local test=${1} item
     shift
-    for item in $@ ; do
+    for item in "$@" ; do
         [[ ${item} == ${test} ]] && return 0
     done
     return 1
@@ -40,4 +40,3 @@ is_number() {
 }
 
 # vim: set sw=4 et sts=4 tw=80 :
-

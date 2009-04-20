@@ -1,5 +1,8 @@
 2009-04-20  Ulrich Mueller  <ulm@gentoo.org>
 
+	* libs/tests.bash.in (has): Quote $@ in order to expand positional
+	parameters correctly.
+
 	* modules/rc.eselect (source_rc_functions, get_runlevel):
 	New functions for OpenRC (and baselayout-1) support.
 	(RC_SVCDIR, rc_svcdir): Removed.
