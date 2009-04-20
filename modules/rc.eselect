@@ -223,11 +223,11 @@ do_show() {
 		# functions.sh needs the bash builtin
 		unset -f eval
 		source_rc_functions
-		[[ -z $1 ]] && set - "$(get_runlevel)"
+		[[ $# -eq 0 ]] && set - "$(get_runlevel)"
 
 		for runlevel in "$@"; do
-			[[ -d ${ROOT}/etc/runlevels/${runlevel} ]] \
-				|| die -q "${runlevel} is no valid runlevel"
+			[[ -n ${runlevel} && -d ${ROOT}/etc/runlevels/${runlevel} ]] \
+				|| die -q "\"${runlevel}\" is no valid runlevel"
 
 			write_list_start \
 				"Status of init scripts in runlevel \"${runlevel}\""
