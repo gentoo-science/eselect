@@ -1,0 +1,81 @@
+.\" Copyright 2009 Gentoo Foundation
+.\" Distributed under the terms of the GNU General Public License v2
+.\" $Id$
+.\"
+.TH ESELECT 5 "April 2009" "Gentoo Linux" eselect
+.SH NAME
+pager.eselect \- The PAGER management module for Gentoo's eselect
+.SH SYNOPSIS
+.B eselect pager
+.RB [ help | usage | version ]
+.br
+.B eselect pager list
+.br
+.B eselect pager set
+.I target
+.br
+.B eselect pager show
+.br
+.B eselect pager update
+.SH DESCRIPTION
+.B eselect
+is Gentoo's configuration and management tool.  It features modules
+that care for the individual administrative tasks.
+.SH ACTION: LIST
+.B eselect pager list
+.br
+List available targets for the
+.I PAGER
+variable.
+
+# eselect pager list
+.br
+Available targets for the PAGER variable:
+.br
+  [1]   /bin/more *
+  [2]   /usr/bin/less
+  [ ]   (free form)
+.SH ACTION: SET
+.B eselect pager set
+.I target
+.br
+Set the
+.I PAGER
+variable in the system profile.
+.I target
+can be either an identification number given by
+.B eselect pager list
+or the name of an installed terminal pager program.
+
+# eselect pager set 2
+.br
+Setting PAGER to /usr/bin/less ...
+.SH ACTION: SHOW
+.B eselect pager show
+.br
+Show the value of the
+.I PAGER
+variable in the system profile.
+
+# eselect pager show
+.br
+PAGER variable in profile:
+.br
+  /usr/bin/less
+.SH ACTION: UPDATE
+.B eselect pager update
+.br
+Update the
+.I PAGER
+variable if it is unset or invalid.
+.SH FILES
+.TP
+.B /etc/env.d/99pager
+Configuration file where the variable is stored.
+.SH AUTHOR
+Ulrich Mueller <ulm@gentoo.org>
+.SH SEE ALSO
+.BR eselect (1),
+.BR environ (7)
+.SH REVISION
+$Id$

@@ -1,0 +1,83 @@
+.\" Copyright 2009 Gentoo Foundation
+.\" Distributed under the terms of the GNU General Public License v2
+.\" $Id$
+.\"
+.TH ESELECT 5 "April 2009" "Gentoo Linux" eselect
+.SH NAME
+editor.eselect \- The EDITOR management module for Gentoo's eselect
+.SH SYNOPSIS
+.B eselect editor
+.RB [ help | usage | version ]
+.br
+.B eselect editor list
+.br
+.B eselect editor set
+.I target
+.br
+.B eselect editor show
+.br
+.B eselect editor update
+.SH DESCRIPTION
+.B eselect
+is Gentoo's configuration and management tool.  It features modules
+that care for the individual administrative tasks.
+.SH ACTION: LIST
+.B eselect editor list
+.br
+List available targets for the
+.I EDITOR
+variable.
+
+# eselect editor list
+.br
+Available targets for the EDITOR variable:
+.br
+  [1]   /bin/nano *
+  [2]   /usr/bin/emacs
+  [3]   /usr/bin/vi
+  [ ]   (free form)
+.SH ACTION: SET
+.B eselect editor set
+.I target
+.br
+Set the
+.I EDITOR
+variable in the system profile.
+.I target
+can be either an identification number given by
+.B eselect editor list
+or the name of an installed text editor.
+
+# eselect editor set emacs
+.br
+Setting EDITOR to /usr/bin/emacs ...
+.SH ACTION: SHOW
+.B eselect editor show
+.br
+Show the value of the
+.I EDITOR
+variable in the system profile.
+
+# eselect editor show
+.br
+EDITOR variable in profile:
+.br
+  /usr/bin/emacs
+.SH ACTION: UPDATE
+.B eselect editor update
+.br
+Update the
+.I EDITOR
+variable if it is unset or invalid.
+.SH FILES
+.TP
+.B /etc/env.d/99editor
+Configuration file where the variable is stored.
+.SH AUTHOR
+Ulrich Mueller <ulm@gentoo.org>
+.SH SEE ALSO
+.BR eselect (1),
+.BR visual.eselect (5),
+.BR environ (7)
+.SH REVISION
+$Id$

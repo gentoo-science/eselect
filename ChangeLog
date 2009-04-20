@@ -14,8 +14,12 @@
 	* modules/visual.eselect:
 	* modules/pager.eselect: New modules and library, managing the
 	EDITOR, VISUAL and PAGER environment variables; bug 190216.
+	* man/editor.eselect.5:
+	* man/visual.eselect.5:
+	* man/pager.eselect.5: New man pages.
 	* libs/Makefile.am (eselectlibs_SCRIPTS, EXTRA_DIST):
-	* modules/Makefile.am (safe_scripts): Add the new files.
+	* modules/Makefile.am (safe_scripts):
+	* man/Makefile.am (man_MANS): Add the new files.
 	* NEWS: Mention the new feature.
 
 2009-04-19  Thomas Anderson <gentoofan23@gentoo.org>
