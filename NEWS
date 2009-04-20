@@ -5,6 +5,7 @@ trunk:
     Bug fixes:
     - Fixed bug #155814: Clear aliases and shell functions.
     - Fixed bug #156866: Handle missing scripts in rc module.
+    - Fixed bug #180966: Make rc module work with OpenRC.
     - Various improvements in opengl module.
 
     New features:

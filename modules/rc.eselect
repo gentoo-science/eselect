@@ -9,13 +9,28 @@ MAINTAINER="Danny van Dyk <kugelfang@gentoo.org>"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}")
 
-# default setting
-RC_SVCDIR=/var/lib/init.d/
+# source_rc_functions PRIVATE
+# API for OpenRC or baselayout-1
+source_rc_functions() {
+	[[ ${RC_GOT_FUNCTIONS} = yes ]] && return
+	source /etc/init.d/functions.sh || die "Failed to source functions.sh"
+	# baselayout-1 compatibility
+	if [[ -e ${svclib}/sh/rc-services.sh ]]; then
+		source "${svclib}/sh/rc-services.sh" \
+			|| die "Failed to source rc-services.sh"
+	fi
+}
 
-# return actual rc service directory
-rc_svcdir() {
-	local ret=$(load_config ${ROOT}/etc/conf.d/rc svcdir)
-	echo ${ret:-${RC_SVCDIR}}
+# get_runlevel PRIVATE
+# determine the current runlevel
+get_runlevel() {
+	if type rc_runlevel &>/dev/null; then
+		rc_runlevel || die "rc_runlevel failed"
+	elif [[ -n ${SOFTLEVEL} ]]; then
+		echo "${SOFTLEVEL}"
+	else
+		die "Cannot determine runlevel"
+	fi
 }
 
 # list_runlevels PRIVATE
@@ -194,19 +209,36 @@ describe_show() {
 }
 
 do_show() {
-	local softlevel=$(< "$(rc_svcdir)"/softlevel) script stopped
-	local runlevel=${1:-${softlevel}}
-	write_list_start "Status of init scripts in runlevel $(highlight ${runlevel})"
-	for script in $(find_scripts ${ROOT}/etc/runlevels/${runlevel}) ; do
-		stopped=true
-		for x in started starting stopping failed broken ; do
-			if [[ -L ${ROOT}/$(rc_svcdir)/${x}/${script} ]] ; then
-				write_kv_list_entry ${script} "[${x}]"
-				stopped=false
-			fi
+	# subshell to avoid pollution of caller's environment
+	(
+		# core.bash redefines eval; unset it because OpenRC's
+		# functions.sh needs the bash builtin
+		unset -f eval
+		source_rc_functions
+		runlevel=$(get_runlevel)
+		write_list_start \
+			"Status of init scripts in runlevel \"${runlevel}\""
+		for script in $(find_scripts "${ROOT}/etc/runlevels/${runlevel}"); do
+			for x in stopping starting inactive started stopped; do
+				if service_${x} ${script}; then
+					case ${x} in
+						starting|inactive)
+							write_kv_list_entry ${script} \
+								"$(highlight_warning [${x}])"
+							;;
+						started)
+							write_kv_list_entry ${script} "$(highlight [${x}])"
+							;;
+						*)
+							write_kv_list_entry ${script} [${x}]
+							;;
+					esac
+					continue 2
+				fi
+			done
+			write_kv_list_entry ${script} "$(highlight_warning [unknown])"
 		done
-		[[ ${stopped} == true ]] && write_kv_list_entry ${script} "[stopped]"
-	done
+	)
 }
 
 ### start action
