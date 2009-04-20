@@ -3,12 +3,15 @@ modulesdir=$(datadir)/$(PACKAGE_NAME)/modules/
 safe_scripts = \
 		 bashcomp.eselect \
 		 binutils.eselect \
+		 editor.eselect \
 		 env.eselect \
 		 kernel.eselect \
 		 mailer.eselect \
 		 modules.eselect \
+		 pager.eselect \
 		 profile.eselect \
-		 rc.eselect
+		 rc.eselect \
+		 visual.eselect
 
 dodgy_scripts = \
 		 config.eselect \

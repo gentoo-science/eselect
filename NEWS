@@ -11,6 +11,7 @@ trunk:
     - Add a new module, for listing and querying eselect modules.
     - Allow setting system-wide default dictionary.
     - Treat 'help' and 'version' options as if they were actions.
+    - Modules for the EDITOR, VISUAL, and PAGER environment variables.
 
 1.0.12:
     Bug fixes:

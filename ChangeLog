@@ -1,3 +1,14 @@
+2009-04-20  Ulrich Mueller  <ulm@gentoo.org>
+
+	* libs/editor-variable.bash.in:
+	* modules/editor.eselect:
+	* modules/visual.eselect:
+	* modules/pager.eselect: New modules and library, managing the
+	EDITOR, VISUAL and PAGER environment variables; bug 190216.
+	* libs/Makefile.am (eselectlibs_SCRIPTS, EXTRA_DIST):
+	* modules/Makefile.am (safe_scripts): Add the new files.
+	* NEWS: Mention the new feature.
+
 2009-04-18  Ulrich Mueller  <ulm@gentoo.org>
 
 	* modules/rc.eselect (do_delete): Don't die if the script is no

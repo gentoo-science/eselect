@@ -1,0 +1,15 @@
+# Copyright 2009 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Id$
+
+EDITOR_VAR="VISUAL"
+EDITOR_ENVFILE="/etc/env.d/99editor"
+# list of most common cases only
+EDITOR_LIST="/bin/nano /usr/bin/emacs /usr/bin/vi /usr/bin/xemacs"
+
+inherit editor-variable
+
+DESCRIPTION="Manage ${EDITOR_VAR} variable"
+MAINTAINER="ulm@gentoo.org"
+SVN_DATE='$Date$'
+VERSION=$(svn_date_to_version "${SVN_DATE}")

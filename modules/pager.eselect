@@ -1,0 +1,14 @@
+# Copyright 2009 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Id$
+
+EDITOR_VAR="PAGER"
+EDITOR_ENVFILE="/etc/env.d/99pager"
+EDITOR_LIST="/bin/more /usr/bin/less /usr/bin/most"
+
+inherit editor-variable
+
+DESCRIPTION="Manage ${EDITOR_VAR} variable"
+MAINTAINER="ulm@gentoo.org"
+SVN_DATE='$Date$'
+VERSION=$(svn_date_to_version "${SVN_DATE}")
