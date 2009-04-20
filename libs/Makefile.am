@@ -4,7 +4,7 @@ eselectlibs_SCRIPTS = \
 		      config.bash \
 		      core.bash \
 		      default.eselect \
-		      editor-variable.eselect \
+		      editor-variable.bash \
 		      manip.bash \
 		      multilib.bash \
 		      output.bash \
@@ -19,7 +19,7 @@ EXTRA_DIST = \
 	     config.bash.in \
 	     core.bash.in \
 	     default.eselect.in \
-	     editor-variable.eselect.in \
+	     editor-variable.bash.in \
 	     manip.bash.in \
 	     multilib.bash.in \
 	     output.bash.in \
