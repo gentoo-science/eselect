@@ -1,5 +1,7 @@
 2009-04-21  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/compiler.eselect.in: Remove dead module.
+
 	* modules/rc.eselect (do_show): Add --all option.
 	(describe_show_options): Document it.
 
