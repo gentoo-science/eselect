@@ -1,5 +1,8 @@
 2009-04-21  Ulrich Mueller  <ulm@gentoo.org>
 
+	* libs/path-manipulation.bash.in (basename, dirname)
+	(canonicalise): Quote arguments to make functions whitespace safe.
+
 	* modules/modules.eselect (do_list, do_has): Fix quoting.
 
 	* modules/compiler.eselect.in: Remove dead module.

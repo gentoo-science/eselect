@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (c) 2005-2006 Gentoo Foundation.
+# Copyright (c) 2005-2009 Gentoo Foundation.
 # $Id$
 # This file is part of the 'eselect' tools framework.
 #
@@ -18,18 +18,16 @@
 
 # basename wrapper
 basename() {
-    echo ${1##*/}
+    echo "${1##*/}"
 }
 
 # dirname wrapper
 dirname() {
-    echo ${1%/*}
+    echo "${1%/*}"
 }
 
 canonicalise() {
-    @CANONICALISE@ $*
+    @CANONICALISE@ "$@"
 }
 
 # vim: set sw=4 et sts=4 tw=80 :
-
-
