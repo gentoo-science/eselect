@@ -1,3 +1,8 @@
+2009-04-21  Ulrich Mueller  <ulm@gentoo.org>
+
+	* modules/rc.eselect (do_show): Add --all option.
+	(describe_show_options): Document it.
+
 2009-04-20  Ulrich Mueller  <ulm@gentoo.org>
 
 	* libs/tests.bash.in (has): Quote $@ in order to expand positional

@@ -215,6 +215,7 @@ describe_show_parameters() {
 
 describe_show_options() {
 	echo "runlevels : Runlevels to list (defaults to current runlevel)"
+	echo "--all : List all runlevels"
 }
 
 do_show() {
@@ -224,7 +225,15 @@ do_show() {
 		# functions.sh needs the bash builtin
 		unset -f eval
 		source_rc_functions
-		[[ $# -eq 0 ]] && set - "$(get_runlevel)"
+
+		if [[ $# -eq 0 ]]; then
+			set - "$(get_runlevel)"
+		elif [[ $1 = --all ]]; then
+			for x in "${ROOT}"/etc/runlevels/*; do
+				[[ -d "${x}" ]] && runlevels=("${runlevels[@]}" "${x##*/}")
+			done
+			set - "${runlevels[@]}"
+		fi
 
 		for runlevel in "$@"; do
 			[[ -n ${runlevel} && -d ${ROOT}/etc/runlevels/${runlevel} ]] \
@@ -232,6 +241,7 @@ do_show() {
 
 			write_list_start \
 				"Status of init scripts in runlevel \"${runlevel}\""
+			n=0
 			for script in $(find_scripts "${ROOT}/etc/runlevels/${runlevel}")
 			do
 				status=unknown
@@ -253,7 +263,9 @@ do_show() {
 						write_kv_list_entry ${script} [${x}]
 						;;
 				esac
+				((n++))
 			done
+			[[ ${n} -eq 0 ]] && write_kv_list_entry "(none found)" ""
 		done
 	)
 }
