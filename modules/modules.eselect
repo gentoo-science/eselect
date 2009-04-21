@@ -13,14 +13,14 @@ inherit config
 
 ### list action
 
-## {{{ list
-
 describe_list() {
 	echo "List all available modules"
 }
 
 # List all installed modules
 do_list() {
+	[[ $# -gt 0 ]] && die -q "Too many parameters"
+
 	local path file module name desc
 
 	write_list_start "Built-in modules:"
@@ -31,16 +31,16 @@ do_list() {
 	extra_modules=()
 	for path in "${ESELECT_MODULES_PATH[@]}" ; do
 		[[ -d ${path} ]] || continue
-		for file in ${path}/*.eselect ; do
+		for file in "${path}"/*.eselect ; do
 			[[ -f ${file} ]] || continue
-			extra_modules=( ${extra_modules[@]} "${file}" )
+			extra_modules=( "${extra_modules[@]}" "${file}" )
 		done
 	done
 
 	if [[ ${#extra_modules[@]} -gt 0 ]] ; then
 		echo
 		write_list_start "Extra modules:"
-		for module in ${extra_modules[@]} ; do
+		for module in "${extra_modules[@]}" ; do
 			name=${module##*/}
 			name=${name%%.eselect}
 			desc=$(load_config "${module}" DESCRIPTION)
@@ -50,11 +50,8 @@ do_list() {
 	fi
 }
 
-# }}}
-
 ### has action
 
-## {{{ has
 describe_has() {
 	echo "Return true if the module is installed, and false otherwise"
 }
@@ -64,21 +61,20 @@ describe_has_parameters() {
 }
 
 do_has() {
-	local modname="$1" modpath
-	[[ -z "$modname" ]] && die -q "Required option (module name) missing"
+	[[ -z $1 ]] && die -q "Required option (module name) missing"
+	[[ $# -gt 1 ]] && die -q "Too many parameters"
+
+	local modname=$1 modpath
 	for modpath in "${ESELECT_MODULES_PATH[@]}" ; do
-		[[ -f "${modpath}/${modname}.eselect" ]] && return 0
+		[[ -f ${modpath}/${modname}.eselect ]] && return 0
 	done
 	return 1
 }
-## }}}
 
 ### add action
 # *** Commented out. Do we really want to have an eselect module that is
 # *** installing other modules in a system directory? Also, this should
 # *** go together with a "remove" action.
-
-## {{{ add
 
 # describe_add() {
 # 	echo "Install the given module file somewhere that eselect can find it."
@@ -94,13 +90,13 @@ do_has() {
 # 	local local_path="${ROOT}${HOME}/.eselect/modules/" module_file
 # 	local force_default=0
 #
-# 	if [[ ${1} == "--force-default-location" ]] ; then
+# 	if [[ $1 = "--force-default-location" ]] ; then
 # 		force_default=1
 # 		shift
 # 	fi
-# 	module_file=${1}
+# 	module_file=$1
 #
-# 	[[ -z "${module_file}" ]] && die -q "Required option (module file) missing"
+# 	[[ -z ${module_file} ]] && die -q "Required option (module file) missing"
 #
 # 	# TODO: Don't install the module "somewhere", depending on write access.
 # 	# Add an option to control if it goes to the user's or to the system dir.
@@ -114,7 +110,5 @@ do_has() {
 # 			|| die -q "Failed to install module file"
 # 	fi
 # }
-
-## }}}
 
 # vim: ts=4 sw=4 noet fdm=marker

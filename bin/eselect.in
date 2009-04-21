@@ -153,11 +153,11 @@ fi
 
 if [[ -z ${action} ]] && [[ -n ${1##--} ]] ; then
     while [[ ${1##--} != ${1} ]] ; do
-        has ${1##--} "${ESELECT_KNOWN_OPTIONS[@]}" || \
+        has ${1##--} ${ESELECT_KNOWN_OPTIONS} || \
             die -q "Unknown option ${1}!"
         case ${1##--} in
             no-colour|no-color)
-                ESELECT_OPTIONS=(${ESELECT_OPTIONS[@]} "NOCOLOUR")
+                ESELECT_OPTIONS="${ESELECT_OPTIONS} NOCOLOUR"
                 nocolours
                 ;;
             help|version)
