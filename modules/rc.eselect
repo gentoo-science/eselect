@@ -219,55 +219,52 @@ describe_show_options() {
 }
 
 do_show() {
-	# subshell to avoid pollution of caller's environment
-	(
-		# core.bash redefines eval; unset it because OpenRC's
-		# functions.sh needs the bash builtin
-		unset -f eval
-		source_rc_functions
+	local runlevel status n x
 
-		if [[ $# -eq 0 ]]; then
-			set - "$(get_runlevel)"
-		elif [[ $1 = --all ]]; then
-			for x in "${ROOT}"/etc/runlevels/*; do
-				[[ -d "${x}" ]] && runlevels=("${runlevels[@]}" "${x##*/}")
-			done
-			set - "${runlevels[@]}"
-		fi
+	# core.bash redefines eval; unset it because OpenRC's
+	# functions.sh needs the bash builtin
+	unset -f eval
+	source_rc_functions
 
-		for runlevel in "$@"; do
-			[[ -n ${runlevel} && -d ${ROOT}/etc/runlevels/${runlevel} ]] \
-				|| die -q "\"${runlevel}\" is no valid runlevel"
-
-			write_list_start \
-				"Status of init scripts in runlevel \"${runlevel}\""
-			n=0
-			for script in $(find_scripts "${ROOT}/etc/runlevels/${runlevel}")
-			do
-				status=unknown
-				for x in stopping starting inactive started stopped; do
-					if service_${x} ${script}; then
-						status=${x}
-						break
-					fi
-				done
-				case ${status} in
-					starting|inactive|unknown)
-						write_kv_list_entry \
-							${script} "$(highlight_warning [${x}])"
-						;;
-					started)
-						write_kv_list_entry ${script} "$(highlight [${x}])"
-						;;
-					*)
-						write_kv_list_entry ${script} [${x}]
-						;;
-				esac
-				((n++))
-			done
-			[[ ${n} -eq 0 ]] && write_kv_list_entry "(none found)" ""
+	if [[ $# -eq 0 ]]; then
+		set - "$(get_runlevel)"
+	elif [[ $1 = --all ]]; then
+		for x in "${ROOT}"/etc/runlevels/*; do
+			[[ -d "${x}" ]] && runlevels=("${runlevels[@]}" "${x##*/}")
 		done
-	)
+		set - "${runlevels[@]}"
+	fi
+
+	for runlevel in "$@"; do
+		[[ -n ${runlevel} && -d ${ROOT}/etc/runlevels/${runlevel} ]] \
+			|| die -q "\"${runlevel}\" is no valid runlevel"
+
+		write_list_start \
+			"Status of init scripts in runlevel \"${runlevel}\""
+		n=0
+		for script in $(find_scripts "${ROOT}/etc/runlevels/${runlevel}"); do
+			status=unknown
+			for x in stopping starting inactive started stopped; do
+				if service_${x} ${script}; then
+					status=${x}
+					break
+				fi
+			done
+			case ${status} in
+				starting|inactive|unknown)
+					write_kv_list_entry ${script} "$(highlight_warning [${x}])"
+					;;
+				started)
+					write_kv_list_entry ${script} "$(highlight [${x}])"
+					;;
+				*)
+					write_kv_list_entry ${script} [${x}]
+					;;
+			esac
+			((n++))
+		done
+		[[ ${n} -eq 0 ]] && write_kv_list_entry "(none found)" ""
+	done
 }
 
 ### start action

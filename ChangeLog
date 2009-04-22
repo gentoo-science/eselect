@@ -10,7 +10,8 @@
 
 	* modules/compiler.eselect.in: Remove dead module.
 
-	* modules/rc.eselect (do_show): Add --all option.
+	* modules/rc.eselect (do_show): Add --all option. No need for an
+	extra subshell; do_action already calls us from one.
 	(describe_show_options): Document it.
 
 2009-04-20  Ulrich Mueller  <ulm@gentoo.org>
