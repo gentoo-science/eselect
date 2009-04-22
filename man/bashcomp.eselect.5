@@ -1,44 +1,69 @@
-.TH "ESELECT" "5" "June 2005" "Gentoo Linux" "eselect"
-.SH "NAME"
-bashcomp\.eselect \- Manage contributed bash-completion scripts
-.SH "SYNOPSIS"
-\fBeselect bashcomp\fR [\fBhelp\fR|\fBusage\fR]
+.\" Copyright 2005-2009 Gentoo Foundation
+.\" Distributed under the terms of the GNU General Public License v2
+.\" $Id$
+.\"
+.TH bashcomp.eselect 5 "April 2009" "Gentoo Linux" eselect
+.SH NAME
+bashcomp.eselect \- Manage contributed bash-completion scripts
+.SH SYNOPSIS
+.B eselect bashcomp
+.RB [ help | usage | version ]
 .br
-\fBeselect bashcomp\fR \fBlist\fR [\fB\-\-global\fR]
+.B eselect bashcomp list
+.RB [ \-\-global ]
 .br
-\fBeselect bashcomp\fR \fBenable\fR [\fB\-\-global\fR] \fIbashcomp1 bashcomp2\fR
+.B eselect bashcomp enable
+.RB [ \-\-global ]
+.RI [ bashcomp ...]
 .br
-\fBeselect bashcomp\fR \fBdisable\fR [\fB\-\-global\fR] \fIbashcomp1 bashcomp2\fR
-
-.SH "DESCRIPTION"
-\fBeselect\fR is Gentoo's configuration and management tool. It features
-modules that care for individual administrative tasks.
-.SH "ACTION: LIST"
-\fBeselect bashcomp list\fR [\fB\-\-global\fR]
+.B eselect bashcomp disable
+.RB [ \-\-global ]
+.RI [ bashcomp ...]
+.SH DESCRIPTION
+.B eselect
+is Gentoo's configuration and management tool.  It features modules
+that care for individual administrative tasks.
+.SH ACTION: LIST
+.B eselect bashcomp list
+.RB [ \-\-global ]
 .br
-Displays a list of available contributed bash-completion scripts.  Enabled
-bash-completions are marked with a '*'.  If the \fB\-\-global\fR option is
-specified, list globally enabled completions.
+Display a list of available contributed bash-completion scripts.
+Enabled bash-completions are marked with a '*'.  If the
+.B \-\-global
+option is specified, list globally enabled completions.
 
 $ eselect bashcomp list
 .br
 Available completions:
   [1]  bitkeeper
   [2]  cowsay *
-.SH "ACTION: ENABLE"
-\fBeselect bashcomp enable\fR [\fB\-\-global\fR] \fIbashcomp1 bashcomp2\fR
+.SH ACTION: ENABLE
+.B eselect bashcomp enable
+.RB [ \-\-global ]
+.RI [ bashcomp ...]
 .br
-.br
-Enable the specified completion(s).  Arguments may be a completion name or
-a corresponding number produced by \fBeselect bashcomp list\fR.  If the \fB\-\-global\fR
+Enable the specified completion(s).  Arguments may be a completion
+name or a corresponding number produced by
+.B eselect bashcomp
+.BR list .
+If the
+.B \-\-global
 option is specified, enable globally (for all users).
-.SH "ACTION: DISABLE"
-\fBeselect bashcomp disable\fR [\fB\-\-global\fR] \fIbashcomp1 bashcomp2\fR
+.SH ACTION: DISABLE
+.B eselect bashcomp disable
+.RB [ \-\-global ]
+.RI [ bashcomp ...]
 .br
-Disable the specified completion(s). Arguments may be a completion name or
-a corresponding number produced by \fBeselect bashcomp list\fR.  If the \fB\-\-global\fR
+Disable the specified completion(s).  Arguments may be a completion
+name or a corresponding number produced by
+.B eselect bashcomp
+.BR list .
+If the
+.B \-\-global
 option is specified, disable globally (for all users).
-.SH "AUTHORS"
+.SH AUTHOR
 Aaron Walker  <ka0ttic@gentoo.org>
-.SH "REVISION"
+.SH SEE ALSO
+.BR eselect (1)
+.SH REVISION
 $Id$

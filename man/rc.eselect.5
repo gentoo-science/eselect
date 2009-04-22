@@ -1,34 +1,65 @@
-.TH "ESELECT" "5" "April 2005" "Gentoo Linux" "eselect"
-.SH "NAME"
+.\" Copyright 2005-2009 Gentoo Foundation
+.\" Distributed under the terms of the GNU General Public License v2
+.\" $Id$
+.\"
+.TH rc.eselect 5 "April 2009" "Gentoo Linux" eselect
+.SH NAME
 rc.eselect \- Runlevel configuration module
-.SH "SYNOPSIS"
-\fBeselect rc\fR [\fBhelp\fR|\fBusage\fR]
+.SH SYNOPSIS
+.B eselect rc
+.RB [ help | usage | version ]
 .br
-\fBeselect rc\fR \fBadd\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
+.B eselect rc add
+.I script
+.RI [ runlevel ...]
 .br
-\fBeselect rc\fR \fBdelete\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
+.B eselect rc delete
+.I script
+.RI [ runlevel ...]
 .br
-\fBeselect rc\fR \fBlist\fR [\fIrunlevel\fR]
+.B eselect rc list
+.RI [ runlevel ]
 .br
-\fBeselect rc\fR \fBpause\fR \fIscript\fR [\fIscript\fR [\fIscript\fR ...]]
+.B eselect rc pause
+.I script
+.RI [ script ...]
 .br
-\fBeselect rc\fR \fBrestart\fR \fIscript\fR [\fIscript\fR [\fIscript\fR ...]]
+.B eselect rc restart
+.I script
+.RI [ script ...]
 .br
-\fBeselect rc\fR \fBshow\fR
+.B eselect rc show
+.RI [ runlevel ...]
 .br
-\fBeselect rc\fR \fBstart\fR \fIscript\fR [\fIscript\fR [\fIscript\fR ...]]
+.B eselect rc start
+.I script
+.RI [ script ...]
 .br
-\fBeselect rc\fR \fBstop\fR \fIscript\fR [\fIscript\fR [\fIscript\fR ...]]
-.SH "DESCRIPTION"
-\fBeselect\fR is Gentoo's configuration and management tool. It features
-modules that care for the individual administrative tasks.
-.SH "ACTION: ADD"
-\fBeselect rc add\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
+.B eselect rc stop
+.I script
+.RI [ script ...]
+.SH DESCRIPTION
+.B eselect
+is Gentoo's configuration and management tool.  It features modules
+that care for the individual administrative tasks.
+.SH ACTION: ADD
+.B eselect rc add
+.I script
+.RI [ runlevel ...]
 .br
-Add \fIscript\fR to given \fIrunlevels\fR. If no \fIrunlevel\fR is given,
-this action will add \fIscript\fR to the \fBdefault\fR runlevel.
+Add
+.I script
+to given
+.IR runlevels .
+If no
+.I runlevel
+is given, this action will add
+.I script
+to the
+.B default
+runlevel.
 
-phi ~ # eselect rc add local default nonetwork notexisting
+# eselect rc add local default nonetwork notexisting
 .br
 Adding local to following runlevels
   default                   [done]
@@ -37,25 +68,42 @@ Adding local to following runlevels
 
 The result\-tags are as following
 .TP
-\fB[done]\fR
+.B [done]
+.I script
+successfully added to
+.IR runlevel .
+.TP
+.B [failed]
+.I script
+could not be added to
+.IR runlevel .
+.TP
+.B [skipped]
+.I script
+already part of
+.IR runlevel .
+.TP
+.B [invalid]
+.I runlevel
+is not existing.
+.SH ACTION: DELETE
+.B eselect rc delete
+.I script
+.RI [ runlevel ...]
 .br
-\fIscript\fR succesfully added to \fIrunlevel\fR
-.TP
-\fB[failed]\fR
-\fIscript\fR couldnot be added to \fIrunlevel\fR
-.TP
-\fB[skipped]\fR
-\fIscript\fR already part of \fIrunlevel\fR
-.TP
-\fB[invalid]\fR
-\fIrunlevel\fR is not existing
-.SH "ACTION: DELETE"
-\fBeselect rc delete\fR \fIscript\fR [\fIrunlevel\fR [\fIrunlevel\fR ...]]
-.br
-Delete \fIscript\fR from given \fIrunlevels\fR. If no \fIrunlevel\fR is given,
-this action will delete \fIscript\fR from the \fBdefault\fR runlevel.
+Delete
+.I script
+from given
+.IR runlevels .
+If no
+.I runlevel
+is given, this action will delete
+.I script
+from the
+.B default
+runlevel.
 
-phi ~ # eselect rc delete local nonetwork notexisting
+# eselect rc delete local nonetwork notexisting
 .br
 Deleting local from following runlevels
   nonetwork                 [done]
@@ -63,25 +111,36 @@ Deleting local from following runlevels
 
 The result\-tags are as following
 .TP
-\fB[done]\fR
+.B [done]
+.I script
+successfully deleted from
+.I runlevel
+.TP
+.B [failed]
+.I script
+could not be deleted from
+.IR runlevel .
+.TP
+.B [skipped]
+.I script
+not part of
+.IR runlevel .
+.TP
+.B [invalid]
+.I runlevel
+is not existing.
+.SH ACTION: LIST
+.B eselect rc list
+.RI [ runlevel ]
 .br
-\fIscript\fR succesfully deleted from \fIrunlevel\fR
-.TP
-\fB[failed]\fR
-\fIscript\fR could not be deleted from \fIrunlevel\fR
-.TP
-\fB[skipped]\fR
-\fIscript\fR not part of \fIrunlevel\fR
-.TP
-\fB[invalid]\fR
-\fIrunlevel\fR is not existing
-.SH "ACTION: LIST"
-\fBeselect rc list\fR [\fIrunlevel\fR]
-.br
-Displays an ordered list of init scripts that belong to \fIrunlevel\fR. In case that
-\fIrunlevel\fR is given, this action will list all scripts from /etc/init.d/.
+Display an ordered list of init scripts that belong to
+.IR runlevel .
+In case that no
+.I runlevel
+is given, this action will list all scripts from /etc/init.d/.
 
-phi / # eselect rc list default
+# eselect rc list default
+.br
 Init scripts to be started by runlevel default
   cupsd
   local
@@ -93,34 +152,46 @@ Init scripts to be started by runlevel default
   vixie\-cron
   xdm
   xfs
-.SH "ACTION: PAUSE"
-\fBeselect rc pause\fR \fIscript\fR [\fIscript\fR ...]
+.SH ACTION: PAUSE
+.B eselect rc pause
+.I script
+.RI [ script ...]
 .br
-Pauses the given set of init scripts.
+Pause the given set of init scripts.
 
-phi / # eselect rc pause net.eth0
+# eselect rc pause net.eth0
 .br
  * Stopping eth0
  *   Bringing down eth0
  *     Shutting down eth0 ...
-.SH "ACTION: RESTART"
-\fBeselect rc restart\fR \fIscript\fR [\fIscript\fR ...]
+.SH ACTION: RESTART
+.B eselect rc restart
+.I script
+.RI [ script ...]
 .br
-Restarts the given set of init scripts.
+Restart the given set of init scripts.
 
-phi / # eselect rc restart sshd
+# eselect rc restart sshd
 .br
 Restarting init script
  * ERROR:  "local" has not yet been started.
- * Stopping sshd ...                                                      [ ok ]
-.SH "ACTION: SHOW"
-\fBeselect rc show\fR
+ * Stopping sshd ...                                            [ ok ]
+.SH ACTION: SHOW
+.B eselect rc show
+.RI [ runlevel ...]
 .br
-Shows the current runlevel's init script and lists them together with their status.
+Show init scripts that belong to
+.I runlevel
+and list them together with their status.  If no
+.I runlevel
+is given, list the scripts from the current runlevel.
+With option
+.B --all
+the scripts of all runlevels are shown.
 
-phi / # eselect rc show
+# eselect rc show
 .br
-Status of init scripts in runlevel default
+Status of init scripts in runlevel "default"
   cupsd                     [started]
   local                     [started]
   metalog                   [started]
@@ -132,44 +203,58 @@ Status of init scripts in runlevel default
   xdm                       [started]
 
 The status flags are as following
-
 .TP
-\fB[started]\fR
-\fIscript\fR has been successfully run.
+.B [started]
+.I script
+has been successfully run.
 .TP
-\fB[stopping]\fR
-\fIscript\fR stop has been ordered, but it has not ceased yet.
+.B [stopped]
+.I script
+has manually been stopped.
 .TP
-\fB[stopped]\fR
-\fIscript\fR has manually been stopped.
+.B [starting]
+.I script
+is starting.
 .TP
-\fB[failed]\fR
-One or more commands in \fIscript\fR have not succeeded.
+.B [stopping]
+.I script
+stop has been ordered, but it has not ceased yet.
 .TP
-\fB[broken]\fR
-\fIscript\fR has a syntax error.
-
-.SH "ACTION: START"
-\fBeselect rc start\fR \fIscript\fR [\fIscript\fR ...]
+.B [inactive]
+.I script
+has started, but is inactive.
+.B [unknown]
+.I script is part of
+.IR runlevel ,
+but its status is not known.
+.SH ACTION: START
+.B eselect rc start
+.I script
+.RI [ script ...]
 .br
-Starts the given set of init scripts manually, regardless of the current runlevel.
+Starts the given set of init scripts manually, regardless of the
+current runlevel.
 
-phi / # eselect rc start local sshd
+# eselect rc start local sshd
 .br
 Restarting init script
- * Starting local ...                                                    [ ok ]
+ * Starting local ...                                           [ ok ]
  * WARNING:  "sshd" has already been started.
-.SH "ACTION: STOP"
-\fBeselect rc restart\fR \fIscript\fR [\fIscript\fR ...]
+.SH ACTION: STOP
+.B eselect rc restart
+.I script
+.RI [ script ...]
 .br
 Restarts the given set of init scripts.
 
-phi / # eselect rc restart sshd
+# eselect rc restart sshd
 .br
 Restarting init script
  * ERROR:  "local" has not yet been started.
- * Stopping sshd ...                                                      [ ok ]
-.SH "AUTHOR"
+ * Stopping sshd ...                                            [ ok ]
+.SH AUTHOR
 Danny van Dyk <kugelfang@gentoo.org>
-.SH "REVISION"
+.SH SEE ALSO
+.BR eselect (1)
+.SH REVISION
 $Id$

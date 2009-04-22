@@ -1,61 +1,55 @@
-.TH "ESELECT" "1" "April 2005" "Gentoo Linux" "eselect"
-.SH "NAME"
-\fBeselect\fR \- Gentoo's multi\-purpose configuration and managment tool
-.SH "SYNOPSIS"
-\fBeselect\fR <\fIglobal options\fR> <\fImodule\fR> <\fImodule options\fR>
-.SH "DESCRIPTION"
-\fBeselect\fR is Gentoo's configuration and management tool. It features
-modules that care for individual administrative tasks.
-.SH "OPTIONS"
-.B "\-\-no-color, \-\-no-colour"
-Disable coloured output.
-.SH "BUILT-INS"
+.\" Copyright 2005-2009 Gentoo Foundation
+.\" Distributed under the terms of the GNU General Public License v2
+.\" $Id$
+.\"
+.TH ESELECT 1 "April 2009" "Gentoo Linux" eselect
+.SH NAME
+eselect \- Gentoo's multi\-purpose configuration and management tool
+.SH SYNOPSIS
+.B eselect
+.RI [ "global options" ]
+.I module
+.RI [ action ]
+.SH DESCRIPTION
+.B eselect
+is Gentoo's configuration and management tool.  It features modules
+that care for individual administrative tasks.
+.SH OPTIONS
 .TP
-\fIhelp\fR
+.BR \-\-no-color ", " \-\-no-colour
+Disable coloured output.
+.SH BUILT-INS
+.TP
+.B help
 Displays a help screen listing all built\-ins and the installed modules.
 .TP
-\fIlist\-modules\fR
-Lists only the installed modules.
-.TP
-\fIusage\fR
+.B usage
 Displays a minimal help screen.
 .TP
-\fIversion\fR
+.B version
 Prints eselect's version tag.
-.SH "MODULES"
+.SH MODULES
 You can view a list of installed modules using
-.ad
-.hy
-.ad l
-.hy 0
-.HP 14
-\fBeselect\fR \fIlist\-modules\fR
-.ad
-.hy
-.ad l
-.hy 0
-.HP 14
+.IP
+.B eselect modules list
+.PP
 For individual help on each module, please run
-.ad
-.hy
-.ad l
-.hy 0
-.HP 14
-\fBeselect\fR \fImodule\fR
-.ad
-.hy
-.ad l
-.hy 0
-.HP 14
-or refer to the manpage \fImodule\fR.eselect(5)
-.SH "FULL DOCUMENTATION"
+.IP
+.B eselect
+.I module
+.B help
+.PP
+or refer to the manpage
+.IB module .eselect
+(5)
+.SH FULL DOCUMENTATION
 Full user and developer documentation is included in Restructured Text (RST)
-format. The 'html' Make target can be used to generate HTML versions.
-.SH "AUTHORS"
+format.  The 'html' Make target can be used to generate HTML versions.
+.SH AUTHORS
 Danny van Dyk <kugelfang@gentoo.org>
 .br
 Ciaran McCreesh <ciaranm@gentoo.org>
 .br
 Aaron Walker <ka0ttic@gentoo.org>
-.SH "CVS HEADER"
+.SH REVISION
 $Id$

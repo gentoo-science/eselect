@@ -1,23 +1,29 @@
-.TH "ESELECT" "5" "October 2005", "Gentoo Linux" "eselect"
-.SH "NAME"
-kernel\.eselect \- The kernel symlink management module for Gentoo's eselect
-.SH "SYNOPSIS"
-\fBeselect kernel\fR [\fBhelp\fR|\fBusage\fR]
+.\" Copyright 2005-2009 Gentoo Foundation
+.\" Distributed under the terms of the GNU General Public License v2
+.\" $Id$
+.\"
+.TH kernel.eselect 5 "April 2009" "Gentoo Linux" eselect
+.SH NAME
+kernel.eselect \- The kernel symlink management module for Gentoo's eselect
+.SH SYNOPSIS
+.B eselect kernel
+.RB [ help | usage | version ]
 .br
-\fBeselect kernel\fR \fBlist\fR
+.B eselect kernel list
 .br
-\fBeselect kernel\fR \fBset\fR \fItarget\fR
+.B eselect kernel set
+.I target
 .br
-\fBeselect kernel\fR \fBshow\fR
-
-.SH "DESCRIPTION"
-\fBeselect\fR is Gentoo's configuration and management tool. It features
-modules that care for the individual administrative tasks.
-.SH "ACTION: LIST"
-\fBeselect kernel list\fR
+.B eselect kernel show
+.SH DESCRIPTION
+.B eselect
+is Gentoo's configuration and management tool.  It features modules
+that care for the individual administrative tasks.
+.SH ACTION: LIST
+.B select kernel list
 .br
-Displays an ordered list of available kernels.  An asterisk next to one of
-the list elements denotes the currently selected kernel.
+Display an ordered list of available kernels.  An asterisk next to one
+of the list elements denotes the currently selected kernel.
 
 # eselect kernel list
 .br
@@ -25,17 +31,24 @@ Available kernel symlink targets:
   [1]   linux-2.6.11.11
   [2]   linux-2.6.12.5 *
   [3]   linux-2.6.13-rc6
-.SH "ACTION: SET"
-\fBeselect kernel set\fR \fItarget\fR
+.SH ACTION: SET
+.B eselect kernel set
+.I target
 .br
-Set /usr/src/linux symlink to point to the specified kernel name, \fItarget\fR.
-The \fItarget\fR argument may be a kernel name or it's associated number (displayed
-in \fBeselect kernel list\fR output).
-.SH "ACTION: SHOW"
-\fBeselect kernel show\fR
+Set /usr/src/linux symlink to point to the specified kernel name,
+.IR target .
+The
+.I target
+argument may be a kernel name or it's associated number (displayed in
+.B eselect kernel list
+output).
+.SH ACTION: SHOW
+.B eselect kernel show
 .br
 Show the currently selected kernel.
-.SH "AUTHORS"
+.SH AUTHOR
 Aaron Walker <ka0ttic@gentoo.org>
-.SH "REVISION"
+.SH SEE ALSO
+.BR eselect (1)
+.SH REVISION
 $Id$
