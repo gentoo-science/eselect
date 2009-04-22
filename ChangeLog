@@ -1,5 +1,8 @@
 2009-04-21  Ulrich Mueller  <ulm@gentoo.org>
 
+	* libs/core.bash.in (do_action): Call "shift" twice instead of
+	"shift 2" since there may be only one parameter.
+
 	* libs/path-manipulation.bash.in (basename, dirname)
 	(canonicalise): Quote arguments to make functions whitespace safe.
 
