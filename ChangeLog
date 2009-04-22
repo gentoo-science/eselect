@@ -1,5 +1,8 @@
 2009-04-23  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/env.eselect (describe_update_parameters):
+	Add "noldconfig" parameter.
+
 	* man/eselect.1: Update, "list-modules" is now "modules list".
 
 	* man/rc.eselect.5: Document latest changes in "show" action.
