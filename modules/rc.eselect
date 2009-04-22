@@ -251,14 +251,14 @@ do_show() {
 				fi
 			done
 			case ${status} in
-				starting|inactive|unknown)
-					write_kv_list_entry ${script} "$(highlight_warning [${x}])"
+				stopped)
+					write_kv_list_entry ${script} [${x}]
 					;;
 				started)
 					write_kv_list_entry ${script} "$(highlight [${x}])"
 					;;
 				*)
-					write_kv_list_entry ${script} [${x}]
+					write_kv_list_entry ${script} "$(highlight_warning [${x}])"
 					;;
 			esac
 			((n++))
