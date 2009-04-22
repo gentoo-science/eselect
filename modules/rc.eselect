@@ -228,7 +228,7 @@ do_show() {
 
 	if [[ $# -eq 0 ]]; then
 		set - "$(get_runlevel)"
-	elif [[ $1 = --all ]]; then
+	elif [[ ${1##--} = all ]]; then
 		for x in "${ROOT}"/etc/runlevels/*; do
 			[[ -d "${x}" ]] && runlevels=("${runlevels[@]}" "${x##*/}")
 		done
