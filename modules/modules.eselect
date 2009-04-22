@@ -43,7 +43,8 @@ do_list() {
 		for module in "${extra_modules[@]}" ; do
 			name=${module##*/}
 			name=${name%%.eselect}
-			desc=$(load_config "${module}" DESCRIPTION)
+			desc=$(ESELECT_MODULE_NAME=${name} \
+				load_config "${module}" DESCRIPTION)
 			desc=${desc:-No description available}
 			write_kv_list_entry "${name}" "${desc}"
 		done

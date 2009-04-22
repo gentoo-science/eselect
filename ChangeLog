@@ -1,5 +1,8 @@
 2009-04-23  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/modules.eselect (do_list): Assign the name of the module
+	to ESELECT_MODULE_NAME, bug 220116.
+
 	* modules/env.eselect (describe_update_parameters):
 	Add "noldconfig" parameter.
 
