@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (c) 2005, 2007 Gentoo Foundation.
+# Copyright (c) 2005-2009 Gentoo Foundation.
 # $Id$
 # This file is part of the 'eselect' tools framework.
 #
@@ -27,7 +27,7 @@ arch() {
     # we cannot get a list of valid profiles without it.
     if [[ -z ${ret} ]] ; then
 
-        if [[ -n "${ROOT}" && ${ROOT} != "/" ]] ; then
+        if [[ -n ${ROOT} && ${ROOT} != "/" ]] ; then
             write_warning_msg "Failed to determine \${ARCH}. Is your make.profile symlink valid?"
             return 1
         fi
@@ -64,7 +64,7 @@ arch() {
 # best-version
 # Return true if package $2 is available in ${ROOT}
 best-version() {
-    [[ ${#@} -eq 1 ]] || die "has_version expects exactly 1 arguments!"
+    [[ $# -eq 1 ]] || die "has_version expects exactly 1 arguments!"
 
     local manager=$(package-manager)
     case ${manager} in
@@ -83,7 +83,7 @@ best-version() {
 # Return the contents of environment variable $2 as seen by package manager(s)
 # for package $1.
 envvar() {
-    [[ ${#@} -eq 2 ]] || die "envvar expects exactly 2 arguments!"
+    [[ $# -eq 2 ]] || die "envvar expects exactly 2 arguments!"
 
     local manager=$(package-manager)
     case ${manager} in
@@ -102,7 +102,7 @@ envvar() {
 # has-version
 # Return true if package $2 is available in ${ROOT}
 has-version() {
-    [[ ${#@} -eq 1 ]] || die "has_version expects exactly 1 arguments!"
+    [[ $# -eq 1 ]] || die "has_version expects exactly 1 arguments!"
 
     local manager=$(package-manager)
     case ${manager} in
@@ -136,7 +136,7 @@ get_repositories() {
 }
 
 get_news_dir_name() {
-    [[ ${#@} -eq 1 ]] || die "get_news_dir_name expects exactly 1 argument!"
+    [[ $# -eq 1 ]] || die "get_news_dir_name expects exactly 1 argument!"
 
     local name=${1%::*} repo=${1##*::}
     local manager=$(package-manager)
@@ -157,20 +157,22 @@ get_news_dir_name() {
 package-manager() {
     local manager
 
-    if [[ -n ${ESELECT_PACKAGE_MANAGER_CACHE} ]] ; then
-        echo ${ESELECT_PACKAGE_MANAGER_CACHE}
+    if [[ -n ${ESELECT_PACKAGE_MANAGER} ]] ; then
+        echo ${ESELECT_PACKAGE_MANAGER}
         return
     fi
 
-    # We prefer paludis over portage
-    if $(paludis_command) --list-repositories > /dev/null 2>&1 ; then
+    # Try Portage first, since it is Gentoo's official package manager
+    if [[ -n $(portageq envvar PORTDIR) ]] ; then
+        manager="portage"
+    elif $(paludis_command) --list-repositories &>/dev/null ; then
         manager="paludis"
     else
-        manager="portage"
+	die "No package manager found"
     fi
 
     echo ${manager}
-    export ESELECT_PACKAGE_MANAGER_CACHE=${manager}
+    ESELECT_PACKAGE_MANAGER=${manager}
 }
 
 # vim: set sw=4 et sts=4 tw=80 :

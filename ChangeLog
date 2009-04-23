@@ -1,5 +1,9 @@
 2009-04-23  Ulrich Mueller  <ulm@gentoo.org>
 
+	* libs/package-manager.bash.in (package-manager):
+	Rename ESELECT_PACKAGE_MANAGER_CACHE to ESELECT_PACKAGE_MANAGER
+	and don't export it. Prefer Portage over Paludis.
+
 	* libs/output.bash.in (get_column_width): Default to a width of
 	80 characters, not 79.
 
