@@ -127,7 +127,7 @@ get_repositories() {
             ;;
         portage)
             for i in $(portageq envvar PORTDIR PORTDIR_OVERLAY); do
-                portage_get_repo_name $i
+                portage_get_repo_name ${i}
             done
             ;;
         *)
@@ -158,17 +158,19 @@ package-manager() {
     local manager
 
     if [[ -n ${ESELECT_PACKAGE_MANAGER} ]] ; then
-        echo ${ESELECT_PACKAGE_MANAGER}
+        echo "${ESELECT_PACKAGE_MANAGER}"
         return
     fi
 
     # Try Portage first, since it is Gentoo's official package manager
-    if [[ -n $(portageq envvar PORTDIR) ]] ; then
+    # TODO: Add an option to make it selectable by the user
+    # TODO: Support Pkgcore
+    if [[ -x @PORTAGEQ@ ]] ; then
         manager="portage"
     elif $(paludis_command) --list-repositories &>/dev/null ; then
         manager="paludis"
     else
-	die "No package manager found"
+        die "No package manager found"
     fi
 
     echo ${manager}
