@@ -1,5 +1,8 @@
 2009-04-23  Ulrich Mueller  <ulm@gentoo.org>
 
+	* libs/output.bash.in (get_column_width): Default to a width of
+	80 characters, not 79.
+
 	* modules/modules.eselect (do_list): Assign the name of the module
 	to ESELECT_MODULE_NAME, bug 220116.
 

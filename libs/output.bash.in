@@ -190,10 +190,10 @@ write_numbered_list() {
 # Get current column width
 get_column_width() {
     if [[ -z "${COLS}" ]] ; then
-        COLS=79
+        COLS=80
         if [[ -t 1 ]] ; then
-            COLS=( $(stty size 2>/dev/null) )
-            is_number "${COLS[1]}" && COLS=${COLS[1]} || COLS=79
+            local size=( $(stty size 2>/dev/null) )
+            is_number "${size[1]}" && COLS=${size[1]}
         fi
     fi
 
