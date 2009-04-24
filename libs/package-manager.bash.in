@@ -162,15 +162,13 @@ package-manager() {
         return
     fi
 
-    # Try Portage first, since it is Gentoo's official package manager
+    # Prefer paludis for now as portage is always installed
     # TODO: Add an option to make it selectable by the user
     # TODO: Support Pkgcore
-    if [[ -x @PORTAGEQ@ ]] ; then
-        manager="portage"
-    elif $(paludis_command) --list-repositories &>/dev/null ; then
+    if $(paludis_command) --list-repositories &> /dev/null ; then
         manager="paludis"
     else
-        die "No package manager found"
+        manager="portage"
     fi
 
     echo ${manager}
