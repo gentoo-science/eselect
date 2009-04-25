@@ -111,7 +111,7 @@ do_list() {
 		stat=${item%%/*}; item=${item#*/}
 		repo=${item%%/*}; item=${item#*/}
 		find_repo_dir ${repo}
-		header=$(read_item "${dir}" ${item} header)
+		header=$(read_item "${dir}" "${item}" header)
 		IFS=$'\n'
 		for line in ${header}; do
 			case "${line%%: *}" in
@@ -282,7 +282,7 @@ do_purge() {
 	# find repos with nonempty lists
 	for (( i = 0; i < ${#items[@]}; i++ )); do
 		item=${items[i]#*/}
-		has ${item%%/*} ${repos} || repos="${repos} ${item%%/*}"
+		has "${item%%/*}" ${repos} || repos="${repos} ${item%%/*}"
 	done
 
 	# purge list of read items
