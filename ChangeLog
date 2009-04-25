@@ -1,3 +1,8 @@
+2009-04-25  Ulrich Mueller  <ulm@gentoo.org>
+
+	* libs/Makefile.am (dosed): Remove Paludis substitution, it is
+	unused since the change of 2008-01-28.
+
 2009-04-23  Ulrich Mueller  <ulm@gentoo.org>
 
 	* libs/package-manager.bash.in (package-manager):
