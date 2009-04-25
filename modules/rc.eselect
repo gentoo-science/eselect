@@ -227,12 +227,12 @@ do_show() {
 	source_rc_functions
 
 	if [[ $# -eq 0 ]]; then
-		set - "$(get_runlevel)"
+		set -- "$(get_runlevel)"
 	elif [[ ${1##--} = all ]]; then
 		for x in "${ROOT}"/etc/runlevels/*; do
 			[[ -d "${x}" ]] && runlevels=("${runlevels[@]}" "${x##*/}")
 		done
-		set - "${runlevels[@]}"
+		set -- "${runlevels[@]}"
 	fi
 
 	for runlevel in "$@"; do
