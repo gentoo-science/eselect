@@ -1,45 +1,59 @@
-.TH "ESELECT" "5" "April 2005" "Gentoo Linux" "eselect"
-.SH "NAME"
-profile\.eselect \- The profile management module for Gentoo's eselect
-.SH "SYNOPSIS"
-\fBeselect profile\fR [\fBhelp\fR|\fBusage\fR]
+.\" Copyright 2005-2009 Gentoo Foundation
+.\" Distributed under the terms of the GNU General Public License v2
+.\" $Id$
+.\"
+.TH profile.eselect 5 "April 2009" "Gentoo Linux" eselect
+.SH NAME
+profile.eselect \- The profile management module for Gentoo's eselect
+.SH SYNOPSIS
+.B eselect profile
+.RB [ help | usage | version ]
 .br
-\fBeselect profile\fR \fBlist\fR
+.B eselect profile list
 .br
-\fBeselect profile\fR \fBset\fR [\fB\-\-force\fR] \fIprofile\fR
+.B eselect profile set
+.RB [ \-\-force ]
+.I profile
 .br
-\fBeselect profile\fR \fBshow\fR
+.B eselect profile show
+.SH DESCRIPTION
+.B eselect
+is Gentoo's configuration and management tool.  It features modules
+that care for the individual administrative tasks.
+.SH ACTION: LIST
+.B eselect profile list
+.br
+Display an ordered list of available and (for your architecture) valid
+profiles.
 
-.SH "DESCRIPTION"
-\fBeselect\fR is Gentoo's configuration and management tool. It features
-modules that care for the individual administrative tasks.
-.SH "ACTION: LIST"
-\fBeselect profile list\fR
-.br
-Displays an ordered list of available and (for your architecture) valid profiles.
-
-phi / # eselect profile list
+# eselect profile list
 .br
 Available profile symlink targets:
   [1]   default\-linux/amd64/2005.0
-.SH "ACTION: SET"
-\fBeselect profile\ set\fR [\fB\-\-force\fR] [\fIprofile\fR]
+.SH ACTION: SET
+.B eselect profile set
+.RB [ \-\-force ]
+.I profile
 .br
-Select a valid profile for future use with portage.  If the \-\-force flag
-is specified, set the profile even if it doesn't appear to be a valid one (doesn't
-exist in \fB${PORTDIR}\fR/profiles/profiles.desc).
-.SH "ACTION: SHOW"
-\fBeselect profile\ show\fR
+Select a valid profile for future use with portage.  If the
+.B \-\-force
+flag is specified, set the profile even if it doesn't appear to be
+a valid one (doesn't exist in
+.BR ${PORTDIR} /profiles/profiles.desc).
+.SH ACTION: SHOW
+.B eselect profile show
 .br
-Shows your system's currently active profile.
+Show your system's currently active profile.
 
-phi / # eselect profile\ show
+# eselect profile show
 .br
 Current make.profile symlink:
   /usr/portage/profiles/default\-linux/amd64/2005.0
-.SH "AUTHORS"
+.SH AUTHORS
 Danny van Dyk <kugelfang@gentoo.org>
 .br
 Aaron Walker  <ka0ttic@gentoo.org>
-.SH "REVISION"
+.SH SEE ALSO
+.BR eselect (1)
+.SH REVISION
 $Id$

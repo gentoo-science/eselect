@@ -1,5 +1,9 @@
 2009-04-25  Ulrich Mueller  <ulm@gentoo.org>
 
+	* man/binutils.eselect.5:
+	* man/mailer.eselect.5:
+	* man/profile.eselect.5: Use man macros.
+
 	* modules/news-tng.eselect: Yet another module for reading GLEP 42
 	news items. Rewritten from scratch.
 	* man/news-tng.eselect.5: New man page.

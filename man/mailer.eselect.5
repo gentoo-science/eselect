@@ -1,46 +1,57 @@
-.TH "ESELECT" "5" "April 2005" "Gentoo Linux" "eselect"
-.SH "NAME"
+.\" Copyright 2005-2009 Gentoo Foundation
+.\" Distributed under the terms of the GNU General Public License v2
+.\" $Id$
+.\"
+.TH mailer.eselect 5 "April 2009" "Gentoo Linux" eselect
+.SH NAME
 mailer.eselect \- The mailer profile management module for Gentoo's eselect
-.SH "SYNOPSIS"
-\fBeselect mailer\fR [\fBhelp\fR|\fBusage\fR]
+.SH SYNOPSIS
+.B eselect mailer
+.RB [ help | usage | version ]
 .br
-\fBeselect mailer\fR \fBlist\fR
+.B eselect mailer list
 .br
-\fBeselect mailer\fR \fBset\fR \fIprofile\fR
+.B eselect mailer set
+.I profile
 .br
-\fBeselect mailer\fR \fBshow\fR
+.B eselect mailer show
 .br
-.SH "DESCRIPTION"
-\fBeselect\fR is Gentoo's configuration and management tool. It features
-modules that care for the individual administrative tasks.
-.SH "ACTION: LIST"
-\fBeselect mailer list\fR [\fIoptions\fR]
+.SH DESCRIPTION
+.B eselect
+is Gentoo's configuration and management tool.  It features modules
+that care for the individual administrative tasks.
+.SH ACTION: LIST
+.B eselect mailer list
 .br
-Displays an ordered list of the installed mailer profiles. Each line has
-a number, the profile's name and version number.
+Display an ordered list of the installed mailer profiles.  Each line
+has a number, the profile's name and version number.
 
-pohl / # eselect mailer list
+# eselect mailer list
 .br
 Available mailer.conf profiles:
   [1]   default
   [2]   msmtp\-1.4.0
   [3]   nbsmtp\-0.98
-.SH "ACTION: SET"
-\fBeselect mailer set\fR \fIprofile\fR
+.SH ACTION: SET
+.B eselect mailer set
+.I profile
 .br
-Sets your system's currently active mailer to \fIprofile\fR.
+Set your system's currently active mailer to
+.IR profile .
 
-pohl / # eselect mailer set msmtp-1.4.0
-.SH "ACTION: SHOW"
-\fBeselect mailer show\fR
+# eselect mailer set msmtp-1.4.0
+.SH ACTION: SHOW
+.B eselect mailer show
 .br
-Shows your system's mailer profiles.
+Show your system's mailer profiles.
 
-pohl / # eselect mailer show
+# eselect mailer show
 .br
 Current mailer.conf profile:
   msmtp-1.4.0
-.SH "AUTHOR"
+.SH AUTHOR
 Tom Martin <slarti@gentoo.org>
-.SH "REVISION"
+.SH SEE ALSO
+.BR eselect (1)
+.SH REVISION
 $Id$

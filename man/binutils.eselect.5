@@ -1,27 +1,35 @@
-.TH "ESELECT" "5" "April 2005" "Gentoo Linux" "eselect"
-.SH "NAME"
+.\" Copyright 2005-2009 Gentoo Foundation
+.\" Distributed under the terms of the GNU General Public License v2
+.\" $Id$
+.\"
+.TH binutils.eselect 5 "April 2009" "Gentoo Linux" eselect
+.SH NAME
 binutils.eselect \- The binutils management module for Gentoo's eselect
-.SH "SYNOPSIS"
-\fBeselect binutils\fR [\fBhelp\fR|\fBusage\fR]
+.SH SYNOPSIS
+.B eselect binutils
+.RB [ help | usage | version ]
 .br
-\fBeselect binutils\fR \fBlist\fR
+.B eselect binutils list
 .br
-\fBeselect binutils\fR \fBset\fR
-.SH "DESCRIPTION"
-\fBeselect\fR is Gentoo's configuration and management tool. It features
-modules that care for the individual administrative tasks.
-.SH "ACTION: LIST"
-\fBeselect binutils list\fR [\fIpatterns\fR]
+.B eselect binutils set
+.SH DESCRIPTION
+.B eselect
+is Gentoo's configuration and management tool.  It features modules
+that care for the individual administrative tasks.
+.SH ACTION: LIST
+.B eselect binutils list
+.RI [ patterns ]
 .br
-List all installed version of binutils. If \fIpatterns\fR are given, only versions that match the patterns
-will be listed.
+List all installed version of binutils.  If
+.I patterns
+are given, only versions that match the patterns will be listed.
 
-phi / # eselect binutils list powerpc*
+# eselect binutils list powerpc*
 .br
 Installed binutils for target powerpc\-unknown\-linux\-gnu
   [1]   2.15.92.0.2 *
 .br
-phi / # eselect binutils list
+# eselect binutils list
 .br
 Installed binutils for target powerpc\-unknown\-linux\-gnu
   [1]   2.15.92.0.2 *
@@ -30,13 +38,17 @@ Installed binutils for target x86_64\-pc\-linux\-gnu
   [2]   2.15.92.0.2
   [3]   2.16
   [4]   2.16.1 *
-.SH "ACTION: SET"
-\fBeselect binutils set\fR \fIselection\fR
+.SH ACTION: SET
+.B eselect binutils set
+.I selection
 .br
-Activates the selected version of binutils. \fIselection\fR can be either an identification number
-given by \fBeselect binutils list\fR or a pattern that uniquely describes one installed version.
+Activate the selected version of binutils.
+.I selection
+can be either an identification number given by
+.B eselect binutils list
+or a pattern that uniquely describes one installed version.
 
-phi / # eselect binutils set x86_64*2.16.1
+# eselect binutils set x86_64*2.16.1
 .br
 Switching to x86_64\-pc\-linux\-gnu\-2.16.1...
 .br
@@ -47,16 +59,20 @@ Please remember to run:
   # source /etc/profile
 
 in order to let changes take effect!
-.SH "ACTION: SHOW"
-\fBeselect binutils show\fR [\fItarget\fR]
+.SH ACTION: SHOW
+.B eselect binutils show
+.RI [ target ]
 .br
-Prints the currently activated binutils version for the given target. If no target is
-supplied then the CHOST environment variable is used to evaluate the native target.
+Print the currently activated binutils version for the given target.
+If no target is supplied then the CHOST environment variable is used
+to evaluate the native target.
 
-phi / # eselect binutils show
+# eselect binutils show
 .br
 x86_64\-pc\-linux\-gnu\-2.16.1
-.SH "AUTHOR"
+.SH AUTHOR
 Danny van Dyk <kugelfang@gentoo.org>
-.SH "REVISION"
+.SH SEE ALSO
+.BR eselect (1)
+.SH REVISION
 $Id$
