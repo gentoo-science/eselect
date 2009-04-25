@@ -1,0 +1,82 @@
+.\" Copyright 2009 Gentoo Foundation
+.\" Distributed under the terms of the GNU General Public License v2
+.\" $Id$
+.\"
+.TH news-tng.eselect 5 "April 2009" "Gentoo Linux" eselect
+.SH NAME
+news-tng.eselect \- Yet another GLEP 42 news module for Gentoo's eselect
+.SH SYNOPSIS
+.B eselect news-tng
+.RB [ help | usage | version ]
+.br
+.B eselect news-tng list
+.br
+.B eselect news-tng read
+.RI [ item ...]
+.br
+.B eselect news-tng unread
+.RI [ item ...]
+.br
+.B eselect news-tng purge
+.br
+.B eselect news-tng count
+.RB [ new | all ]
+.SH DESCRIPTION
+.B eselect
+is Gentoo's configuration and management tool.  It features modules
+that care for the individual administrative tasks.
+.SH ACTION: LIST
+.B eselect news-tng list
+.br
+List all Gentoo news items.
+
+# eselect news-tng list
+.br
+News items:
+.br
+  [1]   2009-04-18  (unread)  Generation 1 Java Setup Deprecated
+  [2]   2009-04-06  (read)    Migration from teTeX to TeXLive
+  [3]   2009-04-06  (read)    Migration to X.org Server 1.5
+.SH ACTION: READ
+.B eselect news-tng read
+.RI [ item ...]
+.br
+Read news item(s), selected by their
+.I item
+number(s) from the
+.B list
+action.  Special items
+.B new
+and
+.B all
+select all unread items or all items, respectively.
+.SH ACTION: UNREAD
+.B eselect news-tng unread
+.RI [ item ...]
+.br
+Mark news item(s) as unread again.  Items are selected by their
+.I item
+number(s) from the
+.B list
+action.  Special item
+.B all
+selects all items.
+.SH ACTION: PURGE
+.B eselect news-tng purge
+.br
+Purge all read news item(s).
+.SH ACTION: COUNT
+.B eselect news-tng count
+.RB [ new | all ]
+.br
+Display number of unread news items (default) or of all news items,
+if option
+.B all
+is given.
+.SH AUTHOR
+Ulrich Mueller <ulm@gentoo.org>
+.SH SEE ALSO
+.BR eselect (1),
+http://www.gentoo.org/proj/en/glep/glep-0042.html
+.SH REVISION
+$Id$

@@ -8,6 +8,7 @@ safe_scripts = \
 		 kernel.eselect \
 		 mailer.eselect \
 		 modules.eselect \
+		 news-tng.eselect \
 		 pager.eselect \
 		 profile.eselect \
 		 rc.eselect \

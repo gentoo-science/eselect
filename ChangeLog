@@ -1,5 +1,14 @@
 2009-04-25  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/news-tng.eselect: Yet another module for reading GLEP 42
+	news items. Rewritten from scratch.
+	* man/news-tng.eselect.5: New man page.
+	* modules/Makefile.am (safe_scripts):
+	* man/Makefile.am (man_MANS): Update.
+
+	* libs/package-manager.bash.in (get_repo_news_dir): New function.
+	(get_news_dir_name): Call get_repo_news_dir.
+
 	* libs/Makefile.am (dosed): Remove Paludis substitution, it is
 	unused since the change of 2008-01-28.
 

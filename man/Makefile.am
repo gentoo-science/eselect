@@ -5,6 +5,7 @@ man_MANS = eselect.1 \
 	   env.eselect.5 \
 	   kernel.eselect.5 \
 	   mailer.eselect.5 \
+	   news-tng.eselect.5 \
 	   pager.eselect.5 \
 	   profile.eselect.5 \
 	   rc.eselect.5 \

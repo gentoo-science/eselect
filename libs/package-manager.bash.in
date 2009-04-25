@@ -40,7 +40,7 @@ arch() {
             sparc*) ret=sparc ;;
             x86_64) ret=amd64 ;;
             *) write_warning_msg \
-                "Unknown architecture. Please submit a bug including the output of 'uname -m'!"
+                "Unknown architecture. Please submit a bug including the output of 'uname -m'"
                 return 1
                 ;;
             esac
@@ -52,7 +52,7 @@ arch() {
                 OpenBSD) suffix="-obsd" ;;
                 DragonFly) suffix="-dfly" ;;
                 *) write_warning_msg \
-                    "Unknown OS. Please submit a bug including the output of 'uname -s'!"
+                    "Unknown OS. Please submit a bug including the output of 'uname -s'"
                     return 1
                     ;;
             esac
@@ -64,7 +64,7 @@ arch() {
 # best-version
 # Return true if package $2 is available in ${ROOT}
 best-version() {
-    [[ $# -eq 1 ]] || die "has_version expects exactly 1 arguments!"
+    [[ $# -eq 1 ]] || die "has_version expects exactly one argument"
 
     local manager=$(package-manager)
     case ${manager} in
@@ -75,7 +75,7 @@ best-version() {
             portageq has_version "${ROOT}" "${1}" 2>/dev/null
             ;;
         *)
-            die "Unknown package manager: \"${manager}\"!"
+            die "Unknown package manager: \"${manager}\""
     esac
 }
 
@@ -83,7 +83,7 @@ best-version() {
 # Return the contents of environment variable $2 as seen by package manager(s)
 # for package $1.
 envvar() {
-    [[ $# -eq 2 ]] || die "envvar expects exactly 2 arguments!"
+    [[ $# -eq 2 ]] || die "envvar expects exactly 2 arguments"
 
     local manager=$(package-manager)
     case ${manager} in
@@ -95,14 +95,14 @@ envvar() {
             portageq envvar "${2}" 2>/dev/null
             ;;
         *)
-            die "Unknown package manager: \"${manager}\"!"
+            die "Unknown package manager: \"${manager}\""
     esac
 }
 
 # has-version
 # Return true if package $2 is available in ${ROOT}
 has-version() {
-    [[ $# -eq 1 ]] || die "has_version expects exactly 1 arguments!"
+    [[ $# -eq 1 ]] || die "has_version expects exactly one argument"
 
     local manager=$(package-manager)
     case ${manager} in
@@ -115,7 +115,7 @@ has-version() {
             return $?
             ;;
         *)
-            die "Unknown package manager: \"${manager}\"!"
+            die "Unknown package manager: \"${manager}\""
     esac
 }
 
@@ -131,25 +131,32 @@ get_repositories() {
             done
             ;;
         *)
-            die "Unknown package manager: \"${manager}\"!"
+            die "Unknown package manager: \"${manager}\""
+    esac
+}
+
+# get_repo_news_dir
+# return the directory where to find GLEP 42 news items for repository $1
+get_repo_news_dir() {
+    [[ $# -eq 1 ]] || die "get_repo_news_dir expects exactly one argument"
+    local repo=$1
+    local manager=$(package-manager)
+    case ${manager} in
+        paludis)
+            $(paludis_command) --configuration-variable ${repo} newsdir
+            ;;
+        portage)
+            echo "$(portage_get_repository ${repo})/metadata/news"
+            ;;
+        *)
+            die "Unknown package manager: \"${manager}\""
     esac
 }
 
 get_news_dir_name() {
-    [[ $# -eq 1 ]] || die "get_news_dir_name expects exactly 1 argument!"
-
+    [[ $# -eq 1 ]] || die "get_news_dir_name expects exactly one argument"
     local name=${1%::*} repo=${1##*::}
-    local manager=$(package-manager)
-    case ${manager} in
-        paludis)
-            echo "$($(paludis_command) --configuration-variable ${repo} newsdir)/${name}"
-            ;;
-        portage)
-            echo "$(portage_get_repository ${repo})/metadata/news/${name}"
-            ;;
-        *)
-            die "Unknown package manager: \"${manager}\"!"
-    esac
+    echo "$(get_repo_news_dir "${repo}")/${name}"
 }
 
 # package-manager PRIVATE
@@ -172,6 +179,8 @@ package-manager() {
     fi
 
     echo ${manager}
+    # caching doesn't really work: we are typically called with
+    # command substitution, i.e. in a subshell
     ESELECT_PACKAGE_MANAGER=${manager}
 }
 
