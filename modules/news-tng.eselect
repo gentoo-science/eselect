@@ -121,11 +121,11 @@ do_list() {
 		done
 		IFS=${ifs_save}
 		if [[ ${stat} = unread ]]; then
-			write_numbered_list_entry \
-				$((i++)) "$(highlight "${posted## }  (unread)  ${title## }")"
+			write_numbered_list_entry $((i++)) "$(highlight \
+				"${posted## }  (new)   ${title## }")"
 		else
-			write_numbered_list_entry \
-				$((i++)) "${posted## }  (read)    ${title## }"
+			write_numbered_list_entry $((i++)) \
+				"${posted## }          ${title## }"
 		fi
 	done
 	[[ $# -eq 0 ]] && write_kv_list_entry "(none found)" ""
@@ -156,7 +156,7 @@ describe_read() {
 }
 
 describe_read_options() {
-	echo "new : Read unread news items"
+	echo "new : Read unread news items (default)"
 	echo "all : Read all news items"
 	echo "item : Number of item (from 'list' action)"
 }
@@ -172,9 +172,9 @@ do_read() {
 	local ifs_save=${IFS-$' \t\n'}
 
 	# expand special values "new" and "all"
-	if [[ $1 = new || $1 = all ]]; then
+	if [[ $# -eq 0 || $1 = new || $1 = all ]]; then
 		for (( i = 1; i <= n; i++ )); do
-			[[ $1 = new && ${items[i-1]%%/*} != unread ]] && break
+			[[ $1 = all || ${items[i-1]%%/*} = unread ]] || break
 			seq="${seq} ${i}"
 		done
 		set -- ${seq}
