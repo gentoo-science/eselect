@@ -1,55 +1,76 @@
-.TH "ESELECT" "5" "April 2005" "Gentoo Linux" "eselect"
-.SH "NAME"
+.\" Copyright 2005-2009 Gentoo Foundation
+.\" Distributed under the terms of the GNU General Public License v2
+.\" $Id$
+.\"
+.TH opengl.eselect 5 "April 2009" "Gentoo Linux" eselect
+.SH NAME
 opengl.eselect \- The OpenGL management module for Gentoo's eselect
-.SH "SYNOPSIS"
-\fBeselect opengl\fR [\fBhelp\fR|\fBusage\fR]
+.SH SYNOPSIS
+.B eselect opengl
+.RB [ help | usage | version ]
 .br
-\fBeselect opengl\fR \fBlist\fR
+.B eselect opengl list
 .br
-\fBeselect opengl\fR \fBset\fR [\fIoptions\fR] \fIimplementation\fR
+.B eselect opengl set
+.RI [ options ]
+.I implementation
 .br
-\fBeselect opengl\fR \fBshow\fR
-.SH "DESCRIPTION"
-\fBeselect\fR is Gentoo's configuration and management tool. It features
-modules that care for the individual administrative tasks.
-.SH "ACTION: LIST"
-\fBeselect opengl list\fR
+.B eselect opengl show
+.SH DESCRIPTION
+.B eselect
+is Gentoo's configuration and management tool.  It features modules
+that care for the individual administrative tasks.
+.SH ACTION: LIST
+.B eselect opengl list
 .br
-phi / # eselect opengl list
-Displays a numbered list of all available OpenGL implementations. The currently actived implementation
-is highlighted by a '*'.
+Display a numbered list of all available OpenGL implementations.
+The currently actived implementation is highlighted by a '*'.
+
+# eselect opengl list
 .br
 Available OpenGL implementations:
   [1]   ati *
   [2]   xfree
   [3]   xorg\-x11
-.SH "ACTION: SHOW"
-\fBeselect opengl show\fR
+.SH ACTION: SHOW
+.B eselect opengl show
 .br
-Shows your system's currently active OpenGL implementation.
+Show your system's currently active OpenGL implementation.
+
+# eselect opengl show
 .br
-phi / # eselect opengl show
 ati
-.SH "ACTION: SET"
-\fBeselect opengl set\fR [\fIoptions\fR] \fIimplementation\fR
+.SH ACTION: SET
+.B eselect opengl set
+.RI [ options ]
+.I implementation
 .br
-Sets  your  system's currently active BLAS implementations to implementation.
+Set your system's currently active OpenGL implementation to 
+.IR implementation .
 .br
 Extra options:
 .TP
-\fI\-\-use\-old\fR
+.B \-\-use\-old
 If an implementation is already set, use that one.
 .TP
-\fI\-\-prefix=\fBvalue\fR
-Sets the source prefix to \fBvalue\fR (defaults to \fB/usr\fR)
+.BI \-\-prefix =value
+Set the source prefix to
+.I value
+(defaults to
+.BR /usr ).
 .TP
-\fI\-\-dst\-prefix=\fBvalue\fR
-Sets the destination prefix to \fBvalue\fR (defaults to \fB/usr\fR)
+.BI \-\-dst\-prefix =value
+Set the destination prefix to
+.I value
+(defaults to
+.BR /usr ).
 .TP
-\fI\-\-impl\-headers\fR
-Use headers provided by this implementation to override golbal ones provided by
-opengl\-update. This was default in <opengl\-update\-2.2.
-.SH "AUTHOR"
+.B \-\-impl\-headers
+Use headers provided by this implementation to override golbal ones
+provided by opengl\-update.  This was default in <opengl\-update\-2.2.
+.SH AUTHOR
 Danny van Dyk <kugelfang@gentoo.org>
-.SH "REVISION"
+.SH SEE ALSO
+.BR eselect (1)
+.SH REVISION
 $Id$
