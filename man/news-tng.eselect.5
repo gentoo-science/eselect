@@ -12,6 +12,7 @@ news-tng.eselect \- Yet another GLEP 42 news module for Gentoo's eselect
 .B eselect news-tng list
 .br
 .B eselect news-tng read
+.RB [ \-\-raw ]
 .RI [ item ...]
 .br
 .B eselect news-tng unread
@@ -39,6 +40,7 @@ News items:
   [3]   2009-04-06  (read)    Migration to X.org Server 1.5
 .SH ACTION: READ
 .B eselect news-tng read
+.RB [ \-\-raw ]
 .RI [ item ...]
 .br
 Read news item(s), selected by their
@@ -51,6 +53,9 @@ and
 .B all
 select all unread items or all items, respectively.
 Default is to read all unread news, if no item is specified.
+With option
+.BR \-\-raw ,
+output the item in raw format.
 .SH ACTION: UNREAD
 .B eselect news-tng unread
 .RI [ item ...]

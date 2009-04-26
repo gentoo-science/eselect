@@ -41,14 +41,17 @@ write_item_list() {
 		[[ ${item%%/*} = ${repo} ]] && update="${update} ${item#*/}"
 	done
 	file="${ROOT}${NEWS_DIR}/news-${repo}.${stat}"
-	if [[ ! -w ${file} ]]; then
+	for item in ${update}; do
+		echo "${item}"
+	done >"${file}"
+	if [[ $? -ne 0 ]]; then
 		write_error_msg \
 			"Cannot update list of news items for repository \"${repo}\""
 		return 1
 	fi
-	for item in ${update}; do
-		echo "${item}"
-	done >"${file}" || die "Error writing file ${file}"
+	# GLEP 42 says the file should be in the portage group and group writable
+	chgrp portage "${file}" 2>/dev/null && chmod 664 "${file}" 2>/dev/null
+	return 0
 }
 
 # read a given item
@@ -159,6 +162,7 @@ describe_read_options() {
 	echo "new : Read unread news items (default)"
 	echo "all : Read all news items"
 	echo "item : Number of item (from 'list' action)"
+	echo "--raw : Output in raw format"
 }
 
 describe_read_parameters() {
@@ -168,8 +172,13 @@ describe_read_parameters() {
 do_read() {
 	package-manager &>/dev/null # for internal caching
 	local -a items=( $(find_items unread read) ) repos dirs
-	local n=${#items[@]} item repo stat dir header line i seq repos_upd
+	local n=${#items[@]} item repo stat dir header line i seq repos_upd raw
 	local ifs_save=${IFS-$' \t\n'}
+
+	if [[ $1 = --raw ]]; then
+		raw=1
+		shift
+	fi
 
 	# expand special values "new" and "all"
 	if [[ $# -eq 0 || $1 = new || $1 = all ]]; then
@@ -190,21 +199,25 @@ do_read() {
 		stat=${item%%/*}; item=${item#*/}
 		repo=${item%%/*}; item=${item#*/}
 		find_repo_dir ${repo}
-		write_list_start "${item}"
-		header=$(read_item "${dir}" "${item}" header)
-		IFS=$'\n'
-		for line in ${header}; do
-			case "${line%%: *}" in
-				Title)
-					write_kv_list_entry \
-						"${line%%: *}" "$(highlight "${line#*: }")" ;;
-				Author|Posted|Revision)
-					write_kv_list_entry "${line%%: *}" "${line#*: }" ;;
-			esac
-		done
-		IFS=${ifs_save}
-		echo
-		read_item "${dir}" "${item}" body
+		if [[ -n ${raw} ]]; then
+			read_item "${dir}" "${item}"
+		else
+			write_list_start "${item}"
+			header=$(read_item "${dir}" "${item}" header)
+			IFS=$'\n'
+			for line in ${header}; do
+				case "${line%%: *}" in
+					Title)
+						write_kv_list_entry \
+							"${line%%: *}" "$(highlight "${line#*: }")" ;;
+					Author|Posted|Revision)
+						write_kv_list_entry "${line%%: *}" "${line#*: }" ;;
+				esac
+			done
+			IFS=${ifs_save}
+			echo
+			read_item "${dir}" "${item}" body
+		fi
 		echo
 
 		[[ ${stat} = unread ]] || continue
