@@ -22,7 +22,7 @@
 # EDITOR_VAR is the name of the environment variable, e.g. "EDITOR".
 # EDITOR_ENVFILE is the path to the config file where the variable should be
 # stored, e.g. "/etc/env.d/99editor". Several modules may share the same file.
-# EDITOR_LIST is a space-seperated list of available programs (full pathnames)
+# EDITOR_LIST is a space-separated list of available programs (full pathnames)
 # e.g. "/bin/nano /usr/bin/emacs /usr/bin/vi"
 # EDITOR_PATH (optional) is a colon-separated list of directories where to
 # search for available programs. Default is "/bin:/usr/bin".
