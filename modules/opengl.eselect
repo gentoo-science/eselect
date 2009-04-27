@@ -1,4 +1,4 @@
-# Copyright 1999-2004 Gentoo Foundation
+# Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 # Author:  Martin Schlemmer <azarah@gentoo.org>
@@ -23,8 +23,8 @@ DST_PREFIX="${ROOT}/usr"
 USE_PROFILE_HEADERS="no"
 
 check_version() {
-	if portageq has_version ${ROOT:-/} 'x11-base/xorg-x11'; then
-		if ! portageq has_version ${ROOT:-/} '>=x11-base/xorg-x11-6.8.0-r4'; then
+	if has_version 'x11-base/xorg-x11'; then
+		if ! has_version '>=x11-base/xorg-x11-6.8.0-r4'; then
 			die -q "This version requires >=x11-base/xorg-x11-6.8.0-r4"
 		fi
 	fi

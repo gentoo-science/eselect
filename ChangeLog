@@ -1,5 +1,8 @@
 2009-04-27  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/opengl.eselect (check_version): Don't call portageq
+	directly, use generic has_version function instead.
+
 	* libs/package-manager.bash.in (get_repositories): In the Portage
 	case, use "portageq get_repos".
 	(get_repo_news_dir): Use "portageq get_repo_path".
