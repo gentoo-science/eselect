@@ -1,3 +1,17 @@
+2009-04-27  Ulrich Mueller  <ulm@gentoo.org>
+
+	* libs/package-manager.bash.in (get_repositories): In the Portage
+	case, use "portageq get_repos".
+	(get_repo_news_dir): Use "portageq get_repo_path".
+	(best_version): Default to / if ROOT is empty, otherwise portageq
+	doesn't work. Actually use Portage's and Paludis's "best_version"
+	commands, not "has_version".
+	(has_version): Default to / if ROOT is empty. Remove redundant
+	return statements.
+
+	* libs/portage.bash.in (portageq): Expand "$@" not $*.
+	(portage_get_repo_name, portage_get_repository): No longer needed.
+
 2009-04-25  Ulrich Mueller  <ulm@gentoo.org>
 
 	* man/binutils.eselect.5:

@@ -61,24 +61,6 @@ arch() {
     echo ${ret}${suffix}
 }
 
-# best-version
-# Return true if package $2 is available in ${ROOT}
-best-version() {
-    [[ $# -eq 1 ]] || die "has_version expects exactly one argument"
-
-    local manager=$(package-manager)
-    case ${manager} in
-        paludis)
-            paludis_has-version "${1}" 2>/dev/null
-            ;;
-        portage)
-            portageq has_version "${ROOT}" "${1}" 2>/dev/null
-            ;;
-        *)
-            die "Unknown package manager: \"${manager}\""
-    esac
-}
-
 # envvar
 # Return the contents of environment variable $2 as seen by package manager(s)
 # for package $1.
@@ -99,26 +81,34 @@ envvar() {
     esac
 }
 
-# has-version
-# Return true if package $2 is available in ${ROOT}
-has-version() {
+# best_version
+# Return true if package $1 is available in ${ROOT}
+best_version() {
+    [[ $# -eq 1 ]] || die "best_version expects exactly one argument"
+
+    local manager=$(package-manager)
+    case ${manager} in
+        paludis) paludis_best-version "${1}" 2>/dev/null ;;
+        portage) portageq best_version "${ROOT:-/}" "${1}" 2>/dev/null ;;
+        *) die "Unknown package manager: \"${manager}\"" ;;
+    esac
+}
+
+# has_version
+# Return true if package $1 is available in ${ROOT}
+has_version() {
     [[ $# -eq 1 ]] || die "has_version expects exactly one argument"
 
     local manager=$(package-manager)
     case ${manager} in
-        paludis)
-            paludis_has-version "${1}" 2>/dev/null
-            return $?
-            ;;
-        portage)
-            portageq has_version "${ROOT}" "${1}" 2>/dev/null
-            return $?
-            ;;
-        *)
-            die "Unknown package manager: \"${manager}\""
+        paludis) paludis_has-version "${1}" 2>/dev/null ;;
+        portage) portageq has_version "${ROOT:-/}" "${1}" 2>/dev/null ;;
+        *) die "Unknown package manager: \"${manager}\"" ;;
     esac
 }
 
+# get_repositories
+# return list of repositories known to the package manager
 get_repositories() {
     local manager=$(package-manager)
     case ${manager} in
@@ -126,12 +116,11 @@ get_repositories() {
             $(paludis_command) --list-repositories | cut -d' ' -f 2
             ;;
         portage)
-            for i in $(portageq envvar PORTDIR PORTDIR_OVERLAY); do
-                portage_get_repo_name ${i}
-            done
+            portageq get_repos "${ROOT:-/}"
             ;;
         *)
             die "Unknown package manager: \"${manager}\""
+            ;;
     esac
 }
 
@@ -146,10 +135,12 @@ get_repo_news_dir() {
             $(paludis_command) --configuration-variable ${repo} newsdir
             ;;
         portage)
-            echo "$(portage_get_repository ${repo})/metadata/news"
+            echo "$(portageq get_repo_path \
+		"${ROOT:-/}" "${repo}")/metadata/news"
             ;;
         *)
             die "Unknown package manager: \"${manager}\""
+            ;;
     esac
 }
 
