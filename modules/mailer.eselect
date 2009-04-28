@@ -1,4 +1,4 @@
-# Copyright 1999-2005 Gentoo Foundation
+# Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -83,14 +83,15 @@ do_list() {
 		for (( i = 0 ; i < ${#targets[@]} ; i = i + 1 )) ; do
 			# any more elegant way to do this?
 			local profile
-			profile="$(canonicalise ${ROOT}/etc/mail/mailer.conf )"
-			[[ ${targets[${i}]} == ${profile%.mailer} ]] && \
-				targets[${i}]="${targets[${i}]} $(highlight '*' )"
-			done
-			write_numbered_list "${targets[@]}"
-		else
-			write_kv_list_entry "(none found)" ""
-		fi
+			profile=$(basename \
+				"$(canonicalise "${ROOT}/etc/mail/mailer.conf")")
+			[[ ${targets[i]} = ${profile%.mailer} ]] \
+				&& targets[i]="${targets[i]} $(highlight '*')"
+		done
+		write_numbered_list "${targets[@]}"
+	else
+		write_kv_list_entry "(none found)" ""
+	fi
 }
 
 ### set action ###

@@ -6,6 +6,7 @@ trunk:
     - Fixed bug #155814: Clear aliases and shell functions.
     - Fixed bug #156866: Handle missing scripts in rc module.
     - Fixed bug #180966: Make rc module work with OpenRC.
+    - Fixed bug #220473: Highlight selected target in mailer module.
     - Various improvements in opengl module.
 
     New features:

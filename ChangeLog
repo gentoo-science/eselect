@@ -1,5 +1,8 @@
 2009-04-28  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/mailer.eselect (do_list): Highlight selected target,
+	patch by Karl Hakimian <t4y68ds02@sneakemail.com> in 220473.
+
 	* configure.ac: Fix test for greadlink.
 
 	* configure.ac: Add --with-pm option for configuring the preferred
