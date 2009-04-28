@@ -1,5 +1,7 @@
 2009-04-28  Ulrich Mueller  <ulm@gentoo.org>
 
+	* configure.ac: Fix test for greadlink.
+
 	* configure.ac: Add --with-pm option for configuring the preferred
 	package manager. Supply a default path for portageq.
 	* libs/Makefile.am (dosed): Substitute PACKAGE_MANAGER.

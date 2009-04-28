@@ -25,7 +25,7 @@ fi
 AC_PATH_PROG(PORTAGEQ, portageq, /usr/bin/portageq)
 
 AC_PATH_PROG(READLINK, greadlink)
-if test x$CANONICALISE = "x" ; then
+if test x$READLINK = "x" ; then
     AC_CHECK_PROG(READLINK, readlink -f ., yes, no, [$PATH])
     if test x$READLINK = "xyes" ; then
         AC_PATH_PROG(READLINK, readlink)
