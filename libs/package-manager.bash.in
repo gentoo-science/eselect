@@ -153,26 +153,7 @@ get_news_dir_name() {
 # package-manager PRIVATE
 # Return the package manager we're going to use.
 package-manager() {
-    local manager
-
-    if [[ -n ${ESELECT_PACKAGE_MANAGER} ]] ; then
-        echo "${ESELECT_PACKAGE_MANAGER}"
-        return
-    fi
-
-    # Prefer paludis for now as portage is always installed
-    # TODO: Add an option to make it selectable by the user
-    # TODO: Support Pkgcore
-    if $(paludis_command) --list-repositories &> /dev/null ; then
-        manager="paludis"
-    else
-        manager="portage"
-    fi
-
-    echo ${manager}
-    # caching doesn't really work: we are typically called with
-    # command substitution, i.e. in a subshell
-    ESELECT_PACKAGE_MANAGER=${manager}
+    echo "${ESELECT_PACKAGE_MANAGER:-@PACKAGE_MANAGER@}"
 }
 
 # vim: set sw=4 et sts=4 tw=80 :

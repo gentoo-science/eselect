@@ -22,7 +22,7 @@ if test x$SED = "x" ; then
     AC_MSG_ERROR([GNU sed is required])
 fi
 
-AC_PATH_PROG(PORTAGEQ, portageq)
+AC_PATH_PROG(PORTAGEQ, portageq, /usr/bin/portageq)
 
 AC_PATH_PROG(READLINK, greadlink)
 if test x$CANONICALISE = "x" ; then
@@ -57,9 +57,18 @@ if test x$RST2HTML = "x" ; then
     AC_PATH_PROG(RST2HTML, rst2html.py)
 fi
 
+AC_MSG_CHECKING([what package manager we shall use])
+AC_ARG_WITH(pm, [AS_HELP_STRING([--with-pm=PM], [use package manager PM])],
+  [], [withval=portage])
+AS_CASE([x$withval], xportage,, xpaludis,,
+  [AC_MSG_ERROR([package manager "$withval" not known])])
+AC_SUBST(PACKAGE_MANAGER, [$withval])
+AC_MSG_RESULT([$PACKAGE_MANAGER])
+
 AC_MSG_CHECKING([whether dodgy modules should be installed])
 AC_ARG_ENABLE(dodgy_modules,
-  [  --enable-dodgy-modules  Enable experimental and incomplete modules],
+  [AS_HELP_STRING([--enable-dodgy-modules],
+    [enable experimental and incomplete modules])]
   if test x$enableval = "xyes" ; then
       DODGY_MODULES="yes"
   else

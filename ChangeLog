@@ -1,3 +1,12 @@
+2009-04-28  Ulrich Mueller  <ulm@gentoo.org>
+
+	* configure.ac: Add --with-pm option for configuring the preferred
+	package manager. Supply a default path for portageq.
+	* libs/Makefile.am (dosed): Substitute PACKAGE_MANAGER.
+	* libs/package-manager.bash.in (package-manager): Return package
+	manager chosen at configure time. Overriding is possible by
+	environment variable ESELECT_PACKAGE_MANAGER.
+
 2009-04-27  Ulrich Mueller  <ulm@gentoo.org>
 
 	* modules/opengl.eselect (check_version): Don't call portageq
