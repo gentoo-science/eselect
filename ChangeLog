@@ -187,7 +187,7 @@
 
 2009-04-14  Ulrich Mueller  <ulm@gentoo.org>
 
-	* libs/output.bash.in (write_list_start): Add quotes to	prevent
+	* libs/output.bash.in (write_list_start): Add quotes to prevent
 	globbing, fixes bug 232874.
 
 	* bin/eselect.in (ESELECT_DATA_PATH): Remove trailing slant,
@@ -260,7 +260,7 @@
 2007-09-21 Donnie Berkholz <dberkholz@gentoo.org>
 
 	* libs/skel.bash.in: (#189942) Allow resetting to the current
-	implementation, so changes to the symlink map can propogate.
+	implementation, so changes to the symlink map can propagate.
 
 2007-03-08 Mike Kelly <pioto@gentoo.org>
 
@@ -277,7 +277,7 @@
 2007-02-27 Danny van Dyk <kugelfang@gentoo.org>
 
 	* bin/Makefile.am, man/Makefile.am: Fix symlink creation for real now.
-	* modules/env.eselect: Fix parsing of *_SEPERATED.
+	* modules/env.eselect: Fix parsing of *_SEPARATED.
 
 2007-01-29 Mike Kelly <pioto@gentoo.org>
 
@@ -287,7 +287,7 @@
 
 2007-01-15 Mike Kelly <pioto@gentoo.org>
 
-	* bin/Makefile.am:  Really fix parallel install. From r353 in
+	* bin/Makefile.am: Really fix parallel install. From r353 in
 	branches/branch-1.0.x/
 
 	+ Fixes: #162008
@@ -327,9 +327,10 @@
 	and installing eselect modules.
 
 2006-10-26 Timothy Redaelli <drizzt@gentoo.org>
-	* modules/whois.eselect: Make a missing man page just cause a warning (to
-	work with folks who use FEATURES=noman, etc). (modifications taken from
-	vi.eselect)
+
+	* modules/whois.eselect: Make a missing man page just cause a
+	warning (to work with folks who use FEATURES=noman,
+	etc). (modifications taken from vi.eselect)
 
 2006-10-26 Mike Kelly <pioto@gentoo.org>
 
@@ -435,8 +436,8 @@
 
 2006-08-17 Donnie Berkholz <dberkholz@gentoo.org>
 
-	* libs/skel.bash.in: Small usability tweak -- change printed references from
-	"libdir" to "library directory."
+	* libs/skel.bash.in: Small usability tweak -- change printed
+	references from "libdir" to "library directory."
 
 2006-08-17 Donnie Berkholz <dberkholz@gentoo.org>
 
@@ -462,7 +463,7 @@
 2006-08-04 Danny van Dyk <kugelfang@gentoo.org>
 
 	* modules/kernel.eselect: Fix Bug #141106: list action doesn't
-	highligh currently the currently selected sources.
+	highlight currently the currently selected sources.
 
 2006-08-03 Danny van Dyk <kugelfang@gentoo.org>
 
@@ -486,9 +487,9 @@
 
 2006-07-15 Donnie Berkholz <dberkholz@gentoo.org>
 
-	* libs/skel.bash.in:
-	Fix check for whether implementations are available before attempting to
-	switch to them. This fixes switching based on name rather than number.
+	* libs/skel.bash.in: Fix check for whether implementations are
+	available before attempting to switch to them. This fixes
+	switching based on name rather than number.
 
 2006-07-07 Kevin F. Quinn <kevquinn@gentoo.org>
 
@@ -543,22 +544,22 @@
 2006-06-18 Donnie Berkholz <dberkholz@gentoo.org>
 
 	* libs/skel.bash.in, libs/Makefile.am, doc/developer-guide.txt:
-	Add a new skel.bash library for easy implementation of the simpler cases of
-	switching, and document it.
+	Add a new skel.bash library for easy implementation of the simpler
+	cases of switching, and document it.
 
 	* modules/blas.eselect, modules/cblas.eselect, modules/lapack.eselect,
 	man/blas.eselect.5, man/cblas.eselect.5, man/lapack.eselect.5:
-	Use the skel.bash library to create new eselect modules for blas, cblas and
-	lapack. Update documentation to reflect this.
+	Use the skel.bash library to create new eselect modules for blas,
+	cblas and lapack. Update documentation to reflect this.
 
 	* modules/Makefile.am, man/Makefile.am:
-	The new blas/cblas/lapack modules will be installed as standalone packages,
-	so remove them from Makefile.am files.
+	The new blas/cblas/lapack modules will be installed as standalone
+	packages, so remove them from Makefile.am files.
 
 2006-06-13 Kevin F. Quinn <kevquinn@gentoo.org>
 
-	* modules/oodict.eselect: Clean up output when dictionaries are installed
-	outside of myspell ebuilds. See bug #135520 comment 4.
+	* modules/oodict.eselect: Clean up output when dictionaries are
+	installed outside of myspell ebuilds. See bug #135520 comment 4.
 
 2006-06-11 Danny van Dyk <kugelfang@gentoo.org>
 
@@ -598,7 +599,7 @@
 2006-04-01 Danny van Dyk <kugelfang@gentoo.org>
 
 	* Tagged 1.0.1 release.
-	* configure.ac: Fixed substituation of CANONICALISE.
+	* configure.ac: Fixed substitution of CANONICALISE.
 	* modules/env.eselect: Fixed calls to canonicalise().
 	* modules/kernel.eselect: Fixed output of show action.
 
@@ -613,7 +614,7 @@
 	* libs/path-manipulation.bash.in, doc/developer-guide.txt,
 	configure.ac: Added support for the canonicalise function, a wrapper
 	to either GNU readlink or realpath.
-	*  modules/binutils.eselect, modules/blas.eselect,
+	* modules/binutils.eselect, modules/blas.eselect,
 	modules/config.eselect, modules/env.eselect, modules/kernel.eselect,
 	modules/lapack.eselect, modules/mailer.eselect,
 	modules/oracle.eselect, modules/profile.eselect, modules/rc.eselect,
@@ -650,7 +651,7 @@
 2006-03-01 Danny van Dyk <kugelfang@gentoo.org>
 
 	* modules/env.eselect: Fixed bug #124472. env.eselect now uses a
-	temporarly file, honours a symlinked profile.env and fixes
+	temporary file, honours a symlinked profile.env and fixes
 	permissions on the final profile.env.
 
 2006-02-09 Ciaran McCreesh <ciaranm@gentoo.org>
@@ -685,7 +686,7 @@
 2005-11-16 Danny van Dyk <kugelfang@gentoo.org>
 
 	* libs/config.bash.in, docs/developer-guide.txt: Changed add_config()
-	to append_config(). Function now doesn't append data if it occours
+	to append_config(). Function now doesn't append data if it occurs
 	already in the value.
 	* libs/multilib.bash.in: Removed lib from list of amd64 libdirs.
 	* modules/blas.eselect, modules/lapack.eselect: Added support for
@@ -705,7 +706,7 @@
 
 2005-10-29 Thomas Matthijs <axxo@gentoo.org>
 
-	* modules/java.eselect: Dont assume uid 0 has super powers,
+	* modules/java.eselect: Don't assume uid 0 has super powers,
 	* modules/java.eselect: Added simple java module, for configuring
 	system and user vm.
 
@@ -763,7 +764,7 @@
 	accepts --global.
 	* man/kernel.eselect.5: Added manual page for kernel.eselect.
 	* man/profile.eselect.5: Fixed a typo.
-	* modules/rc.eselect: Bail on actions that require paramaters when the
+	* modules/rc.eselect: Bail on actions that require parameters when the
 	user doesn't specify them.  Also added describe_action_options and
 	describe_action_parameters for each action that requires a parameter.
 	Also fixed vim ft s/ebuild/eselect/.
@@ -858,7 +859,7 @@
 	configure.ac, modules/binutils.eselect, modules/config.eselect,
 	modules/opengl.eselect, modules/profile.eselect: Added portage
 	library, moved profile.eselect:get_arch() to portage.bash:arch().
-	* doc/developer-guide.txt: Changed documentation acording to API
+	* doc/developer-guide.txt: Changed documentation according to API
 	changes (inherit / core.bash-split).
 
 2005-09-05 Jeremy Huddleston <eradicator@gentoo.org>
@@ -874,7 +875,7 @@
 	* bin/eselect.in: Removed sourcing of all available libraries and set
 	up default libraries to inherit.
 	* libs/core.bash.in, libs/path-manipulation.bash.in, libs/Makefile.in:
-	Moved basename() and dirname() to a new seperate library.
+	Moved basename() and dirname() to a new separate library.
 	* libs/core.bash.in, libs/test.bash.in: moved has() and is_function()
 	to tests library.
 	* modules/binutils.eselect, modules/blas.eselect, modules/env.eselect,
@@ -943,11 +944,11 @@
 
 2005-07-19 Danny van Dyk <kugelfang@gentoo.org>
 
-	* libs/core.bash.in: Fixed order of paramters.
+	* libs/core.bash.in: Fixed order of parameters.
 	* modules/blas.eselect, modules/env.eselect, modules/lapack.eselect:
-	Fixed all calls to has() due to change of paramter order.
+	Fixed all calls to has() due to change of parameter order.
 	* modules/env.eselect: Tidied code up, add prelink.conf code. These
-	file are now sanley created: /etc/profile.env, /etc/ld.so.conf,
+	file are now sanely created: /etc/profile.env, /etc/ld.so.conf,
 	/etc/prelink.conf.
 	* module/env.eselect: Removed LDPATH from inclusion into profile.env.
 

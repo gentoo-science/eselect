@@ -53,7 +53,7 @@ trunk:
     Bug fixes:
     - Really make the makefiles parallel-safe.
     - Fixed bug #163915: eselect doesn't fully honour DESTDIR
-    - Fix parsing of *_SEPERATED in env.eselect
+    - Fix parsing of *_SEPARATED in env.eselect
 
 1.0.8:
     Bug fixes:
@@ -62,7 +62,7 @@ trunk:
 1.0.7:
     Bug fixes:
     - Fixed bug in modules/opengl.eselect: Fix when ROOT != /.
-    - Fixed bug #151701: Generate {SPACE,COLON}_SEPERATED vars in update.
+    - Fixed bug #151701: Generate {SPACE,COLON}_SEPARATED vars in update.
     - Fixed bug #152318: Fix env.eselect for envvar values containing '='.
     - Fixed bug #152662: Fixed new die() function on *BSD.
     - Updated developer documentation.
