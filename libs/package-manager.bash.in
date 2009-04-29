@@ -43,19 +43,19 @@ arch() {
                 "Unknown architecture. Please submit a bug including the output of 'uname -m'"
                 return 1
                 ;;
-            esac
+        esac
 
-            case $(uname -s) in
-                Linux) ;;
-                FreeBSD) suffix="-fbsd" ;;
-                NetBSD) suffix="-nbsd" ;;
-                OpenBSD) suffix="-obsd" ;;
-                DragonFly) suffix="-dfly" ;;
-                *) write_warning_msg \
-                    "Unknown OS. Please submit a bug including the output of 'uname -s'"
-                    return 1
-                    ;;
-            esac
+        case $(uname -s) in
+            Linux) ;;
+            FreeBSD) suffix="-fbsd" ;;
+            NetBSD) suffix="-nbsd" ;;
+            OpenBSD) suffix="-obsd" ;;
+            DragonFly) suffix="-dfly" ;;
+            *) write_warning_msg \
+                "Unknown OS. Please submit a bug including the output of 'uname -s'"
+                return 1
+                ;;
+        esac
     fi
 
     echo ${ret}${suffix}
@@ -136,7 +136,7 @@ get_repo_news_dir() {
             ;;
         portage)
             echo "$(portageq get_repo_path \
-		"${ROOT:-/}" "${repo}")/metadata/news"
+                "${ROOT:-/}" "${repo}")/metadata/news"
             ;;
         *)
             die "Unknown package manager: \"${manager}\""
