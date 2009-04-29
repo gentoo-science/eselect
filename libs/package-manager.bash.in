@@ -69,15 +69,10 @@ envvar() {
 
     local manager=$(package-manager)
     case ${manager} in
-        paludis)
-            paludis_envvar $* 2>/dev/null
-            ;;
-        portage)
-            # portage does not support per-package envvar lookup.
-            portageq envvar "${2}" 2>/dev/null
-            ;;
-        *)
-            die "Unknown package manager: \"${manager}\""
+        paludis) paludis_envvar "$1" "$2" ;;
+        # portage does not support per-package envvar lookup
+        portage) portageq envvar "$2" ;;
+        *) die "Unknown package manager: \"${manager}\"" ;;
     esac
 }
 
@@ -88,8 +83,8 @@ best_version() {
 
     local manager=$(package-manager)
     case ${manager} in
-        paludis) paludis_best-version "${1}" 2>/dev/null ;;
-        portage) portageq best_version "${ROOT:-/}" "${1}" 2>/dev/null ;;
+        paludis) paludis_best-version "$1" ;;
+        portage) portageq best_version "${ROOT:-/}" "$1" ;;
         *) die "Unknown package manager: \"${manager}\"" ;;
     esac
 }
@@ -101,8 +96,8 @@ has_version() {
 
     local manager=$(package-manager)
     case ${manager} in
-        paludis) paludis_has-version "${1}" 2>/dev/null ;;
-        portage) portageq has_version "${ROOT:-/}" "${1}" 2>/dev/null ;;
+        paludis) paludis_has-version "$1" ;;
+        portage) portageq has_version "${ROOT:-/}" "$1" ;;
         *) die "Unknown package manager: \"${manager}\"" ;;
     esac
 }
@@ -112,15 +107,9 @@ has_version() {
 get_repositories() {
     local manager=$(package-manager)
     case ${manager} in
-        paludis)
-            $(paludis_command) --list-repositories | cut -d' ' -f 2
-            ;;
-        portage)
-            portageq get_repos "${ROOT:-/}"
-            ;;
-        *)
-            die "Unknown package manager: \"${manager}\""
-            ;;
+        paludis) $(paludis_command) --list-repositories | cut -d' ' -f 2 ;;
+        portage) portageq get_repos "${ROOT:-/}" ;;
+        *) die "Unknown package manager: \"${manager}\"" ;;
     esac
 }
 
