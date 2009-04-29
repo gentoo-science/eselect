@@ -103,7 +103,6 @@ describe_list() {
 }
 
 do_list() {
-	package-manager &>/dev/null # for internal caching
 	local item stat repo dir header line title posted i=1
 	local ifs_save=${IFS-$' \t\n'}
 	local -a repos dirs
@@ -170,7 +169,6 @@ describe_read_parameters() {
 }
 
 do_read() {
-	package-manager &>/dev/null # for internal caching
 	local -a items=( $(find_items unread read) ) repos dirs
 	local n=${#items[@]} item repo stat dir header line i seq repos_upd raw
 	local ifs_save=${IFS-$' \t\n'}
