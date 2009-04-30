@@ -6,7 +6,6 @@ safe_scripts = \
 		 editor.eselect \
 		 env.eselect \
 		 kernel.eselect \
-		 mailer.eselect \
 		 modules.eselect \
 		 news-tng.eselect \
 		 pager.eselect \

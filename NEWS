@@ -6,7 +6,6 @@ trunk:
     - Fixed bug #155814: Clear aliases and shell functions.
     - Fixed bug #156866: Handle missing scripts in rc module.
     - Fixed bug #180966: Make rc module work with OpenRC.
-    - Fixed bug #220473: Highlight selected target in mailer module.
     - Various improvements in opengl module.
 
     New features:
@@ -15,6 +14,7 @@ trunk:
     - Treat 'help' and 'version' options as if they were actions.
     - Modules for the EDITOR, VISUAL, and PAGER environment variables.
     - Module news-tng.eselect for reading Gentoo ('GLEP 42') news.
+    - Remove mailer module since it's not functional (bug #220473).
 
 1.0.12:
     Bug fixes:
