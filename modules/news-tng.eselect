@@ -16,10 +16,9 @@ NEWS_DIR="/var/lib/gentoo/news"
 # returns one item per line: status/repository/name
 # sort order: 1. "unread" before "read", 2. by repository
 find_items() {
-	local stat repo item
-	local -a repos=( $(get_repositories) )
+	local stat repos=$(get_repositories) repo item
 	for stat in "$@"; do
-		for repo in ${repos[@]}; do
+		for repo in ${repos}; do
 			file="${ROOT}${NEWS_DIR}/news-${repo}.${stat}"
 			[[ -f ${file} ]] || continue
 			for item in $(<"${file}"); do
@@ -35,7 +34,7 @@ find_items() {
 # list of items is expected in global array "items"
 write_item_list() {
 	local stat=$1 repo=$2 item update
-	for item in ${items[@]}; do
+	for item in "${items[@]}"; do
 		[[ ${item%%/*} = ${stat} ]] || continue
 		item=${item#*/}
 		[[ ${item%%/*} = ${repo} ]] && update="${update} ${item#*/}"
@@ -112,7 +111,7 @@ do_list() {
 	for item in "$@"; do
 		stat=${item%%/*}; item=${item#*/}
 		repo=${item%%/*}; item=${item#*/}
-		find_repo_dir ${repo}
+		find_repo_dir "${repo}"
 		header=$(read_item "${dir}" "${item}" header)
 		IFS=$'\n'
 		for line in ${header}; do
@@ -124,10 +123,10 @@ do_list() {
 		IFS=${ifs_save}
 		if [[ ${stat} = unread ]]; then
 			write_numbered_list_entry $((i++)) "$(highlight \
-				"${posted## }  (new)   ${title## }")"
+				"${posted## }  (unread)  ${title## }")"
 		else
 			write_numbered_list_entry $((i++)) \
-				"${posted## }          ${title## }"
+				"${posted## }  (read)    ${title## }"
 		fi
 	done
 	[[ $# -eq 0 ]] && write_kv_list_entry "(none found)" ""
@@ -196,7 +195,7 @@ do_read() {
 		item=${items[--i]}
 		stat=${item%%/*}; item=${item#*/}
 		repo=${item%%/*}; item=${item#*/}
-		find_repo_dir ${repo}
+		find_repo_dir "${repo}"
 		if [[ -n ${raw} ]]; then
 			read_item "${dir}" "${item}"
 		else
@@ -208,7 +207,7 @@ do_read() {
 					Title)
 						write_kv_list_entry \
 							"${line%%: *}" "$(highlight "${line#*: }")" ;;
-					Author|Posted|Revision)
+					Author|Translator|Posted|Revision)
 						write_kv_list_entry "${line%%: *}" "${line#*: }" ;;
 				esac
 			done

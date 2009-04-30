@@ -1,5 +1,9 @@
 2009-04-30  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/news-tng.eselect (find_items): Use space-separated list
+	for "repos", instead of an array.
+	(do_read): Also show "Translator" header lines.
+
 	* modules/mailer.eselect:
 	* man/mailer.eselect.5: The mailer module is no longer supported
 	by MTA packages and therefore not functional, see bug 220473.
