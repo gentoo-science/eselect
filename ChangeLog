@@ -1,3 +1,7 @@
+2009-05-01  Ulrich Mueller  <ulm@gentoo.org>
+
+	* doc/developer-guide.txt: Update documentation.
+
 2009-04-30  Ulrich Mueller  <ulm@gentoo.org>
 
 	* modules/news-tng.eselect (find_items): Use space-separated list
@@ -35,7 +39,9 @@
 	(get_repo_news_dir): Use "portageq get_repo_path".
 	(best_version): Default to / if ROOT is empty, otherwise portageq
 	doesn't work. Actually use Portage's and Paludis's "best_version"
-	commands, not "has_version".
+	commands, not "has_version". Rename to agree with the ebuild
+	helper; this shouldn't be a problem since the function was not
+	working before.
 	(has_version): Default to / if ROOT is empty. Remove redundant
 	return statements.
 
