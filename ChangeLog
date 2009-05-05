@@ -1,5 +1,8 @@
 2009-05-05  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/editor.eselect:
+	* modules/visual.eselect (EDITOR_LIST): Add some alternatives.
+
 	* libs/output.bash.in (init_columns): New function, determine
 	width of terminal and set COLUMNS variable.
 	(get_column_width): Remove.

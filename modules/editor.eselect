@@ -5,7 +5,14 @@
 EDITOR_VAR="EDITOR"
 EDITOR_ENVFILE="/etc/env.d/99editor"
 # list of most common cases only
-EDITOR_LIST="/bin/nano /usr/bin/emacs /usr/bin/vi /usr/bin/xemacs"
+EDITOR_LIST="/bin/nano
+	/bin/ed
+	/usr/bin/emacs
+	/usr/bin/ex
+	/usr/bin/pico
+	/usr/bin/vi
+	/usr/bin/xemacs
+	/usr/bin/zile"
 
 inherit editor-variable
 
