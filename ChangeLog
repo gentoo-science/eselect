@@ -1,3 +1,13 @@
+2009-05-05  Ulrich Mueller  <ulm@gentoo.org>
+
+	* libs/output.bash.in (init_columns): New function, determine
+	width of terminal and set COLUMNS variable.
+	(get_column_width): Remove.
+	(write_kv_list_entry): Get screen width from COLUMNS variable.
+	* bin/eselect.in: Call init_columns during initialisation.
+	This way, stty must be called only once, and not for each row when
+	outputting a table.
+
 2009-05-01  Ulrich Mueller  <ulm@gentoo.org>
 
 	* doc/developer-guide.txt: Update documentation.

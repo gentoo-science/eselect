@@ -40,6 +40,13 @@ nocolours() {
     COLOUR_LIST_RIGHT=""
 }
 
+# Determine width of terminal and set COLUMNS variable
+init_columns() {
+    [[ -n ${COLUMNS} ]] && return
+    set -- $(stty size 2>/dev/null)
+    is_number $2 && COLUMNS=$2 || COLUMNS=80
+}
+
 # write_error_msg PUBLIC
 # write an error
 write_error_msg() {
@@ -115,8 +122,8 @@ write_kv_list_entry() {
         echo -n -e "${right}"
     fi
 
-    local cols=$(get_column_width) \
-        cwords="$(apply_text_highlights "${right}" "${val}")"
+    local cols=${COLUMNS:-80}
+    local cwords="$(apply_text_highlights "${right}" "${val}")"
 
     text=${val//\%%%??%%%/}
     # only loop if it doesn't fit on the same line
@@ -184,20 +191,6 @@ write_numbered_list() {
         write_numbered_list_entry ${p} "${n}" "${item}"
         n=$(( ${n} + 1 ))
     done
-}
-
-# get_column_width INTERNAL
-# Get current column width
-get_column_width() {
-    if [[ -z "${COLS}" ]] ; then
-        COLS=80
-        if [[ -t 1 ]] ; then
-            local size=( $(stty size 2>/dev/null) )
-            is_number "${size[1]}" && COLS=${size[1]}
-        fi
-    fi
-
-    echo -n ${COLS}
 }
 
 # apply_text_highlights INTERNAL
