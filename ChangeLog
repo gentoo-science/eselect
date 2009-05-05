@@ -1,5 +1,8 @@
 2009-05-05  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/news-tng.eselect (do_list): Display fallback values if
+	title or date of a news item are not available.
+
 	* modules/editor.eselect:
 	* modules/visual.eselect (EDITOR_LIST): Add some alternatives.
 

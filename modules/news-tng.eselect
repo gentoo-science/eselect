@@ -114,6 +114,8 @@ do_list() {
 		find_repo_dir "${repo}"
 		header=$(read_item "${dir}" "${item}" header)
 		IFS=$'\n'
+		title="(${item} - no title)"
+		posted="(no date) "
 		for line in ${header}; do
 			case "${line%%: *}" in
 				Title) title=${line#*: } ;;
