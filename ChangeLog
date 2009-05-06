@@ -2,6 +2,8 @@
 
 	* modules/news-tng.eselect (do_list): Display fallback values if
 	title or date of a news item are not available.
+	(do_read): Display an error message if the return status of
+	read_item was bad.
 
 	* modules/editor.eselect:
 	* modules/visual.eselect (EDITOR_LIST): Add some alternatives.

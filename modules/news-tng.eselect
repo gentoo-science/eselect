@@ -217,6 +217,7 @@ do_read() {
 			echo
 			read_item "${dir}" "${item}" body
 		fi
+		[[ $? -ne 0 ]] && write_error_msg "Error reading item \"${item}\""
 		echo
 
 		[[ ${stat} = unread ]] || continue
