@@ -167,3 +167,8 @@ do_update() {
 
     do_action env update noldconfig
 }
+
+# Local Variables:
+# sh-indentation: 4
+# indent-tabs-mode: nil
+# End:

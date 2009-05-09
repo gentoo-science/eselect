@@ -39,4 +39,9 @@ is_number() {
     [[ -n ${1} ]] && [[ -z ${1//[[:digit:]]} ]]
 }
 
+# Local Variables:
+# sh-indentation: 4
+# indent-tabs-mode: nil
+# End:
+
 # vim: set sw=4 et sts=4 tw=80 :
