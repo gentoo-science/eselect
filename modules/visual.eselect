@@ -14,7 +14,7 @@ EDITOR_LIST="/bin/nano
 
 inherit editor-variable
 
-DESCRIPTION="Manage ${EDITOR_VAR} variable"
+DESCRIPTION="Manage the ${EDITOR_VAR} environment variable"
 MAINTAINER="ulm@gentoo.org"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}")
