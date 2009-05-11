@@ -5,13 +5,12 @@ trunk:
     Bug fixes:
     - Fixed bug #155814: Clear aliases and shell functions.
     - Fixed bug #156866: Handle missing scripts in rc module.
-    - Fixed bug #180966: Make rc module work with OpenRC.
-    - Various improvements in opengl module.
 
     New features:
     - Add a new module, for listing and querying eselect modules.
     - Allow setting system-wide default dictionary.
     - Treat 'help' and 'version' options as if they were actions.
+    - The rc module now also supports OpenRC (bug #180966).
     - Modules for the EDITOR, VISUAL, and PAGER environment variables.
     - Module news-tng.eselect for reading Gentoo ('GLEP 42') news.
     - Remove mailer module since it's not functional (bug #220473).

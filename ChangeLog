@@ -155,7 +155,6 @@
 	* libs/Makefile.am (eselectlibs_SCRIPTS, EXTRA_DIST):
 	* modules/Makefile.am (safe_scripts):
 	* man/Makefile.am (man_MANS): Add the new files.
-	* NEWS: Mention the new feature.
 
 2009-04-19  Thomas Anderson <gentoofan23@gentoo.org>
 
@@ -170,8 +169,6 @@
 	newlines.
 
 	* AUTHORS: Add fauli and myself for the ctags and emacs modules.
-
-	* NEWS: Merge NEWS from branch-1.0.x. Add current changes.
 
 	* bin/eselect.in: Remove all alias definitions. Unset functions
 	and variables that are known to cause trouble. Fixes bug 155814.
