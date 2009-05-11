@@ -1,13 +1,13 @@
-.\" Copyright 2007-2008 Gentoo Foundation
+.\" Copyright 2007-2009 Gentoo Foundation
 .\" Distributed under the terms of the GNU General Public License v2
 .\" $Id$
 .\"
-.TH ESELECT 5 "December 2008" "Gentoo Linux" eselect
+.TH emacs.eselect 5 "April 2009" "Gentoo Linux" eselect
 .SH NAME
 emacs.eselect \- The Emacs management module for Gentoo's eselect
 .SH SYNOPSIS
 .B eselect emacs
-.RB [ help | usage ]
+.RB [ help | usage | version ]
 .br
 .B eselect emacs list
 .br
@@ -17,7 +17,7 @@ emacs.eselect \- The Emacs management module for Gentoo's eselect
 .B eselect emacs show
 .br
 .B eselect emacs update
-.RI [ ifunset ]
+.RB [ ifunset ]
 .SH DESCRIPTION
 .B eselect
 is Gentoo's configuration and management tool.  It features modules
@@ -67,10 +67,10 @@ Current target of GNU Emacs symlink:
   emacs-22
 .SH ACTION: UPDATE
 .B eselect emacs update
-.RI [ ifunset ]
+.RB [ ifunset ]
 .br
 Update the emacs symlink to the last available version.  If option
-.I ifunset
+.B ifunset
 is given, an existing implementation is not overridden.
 
 # eselect emacs update

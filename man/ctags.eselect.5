@@ -1,14 +1,14 @@
-.\" Copyright 2007-2008 Gentoo Foundation
+.\" Copyright 2007-2009 Gentoo Foundation
 .\" Distributed under the terms of the GNU General Public License v2
 .\" $Id$
 .\"
-.TH ESELECT 5 "December 2008" "Gentoo Linux" eselect
+.TH ctags.eselect 5 "May 2009" "Gentoo Linux" eselect
 .SH NAME
 ctags.eselect, etags.eselect \- The ctags and etags management module
 for Gentoo's eselect
 .SH SYNOPSIS
 .B eselect ctags
-.RB [ help | usage ]
+.RB [ help | usage | version ]
 .br
 .B eselect ctags list
 .br
@@ -18,6 +18,7 @@ for Gentoo's eselect
 .B eselect ctags show
 .br
 .B eselect ctags update
+.RB [ ifunset ]
 .SH DESCRIPTION
 .B eselect
 is Gentoo's configuration and management tool.  It features modules
@@ -66,10 +67,13 @@ Current target of symlink:
   exuberant-ctags
 .SH ACTION: UPDATE
 .B eselect ctags update
+.RB [ ifunset ]
 .br
 Update the ctags symlink.  For an update only the version is changed,
 but not the provider (i.e. Emacs vs Exuberant).  At the moment only
-(X)Emacs offers several concurrent versions.
+(X)Emacs offers several concurrent versions.  If option
+.B ifunset
+is given, an existing implementation is not overridden.
 
 # eselect ctags update
 .br

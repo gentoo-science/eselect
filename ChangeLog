@@ -1,3 +1,10 @@
+2009-05-11  Ulrich Mueller  <ulm@gentoo.org>
+
+	* modules/emacs.eselect, modules/ctags.eselect:
+	* man/emacs.eselect.5, man/ctags.eselect.5: Sync the emacs and
+	ctags modules from the Emacs SVN repository (r1275), corresponding
+	to the eselect-emacs-1.10 release.
+
 2009-05-05  Ulrich Mueller  <ulm@gentoo.org>
 
 	* modules/news-tng.eselect (do_list): Display fallback values if
@@ -254,11 +261,10 @@
 
 2008-03-24  Ulrich Mueller  <ulm@gentoo.org>
 
-	* man/emacs.eselect.5, man/ctags.eselect.5: Ditto for man pages.
-
-	* modules/emacs.eselect, modules/ctags.eselect: Import the
-	emacs and ctags modules from the Emacs SVN repository (r1030),
-	corresponding to the eselect-emacs-1.3 release.
+	* modules/emacs.eselect, modules/ctags.eselect:
+	* man/emacs.eselect.5, man/ctags.eselect.5: Import the emacs and
+	ctags modules from the Emacs SVN repository (r1030), corresponding
+	to the eselect-emacs-1.3 release.
 
 2008-01-28 Piotr Jaroszyński <peper@gentoo.org>
 
