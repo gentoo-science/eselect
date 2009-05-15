@@ -16,7 +16,23 @@
 # You should have received a copy of the GNU General Public License along with
 # eselect.  If not, see <http://www.gnu.org/licenses/>.
 
-inherit paludis portage
+# package-manager PRIVATE
+# Return the package manager we're going to use.
+package-manager() {
+    echo "${ESELECT_PACKAGE_MANAGER:-@PACKAGE_MANAGER@}"
+}
+
+# portageq
+# Run portageq with safe filename as set by configure. Redirect stderr
+portageq() {
+    @PORTAGEQ@ "$@" 2>/dev/null
+}
+
+# paludis
+# Run PALUDIS_COMMAND (defaults to "paludis"). Redirect stderr
+paludis() {
+    ${PALUDIS_COMMAND:-paludis} "$@" 2>/dev/null
+}
 
 # arch
 # Return the architecture we're running on...
@@ -63,16 +79,15 @@ arch() {
 }
 
 # envvar
-# Return the contents of environment variable $2 as seen by package manager(s)
+# Return the contents of environment variable $2 as seen by package manager
 # for package $1.
 envvar() {
     [[ $# -eq 2 ]] || die "envvar expects exactly 2 arguments"
-
     local manager=$(package-manager)
     case ${manager} in
-        paludis) paludis_envvar "$1" "$2" ;;
         # portage does not support per-package envvar lookup
         portage) portageq envvar "$2" ;;
+        paludis) paludis --environment-variable "$1" "$2" ;;
         *) die "Unknown package manager: \"${manager}\"" ;;
     esac
 }
@@ -81,11 +96,10 @@ envvar() {
 # Return true if package $1 is available in ${ROOT}
 best_version() {
     [[ $# -eq 1 ]] || die "best_version expects exactly one argument"
-
     local manager=$(package-manager)
     case ${manager} in
-        paludis) paludis_best-version "$1" ;;
         portage) portageq best_version "${ROOT:-/}" "$1" ;;
+        paludis) paludis --best-version "$1" ;;
         *) die "Unknown package manager: \"${manager}\"" ;;
     esac
 }
@@ -94,11 +108,10 @@ best_version() {
 # Return true if package $1 is available in ${ROOT}
 has_version() {
     [[ $# -eq 1 ]] || die "has_version expects exactly one argument"
-
     local manager=$(package-manager)
     case ${manager} in
-        paludis) paludis_has-version "$1" ;;
         portage) portageq has_version "${ROOT:-/}" "$1" ;;
+        paludis) paludis --has-version "$1" ;;
         *) die "Unknown package manager: \"${manager}\"" ;;
     esac
 }
@@ -108,8 +121,8 @@ has_version() {
 get_repositories() {
     local manager=$(package-manager)
     case ${manager} in
-        paludis) $(paludis_command) --list-repositories | cut -d' ' -f 2 ;;
         portage) portageq get_repos "${ROOT:-/}" ;;
+        paludis) paludis --list-repositories | cut -d' ' -f 2 ;;
         *) die "Unknown package manager: \"${manager}\"" ;;
     esac
 }
@@ -121,29 +134,19 @@ get_repo_news_dir() {
     local repo=$1
     local manager=$(package-manager)
     case ${manager} in
-        paludis)
-            $(paludis_command) --configuration-variable ${repo} newsdir
-            ;;
         portage)
             echo "$(portageq get_repo_path \
-                "${ROOT:-/}" "${repo}")/metadata/news"
-            ;;
-        *)
-            die "Unknown package manager: \"${manager}\""
-            ;;
+                "${ROOT:-/}" "${repo}")/metadata/news" ;;
+        paludis) paludis --configuration-variable ${repo} newsdir ;;
+        *) die "Unknown package manager: \"${manager}\"" ;;
     esac
 }
 
+# get_news_dir_name DEPRECATED
 get_news_dir_name() {
     [[ $# -eq 1 ]] || die "get_news_dir_name expects exactly one argument"
     local name=${1%::*} repo=${1##*::}
     echo "$(get_repo_news_dir "${repo}")/${name}"
-}
-
-# package-manager PRIVATE
-# Return the package manager we're going to use.
-package-manager() {
-    echo "${ESELECT_PACKAGE_MANAGER:-@PACKAGE_MANAGER@}"
 }
 
 # Local Variables:

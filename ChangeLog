@@ -1,5 +1,19 @@
 2009-05-15  Ulrich Mueller  <ulm@gentoo.org>
 
+	* libs/package-manager.bash.in (envvar, best_version, has_version)
+	(get_repositories, get_repo_news_dir): Directly call package
+	manager commands with their arguments; no need to hide them in an
+	extra layer of trivial functions.
+	(get_news_dir_name): Deprecate, since it provides no additional
+	functionality. Use get_repo_news_dir instead.
+	(portageq): Function moved here from portage.bash.in.
+	(paludis): New function, paludis wrapper with redirected stderr.
+	(inherit): Don't inherit portage and paludis libs.
+	* libs/paludis.bash.in, libs/portage.bash.in: Remove, after having
+	verified that these libraries are not used by any module: neither
+	internal nor in external app-admin/eselect-* packages.
+	* libs/Makefile.am (eselectlibs_SCRIPTS, EXTRA_DIST): Update.
+
 	* libs/Makefile.am (dosed): Also substitute prefix, datadir and
 	sysconfdir.
 

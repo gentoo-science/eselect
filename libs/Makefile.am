@@ -9,9 +9,7 @@ eselectlibs_SCRIPTS = \
 		      multilib.bash \
 		      output.bash \
 		      package-manager.bash \
-		      paludis.bash \
 		      path-manipulation.bash \
-		      portage.bash \
 		      skel.bash \
 		      tests.bash
 
@@ -24,9 +22,7 @@ EXTRA_DIST = \
 	     multilib.bash.in \
 	     output.bash.in \
 	     package-manager.bash.in \
-	     paludis.bash.in \
 	     path-manipulation.bash.in \
-	     portage.bash.in \
 	     skel.bash.in \
 	     tests.bash.in
 
