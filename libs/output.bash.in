@@ -42,9 +42,7 @@ nocolours() {
 
 # Determine width of terminal and set COLUMNS variable
 init_columns() {
-    [[ -n ${COLUMNS} ]] && return
-    set -- $(stty size 2>/dev/null)
-    is_number $2 && COLUMNS=$2 || COLUMNS=80
+    [[ -n ${COLUMNS} ]] || COLUMNS=$(tput cols) || COLUMNS=80
 }
 
 # write_error_msg PUBLIC
