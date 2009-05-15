@@ -1,3 +1,16 @@
+2009-05-15  Ulrich Mueller  <ulm@gentoo.org>
+
+	* libs/Makefile.am (dosed): Also substitute prefix, datadir and
+	sysconfdir.
+
+	* libs/skel.bash.in (find_implems, is_active, switch_implem)
+	(iface_do_show, do_add): Use @sysconfdir@ instead of /etc.
+	(do_list, do_show): Use @prefix@ instead of /usr.
+	(inherit): The portage lib is not used, so don't inherit it.
+
+	* libs/package-manager.bash.in (arch): Add case patterns for
+	ppc-macos. Taken from patch in Prefix overlay.
+
 2009-05-11  Ulrich Mueller  <ulm@gentoo.org>
 
 	* modules/emacs.eselect, modules/ctags.eselect:

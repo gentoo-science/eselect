@@ -32,13 +32,13 @@ arch() {
             return 1
         fi
 
-        ret=$(uname -m)
-        case ${ret} in
+        case $(uname -m) in
             alpha|ia64|ppc) ;;
             i?86) ret=x86 ;;
             mips*) ret=mips ;;
             sparc*) ret=sparc ;;
             x86_64) ret=amd64 ;;
+            "Power Macintosh") ret=ppc ;;
             *) write_warning_msg \
                 "Unknown architecture. Please submit a bug including the output of 'uname -m'"
                 return 1
@@ -51,6 +51,7 @@ arch() {
             NetBSD) suffix="-nbsd" ;;
             OpenBSD) suffix="-obsd" ;;
             DragonFly) suffix="-dfly" ;;
+            Darwin) suffix="-macos" ;;
             *) write_warning_msg \
                 "Unknown OS. Please submit a bug including the output of 'uname -s'"
                 return 1

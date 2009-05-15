@@ -31,6 +31,9 @@ EXTRA_DIST = \
 	     tests.bash.in
 
 dosed = @SED@ \
+	-e 's,\@prefix\@,@prefix@,g' \
+	-e 's,\@datadir\@,@datadir@,g' \
+	-e 's,\@sysconfdir\@,@sysconfdir@,g' \
 	-e 's,\@SED\@,@SED@,g' \
 	-e 's,\@PACKAGE_MANAGER\@,@PACKAGE_MANAGER@,g' \
 	-e 's,\@PORTAGEQ\@,@PORTAGEQ@,g' \
