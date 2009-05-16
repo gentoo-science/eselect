@@ -5,7 +5,7 @@
 inherit config
 
 DESCRIPTION="Manage /etc/init.d scripts in runlevels"
-MAINTAINER="Danny van Dyk <kugelfang@gentoo.org>"
+MAINTAINER="eselect@gentoo.org"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}")
 

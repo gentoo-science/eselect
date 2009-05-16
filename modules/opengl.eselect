@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 # Author:  Martin Schlemmer <azarah@gentoo.org>
-# Further modifications by Donnie Berkholz <spyderous@gentoo.org>
+# Further modifications by Donnie Berkholz <dberkholz@gentoo.org>
 # Further modifications based off submissions to bug #54984 <cyfred@gentoo.org>
 # Further modifications by Jeremy Huddleston <eradicator@gentoo.org>
 # Made into eselect module by Jeremy Huddleston <eradicator@gentoo.org>

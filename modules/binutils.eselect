@@ -1,11 +1,11 @@
-# Copyright 1999-2005 Gentoo Foundation
+# Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
 inherit config package-manager
 
 DESCRIPTION="Manage installed versions of sys-devel/binutils"
-MAINTAINER="kugelfang@gentoo.org"
+MAINTAINER="eselect@gentoo.org"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}" )
 

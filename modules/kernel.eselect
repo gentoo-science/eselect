@@ -3,7 +3,7 @@
 # $Id$
 
 DESCRIPTION="Manage the /usr/src/linux symlink"
-MAINTAINER="ciaranm@gentoo.org"
+MAINTAINER="eselect@gentoo.org"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}")
 

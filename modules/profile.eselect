@@ -6,7 +6,7 @@
 inherit package-manager
 
 DESCRIPTION="Manage the /etc/make.profile symlink"
-MAINTAINER="ka0ttic@gentoo.org"
+MAINTAINER="eselect@gentoo.org"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}")
 
