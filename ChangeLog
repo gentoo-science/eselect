@@ -1,5 +1,8 @@
 2009-05-16  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/kernel.eselect: Fix quoting, simplify syntax for array
+	arguments, declare local variables, and other stylistic tweaks.
+
 	* modules/ruby.eselect: Remove outdated ruby module, as discussed
 	with Alex Legler <a3li@gentoo.org>. Current version is maintained
 	at <git://git.overlays.gentoo.org/proj/ruby-scripts.git>.
