@@ -2,8 +2,8 @@ Possible TODO list. Not complete, just a collection of random thoughts for
 things we might otherwise forget. More for core ideas than ideas for new
 modules... Don't bother using the ChangeLog for this file.
 
-Targets for 1.1.0
-=================
+Targets
+=======
 
 * figure out interactive mode -- interactive should only be allowed for
   certain designated actions. We'll also need library functions for menus and
