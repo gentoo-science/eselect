@@ -1,7 +1,7 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
-trunk:
+1.1_rc1:
     Bug fixes:
     - Fixed bug #155814: Clear aliases and shell functions.
     - Fixed bug #156866: Handle missing scripts in rc module.
