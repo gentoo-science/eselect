@@ -23,7 +23,7 @@ find_targets() {
 }
 
 destination() {
-    if [[ ${global} == "yes" ]]; then
+	if [[ ${global} == "yes" ]]; then
 		echo "${TIMIDITYDIR}/current"
 	else
 		# Ensure the presence of ~/.timidity
@@ -198,4 +198,3 @@ do_update() {
 }
 
 # vim: set ft=eselect :
-

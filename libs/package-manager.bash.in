@@ -1,6 +1,5 @@
 #!/bin/bash
-
-# Copyright (c) 2005-2009 Gentoo Foundation.
+# Copyright (c) 2005-2009 Gentoo Foundation                 -*-eselect-*-
 # $Id$
 # This file is part of the 'eselect' tools framework.
 #
@@ -19,139 +18,134 @@
 # package-manager PRIVATE
 # Return the package manager we're going to use.
 package-manager() {
-    echo "${ESELECT_PACKAGE_MANAGER:-@PACKAGE_MANAGER@}"
+	echo "${ESELECT_PACKAGE_MANAGER:-@PACKAGE_MANAGER@}"
 }
 
 # portageq
 # Run portageq with safe filename as set by configure. Redirect stderr
 portageq() {
-    @PORTAGEQ@ "$@" 2>/dev/null
+	@PORTAGEQ@ "$@" 2>/dev/null
 }
 
 # paludis
 # Run PALUDIS_COMMAND (defaults to "paludis"). Redirect stderr
 paludis() {
-    ${PALUDIS_COMMAND:-paludis} "$@" 2>/dev/null
+	${PALUDIS_COMMAND:-paludis} "$@" 2>/dev/null
 }
 
 # arch
 # Return the architecture we're running on...
 arch() {
-    local ret=$(envvar sys-devel/gcc ARCH) suffix
+	local ret=$(envvar sys-devel/gcc ARCH) suffix
 
-    # $arch will be null if there's no current make.profile symlink
-    # we cannot get a list of valid profiles without it.
-    if [[ -z ${ret} ]] ; then
+	# $arch will be null if there's no current make.profile symlink
+	# we cannot get a list of valid profiles without it.
+	if [[ -z ${ret} ]] ; then
 
-        if [[ -n ${ROOT} && ${ROOT} != "/" ]] ; then
-            write_warning_msg "Failed to determine \${ARCH}. Is your make.profile symlink valid?"
-            return 1
-        fi
+		if [[ -n ${ROOT} && ${ROOT} != "/" ]] ; then
+			write_warning_msg "Failed to determine \${ARCH}. Is your make.profile symlink valid?"
+			return 1
+		fi
 
-        case $(uname -m) in
-            alpha|ia64|ppc) ;;
-            i?86) ret=x86 ;;
-            mips*) ret=mips ;;
-            sparc*) ret=sparc ;;
-            x86_64) ret=amd64 ;;
-            "Power Macintosh") ret=ppc ;;
-            *) write_warning_msg \
-                "Unknown architecture. Please submit a bug including the output of 'uname -m'"
-                return 1
-                ;;
-        esac
+		case $(uname -m) in
+			alpha|ia64|ppc) ;;
+			i?86) ret=x86 ;;
+			mips*) ret=mips ;;
+			sparc*) ret=sparc ;;
+			x86_64) ret=amd64 ;;
+			"Power Macintosh") ret=ppc ;;
+			*) write_warning_msg \
+				"Unknown architecture. Please submit a bug including the output of 'uname -m'"
+				return 1
+				;;
+		esac
 
-        case $(uname -s) in
-            Linux) ;;
-            FreeBSD) suffix="-fbsd" ;;
-            NetBSD) suffix="-nbsd" ;;
-            OpenBSD) suffix="-obsd" ;;
-            DragonFly) suffix="-dfly" ;;
-            Darwin) suffix="-macos" ;;
-            *) write_warning_msg \
-                "Unknown OS. Please submit a bug including the output of 'uname -s'"
-                return 1
-                ;;
-        esac
-    fi
+		case $(uname -s) in
+			Linux) ;;
+			FreeBSD) suffix="-fbsd" ;;
+			NetBSD) suffix="-nbsd" ;;
+			OpenBSD) suffix="-obsd" ;;
+			DragonFly) suffix="-dfly" ;;
+			Darwin) suffix="-macos" ;;
+			*) write_warning_msg \
+				"Unknown OS. Please submit a bug including the output of 'uname -s'"
+				return 1
+				;;
+		esac
+	fi
 
-    echo ${ret}${suffix}
+	echo ${ret}${suffix}
 }
 
 # envvar
 # Return the contents of environment variable $2 as seen by package manager
 # for package $1.
 envvar() {
-    [[ $# -eq 2 ]] || die "envvar expects exactly 2 arguments"
-    local manager=$(package-manager)
-    case ${manager} in
-        # portage does not support per-package envvar lookup
-        portage) portageq envvar "$2" ;;
-        paludis) paludis --environment-variable "$1" "$2" ;;
-        *) die "Unknown package manager: \"${manager}\"" ;;
-    esac
+	[[ $# -eq 2 ]] || die "envvar expects exactly 2 arguments"
+	local manager=$(package-manager)
+	case ${manager} in
+		# portage does not support per-package envvar lookup
+		portage) portageq envvar "$2" ;;
+		paludis) paludis --environment-variable "$1" "$2" ;;
+		*) die "Unknown package manager: \"${manager}\"" ;;
+	esac
 }
 
 # best_version
 # Return true if package $1 is available in ${ROOT}
 best_version() {
-    [[ $# -eq 1 ]] || die "best_version expects exactly one argument"
-    local manager=$(package-manager)
-    case ${manager} in
-        portage) portageq best_version "${ROOT:-/}" "$1" ;;
-        paludis) paludis --best-version "$1" ;;
-        *) die "Unknown package manager: \"${manager}\"" ;;
-    esac
+	[[ $# -eq 1 ]] || die "best_version expects exactly one argument"
+	local manager=$(package-manager)
+	case ${manager} in
+		portage) portageq best_version "${ROOT:-/}" "$1" ;;
+		paludis) paludis --best-version "$1" ;;
+		*) die "Unknown package manager: \"${manager}\"" ;;
+	esac
 }
 
 # has_version
 # Return true if package $1 is available in ${ROOT}
 has_version() {
-    [[ $# -eq 1 ]] || die "has_version expects exactly one argument"
-    local manager=$(package-manager)
-    case ${manager} in
-        portage) portageq has_version "${ROOT:-/}" "$1" ;;
-        paludis) paludis --has-version "$1" ;;
-        *) die "Unknown package manager: \"${manager}\"" ;;
-    esac
+	[[ $# -eq 1 ]] || die "has_version expects exactly one argument"
+	local manager=$(package-manager)
+	case ${manager} in
+		portage) portageq has_version "${ROOT:-/}" "$1" ;;
+		paludis) paludis --has-version "$1" ;;
+		*) die "Unknown package manager: \"${manager}\"" ;;
+	esac
 }
 
 # get_repositories
 # return list of repositories known to the package manager
 get_repositories() {
-    local manager=$(package-manager)
-    case ${manager} in
-        portage) portageq get_repos "${ROOT:-/}" ;;
-        paludis) paludis --list-repositories | cut -d' ' -f 2 ;;
-        *) die "Unknown package manager: \"${manager}\"" ;;
-    esac
+	local manager=$(package-manager)
+	case ${manager} in
+		portage) portageq get_repos "${ROOT:-/}" ;;
+		paludis) paludis --list-repositories | cut -d' ' -f 2 ;;
+		*) die "Unknown package manager: \"${manager}\"" ;;
+	esac
 }
 
 # get_repo_news_dir
 # return the directory where to find GLEP 42 news items for repository $1
 get_repo_news_dir() {
-    [[ $# -eq 1 ]] || die "get_repo_news_dir expects exactly one argument"
-    local repo=$1
-    local manager=$(package-manager)
-    case ${manager} in
-        portage)
-            echo "$(portageq get_repo_path \
-                "${ROOT:-/}" "${repo}")/metadata/news" ;;
-        paludis) paludis --configuration-variable ${repo} newsdir ;;
-        *) die "Unknown package manager: \"${manager}\"" ;;
-    esac
+	[[ $# -eq 1 ]] || die "get_repo_news_dir expects exactly one argument"
+	local repo=$1
+	local manager=$(package-manager)
+	case ${manager} in
+		portage)
+			echo "$(portageq get_repo_path \
+				"${ROOT:-/}" "${repo}")/metadata/news" ;;
+		paludis) paludis --configuration-variable ${repo} newsdir ;;
+		*) die "Unknown package manager: \"${manager}\"" ;;
+	esac
 }
 
 # get_news_dir_name DEPRECATED
 get_news_dir_name() {
-    [[ $# -eq 1 ]] || die "get_news_dir_name expects exactly one argument"
-    local name=${1%::*} repo=${1##*::}
-    echo "$(get_repo_news_dir "${repo}")/${name}"
+	[[ $# -eq 1 ]] || die "get_news_dir_name expects exactly one argument"
+	local name=${1%::*} repo=${1##*::}
+	echo "$(get_repo_news_dir "${repo}")/${name}"
 }
 
-# Local Variables:
-# sh-indentation: 4
-# indent-tabs-mode: nil
-# End:
-
-# vim: set sw=4 et sts=4 tw=80 :
+# vim: set ft=eselect :

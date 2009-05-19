@@ -433,4 +433,3 @@ do_interactive() {
 }
 
 # vim: set ft=eselect :
-

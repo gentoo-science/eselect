@@ -1,6 +1,5 @@
 #!/bin/bash
-
-# Copyright (c) 2005-2009 Gentoo Foundation.
+# Copyright (c) 2005-2009 Gentoo Foundation                 -*-eselect-*-
 # $Id$
 # This file is part of the 'eselect' tools framework.
 #
@@ -19,104 +18,99 @@
 # check_do function args
 # Check that function exists, and call it with args.
 check_do() {
-    local function="${1}"
-    shift
-    if is_function "${function}" ; then
-        ${function} "$@"
-    else
-        die "No function ${function}"
-    fi
+	local function="${1}"
+	shift
+	if is_function "${function}" ; then
+		${function} "$@"
+	else
+		die "No function ${function}"
+	fi
 }
 
 # die [-q] "Message" PUBLIC
 # Display "Message" as an error. If -q is not provided, gives a stacktrace.
 die() {
-    local item funcname="" sourcefile="" lineno="" n e s="yes"
+	local item funcname="" sourcefile="" lineno="" n e s="yes"
 
-    # do we have a working write_error_msg?
-    if is_function "write_error_msg" ; then
-        e="write_error_msg"
-    else
-        e="echo"
-    fi
+	# do we have a working write_error_msg?
+	if is_function "write_error_msg" ; then
+		e="write_error_msg"
+	else
+		e="echo"
+	fi
 
-    # quiet?
-    if [[ ${1} == "-q" ]] ; then
-        s=""
-        shift
-    fi
+	# quiet?
+	if [[ ${1} == "-q" ]] ; then
+		s=""
+		shift
+	fi
 
-    $e "${@:-(no message)}"
+	$e "${@:-(no message)}"
 
-    if [[ -n "${s}" ]] ; then
-        echo "Call stack:" 1>&2
-        for (( n = 1 ; n < ${#FUNCNAME[@]} ; ++n )) ; do
-            funcname=${FUNCNAME[${n}]}
-            sourcefile=$(basename ${BASH_SOURCE[${n}]})
-            lineno=${BASH_LINENO[$(( n - 1 ))]}
-            echo "    * ${funcname} (${sourcefile}:${lineno})" 1>&2
-        done
-    fi
+	if [[ -n "${s}" ]] ; then
+		echo "Call stack:" 1>&2
+		for (( n = 1 ; n < ${#FUNCNAME[@]} ; ++n )) ; do
+			funcname=${FUNCNAME[${n}]}
+			sourcefile=$(basename ${BASH_SOURCE[${n}]})
+			lineno=${BASH_LINENO[$(( n - 1 ))]}
+			echo "    * ${funcname} (${sourcefile}:${lineno})" 1>&2
+		done
+	fi
 
-    # Evil, but effective.
-    kill ${ESELECT_KILL_TARGET}
-    exit 249
+	# Evil, but effective.
+	kill ${ESELECT_KILL_TARGET}
+	exit 249
 }
 
 # do_action action args...
 # Load and do 'action' with the specified args
 do_action() {
-    local action="${1##--}" modfile="" subaction="${2##--}"
-    [[ -z ${action} ]] && die "Usage: do_action <action> <args>"
-    shift; shift
+	local action="${1##--}" modfile="" subaction="${2##--}"
+	[[ -z ${action} ]] && die "Usage: do_action <action> <args>"
+	shift; shift
 
-    ESELECT_MODULE_NAME="${action}"
-    ESELECT_COMMAND="${ESELECT_PROGRAM_NAME} ${ESELECT_MODULE_NAME}"
+	ESELECT_MODULE_NAME="${action}"
+	ESELECT_COMMAND="${ESELECT_PROGRAM_NAME} ${ESELECT_MODULE_NAME}"
 
-    [[ ${ESELECT_BINARY_NAME##*/} != ${ESELECT_PROGRAM_NAME} ]] && \
-        ESELECT_COMMAND="${ESELECT_BINARY_NAME##*/}"
+	[[ ${ESELECT_BINARY_NAME##*/} != ${ESELECT_PROGRAM_NAME} ]] && \
+		ESELECT_COMMAND="${ESELECT_BINARY_NAME##*/}"
 
-    modfile=$( ec_find_module "${action}" )
-    (
-        source "$ESELECT_DEFAULT_ACTIONS" 2>/dev/null \
-            || die "Couldn't source ${ESELECT_DEFAULT_ACTIONS}"
-        source "${modfile}" 2>/dev/null \
-            || die "Couldn't source ${modfile}"
-        if [[ -z ${subaction} ]] ; then
-            check_do "do_${DEFAULT_ACTION:-usage}" "$@"
-        else
-            is_function "do_${subaction}" \
-                || die -q "Action ${subaction} unknown"
-            check_do "do_${subaction}" "$@"
-        fi
-    )
+	modfile=$( ec_find_module "${action}" )
+	(
+		source "$ESELECT_DEFAULT_ACTIONS" 2>/dev/null \
+			|| die "Couldn't source ${ESELECT_DEFAULT_ACTIONS}"
+		source "${modfile}" 2>/dev/null \
+			|| die "Couldn't source ${modfile}"
+		if [[ -z ${subaction} ]] ; then
+			check_do "do_${DEFAULT_ACTION:-usage}" "$@"
+		else
+			is_function "do_${subaction}" \
+				|| die -q "Action ${subaction} unknown"
+			check_do "do_${subaction}" "$@"
+		fi
+	)
 }
 
 # inherit module PUBLIC
 # Sources a given eselect library file
 inherit() {
-    local x
-    for x in ${@} ; do
-        [[ -e "${ESELECT_CORE_PATH}/${x}.bash" ]] \
-            || die "Couldn't find ${x}.bash"
-        source "${ESELECT_CORE_PATH}/${x}.bash" \
-            || die "Couldn't source ${x}.bash"
-    done
+	local x
+	for x in ${@} ; do
+		[[ -e "${ESELECT_CORE_PATH}/${x}.bash" ]] \
+			|| die "Couldn't find ${x}.bash"
+		source "${ESELECT_CORE_PATH}/${x}.bash" \
+			|| die "Couldn't source ${x}.bash"
+	done
 }
 
 # make eval not work, because it's evil
 eval() {
-    die "Don't use eval. Find another way."
+	die "Don't use eval. Find another way."
 }
 
 # GNU sed wrapper (real path to GNU sed determined by configure)
 sed() {
-    @SED@ "$@"
+	@SED@ "$@"
 }
 
-# Local Variables:
-# sh-indentation: 4
-# indent-tabs-mode: nil
-# End:
-
-# vim: set sw=4 et sts=4 tw=80 :
+# vim: set ft=eselect :

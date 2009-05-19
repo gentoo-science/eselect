@@ -1,6 +1,5 @@
 #!/bin/bash
-
-# Copyright (c) 2005 Gentoo Foundation.
+# Copyright (c) 2005-2009 Gentoo Foundation                 -*-eselect-*-
 # $Id$
 # This file is part of the 'eselect' tools framework.
 #
@@ -21,93 +20,88 @@ VERSION="No version available"
 DEFAULT_ACTION="usage"
 
 describe_usage() {
-    echo "Display usage information"
+	echo "Display usage information"
 }
 
 do_usage() {
-    show_usage_message
-    if is_function show_extra_help_text ; then
-        echo
-        echo "Additional help is available via the 'help' action."
-    fi
-    true
+	show_usage_message
+	if is_function show_extra_help_text ; then
+		echo
+		echo "Additional help is available via the 'help' action."
+	fi
+	true
 }
 
 show_usage_message() {
-    echo "Usage: ${ESELECT_COMMAND} <action> <options>"
-    echo
+	echo "Usage: ${ESELECT_COMMAND} <action> <options>"
+	echo
 
-    write_list_start "Standard actions:"
-    for action in "help" "usage" "version" ; do
-        local desc=""
-        is_function "describe_${action}" && desc=$(describe_${action} )
-        write_kv_list_entry "${action}" "${desc:-(no description)}"
-    done
+	write_list_start "Standard actions:"
+	for action in "help" "usage" "version" ; do
+		local desc=""
+		is_function "describe_${action}" && desc=$(describe_${action} )
+		write_kv_list_entry "${action}" "${desc:-(no description)}"
+	done
 
-    echo
-    write_list_start "Extra actions:"
+	echo
+	write_list_start "Extra actions:"
 
-    # FIXME: can we do this using expansion somehow?
-    for action in $(set | \
-            sed -n -e '/^do_\S\+ ()\s*$/s/^do_\(\S\+\).*/\1/p' | \
-            grep -v 'action' | \
-            sort ) ; do
-        case "${action}" in
-            help|usage|version)
-                continue
-                ;;
-            ?*)
-                local desc="" line="" ifs_save="${IFS}" action_text=""
-                is_function "describe_${action}" && desc=$(describe_${action} )
+	# FIXME: can we do this using expansion somehow?
+	for action in $(set | \
+			sed -n -e '/^do_\S\+ ()\s*$/s/^do_\(\S\+\).*/\1/p' | \
+			grep -v 'action' | \
+			sort ) ; do
+		case "${action}" in
+			help|usage|version)
+				continue
+				;;
+			?*)
+				local desc="" line="" ifs_save="${IFS}" action_text=""
+				is_function "describe_${action}" && desc=$(describe_${action} )
 
-                if is_function "describe_${action}_parameters" ; then
-                    action_text="${action} $(describe_${action}_parameters)"
-                else
-                    action_text="${action}"
-                fi
+				if is_function "describe_${action}_parameters" ; then
+					action_text="${action} $(describe_${action}_parameters)"
+				else
+					action_text="${action}"
+				fi
 
-                write_kv_list_entry "${action_text}" "${desc:-(no description)}"
+				write_kv_list_entry "${action_text}" "${desc:-(no description)}"
 
-                if is_function "describe_${action}_options" ; then
-                    IFS=$'\n'
-                    for line in $(describe_${action}_options) ; do
-                        write_kv_list_entry -p \
-                            "  ${line%%*( ):*}" \
-                            "  ${line##+([^:]):*( )}"
-                    done
-                    IFS="${ifs_save}"
-                fi
-                ;;
-        esac
-    done
-    true
+				if is_function "describe_${action}_options" ; then
+					IFS=$'\n'
+					for line in $(describe_${action}_options) ; do
+						write_kv_list_entry -p \
+							"  ${line%%*( ):*}" \
+							"  ${line##+([^:]):*( )}"
+					done
+					IFS="${ifs_save}"
+				fi
+				;;
+		esac
+	done
+	true
 }
 
 describe_version() {
-    echo "Display version information"
+	echo "Display version information"
 }
 
 do_version() {
-    echo "Version ${VERSION}"
+	echo "Version ${VERSION}"
 }
 
 describe_help() {
-    echo "Display help text"
+	echo "Display help text"
 }
 
 do_help() {
-    echo "${DESCRIPTION}"
-    show_usage_message
-    if is_function show_extra_help_text ; then
-        echo
-        show_extra_help_text
-    fi
-    true
+	echo "${DESCRIPTION}"
+	show_usage_message
+	if is_function show_extra_help_text ; then
+		echo
+		show_extra_help_text
+	fi
+	true
 }
 
-# Local Variables:
-# sh-indentation: 4
-# indent-tabs-mode: nil
-# End:
-
-# vim: set sw=4 et sts=4 tw=80 :
+# vim: set ft=eselect :

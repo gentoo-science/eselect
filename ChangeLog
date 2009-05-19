@@ -1,3 +1,7 @@
+2009-05-19  Ulrich Mueller  <ulm@gentoo.org>
+
+	* README: Use consistent indentation for all source files.
+
 2009-05-18  Ulrich Mueller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.1_rc1.

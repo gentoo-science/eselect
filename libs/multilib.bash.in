@@ -1,6 +1,5 @@
 #!/bin/bash
-
-# Copyright (c) 2005 Gentoo Foundation.
+# Copyright (c) 2005-2009 Gentoo Foundation                 -*-eselect-*-
 # $Id$
 # This file is part of the 'eselect' tools framework.
 #
@@ -21,24 +20,19 @@ ES_VALID_MULTILIB_DIRS="lib lib32 lib64"
 # list_libdirs PUBLIC
 # Returns a space separated list of libdirs available on this machine
 list_libdirs() {
-    local dir libdirs
-    libdirs=""
-    for dir in ${ES_VALID_MULTILIB_DIRS} ; do
-        if grep -q "^/${dir}\(\|/\)$" ${ROOT}/etc/ld.so.conf &> /dev/null ; then
-            libdirs=( ${libdirs[@]} ${dir} )
-        fi
-    done
-    if [[ -z ${libdirs[@]} ]] ; then
-        # Broken or non-existing ld.so.conf
-        libdirs=( ${ROOT}/lib* )
-        libdirs=( ${libdirs[@]/\/lib/lib} )
-    fi
-    echo "${libdirs[@]}"
+	local dir libdirs
+	libdirs=""
+	for dir in ${ES_VALID_MULTILIB_DIRS} ; do
+		if grep -q "^/${dir}\(\|/\)$" ${ROOT}/etc/ld.so.conf &> /dev/null ; then
+			libdirs=( ${libdirs[@]} ${dir} )
+		fi
+	done
+	if [[ -z ${libdirs[@]} ]] ; then
+		# Broken or non-existing ld.so.conf
+		libdirs=( ${ROOT}/lib* )
+		libdirs=( ${libdirs[@]/\/lib/lib} )
+	fi
+	echo "${libdirs[@]}"
 }
 
-# Local Variables:
-# sh-indentation: 4
-# indent-tabs-mode: nil
-# End:
-
-# vim: set sw=4 et sts=4 tw=80 :
+# vim: set ft=eselect :

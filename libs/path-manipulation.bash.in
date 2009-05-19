@@ -1,6 +1,5 @@
 #!/bin/bash
-
-# Copyright (c) 2005-2009 Gentoo Foundation.
+# Copyright (c) 2005-2009 Gentoo Foundation                 -*-eselect-*-
 # $Id$
 # This file is part of the 'eselect' tools framework.
 #
@@ -18,21 +17,16 @@
 
 # basename wrapper
 basename() {
-    echo "${1##*/}"
+	echo "${1##*/}"
 }
 
 # dirname wrapper
 dirname() {
-    echo "${1%/*}"
+	echo "${1%/*}"
 }
 
 canonicalise() {
-    @CANONICALISE@ "$@"
+	@CANONICALISE@ "$@"
 }
 
-# Local Variables:
-# sh-indentation: 4
-# indent-tabs-mode: nil
-# End:
-
-# vim: set sw=4 et sts=4 tw=80 :
+# vim: set ft=eselect :

@@ -22,8 +22,9 @@ Style Notes
 
 * Always use ``[[ brackets ]]``, never `[ brackets ]`.
 * Use quotes on variables where necessary.
-* For the main source, indent is four spaces, no tabs, text width of 80.
-* For .eselect files, the same indenting rules apply as for ebuilds.
+* For all source files, the same indenting rules apply as for ebuilds:
+  one tab per indent level, with each tab representing 4 places.
+* Avoid lines wider than 79 positions.
 * Public functions don't get the ``ec_`` prefix, private functions do.
 * eval is evil, so we disabled it.
 * Absolute paths to executables are not portable, so don't use them.

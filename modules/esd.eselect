@@ -151,4 +151,3 @@ do_update() {
 }
 
 # vim: set ft=eselect :
-
