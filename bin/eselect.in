@@ -1,4 +1,4 @@
-#!/bin/bash
+#!@BASH@
 # Copyright (c) 2005-2009 Gentoo Foundation                 -*-eselect-*-
 # $Id$
 # This file is part of the 'eselect' tools framework.
@@ -16,7 +16,7 @@
 # eselect.  If not, see <http://www.gnu.org/licenses/>.
 
 # Where are our data?
-ESELECT_DATA_PATH="%DATADIR%/eselect"
+ESELECT_DATA_PATH="@DATADIR@/eselect"
 
 # Where are modules installed by default?
 ESELECT_DEFAULT_MODULES_PATH="${ESELECT_DATA_PATH}/modules"
@@ -33,7 +33,7 @@ ESELECT_CORE_PATH="${ESELECT_DATA_PATH}/libs"
 ESELECT_DEFAULT_ACTIONS="${ESELECT_CORE_PATH}/default.eselect"
 
 # Our program name and version
-ESELECT_VERSION="%VERSION%"
+ESELECT_VERSION="@VERSION@"
 ESELECT_PROGRAM_NAME="eselect"
 
 # Invocation information

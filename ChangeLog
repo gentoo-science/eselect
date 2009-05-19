@@ -1,5 +1,18 @@
 2009-05-19  Ulrich Mueller  <ulm@gentoo.org>
 
+	* bin/eselect.in: Don't hardcode /bin/bash; use configured path
+	instead, as requested by Fabian Groffen	<grobian@gentoo.org>.
+	* bin/Makefile.am (dosed): Also substitute BASH. Use at signs
+	throughout, instead of percent signs.
+	* libs/config.bash.in, libs/core.bash.in, libs/default.eselect.in:
+	* libs/editor-variable.bash.in, libs/manip.bash.in:
+	* libs/multilib.bash.in, libs/output.bash.in:
+	* libs/package-manager.bash.in, libs/path-manipulation.bash.in:
+	* libs/tests.bash.in: Remove unnecessary shebang lines.
+	* libs/Makefile.am (eselectlibs_DATA): Don't set executable bit
+	for installed libs; therefore rename eselectlibs_SCRIPTS.
+	(CLEANFILES): Update accordingly.
+
 	* configure.ac: Update version to 1.1_rc2.
 	* Tagged 1.1_rc2 release candidate.
 

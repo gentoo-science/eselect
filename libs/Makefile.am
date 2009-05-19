@@ -1,17 +1,17 @@
 eselectlibsdir = $(datadir)/$(PACKAGE_NAME)/libs/
 
-eselectlibs_SCRIPTS = \
-		      config.bash \
-		      core.bash \
-		      default.eselect \
-		      editor-variable.bash \
-		      manip.bash \
-		      multilib.bash \
-		      output.bash \
-		      package-manager.bash \
-		      path-manipulation.bash \
-		      skel.bash \
-		      tests.bash
+eselectlibs_DATA = \
+		   config.bash \
+		   core.bash \
+		   default.eselect \
+		   editor-variable.bash \
+		   manip.bash \
+		   multilib.bash \
+		   output.bash \
+		   package-manager.bash \
+		   path-manipulation.bash \
+		   skel.bash \
+		   tests.bash
 
 EXTRA_DIST = \
 	     config.bash.in \
@@ -42,4 +42,4 @@ dosed = @SED@ \
 	cp $? $@
 
 MAINTAINERCLEANFILES = Makefile.in
-CLEANFILES = $(eselectlibs_SCRIPTS)
+CLEANFILES = $(eselectlibs_DATA)
