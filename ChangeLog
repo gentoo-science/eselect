@@ -1,5 +1,8 @@
 2009-05-19  Ulrich Mueller  <ulm@gentoo.org>
 
+	* configure.ac: Update version to 1.1_rc2.
+	* Tagged 1.1_rc2 release candidate.
+
 	* libs/package-manager.bash.in (run_paludis): Renamed from paludis
 	to prevent infinite loop. Fixes bug 270406.
 	(envvar, best_version, has_version, get_repositories)

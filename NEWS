@@ -1,6 +1,10 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.1_rc2:
+    Bug fixes:
+    - Fixed bug #270406: Infinite loop when called from paludis.
+
 1.1_rc1:
     Bug fixes:
     - Fixed bug #155814: Clear aliases and shell functions.
