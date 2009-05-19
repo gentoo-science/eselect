@@ -1,5 +1,10 @@
 2009-05-19  Ulrich Mueller  <ulm@gentoo.org>
 
+	* libs/package-manager.bash.in (run_paludis): Renamed from paludis
+	to prevent infinite loop. Fixes bug 270406.
+	(envvar, best_version, has_version, get_repositories)
+	(get_repo_news_dir): Use run_paludis instead of paludis.
+
 	* README: Use consistent indentation for all source files.
 
 2009-05-18  Ulrich Mueller  <ulm@gentoo.org>
