@@ -85,4 +85,3 @@ AC_OUTPUT(Makefile
 	  bin/Makefile
 	  libs/Makefile
 	  modules/Makefile)
-

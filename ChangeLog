@@ -1,5 +1,8 @@
 2009-05-19  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/news-tng.eselect (do_read): Output a message if there
+	are no news items to read.
+
 	* bin/eselect.in: Don't hardcode /bin/bash; use configured path
 	instead, as requested by Fabian Groffen	<grobian@gentoo.org>.
 	* bin/Makefile.am (dosed): Also substitute BASH. Use at signs

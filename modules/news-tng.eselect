@@ -186,6 +186,7 @@ do_read() {
 			seq="${seq} ${i}"
 		done
 		set -- ${seq}
+		[[ $# -eq 0  && -z ${raw} ]] && echo "No news is good news."
 	fi
 
 	for i in "$@"; do
