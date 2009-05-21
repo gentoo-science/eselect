@@ -1,3 +1,8 @@
+2009-05-21  Ulrich Mueller  <ulm@gentoo.org>
+
+	* configure.ac: Update version to 1.1_rc3.
+	* Tagged 1.1_rc3 release candidate.
+
 2009-05-19  Ulrich Mueller  <ulm@gentoo.org>
 
 	* modules/news-tng.eselect (do_read): Output a message if there

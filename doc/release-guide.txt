@@ -37,7 +37,7 @@ Build the final tarball. ::
     $ cd tags/release-${PV}
     $ ./autogen.bash
     $ ./configure
-    $ make dist-bzip2
+    $ make dist
 
 Sign it (there may be a dist-sign target in the future). ::
 
