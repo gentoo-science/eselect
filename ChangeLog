@@ -1,7 +1,8 @@
 2009-05-23  Ulrich Mueller  <ulm@gentoo.org>
 
 	* misc/eselect.bashcomp (_eselect): Remove --no-colour option;
-	it is not needed since output is to a pipe.
+	it is not needed since output is to a pipe. Use only POSIX basic
+	regular expressions for sed.
 
 2009-05-21  Ulrich Mueller  <ulm@gentoo.org>
 

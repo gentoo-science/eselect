@@ -9,7 +9,7 @@ _eselect() {
     local cur sedcmd possibles
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
-    sedcmd='s/^  \([[:alnum:]_-]\+\)[[:space:],].*$/\1/p'
+    sedcmd='s/^  \([[:alnum:]-][[:alnum:]_-]*\)[[:space:],].*$/\1/p'
 
     set - "${COMP_WORDS[@]:1}"
     while [[ $# -gt 1 && $1 == -* ]]; do
