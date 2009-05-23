@@ -2,7 +2,8 @@
 
 	* misc/eselect.bashcomp (_eselect): Remove --no-colour option;
 	it is not needed since output is to a pipe. Use only POSIX basic
-	regular expressions for sed.
+	regular expressions for sed. Add completion for "set", "enable",
+	and "disable" subactions.
 
 2009-05-21  Ulrich Mueller  <ulm@gentoo.org>
 
