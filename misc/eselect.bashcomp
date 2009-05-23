@@ -17,9 +17,9 @@ _eselect() {
     done
 
     case $# in
-        1) possibles=$(eselect --no-colour help 2>/dev/null \
+        1) possibles=$(eselect help 2>/dev/null \
             | sed -n -e "${sedcmd}") ;;
-        2) possibles=$(eselect --no-colour "$1" usage 2>/dev/null \
+        2) possibles=$(eselect "$1" usage 2>/dev/null \
             | sed -n -e "${sedcmd}") ;;
     esac
 
@@ -28,6 +28,12 @@ _eselect() {
 
     return 0
 }
+
 complete -F _eselect eselect
+
+# Local Variables:
+# mode: sh
+# indent-tabs-mode: nil
+# End:
 
 # vim: set ft=sh tw=80 sw=4 et :
