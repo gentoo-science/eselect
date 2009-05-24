@@ -13,8 +13,13 @@ _eselect() {
     sedcmd3='s/^  \[[[:digit:]][[:digit:]]*\] *\([[:graph:]]*\).*$/\1/p'
 
     set - "${COMP_WORDS[@]:1}"
+    # skip global options
     while [[ $# -gt 1 && $1 == -* ]]; do
         shift
+    done
+    # skip any subaction options
+    while [[ $# -gt 3 && $3 == -* ]]; do
+        set - "${@:1:2}" "${@:4}"
     done
 
     case $# in
