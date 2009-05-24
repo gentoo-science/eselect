@@ -26,7 +26,7 @@ portageq() {
 	@PORTAGEQ@ "$@" 2>/dev/null
 }
 
-# run_paludis
+# run_paludis PRIVATE
 # Run PALUDIS_COMMAND (defaults to "paludis"). Redirect stderr
 run_paludis() {
 	${PALUDIS_COMMAND:-paludis} "$@" 2>/dev/null
