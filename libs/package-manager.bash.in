@@ -46,7 +46,8 @@ arch() {
 			return 1
 		fi
 
-		case $(uname -m) in
+		ret=$(uname -m)
+		case ${ret} in
 			alpha|ia64|ppc) ;;
 			i?86) ret=x86 ;;
 			mips*) ret=mips ;;
