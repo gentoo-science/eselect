@@ -7,13 +7,15 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
     - Fixed bug #156866: Handle missing scripts in rc module.
 
     New features:
-    - Add a new module, for listing and querying eselect modules.
-    - Allow setting system-wide default dictionary.
-    - Treat 'help' and 'version' options as if they were actions.
+    - Add a new module, for listing and querying eselect modules (bug #148578).
+    - Treat 'help' and 'version' options as if they were actions (bug #153890).
     - The rc module now also supports OpenRC (bug #180966).
-    - Modules for the EDITOR, VISUAL, and PAGER environment variables.
+    - Modules for the EDITOR, VISUAL, and PAGER environment variables
+      (bug #190216).
     - Module news-tng.eselect for reading Gentoo ('GLEP 42') news.
     - Remove mailer module since it's not functional (bug #220473).
+    - New --with-pm configure option for default package manager.
+    - Better bash completion.
 
 1.0.12:
     Bug fixes:
