@@ -38,7 +38,7 @@ get_runlevel() {
 # list runlevels for file $1
 list_runlevels() {
 	[[ ${#@} -eq 1 ]] || return
-	local runlevels
+	local x runlevels
 	for x in ${ROOT}/etc/runlevels/* ; do
 		[[ -d ${x} ]] || continue
 		[[ -L ${ROOT}/etc/runlevels/${x##*/}/${1} ]] \
