@@ -1,3 +1,8 @@
+2009-05-27  Ulrich Mueller  <ulm@gentoo.org>
+
+	* libs/default.eselect.in (do_usage): Show usage message only:
+	our output may be parsed, e.g. by the bash-completion module.
+
 2009-05-23  Ulrich Mueller  <ulm@gentoo.org>
 
 	* libs/package-manager.bash.in (package_manager): Avoid hyphen in
