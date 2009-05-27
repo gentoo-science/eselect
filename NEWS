@@ -1,11 +1,7 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
-1.1_rc2:
-    Bug fixes:
-    - Fixed bug #270406: Infinite loop when called from paludis.
-
-1.1_rc1:
+1.1:
     Bug fixes:
     - Fixed bug #155814: Clear aliases and shell functions.
     - Fixed bug #156866: Handle missing scripts in rc module.
@@ -88,7 +84,8 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
 
 1.0.5:
     Bug fixes:
-    - Fixed bug in libs/skel.bash.in regarding set action with numerical parameters.
+    - Fixed bug in libs/skel.bash.in regarding set action with numerical
+      parameters.
     - Fixed bug #141106.
 
 1.0.4:
@@ -144,8 +141,8 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
     - Fixed behaviour of append_config to not add duplicate items.
 
     New features:
-    - blas.eselect and lapack.eselect now fully support MKL72 (yet to be committed
-    to portage tree).
+    - blas.eselect and lapack.eselect now fully support MKL72 (yet to be
+      committed to portage tree).
 
 1.0_rc1:
     Bug fixes:

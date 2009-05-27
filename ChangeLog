@@ -1,5 +1,8 @@
 2009-05-27  Ulrich Mueller  <ulm@gentoo.org>
 
+	* configure.ac: Update version to 1.1.
+	* Tagged 1.1 release.
+
 	* man/rc.eselect.5: Fix formatting for "show" action.
 
 	* libs/default.eselect.in (do_usage): Show usage message only:
@@ -26,7 +29,7 @@
 	are no news items to read.
 
 	* bin/eselect.in: Don't hardcode /bin/bash; use configured path
-	instead, as requested by Fabian Groffen	<grobian@gentoo.org>.
+	instead, as requested by Fabian Groffen <grobian@gentoo.org>.
 	* bin/Makefile.am (dosed): Also substitute BASH. Use at signs
 	throughout, instead of percent signs.
 	* libs/config.bash.in, libs/core.bash.in, libs/default.eselect.in:
