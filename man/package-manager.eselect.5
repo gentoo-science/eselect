@@ -1,0 +1,81 @@
+.\" Copyright 2009 Gentoo Foundation
+.\" Distributed under the terms of the GNU General Public License v2
+.\" $Id$
+.\"
+.TH package-manager.eselect 5 "June 2009" "Gentoo Linux" eselect
+.SH NAME
+package-manager.eselect \- The PACKAGE_MANAGER management module for
+Gentoo's eselect
+.SH SYNOPSIS
+.B eselect package-manager
+.RB [ help | usage | version ]
+.br
+.B eselect package-manager list
+.br
+.B eselect package-manager set
+.I target
+.br
+.B eselect package-manager show
+.br
+.B eselect package-manager update
+.SH DESCRIPTION
+.B eselect
+is Gentoo's configuration and management tool.  It features modules
+that care for the individual administrative tasks.
+.SH ACTION: LIST
+.B eselect package-manager list
+.br
+List available targets for the
+.I PACKAGE_MANAGER
+variable.
+
+# eselect package-manager list
+.br
+Available targets for the PACKAGE_MANAGER variable:
+.br
+  [1]   portage
+  [2]   pkgcore
+.SH ACTION: SET
+.B eselect package-manager set
+.I target
+.br
+Set the
+.I PACKAGE-MANAGER
+variable in the system profile.
+.I target
+can be either an identification number given by
+.B eselect package-manager list
+or the corresponding package manager's name.
+
+# eselect package-manager set pkgcore
+.br
+Setting PACKAGE_MANAGER to pkgcore ...
+.SH ACTION: SHOW
+.B eselect package-manager show
+.br
+Show the value of the
+.I PACKAGE_MANAGER
+variable in the system profile.
+
+# eselect package-manager show
+.br
+PACKAGE_MANAGER variable in profile:
+.br
+  pkgcore
+.SH ACTION: UPDATE
+.B eselect package-manager update
+.br
+Update the
+.I PACKAGE_MANAGER
+variable if it is unset or invalid.
+.SH FILES
+.TP
+.B /etc/env.d/50package-manager
+Configuration file where the variable is stored.
+.SH AUTHOR
+Ulrich Mueller <ulm@gentoo.org>
+.SH SEE ALSO
+.BR eselect (1),
+.BR environ (7)
+.SH REVISION
+$Id$

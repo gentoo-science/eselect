@@ -1,0 +1,16 @@
+# Copyright 2009 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Id$
+
+EDITOR_VAR="PACKAGE_MANAGER"
+EDITOR_ENVFILE="/etc/env.d/50package-manager"
+EDITOR_LIST="portage:/usr/bin/emerge
+	paludis:/usr/bin/paludis
+	pkgcore:/usr/bin/pmerge"
+
+inherit editor-variable
+
+DESCRIPTION="Manage the ${EDITOR_VAR} environment variable"
+MAINTAINER="ulm@gentoo.org"
+SVN_DATE='$Date$'
+VERSION=$(svn_date_to_version "${SVN_DATE}")

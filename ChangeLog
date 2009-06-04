@@ -1,5 +1,9 @@
 2009-06-04  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/package-manager.eselect: New module, managing the
+	PACKAGE_MANAGER environment variable.
+	* man/package-manager.eselect.5: New man page.
+
 	* libs/package-manager.bash.in (package_manager): Test if selected
 	package manager exists, and fall back to Portage if not. Rename
 	variable ESELECT_PACKAGE_MANAGER to more generic PACKAGE_MANAGER.
