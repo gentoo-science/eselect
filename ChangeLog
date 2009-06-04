@@ -1,3 +1,9 @@
+2009-06-04  Ulrich Mueller  <ulm@gentoo.org>
+
+	* libs/editor-variable.bash.in (EDITOR_LIST); Allow alternative
+	"name:/path/to/binary" syntax for items.
+	(find_targets, do_list, do_set, do_update): Update accordingly.
+
 2009-05-27  Ulrich Mueller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.1.
