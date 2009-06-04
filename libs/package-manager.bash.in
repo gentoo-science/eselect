@@ -17,7 +17,15 @@
 # package_manager PRIVATE
 # Return the package manager we're going to use.
 package_manager() {
-	echo "${ESELECT_PACKAGE_MANAGER:-@PACKAGE_MANAGER@}"
+	local pm
+	case ${PACKAGE_MANAGER:-@PACKAGE_MANAGER@} in
+		portage|Portage)
+			pm=portage ;;
+		paludis|Paludis)
+			set -- ${PALUDIS_COMMAND:-paludis}
+			type "$1" &>/dev/null && pm=paludis ;;
+	esac
+	echo "${pm:-portage}"
 }
 
 # portageq
