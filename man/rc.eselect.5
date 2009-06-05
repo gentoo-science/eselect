@@ -2,7 +2,7 @@
 .\" Distributed under the terms of the GNU General Public License v2
 .\" $Id$
 .\"
-.TH rc.eselect 5 "May 2009" "Gentoo Linux" eselect
+.TH rc.eselect 5 "June 2009" "Gentoo Linux" eselect
 .SH NAME
 rc.eselect \- Runlevel configuration module
 .SH SYNOPSIS
@@ -185,9 +185,12 @@ Show init scripts that belong to
 and list them together with their status.  If no
 .I runlevel
 is given, list the scripts from the current runlevel.
-With option
+With options
 .B --all
-the scripts of all runlevels are shown.
+or
+.B --unused
+the scripts of all runlevels or the scripts not assigned to any
+runlevel are shown, respectively.
 
 # eselect rc show
 .br

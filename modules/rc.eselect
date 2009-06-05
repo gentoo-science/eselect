@@ -37,11 +37,10 @@ get_runlevel() {
 # list_runlevels PRIVATE
 # list runlevels for file $1
 list_runlevels() {
-	[[ ${#@} -eq 1 ]] || return
+	[[ $# -eq 1 ]] || return
 	local x runlevels
 	for x in ${ROOT}/etc/runlevels/* ; do
-		[[ -d ${x} ]] || continue
-		[[ -L ${ROOT}/etc/runlevels/${x##*/}/${1} ]] \
+		[[ -d ${x} && -L ${x}/${1} ]] \
 			&& runlevels=(${runlevels[@]} "${x##*/}")
 	done
 	echo -ne "${runlevels[@]}"
@@ -51,26 +50,55 @@ list_runlevels() {
 # check if file $1 is a valid init script
 is_script() {
 	local file=${1}
-	[[ -n ${file} ]] \
-		|| return 1
-	( [[ -L ${file} ]] \
-		&& [[ ! -e $(canonicalise -f ${file}) ]] ) \
-		&& return 1
-	[[ -e ${file} ]] \
-		&& [[ ${file%%.sh} == ${file} ]] \
-		&& [[ ${file%%\~} == ${file} ]] \
-		&& [[ -n `grep "^#\!/sbin/runscript" ${file}` ]]
+	[[ -n ${file} \
+		&& ${file%%.sh} = ${file} \
+		&& ${file%%\~} = ${file} \
+		&& -e ${file} ]] \
+		&& grep "^#\!/sbin/runscript" "${file}" &>/dev/null
 }
 
 # find_scripts PRIVATE
 # browse directory $1 for init scripts and return a list
 find_scripts() {
-	local ret
 	for file in ${1}/* ; do
-		is_script ${file} \
-			&& ret=(${ret[@]} "${file##*/}")
+		is_script ${file} && echo "${file##*/}"
 	done
-	echo -ne ${ret[@]}
+}
+
+# find_unused_scripts PRIVATE
+# find scripts in /etc/init.d not belonging to any runlevel
+find_unused_scripts() {
+	local file x
+	for file in $(find_scripts "${ROOT}/etc/init.d"); do
+		for x in "${ROOT}"/etc/runlevels/*; do
+			[[ -d ${x} && -L ${x}/${file} ]] && continue 2
+		done
+		echo "${file##*/}"
+	done
+}
+
+# show_script_status PRIVATE
+# output list entry for script $1 and show its status
+show_script_status() {
+	local script=${1} status=unknown x
+
+	for x in stopping starting inactive started stopped; do
+		if service_${x} ${script}; then
+			status=${x}
+			break
+		fi
+	done
+	case ${status} in
+		stopped)
+			write_kv_list_entry ${script} [${x}]
+			;;
+		started)
+			write_kv_list_entry ${script} "$(highlight [${x}])"
+			;;
+		*)
+			write_kv_list_entry ${script} "$(highlight_warning [${x}])"
+			;;
+	esac
 }
 
 # run_runscript PRIVATE
@@ -78,11 +106,9 @@ find_scripts() {
 run_runscript() {
 	local command=${1}
 	shift
-	write_list_start "${1}"
-	shift
-	for script in ${@} ; do
-		is_script ${ROOT}/etc/init.d/${script} \
-			&& /sbin/runscript ${ROOT}/etc/init.d/${script} ${command}
+	for script in "$@"; do
+		is_script "${ROOT}/etc/init.d/${script}" \
+			&& /sbin/runscript "${ROOT}/etc/init.d/${script}" "${command}"
 	done
 }
 
@@ -102,7 +128,7 @@ describe_add_options() {
 }
 
 do_add() {
-	[[ ${#@} -gt 0 ]] \
+	[[ $# -gt 0 ]] \
 		|| die -q "Please specify the init script to be added!"
 	local script=${1##*/}
 	[[ -e ${ROOT}/etc/init.d/${script} ]] \
@@ -144,7 +170,7 @@ describe_delete_options() {
 }
 
 do_delete() {
-	[[ ${#@} -gt 0 ]] \
+	[[ $# -gt 0 ]] \
 		|| die -q "Please specify the init script to be deleted!"
 	local script=${1##*/}
 	shift 1
@@ -194,12 +220,9 @@ do_list() {
 		die -q "${1} is no valid runlevel!"
 	fi
 
-	for file in $(find_scripts ${dir}) ; do
-			[[ ${dir##*/} = init.d ]] \
-				&& write_kv_list_entry ${file} "$(list_runlevels ${file})" \
-				|| echo "  ${file}"
-#				&& echo "  ${file} $(space $((20 - ${#file}))) | $(list_runlevels ${file})" \
-#				|| echo "  ${file}"
+	for file in $(find_scripts "${dir}") ; do
+		write_kv_list_entry "${file}" \
+			$([[ ${dir##*/} = init.d ]] && list_runlevels "${file}")
 	done
 }
 
@@ -216,10 +239,11 @@ describe_show_parameters() {
 describe_show_options() {
 	echo "runlevels : Runlevels to list (defaults to current runlevel)"
 	echo "--all : List all runlevels"
+	echo "--unused : Show scripts not assigned to any runlevel"
 }
 
 do_show() {
-	local runlevel status n x
+	local runlevel all unused n x
 
 	# core.bash redefines eval; unset it because OpenRC's
 	# functions.sh needs the bash builtin
@@ -228,43 +252,46 @@ do_show() {
 
 	if [[ $# -eq 0 ]]; then
 		set -- "$(get_runlevel)"
-	elif [[ ${1##--} = all ]]; then
-		for x in "${ROOT}"/etc/runlevels/*; do
-			[[ -d "${x}" ]] && runlevels=("${runlevels[@]}" "${x##*/}")
+	else
+		while [[ $# -gt 0 ]]; do
+			case ${1##--} in
+				all) all=1 ;;
+				unused) unused=1 ;;
+				*) break ;;
+			esac
+			shift
 		done
-		set -- "${runlevels[@]}"
+		if [[ -n ${all} ]]; then
+			local runlevels=()
+			for x in "${ROOT}"/etc/runlevels/*; do
+				[[ -d "${x}" ]] && runlevels=("${runlevels[@]}" "${x##*/}")
+			done
+			set -- "${runlevels[@]}"
+		fi
 	fi
 
 	for runlevel in "$@"; do
 		[[ -n ${runlevel} && -d ${ROOT}/etc/runlevels/${runlevel} ]] \
 			|| die -q "\"${runlevel}\" is no valid runlevel"
 
-		write_list_start \
-			"Status of init scripts in runlevel \"${runlevel}\""
+		write_list_start "Status of init scripts in runlevel \"${runlevel}\""
 		n=0
 		for script in $(find_scripts "${ROOT}/etc/runlevels/${runlevel}"); do
-			status=unknown
-			for x in stopping starting inactive started stopped; do
-				if service_${x} ${script}; then
-					status=${x}
-					break
-				fi
-			done
-			case ${status} in
-				stopped)
-					write_kv_list_entry ${script} [${x}]
-					;;
-				started)
-					write_kv_list_entry ${script} "$(highlight [${x}])"
-					;;
-				*)
-					write_kv_list_entry ${script} "$(highlight_warning [${x}])"
-					;;
-			esac
+			show_script_status ${script}
 			((n++))
 		done
 		[[ ${n} -eq 0 ]] && write_kv_list_entry "(none found)" ""
 	done
+
+	if [[ -n ${unused} ]]; then
+		write_list_start "Status of init scripts not assigned to any runlevel"
+		n=0
+		for script in $(find_unused_scripts); do
+			show_script_status ${script}
+			((n++))
+		done
+		[[ ${n} -eq 0 ]] && write_kv_list_entry "(none found)" ""
+	fi
 }
 
 ### start action
@@ -282,9 +309,10 @@ describe_start_options() {
 }
 
 do_start() {
-	[[ ${#@} -gt 0 ]] \
+	[[ $# -gt 0 ]] \
 		|| die -q "Please specify the init script to be started!"
-	run_runscript start "Starting init script$([[ ${#@} -gt 1 ]] && echo -ne 's')" ${@}
+	write_list_start "Starting init script$([[ $# -gt 1 ]] && echo -n 's')"
+	run_runscript start "$@"
 }
 
 ### stop action
@@ -302,9 +330,10 @@ describe_stop_options() {
 }
 
 do_stop() {
-	[[ ${#@} -gt 0 ]] \
+	[[ $# -gt 0 ]] \
 		|| die -q "Please specify the init script to be stopped!"
-	run_runscript stop "Stopping init script$([[ ${#@} -gt 1 ]] && echo -ne 's')" ${@}
+	write_list_start "Stopping init script$([[ $# -gt 1 ]] && echo -n 's')"
+	run_runscript stop "$@"
 }
 
 ### pause action
@@ -322,9 +351,10 @@ describe_pause_options() {
 }
 
 do_pause() {
-	[[ ${#@} -gt 0 ]] \
+	[[ $# -gt 0 ]] \
 		|| die -q "Please specify the init script to be paused!"
-	run_runscript pause "Pausing init script$([[ ${#@} -gt 1 ]] && echo -ne 's')" ${@}
+	write_list_start "Pausing init script$([[ $# -gt 1 ]] && echo -n 's')"
+	run_runscript pause "$@"
 }
 
 ### reload action
@@ -342,9 +372,10 @@ describe_reload_options() {
 }
 
 do_reload() {
-	[[ ${#@} -gt 0 ]] \
+	[[ $# -gt 0 ]] \
 		|| die -q "Please specify the init script to be reloaded!"
-	run_runscript reload "Reloading init script$([[ ${#@} -gt 1 ]] && echo -ne 's')" ${@}
+	write_list_start "Reloading init script$([[ $# -gt 1 ]] && echo -n 's')"
+	run_runscript reload "$@"
 }
 
 ### restart action
@@ -362,9 +393,10 @@ describe_restart_options() {
 }
 
 do_restart() {
-	[[ ${#@} -gt 0 ]] \
+	[[ $# -gt 0 ]] \
 		|| die -q "Please specify the init script to be restarted!"
-	run_runscript restart "Restarting init script$([[ ${#@} -gt 1 ]] && echo -ne 's')" ${@}
+	write_list_start "Restarting init script$([[ $# -gt 1 ]] && echo -n 's')"
+	run_runscript restart "$@"
 }
 
 # vim: set ft=eselect :

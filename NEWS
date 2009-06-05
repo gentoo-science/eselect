@@ -5,6 +5,8 @@ trunk:
     New features:
     - Add a test if the selected package manager is valid.
     - Extended syntax in editor-variable library.
+    - The rc module can show the status of scripts that are not assigned to any
+      runlevel (bug #271208).
 
 1.1:
     Bug fixes:

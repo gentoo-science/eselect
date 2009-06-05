@@ -1,3 +1,16 @@
+2009-06-05  Ulrich Mueller  <ulm@gentoo.org>
+
+	* modules/rc.eselect (is_script): Symlinks are implicitly
+	resolved, so no need to canonicalise.
+	(do_start, do_stop, do_pause, do_reload, do_restart)
+	(run_runscript): Move output message to calling functions.
+	(do_list): Output colours also if only one runlevel is shown.
+	(find_unused_scripts, show_script_status): New functions.
+	(do_show): Add "--unused" option to show status of scripts that
+	are not assigned to any runlevel; bug 271208.
+	(describe_show_options): Document new option.
+	* man/rc.eselect.5: Document new option for "show" action.
+
 2009-06-04  Ulrich Mueller  <ulm@gentoo.org>
 
 	* modules/package-manager.eselect: New module, managing the
