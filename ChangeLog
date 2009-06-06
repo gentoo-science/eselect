@@ -1,5 +1,8 @@
 2009-06-06  Ulrich Mueller  <ulm@gentoo.org>
 
+	* configure.ac: Update version to 1.1.1.
+	* Tagged 1.1.1 release.
+
 	* modules/kernel.eselect (sort_kernel_versions): New function.
 	(find_targets): Sort kernel versions properly. Fixes bug 207889.
 
