@@ -83,7 +83,7 @@ describe_list() {
 do_list() {
 	local targets=( $(find_targets) )
 	write_list_start "Available kernel symlink targets:"
-	if [[ -n ${targets[@]} ]] ; then
+	if [[ ${#targets[@]} -gt 0 ]] ; then
 		local i
 		for (( i = 0; i < ${#targets[@]}; i++ )) ; do
 			[[ ${targets[i]} = \
