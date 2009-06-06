@@ -1,3 +1,8 @@
+2009-06-06  Ulrich Mueller  <ulm@gentoo.org>
+
+	* modules/kernel.eselect (sort_kernel_versions): New function.
+	(find_targets): Sort kernel versions properly. Fixes bug 207889.
+
 2009-06-05  Ulrich Mueller  <ulm@gentoo.org>
 
 	* modules/rc.eselect (is_script): Symlinks are implicitly

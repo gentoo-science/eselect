@@ -7,12 +7,32 @@ MAINTAINER="eselect@gentoo.org"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}")
 
+# sort function for kernel versions, to be used in a pipe
+sort_kernel_versions() {
+	local vsort="sort --version-sort"
+	# Test if our sort supports the --version-sort option
+	# (it should since the kernel module is Linux specific)
+	${vsort} </dev/null &>/dev/null || vsort=sort
+
+	# We sort kernel versions as follows:
+	# 1. Run sed to prepend the version string by the numeric version
+	#    and an additional rank indicator that is 0 for release candidates
+	#    or 1 otherwise. After this step we have, for example:
+	#      2.6.29 1 linux-2.6.29
+	#      2.6.29 0 linux-2.6.29-rc8
+	# 2. sort --version-sort
+	# 3. Run sed again to remove the prepended keys from step 1.
+	sed -e 's/^\(linux-\)\?\([[:digit:].]\+\)[-_]rc/\2 0 &/' \
+		-e 't;s/^\(linux-\)\?\([[:digit:].]\+\)/\2 1 &/' \
+		| ${vsort} | sed 's/.* //'
+}
+
 # find a list of kernel symlink targets
 find_targets() {
 	local f
 	for f in "${ROOT}"/usr/src/linux-[[:digit:]]* ; do
 		[[ -d ${f} ]] && basename "${f}"
-	done
+	done | sort_kernel_versions
 }
 
 # try to remove the kernel symlink
