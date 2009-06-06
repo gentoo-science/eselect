@@ -19,9 +19,9 @@
 package_manager() {
 	local pm
 	case ${PACKAGE_MANAGER:-@PACKAGE_MANAGER@} in
-		portage|Portage)
+		portage)
 			pm=portage ;;
-		paludis|Paludis)
+		paludis)
 			set -- ${PALUDIS_COMMAND:-paludis}
 			type "$1" &>/dev/null && pm=paludis ;;
 	esac
