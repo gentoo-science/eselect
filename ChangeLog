@@ -1,3 +1,8 @@
+2009-06-07  Ulrich Mueller  <ulm@gentoo.org>
+
+	* libs/editor-variable.bash.in (do_set): Output a message
+	reminding the user to source /etc/profile.
+
 2009-06-06  Ulrich Mueller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.1.1.
