@@ -2,6 +2,8 @@
 
 	* libs/editor-variable.bash.in (do_set): Output a message
 	reminding the user to source /etc/profile.
+	* man/editor.eselect.5, man/visual.eselect.5, man/pager.eselect.5:
+	* man/package-manager.eselect.5: Update man pages accordingly.
 
 2009-06-06  Ulrich Mueller  <ulm@gentoo.org>
 
