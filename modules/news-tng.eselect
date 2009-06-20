@@ -110,10 +110,12 @@ rfc2047_encode() {
 	echo -n "=?UTF-8?Q?"
 	for (( i=0; i<${#s}; i++ )); do
 		c=${s:i:1}
-		if [[ ${c} < ' ' || ${c} > '~' || ${c} =~ [=?_()\\] ]]; then
-			printf '=%02X' "'${c}"
+		if [[ ${c} =~ [-A-Za-z0-9!*+/] ]]; then
+			echo -n "${c}"
+		elif [[ ${c} = ' ' ]]; then
+			echo -n '_'
 		else
-			echo -n "${c/ /_}"
+			printf '=%02X' "'${c}"
 		fi
 	done
 	echo "?="
@@ -133,16 +135,17 @@ mail_header() {
 	fi
 	wd=$(day_of_week "${year}" "${month}" "${day}")
 
-	if [[ ${author} == *([^<>])\<+([^<>])\> ]]; then
+	if [[ ${author} == *([^\<\>])\<+([^\<\>])\> ]]; then
 		# GLEP 42 says this must look like "Real Name <email@address>"
 		name=${author%%*( )<*}
 		addr=${author##*<}; addr=${addr%%>*}
-	elif [[ ${author} == +([^<>]) ]]; then
+	elif [[ ${author} == +([^\<\>]) ]]; then
 		addr=${author}
 	fi
 
-	[[ ${name} == *([[:ascii:]]) ]] || name=$(rfc2047_encode ${name})
-	[[ ${title} == *([[:ascii:]]) ]] || title=$(rfc2047_encode ${title})
+	[[ ${name} != *([[:ascii:]]) || ${name} =~ [\]\[()\<\>\",.:\;@\\] ]] \
+		&& name=$(rfc2047_encode "${name}")
+	[[ ${title} != *([[:ascii:]]) ]] && title=$(rfc2047_encode "${title}")
 
 	echo "From ${addr} ${wd} ${mname[month]} ${day} ${time} ${year}"
 	echo "From: ${name} <${addr}>"
