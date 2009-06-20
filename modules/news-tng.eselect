@@ -95,6 +95,66 @@ accepted_languages() {
 	echo en
 }
 
+# calculate day of week for given year ($1), month ($2), and day ($3)
+# using Chr. Zeller's formula for the new calendar
+day_of_week() {
+	local a=${1##*(0)} m=${2##*(0)} q=${3##*(0)}
+	local -a wd=( Sat Sun Mon Tue Wed Thu Fri )
+	[[ ${m} -le 2 ]] && (( a--, m += 12 ))
+	echo ${wd[(q + (m+1)*13/5 + a + a/4 - a/100 + a/400) % 7]}
+}
+
+# encode header as quoted-printable
+rfc2047_encode() {
+	local s=$1 i c LC_ALL=C
+	echo -n "=?UTF-8?Q?"
+	for (( i=0; i<${#s}; i++ )); do
+		c=${s:i:1}
+		if [[ ${c} < ' ' || ${c} > '~' || ${c} =~ [=?_()\\] ]]; then
+			printf '=%02X' "'${c}"
+		else
+			echo -n "${c/ /_}"
+		fi
+	done
+	echo "?="
+}
+
+# output message header in e-mail/mbox format
+mail_header() {
+	local item=$1 author=$2 title=$3 posted=$4
+	local -a mname=( 0 Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec )
+	local year=0001 month=01 day=01 time="00:00:00" wd addr name
+
+	# "date -d" is not portable, therefore we do manual processing
+	if [[ ${posted} == +([0-9])-+([0-9])-+([0-9]) ]]; then
+		year=${posted%%-*}
+		month=${posted#*-*(0)}; month=${month%%-*}
+		day=${posted##*-}
+	fi
+	wd=$(day_of_week "${year}" "${month}" "${day}")
+
+	if [[ ${author} == *([^<>])\<+([^<>])\> ]]; then
+		# GLEP 42 says this must look like "Real Name <email@address>"
+		name=${author%%*( )<*}
+		addr=${author##*<}; addr=${addr%%>*}
+	elif [[ ${author} == +([^<>]) ]]; then
+		addr=${author}
+	fi
+
+	[[ ${name} == *([[:ascii:]]) ]] || name=$(rfc2047_encode ${name})
+	[[ ${title} == *([[:ascii:]]) ]] || title=$(rfc2047_encode ${title})
+
+	echo "From ${addr} ${wd} ${mname[month]} ${day} ${time} ${year}"
+	echo "From: ${name} <${addr}>"
+	#echo "Reply-To: DO NOT REPLY <devnull@localhost.invalid>"
+	echo "Subject: ${title}"
+	echo "Date: ${wd}, ${day} ${mname[month]} ${year} ${time} +0000"
+	echo "Message-Id: <glep42-${item}@gentoo.org>"
+	echo "MIME-Version: 1.0"
+	echo "Content-Type: text/plain; charset=UTF-8"
+	echo "Content-Transfer-Encoding: 8bit"
+}
+
 ### list action
 
 describe_list() {
@@ -162,6 +222,7 @@ describe_read_options() {
 	echo "new : Read unread news items (default)"
 	echo "all : Read all news items"
 	echo "item : Number of item (from 'list' action)"
+	echo "--mbox : Output in mbox format"
 	echo "--raw : Output in raw format"
 }
 
@@ -171,13 +232,17 @@ describe_read_parameters() {
 
 do_read() {
 	local -a items=( $(find_items unread read) ) repos dirs
-	local n=${#items[@]} item repo stat dir header line i seq repos_upd raw
-	local ifs_save=${IFS-$' \t\n'}
+	local n=${#items[@]} format=cooked ifs_save=${IFS-$' \t\n'}
+	local item repo stat dir header line i seq repos_upd author title posted
 
-	if [[ $1 = --raw ]]; then
-		raw=1
+	while [[ $# -gt 0 ]]; do
+		case ${1##--} in
+		mbox) format=mbox ;;
+		raw) format=raw ;;
+		*) break ;;
+		esac
 		shift
-	fi
+	done
 
 	# expand special values "new" and "all"
 	if [[ $# -eq 0 || $1 = new || $1 = all ]]; then
@@ -186,7 +251,7 @@ do_read() {
 			seq="${seq} ${i}"
 		done
 		set -- ${seq}
-		[[ $# -eq 0 && -z ${raw} ]] && echo "No news is good news."
+		[[ $# -eq 0 && ${format} = cooked ]] && echo "No news is good news."
 	fi
 
 	for i in "$@"; do
@@ -199,25 +264,51 @@ do_read() {
 		stat=${item%%/*}; item=${item#*/}
 		repo=${item%%/*}; item=${item#*/}
 		find_repo_dir "${repo}"
-		if [[ -n ${raw} ]]; then
-			read_item "${dir}" "${item}"
-		else
-			write_list_start "${item}"
-			header=$(read_item "${dir}" "${item}" header)
-			IFS=$'\n'
-			for line in ${header}; do
-				case "${line%%: *}" in
-					Title)
-						write_kv_list_entry \
-							"${line%%: *}" "$(highlight "${line#*: }")" ;;
-					Author|Translator|Posted|Revision)
-						write_kv_list_entry "${line%%: *}" "${line#*: }" ;;
-				esac
-			done
-			IFS=${ifs_save}
-			echo
-			read_item "${dir}" "${item}" body
-		fi
+		case ${format} in
+			raw)
+				read_item "${dir}" "${item}"
+				;;
+			cooked)
+				write_list_start "${item}"
+				header=$(read_item "${dir}" "${item}" header)
+				IFS=$'\n'
+				for line in ${header}; do
+					case "${line%%: *}" in
+						Title)
+							write_kv_list_entry \
+								"${line%%: *}" "$(highlight "${line#*: }")" ;;
+						Author|Translator|Posted|Revision)
+							write_kv_list_entry "${line%%: *}" "${line#*: }" ;;
+					esac
+				done
+				IFS=${ifs_save}
+				echo
+				read_item "${dir}" "${item}" body
+				;;
+			mbox)
+				header=$(read_item "${dir}" "${item}" header)
+				author=""; title=""; posted=""
+				IFS=$'\n'
+				for line in ${header}; do
+					case "${line%%: *}" in
+						Author) [[ -z ${author} ]] && author=${line#*: } ;;
+						Title) [[ -z ${title} ]] && title=${line#*: } ;;
+						Posted) [[ -z ${posted} ]] && posted=${line#*: } ;;
+					esac
+				done
+				mail_header "${item}" "${author}" "${title}" "${posted}"
+				echo
+				for line in ${header}; do
+					case "${line%%: *}" in
+						Title|Author|Translator|Posted|Revision)
+							echo "${line}" ;;
+					esac
+				done
+				IFS=${ifs_save}
+				echo
+				read_item "${dir}" "${item}" body | sed 's/^>*From />&/;$q'
+				;;
+		esac
 		[[ $? -ne 0 ]] && write_error_msg "Error reading item \"${item}\""
 		echo
 

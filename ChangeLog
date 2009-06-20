@@ -1,3 +1,10 @@
+2009-06-20  Ulrich Mueller  <ulm@gentoo.org>
+
+	* modules/news-tng.eselect (do_read): Support mbox output format.
+	(day_of_week, rfc2047_encode, mail_header): New functions.
+	(describe_read_options): Add the new --mbox option.
+	* man/news-tng.eselect.5: Update man page.
+
 2009-06-07  Ulrich Mueller  <ulm@gentoo.org>
 
 	* libs/editor-variable.bash.in (do_set): Output a message

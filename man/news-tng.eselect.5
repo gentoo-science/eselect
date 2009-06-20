@@ -2,7 +2,7 @@
 .\" Distributed under the terms of the GNU General Public License v2
 .\" $Id$
 .\"
-.TH news-tng.eselect 5 "April 2009" "Gentoo Linux" eselect
+.TH news-tng.eselect 5 "June 2009" "Gentoo Linux" eselect
 .SH NAME
 news-tng.eselect \- Yet another GLEP 42 news module for Gentoo's eselect
 .SH SYNOPSIS
@@ -12,7 +12,7 @@ news-tng.eselect \- Yet another GLEP 42 news module for Gentoo's eselect
 .B eselect news-tng list
 .br
 .B eselect news-tng read
-.RB [ \-\-raw ]
+.RB [ \-\-mbox | \-\-raw ]
 .RI [ item ...]
 .br
 .B eselect news-tng unread
@@ -40,7 +40,7 @@ News items:
   [3]   2009-04-06  (read)    Migration to X.org Server 1.5
 .SH ACTION: READ
 .B eselect news-tng read
-.RB [ \-\-raw ]
+.RB [ \-\-mbox | \-\-raw ]
 .RI [ item ...]
 .br
 Read news item(s), selected by their
@@ -53,9 +53,11 @@ and
 .B all
 select all unread items or all items, respectively.
 Default is to read all unread news, if no item is specified.
-With option
+With options
+.B \-\-mbox
+or
 .BR \-\-raw ,
-output the item in raw format.
+output the item(s) in mbox format or in raw format, respectively.
 .SH ACTION: UNREAD
 .B eselect news-tng unread
 .RI [ item ...]
