@@ -1,6 +1,10 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.1.2:
+    New features:
+    - The news-tng module supports output in mbox format.
+
 1.1.1:
     Bug fixes:
     - Fixed bug #207889: The kernel module now sorts versions properly.
