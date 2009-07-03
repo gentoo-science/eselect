@@ -180,18 +180,18 @@ do_list() {
 		title="(${item} - no title)"
 		posted="(no date) "
 		for line in ${header}; do
-			case "${line%%: *}" in
-				Title) title=${line#*: } ;;
-				Posted) posted=${line#*: } ;;
+			case "${line%%:*}" in
+				Title) title=${line##*([^:]):*([[:space:]])} ;;
+				Posted) posted=${line##*([^:]):*([[:space:]])} ;;
 			esac
 		done
 		IFS=${ifs_save}
 		if [[ ${stat} = unread ]]; then
 			write_numbered_list_entry $((i++)) "$(highlight \
-				"${posted## }  (unread)  ${title## }")"
+				"${posted}  (unread)  ${title}")"
 		else
 			write_numbered_list_entry $((i++)) \
-				"${posted## }  (read)    ${title## }"
+				"${posted}  (read)    ${title}"
 		fi
 	done
 	[[ $# -eq 0 ]] && write_kv_list_entry "(none found)" ""
@@ -276,12 +276,15 @@ do_read() {
 				header=$(read_item "${dir}" "${item}" header)
 				IFS=$'\n'
 				for line in ${header}; do
-					case "${line%%: *}" in
+					case "${line%%:*}" in
 						Title)
-							write_kv_list_entry \
-								"${line%%: *}" "$(highlight "${line#*: }")" ;;
+							write_kv_list_entry "${line%%:*}" \
+								"$(highlight "${line##*([^:]):*([[:space:]])}")"
+							;;
 						Author|Translator|Posted|Revision)
-							write_kv_list_entry "${line%%: *}" "${line#*: }" ;;
+							write_kv_list_entry "${line%%:*}" \
+								"${line##([^:])*:*([[:space:]])}"
+							;;
 					esac
 				done
 				IFS=${ifs_save}
@@ -293,16 +296,16 @@ do_read() {
 				author=""; title=""; posted=""
 				IFS=$'\n'
 				for line in ${header}; do
-					case "${line%%: *}" in
-						Author) [[ -z ${author} ]] && author=${line#*: } ;;
-						Title) [[ -z ${title} ]] && title=${line#*: } ;;
-						Posted) [[ -z ${posted} ]] && posted=${line#*: } ;;
+					case "${line%%:*}" in
+						Author) : ${author:=${line##*([^:]):*([[:space:]])}} ;;
+						Title) : ${title:=${line##*([^:]):*([[:space:]])}} ;;
+						Posted) : ${posted:=${line##*([^:]):*([[:space:]])}} ;;
 					esac
 				done
 				mail_header "${item}" "${author}" "${title}" "${posted}"
 				echo
 				for line in ${header}; do
-					case "${line%%: *}" in
+					case "${line%%:*}" in
 						Title|Author|Translator|Posted|Revision)
 							echo "${line}" ;;
 					esac
