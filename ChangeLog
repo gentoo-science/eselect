@@ -2,6 +2,7 @@
 
 	* modules-other: New directory. Modules that are distributed with
 	eselect stay in the modules dir, all others are moved to here.
+	* modules-other/README: New file.
 
 	* modules/news-tng.eselect (do_list, do_read): Ignore all
 	whitespace after the colon in header lines.
