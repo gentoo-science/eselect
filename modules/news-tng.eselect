@@ -283,7 +283,7 @@ do_read() {
 							;;
 						Author|Translator|Posted|Revision)
 							write_kv_list_entry "${line%%:*}" \
-								"${line##([^:])*:*([[:space:]])}"
+								"${line##*([^:]):*([[:space:]])}"
 							;;
 					esac
 				done
