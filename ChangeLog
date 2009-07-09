@@ -1,7 +1,8 @@
 2009-07-03  Ulrich Mueller  <ulm@gentoo.org>
 
-	* modules-other: New directory. Modules that are distributed with
-	eselect stay in the modules dir, all others are moved to here.
+	* modules-other, man-other: New directories. Modules that are
+	distributed with eselect stay in the modules and man directories,
+	all others are moved to the new locations.
 	* modules-other/README: New file.
 
 	* modules/news-tng.eselect (do_list, do_read): Ignore all
