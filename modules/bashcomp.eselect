@@ -80,15 +80,16 @@ describe_enable_parameters() {
 }
 
 describe_enable_options() {
-	echo "<target> : Target name or number (from 'list' action)"
 	echo "--global : Enable for all users"
+	echo "<target> : Target name or number (from 'list' action)"
 }
 
 do_enable() {
-	local bc bcdir="${ROOT}/${HOME}/.bash_completion.d"
+	local bc bcdir="${ROOT}/${HOME}/.bash_completion.d" mode=""
 
 	if [[ ${1} == "--global" ]] ; then
 		bcdir="${ROOT}/etc/bash_completion.d"
+		mode="-m 0755"
 		shift
 	fi
 
@@ -96,7 +97,7 @@ do_enable() {
 
 	# create directory if necessary
 	if [[ ! -d ${bcdir} && -w $(dirname ${bcdir}) ]] ; then
-		mkdir ${bcdir} || die -q "Failed to create ${bcdir}"
+		mkdir ${mode} ${bcdir} || die -q "Failed to create ${bcdir}"
 	elif [[ ! -d ${bcdir} ]] ; then
 		die -q "You don't have permission to create ${bcdir}"
 	fi
@@ -182,8 +183,8 @@ describe_disable_parameters() {
 }
 
 describe_disable_options() {
-	echo "<target> : Target name or number (from 'list' action)"
 	echo "--global : Disable for all users"
+	echo "<target> : Target name or number (from 'list' action)"
 }
 
 
