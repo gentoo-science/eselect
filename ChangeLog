@@ -1,3 +1,7 @@
+2009-08-10  Ulrich Mueller  <ulm@gentoo.org>
+
+	* modules/news-tng.eselect (do_list): Align columns in output.
+
 2009-08-08  Ulrich Mueller  <ulm@gentoo.org>
 
 	* modules/bashcomp.eselect (do_enable): Create global directory

@@ -188,10 +188,10 @@ do_list() {
 		IFS=${ifs_save}
 		if [[ ${stat} = unread ]]; then
 			write_numbered_list_entry $((i++)) "$(highlight \
-				"${posted}  (unread)  ${title}")"
+				"${posted}$(space $((12 - ${#posted})))(unread)  ${title}")"
 		else
 			write_numbered_list_entry $((i++)) \
-				"${posted}  (read)    ${title}"
+				"${posted}$(space $((12 - ${#posted})))(read)    ${title}"
 		fi
 	done
 	[[ $# -eq 0 ]] && write_kv_list_entry "(none found)" ""
