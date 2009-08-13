@@ -14,14 +14,50 @@
 # You should have received a copy of the GNU General Public License along with
 # eselect.  If not, see <http://www.gnu.org/licenses/>.
 
-# basename wrapper
+# basename and dirname functions
+# transparent bash-only replacements for the external commands
+# extended pattern matching (shopt -s extglob) is required
 basename() {
-	echo "${1##*/}"
+	local path=$1 suf=$2
+
+	if [[ -z ${path} ]]; then
+		echo
+		return
+	fi
+
+	# remove any trailing slashes
+	path=${path%%*(/)}
+
+	# remove everything up to and including the last slash
+	path=${path##*/}
+
+	# remove any suffix
+	[[ ${suf} != "${path}" ]] && path=${path%"${suf}"}
+
+	# output the result, or "/" if we ended up with a null string
+	echo "${path:-/}"
 }
 
-# dirname wrapper
 dirname() {
-	echo "${1%/*}"
+	local path=$1
+
+	if [[ -z ${path} ]]; then
+		echo .
+		return
+	fi
+
+	# remove any trailing slashes
+	path=${path%%*(/)}
+
+	# if the path contains only non-slash characters, then dirname is cwd
+	[[ ${path:-/} != */* ]] && path=.
+
+	# remove any trailing slashes followed by non-slash characters
+	path=${path%/*}
+	path=${path%%*(/)}
+
+	# output the result, or "/" if we ended up with a null string
+	echo "${path:-/}"
 }
 
 canonicalise() {

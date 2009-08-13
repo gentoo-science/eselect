@@ -1,3 +1,8 @@
+2009-08-13  Ulrich Mueller  <ulm@gentoo.org>
+
+	* libs/path-manipulation.bash.in (basename, dirname): Implement
+	functions in a POSIX compliant way. Fixes bug 280598.
+
 2009-08-10  Ulrich Mueller  <ulm@gentoo.org>
 
 	* modules/news-tng.eselect (do_list): Align columns in output.

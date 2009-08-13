@@ -4,6 +4,7 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
 trunk:
     Bug fixes:
     - Fixed bug #279662: Create global bashcomp dir with proper permissions.
+    - Fixed bug #280598: POSIX compliant basename and dirname functions.
 
 1.1.2:
     New features:
