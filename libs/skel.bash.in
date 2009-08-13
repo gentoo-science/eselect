@@ -103,7 +103,7 @@ switch_implem() {
 # Lists the available implementations for $libdir
 iface_do_list() {
 	local -a implems
-	local active libdir=$1 iface=$IFACE
+	local libdir=$1 iface=$IFACE
 	implems=( $(find_implems $iface $libdir ) )
 
 	# None installed for $libdir
@@ -113,11 +113,9 @@ iface_do_list() {
 	write_list_start "Installed $MODULE for library directory $(highlight ${libdir})"
 	for implem in ${implems[@]} ; do
 		(( i++ ))
-		active=''
 		is_active ${iface} ${libdir} ${implem##*/} \
-			&& active=' *'
-
-		write_numbered_list_entry $i "${implem}$(highlight "${active}")"
+			&& implem=$(highlight_marker "${implem}")
+		write_numbered_list_entry $i "${implem}"
 	done
 }
 

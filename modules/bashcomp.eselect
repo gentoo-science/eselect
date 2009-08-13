@@ -58,8 +58,8 @@ do_list() {
 
 	if [[ -n "${targets[@]}" ]] ; then
 		for (( n = 0 ; n < ${#targets[@]} ; ++n )) ; do
-			is_enabled ${opts:-} ${targets[${n}]} && \
-				targets[${n}]="${targets[${n}]} $(highlight '*')"
+			is_enabled ${opts:-} ${targets[n]} \
+				&& targets[n]=$(highlight_marker "${targets[n]}")
 		done
 		write_numbered_list "${targets[@]}"
 	else

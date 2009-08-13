@@ -112,8 +112,8 @@ do_list() {
 	if [[ -n ${targets[@]} ]] ; then
 		local i
 		for (( i = 0 ; i < ${#targets[@]} ; i = i + 1 )) ; do
-			[[ ${targets[${i}]} == ${active} ]] \
-				&& targets[${i}]="${targets[${i}]} $(highlight '*' )"
+			[[ ${targets[i]} == ${active} ]] \
+				&& targets[i]=$(highlight_marker "${targets[i]}")
 		done
 	fi
 	write_list_start "Available profile symlink targets:"

@@ -156,7 +156,7 @@ describe_list() {
 }
 
 do_list() {
-	local targets i=0 active version files last_processed_count
+	local targets i=0 version files last_processed_count
 	local -a processed
 	targets=( $(find_targets ${@}) )
 
@@ -175,11 +175,9 @@ do_list() {
 			processed=(${processed[@]} "${file}")
 			i=$(( i + 1 ))
 			[[ ${targets[@]/${target}/} == ${targets[@]} ]] && continue
-			active=''
 			is_active ${target} ${version} \
-				&& active=' *'
-
-			write_numbered_list_entry $i "${version}$(highlight "${active}")"
+				&& version=$(highlight_marker "${version}")
+			write_numbered_list_entry $i "${version}"
 		done
 		[[ ${last_processed_count} == ${#processed[@]} ]] \
 			&& die -q "Please remove stray file: ${ROOT}/etc/env.d/binutils/config-${target}"

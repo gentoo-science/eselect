@@ -88,7 +88,7 @@ do_list() {
 		for (( i = 0; i < ${#targets[@]}; i++ )) ; do
 			[[ ${targets[i]} = \
 				$(basename "$(canonicalise "${ROOT}/usr/src/linux")") ]] \
-				&& targets[i]="${targets[${i}]} $(highlight '*')"
+				&& targets[i]=$(highlight_marker "${targets[i]}")
 		done
 		write_numbered_list "${targets[@]}"
 	else

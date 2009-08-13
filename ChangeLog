@@ -1,5 +1,13 @@
 2009-08-13  Ulrich Mueller  <ulm@gentoo.org>
 
+	* libs/editor-variable.bash.in (do_list):
+	* libs/skel.bash.in (iface_do_list):
+	* modules/bashcomp.eselect (do_list):
+	* modules/binutils.eselect (do_list):
+	* modules/kernel.eselect (do_list):
+	* modules/profile.eselect (do_list): Call highlight_marker
+	function for the active list entry.
+
 	* libs/output.bash.in (highlight_marker): New utility function,
 	mark a list entry as active/selected.
 	* doc/developer-guide.txt: Document it.

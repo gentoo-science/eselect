@@ -87,7 +87,7 @@ do_list() {
 		targets[i]=${targets[i]%%:*}
 		# display a star to indicate the currently chosen version
 		[[ ${targets[i]} = ${cur} ]] \
-			&& targets[i]="${targets[i]} $(highlight '*')"
+			&& targets[i]=$(highlight_marker "${targets[i]}")
 	done
 	write_numbered_list "${targets[@]}"
 
