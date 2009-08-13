@@ -276,10 +276,10 @@ The ``highlight`` utility function can be used to emphasise some text which is
 to be displayed by any of the above functions. A typical invocation might look
 like: ::
 
-         write_list_start "This is $(highlight list) example"
-         write_kv_list_entry "First" "This is the first"
-         write_kv_list_entry "$(highlight Second)" "This is the $(highlight second) entry"
-         write_kv_list_entry "Third" "$(highlight The end)"
+    write_list_start "This is $(highlight list) example"
+    write_kv_list_entry "First" "This is the first"
+    write_kv_list_entry "$(highlight Second)" "This is the $(highlight second) entry"
+    write_kv_list_entry "Third" "$(highlight The end)"
 
 The ``highlight_warning`` Function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
