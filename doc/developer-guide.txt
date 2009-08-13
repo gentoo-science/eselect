@@ -287,6 +287,19 @@ The ``highlight_warning`` Function
 The ``highlight_warning`` function is like ``highlight``, but for warnings. It
 displays the text in question in red.
 
+The ``highlight_marker`` Function
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+To mark a list entry as active/selected, the ``highlight_marker`` function
+should be used. First argument is the list entry. The function places a
+highlighted star (or its second argument instead, if set) behind the entry.
+A typical invocation might look like: ::
+
+    for (( i = 0; i < ${#targets[@]}; i++ )); do
+        [[ test_if_target_is_active ]] \
+            && targets[i]=$(highlight_marker "${targets[i]}")
+    done
+
 The ``space`` Function
 ,,,,,,,,,,,,,,,,,,,,,,
 

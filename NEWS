@@ -6,6 +6,9 @@ trunk:
     - Fixed bug #279662: Create global bashcomp dir with proper permissions.
     - Fixed bug #280598: POSIX compliant basename and dirname functions.
 
+    New features:
+    - New 'highlight_marker' utility function for highlighting of list entries.
+
 1.1.2:
     New features:
     - The news-tng module supports output in mbox format.

@@ -1,5 +1,9 @@
 2009-08-13  Ulrich Mueller  <ulm@gentoo.org>
 
+	* libs/output.bash.in (highlight_marker): New utility function,
+	mark a list entry as active/selected.
+	* doc/developer-guide.txt: Document it.
+
 	* libs/path-manipulation.bash.in (basename, dirname): Implement
 	functions in a POSIX compliant way. Fixes bug 280598.
 

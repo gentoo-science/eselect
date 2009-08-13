@@ -212,6 +212,18 @@ highlight_warning() {
 	echo -n -e "%%%WA%%%${*}%%%RE%%%"
 }
 
+# highlight_marker PUBLIC
+# Mark list entry $1 as active/selected by placing a highlighted star
+# (or $2 if set) behind it.
+highlight_marker() {
+	local text=${1} mark=${2-*}
+	echo -n -e "${text}"
+	if [[ -n ${mark} ]]; then
+		echo -n " "
+		highlight "${mark}"
+	fi
+}
+
 # space PUBLIC
 # Write $1 numbers of spaces
 space() {
