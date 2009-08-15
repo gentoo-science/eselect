@@ -125,7 +125,7 @@ rfc2047_encode() {
 mail_header() {
 	local item=$1 author=$2 title=$3 posted=$4
 	local -a mname=( 0 Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec )
-	local year=0001 month=01 day=01 time="00:00:00" wd addr name
+	local year=0001 month=01 day=01 time="00:00:00" wd addr="unknown" name
 
 	# "date -d" is not portable, therefore we do manual processing
 	if [[ ${posted} == +([0-9])-+([0-9])-+([0-9]) ]]; then
@@ -148,7 +148,7 @@ mail_header() {
 	[[ ${title} != *([[:ascii:]]) ]] && title=$(rfc2047_encode "${title}")
 
 	echo "From ${addr} ${wd} ${mname[month]} ${day} ${time} ${year}"
-	echo "From: ${name} <${addr}>"
+	echo "From: ${name}${name+ }<${addr}>"
 	#echo "Reply-To: DO NOT REPLY <devnull@localhost.invalid>"
 	echo "Subject: ${title}"
 	echo "Date: ${wd}, ${day} ${mname[month]} ${year} ${time} +0000"
