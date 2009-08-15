@@ -3,6 +3,28 @@
 	* configure.ac: Add support for Gentoo Alt/Prefix, define EPREFIX.
 	* bin/Makefile.am (dosed): Substitute EPREFIX variable.
 	* bin/eselect.in (EPREFIX, EROOT): New variables.
+	* libs/editor-variable.bash.in (find_targets, read_env_value)
+	(write_env_value, do_set):
+	* libs/multilib.bash.in (list_libdirs):
+	* libs/skel.bash.in (find_implems, is_active, switch_implem)
+	(iface_do_show, do_list, do_show, do_add):
+	* modules/bashcomp.eselect (find_targets, is_enabled, do_enable)
+	(do_disable):
+	* modules/binutils.eselect (BINUTILS_ENVFILE, find_targets)
+	(find_versions, is_active, is_valid, switch_profile, do_list)
+	(do_set, do_show):
+	* modules/env.eselect (ENVPROFILE, LDCONFIG, PRELINK, LDMTIMEDB)
+	(update_envvar_classes, create_profile_env, create_ld_so_conf)
+	(create_prelink_conf, do_update):
+	* modules/kernel.eselect (find_targets, remove_symlink)
+	(set_symlink, do_show, do_list, do_set):
+	* modules/news-tng.eselect (NEWS_DIR):
+	* modules/profile.eselect (remove_symlink, set_symlink, do_show)
+	(do_list, do_set):
+	* modules/rc.eselect (source_rc_functions, list_runlevels)
+	(find_unused_scripts, rc_runscript, do_add, do_delete, do_list)
+	(do_show): Honour EPREFIX and EROOT. Partially based on patch from
+	Fabian Groffen <grobian@gentoo.org> in bug 274760.
 
 	* libs/Makefile.am (dosed):
 	* libs/skel.bash.in (find_implems, is_active, switch_implem)

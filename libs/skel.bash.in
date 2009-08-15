@@ -36,8 +36,9 @@ inherit config multilib tests
 # find all possible implems for $libdir
 find_implems() {
 	local -a implems
+	local confdir=${EROOT}/etc/env.d/${iface}/${libdir}
 	iface=$1 libdir=$2
-	for file in ${ROOT}/etc/env.d/${iface}/${libdir}/* ; do
+	for file in "${confdir}"/* ; do
 		[[ -f ${file} ]] || continue
 		[[ "${file##*/}" != "config" ]] || continue
 		implems=(${implems[@]} "${file##*/}")
@@ -49,7 +50,7 @@ find_implems() {
 # returns true if $implem is currently used for the $iface/$libdir combination
 is_active() {
 	[[ ${#@} -eq 3 ]] || die "Need exactly 3 arguments!"
-	current=$(load_config ${ROOT}/etc/env.d/${1}/${2}/config CURRENT)
+	current=$(load_config "${EROOT}/etc/env.d/${1}/${2}/config" CURRENT)
 	[[ ${current} == ${3} ]]
 }
 
@@ -61,14 +62,12 @@ switch_implem() {
 	local iface=${1}
 	local libdir=${2}
 	local implem=${3##*/}
-	local implem_file=${ROOT}/etc/env.d/${iface}/${libdir}/${implem}
-	local current=$(load_config \
-		"${ROOT}/etc/env.d/${iface}/${libdir}/config" CURRENT)
-	local current_file=${ROOT}/etc/env.d/${iface}/${libdir}/${current}
+	local confdir=${EROOT}/etc/env.d/${iface}/${libdir}
+	local current=$(load_config "${confdir}/config" CURRENT)
 	local dest src
 
 	# Get rid of old symlinks, if we have a current config
-	if [[ -f "${current_file}" ]]; then
+	if [[ -f ${confdir}/${current} ]]; then
 		while read line; do
 			# Skip comments
 			[[ "${line}" = *#* ]] && continue
@@ -77,8 +76,8 @@ switch_implem() {
 
 			set ${line}
 			dest=$2
-			rm -f ${ROOT}${dest}
-		done < ${current_file}
+			rm -f "${ROOT}${dest}"
+		done < "${confdir}/${current}"
 	fi
 
 	# Set up new symlinks
@@ -91,12 +90,10 @@ switch_implem() {
 		set ${line}
 		src=$1
 		dest=$2
-		ln -sf ${src} ${ROOT}${dest}
-	done < ${implem_file}
+		ln -sf "${src}" "${ROOT}${dest}"
+	done < "${confdir}/${implem}"
 
-	store_config \
-		"${ROOT}/etc/env.d/${iface}/${libdir}/config" \
-		CURRENT ${implem}
+	store_config "${confdir}/config" CURRENT ${implem}
 }
 
 # iface_do_list $libdir
@@ -123,15 +120,12 @@ iface_do_list() {
 # Shows the current implementation for $libdir
 iface_do_show() {
 	local iface=$IFACE libdir=$1 implem
-	config=${ROOT}/etc/env.d/${iface}/${libdir}/config
-	[[ ${#config[@]} -eq 1 ]] \
-		|| return
-	[[ -e ${config} ]] \
-		|| return
+	local confdir=${EROOT}/etc/env.d/${iface}/${libdir}
+	[[ -e ${confdir}/config ]] || return
 
-	implem=$(load_config "${ROOT}/etc/env.d/${iface}/${libdir}/config" CURRENT)
-	[[ -e ${ROOT}/etc/env.d/${iface}/${libdir}/${implem} ]] \
-		|| die "File \"${ROOT}/etc/env.d/${iface}/${libdir}/${implem}\" is missing!"
+	implem=$(load_config "${confdir}/config" CURRENT)
+	[[ -e ${confdir}/${implem} ]] \
+		|| die "File \"${confdir}/${implem}\" is missing!"
 
 	echo "${libdir}: ${implem}"
 }
@@ -155,10 +149,8 @@ do_list() {
 	local i=0
 
 	for libdir in $(get_libdirs); do
-		[[ -d ${ROOT}/usr/${libdir} ]] \
-			&& [[ ! -h ${ROOT}/usr/${libdir} ]] \
-			|| continue
-		iface_do_list $libdir
+		[[ -d ${EROOT}/usr/${libdir} && ! -L ${EROOT}/usr/${libdir} ]] \
+			&& iface_do_list $libdir
 	done
 }
 
@@ -273,10 +265,8 @@ do_show() {
 	[[ -n ${mylibdirs[@]} ]] && libdirs=${mylibdirs[@]}
 
 	for libdir in ${libdirs}; do
-		[[ -d ${ROOT}/usr/${libdir} ]] \
-			&& [[ ! -h ${ROOT}/usr/${libdir} ]] \
-			|| continue
-		iface_do_show $libdir
+		[[ -d ${EROOT}/usr/${libdir} && ! -L ${EROOT}/usr/${libdir} ]] \
+			&& iface_do_show $libdir
 	done
 }
 
@@ -302,7 +292,7 @@ do_add() {
 
 	# If $D is set, we're adding from portage so we want to respect sandbox.
 	# Otherwise, respect the ROOT variable.
-	local PREFIX=${D:-${ROOT}}
+	local PREFIX=${D:-${EROOT}}
 
 	# Create directory if necessary
 	if [[ ! -e ${PREFIX}/etc/env.d/${IFACE}/${1} ]]; then

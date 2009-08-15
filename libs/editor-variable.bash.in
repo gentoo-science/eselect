@@ -30,29 +30,29 @@ inherit config
 
 # find a list of valid targets
 find_targets() {
-	local cur targets i
-	targets=${EDITOR_LIST}
-	cur=$(read_env_value)
+	local cur i
 
-	# also include the current value if it's not already in our list
-	[[ -n ${cur} && ${targets} != *:* ]] && ! has "${cur}" ${targets} \
-		&& targets="${targets} ${cur}"
-
-	for i in ${targets}; do
-		[[ -f ${ROOT}${i#*:} ]] && echo "${i%%:*}"
+	for i in ${EDITOR_LIST}; do
+		[[ -f ${EROOT}${i#*:} ]] && echo "${EPREFIX}${i%%:*}"
 	done
+
+	# also output the current value if it isn't in our list
+	cur=$(read_env_value)
+	[[ -n ${cur} && ${EDITOR_LIST} != *:* && -f ${ROOT}${cur} ]] \
+		&& ! has "${cur#${EPREFIX}}" ${EDITOR_LIST} \
+		&& echo "${cur}"
 }
 
 # read variable value from config file
 read_env_value() {
-	load_config "${ROOT}${EDITOR_ENVFILE}" "${EDITOR_VAR}"
+	load_config "${EROOT}${EDITOR_ENVFILE}" "${EDITOR_VAR}"
 }
 
 # write variable to config file
 write_env_value() {
-	[[ -w ${ROOT}${EDITOR_ENVFILE%/*} ]] \
+	[[ -w ${EROOT}${EDITOR_ENVFILE%/*} ]] \
 		|| die -q "You need root privileges!"
-	store_config "${ROOT}${EDITOR_ENVFILE}" "${EDITOR_VAR}" "$1"
+	store_config "${EROOT}${EDITOR_ENVFILE}" "${EDITOR_VAR}" "$1"
 }
 
 ### show action ###
@@ -131,8 +131,8 @@ do_set() {
 		if [[ ${target} != /* ]]; then
 			IFS=:
 			for dir in ${EDITOR_PATH-/bin:/usr/bin}; do
-				[[ -f ${ROOT}${dir}/${target} ]] || continue
-				target=${dir}/${target}
+				[[ -f ${EROOT}${dir}/${target} ]] || continue
+				target=${EPREFIX}${dir}/${target}
 				break
 			done
 			IFS=${ifs_save}

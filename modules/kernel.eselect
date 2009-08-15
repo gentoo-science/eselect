@@ -30,14 +30,14 @@ sort_kernel_versions() {
 # find a list of kernel symlink targets
 find_targets() {
 	local f
-	for f in "${ROOT}"/usr/src/linux-[[:digit:]]* ; do
+	for f in "${EROOT}"/usr/src/linux-[[:digit:]]* ; do
 		[[ -d ${f} ]] && basename "${f}"
 	done | sort_kernel_versions
 }
 
 # try to remove the kernel symlink
 remove_symlink() {
-	rm "${ROOT}/usr/src/linux"
+	rm "${EROOT}/usr/src/linux"
 }
 
 # set the kernel symlink
@@ -49,10 +49,10 @@ set_symlink() {
 	fi
 	if [[ -z ${target} ]] ; then
 		die -q "Target \"${1}\" doesn't appear to be valid!"
-	elif [[ -d ${ROOT}/usr/src/${target} ]] ; then
-		ln -s "${target}" "${ROOT}/usr/src/linux"
-	elif [[ -d ${ROOT}/usr/src/linux-${target} ]] ; then
-		ln -s "linux-${target}" "${ROOT}/usr/src/linux"
+	elif [[ -d ${EROOT}/usr/src/${target} ]] ; then
+		ln -s "${target}" "${EROOT}/usr/src/linux"
+	elif [[ -d ${EROOT}/usr/src/linux-${target} ]] ; then
+		ln -s "linux-${target}" "${EROOT}/usr/src/linux"
 	else
 		die -q "Target \"$1\" doesn't appear to be valid!"
 	fi
@@ -66,8 +66,8 @@ describe_show() {
 
 do_show() {
 	write_list_start "Current kernel symlink:"
-	if [[ -L ${ROOT}/usr/src/linux ]] ; then
-		local kernel=$(canonicalise "${ROOT}/usr/src/linux")
+	if [[ -L ${EROOT}/usr/src/linux ]] ; then
+		local kernel=$(canonicalise "${EROOT}/usr/src/linux")
 		write_kv_list_entry "${kernel%/}" ""
 	else
 		write_kv_list_entry "(unset)" ""
@@ -87,7 +87,7 @@ do_list() {
 		local i
 		for (( i = 0; i < ${#targets[@]}; i++ )) ; do
 			[[ ${targets[i]} = \
-				$(basename "$(canonicalise "${ROOT}/usr/src/linux")") ]] \
+				$(basename "$(canonicalise "${EROOT}/usr/src/linux")") ]] \
 				&& targets[i]=$(highlight_marker "${targets[i]}")
 		done
 		write_numbered_list "${targets[@]}"
@@ -114,16 +114,16 @@ do_set() {
 	if [[ -z ${1} ]] ; then
 		# no parameter
 		die -q "You didn't tell me what to set the symlink to"
-	elif [[ -L ${ROOT}/usr/src/linux ]] ; then
+	elif [[ -L ${EROOT}/usr/src/linux ]] ; then
 		# existing symlink
 		if ! remove_symlink ; then
 			die -q "Couldn't remove existing symlink"
 		elif ! set_symlink "${1}" ; then
 			die -q "Couldn't set a new symlink"
 		fi
-	elif [[ -e ${ROOT}/usr/src/linux ]] ; then
+	elif [[ -e ${EROOT}/usr/src/linux ]] ; then
 		# we have something strange
-		die -q "${ROOT}/usr/src/linux exists but is not a symlink"
+		die -q "${EROOT}/usr/src/linux exists but is not a symlink"
 	else
 		set_symlink "${1}" || die -q "Couldn't set a new symlink"
 	fi

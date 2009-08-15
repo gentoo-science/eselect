@@ -9,11 +9,11 @@ VERSION=$(svn_date_to_version "${SVN_DATE}")
 
 find_targets() {
 	local targets bc x i=0
-	bcdirs[i]="${ROOT}/usr/share/bash-completion/*"
+	bcdirs[i]=${EROOT}/usr/share/bash-completion/*
 
-	if [[ -n "${ES_BASHCOMP_DIRS}" ]] ; then
+	if [[ -n ${ES_BASHCOMP_DIRS} ]] ; then
 		for x in ${ES_BASHCOMP_DIRS} ; do
-			bcdirs[$((++i))]="${x}/*"
+			bcdirs[++i]="${x}/*"
 		done
 	fi
 
@@ -25,15 +25,14 @@ find_targets() {
 }
 
 is_enabled() {
-	local bcdir="${ROOT}/${HOME}/.bash_completion.d"
+	local bcdir=${ROOT}/${HOME}/.bash_completion.d
 
 	if [[ ${1} == "--global" ]] ; then
-		bcdir="${ROOT}/etc/bash_completion.d"
+		bcdir=${EROOT}/etc/bash_completion.d
 		shift
 	fi
 
-	[[ -e ${bcdir}/${1} ]] || return 1
-	return 0
+	[[ -e ${bcdir}/${1} ]]
 }
 
 ### list action ###
@@ -85,10 +84,10 @@ describe_enable_options() {
 }
 
 do_enable() {
-	local bc bcdir="${ROOT}/${HOME}/.bash_completion.d" mode=""
+	local bc bcdir=${ROOT}/${HOME}/.bash_completion.d mode=""
 
 	if [[ ${1} == "--global" ]] ; then
-		bcdir="${ROOT}/etc/bash_completion.d"
+		bcdir=${EROOT}/etc/bash_completion.d
 		mode="-m 0755"
 		shift
 	fi
@@ -97,25 +96,24 @@ do_enable() {
 
 	# create directory if necessary
 	if [[ ! -d ${bcdir} && -w $(dirname ${bcdir}) ]] ; then
-		mkdir ${mode} ${bcdir} || die -q "Failed to create ${bcdir}"
+		mkdir ${mode} "${bcdir}" || die -q "Failed to create ${bcdir}"
 	elif [[ ! -d ${bcdir} ]] ; then
 		die -q "You don't have permission to create ${bcdir}"
 	fi
 
 	# make sure we have proper permissions
-	[[ -w ${bcdir} ]] || \
-		die -q "You don't have permission to write to ${bcdir}"
+	[[ -w ${bcdir} ]] \
+		|| die -q "You don't have permission to write to ${bcdir}"
 
 	targets=( $(find_targets) )
 
 	for bc in $@ ; do
 		local file target=${bc}
 
-		is_number "${target}" && \
-			target=${targets[$(( ${target} - 1 ))]}
+		is_number "${target}" && target=${targets[target-1]}
 
-		[[ -z "${target}" ]] && \
-			die -q "Target \"${bc}\" doesn't appear to be valid!"
+		[[ -z "${target}" ]] \
+			&& die -q "Target \"${bc}\" doesn't appear to be valid!"
 
 		bc=${target}
 
@@ -126,30 +124,29 @@ do_enable() {
 		case "${bc}" in
 			# absolute path
 			/*)
-				file="${ROOT}/${bc}"
+				file=${ROOT}/${bc}
 				;;
 			# relative path
 			*/*)
-				file="${ROOT}/${PWD}/${bc}"
+				file=${ROOT}/${PWD}/${bc}
 				;;
 			# no path
 			*)
 				# CWD
 				if [[ -f ${bc} ]] ; then
-					file="${ROOT}/${PWD}/${bc}"
+					file=${ROOT}/${PWD}/${bc}
 				# assume /usr/share/bash-completion
-				elif [[ -f ${ROOT}/usr/share/bash-completion/${bc} ]]
-				then
-					file="${ROOT}/usr/share/bash-completion/${bc}"
+				elif [[ -f ${EROOT}/usr/share/bash-completion/${bc} ]] ; then
+					file=${EROOT}/usr/share/bash-completion/${bc}
 				else
-					if [[ -n "${ES_BASHCOMP_DIRS}" ]] ; then
+					if [[ -n ${ES_BASHCOMP_DIRS} ]] ; then
 						for x in ${ES_BASHCOMP_DIRS} ; do
-							[[ -f ${x}/${bc} ]] && file="${x}/${bc}"
+							[[ -f ${x}/${bc} ]] && file=${x}/${bc}
 						done
 					fi
 
-					[[ -e ${file} ]] || \
-						file="${ROOT}/usr/share/bash-completion/${bc}"
+					[[ -e ${file} ]] \
+						|| file=${EROOT}/usr/share/bash-completion/${bc}
 				fi
 				;;
 		esac
@@ -167,8 +164,8 @@ do_enable() {
 		fi
 
 		# finally, create the symlink
-		ln -s "${file}" "${bcdir}" || \
-			die -q "Failed to create symlink from '${file}' to '${bcdir}'"
+		ln -s "${file}" "${bcdir}" \
+			|| die -q "Failed to create symlink from '${file}' to '${bcdir}'"
 	done
 }
 
@@ -189,10 +186,10 @@ describe_disable_options() {
 
 
 do_disable() {
-	local bc bcdir="${ROOT}/${HOME}/.bash_completion.d"
+	local bc bcdir=${ROOT}/${HOME}/.bash_completion.d
 
 	if [[ ${1} == "--global" ]] ; then
-		bcdir="${ROOT}/etc/bash_completion.d"
+		bcdir=${EROOT}/etc/bash_completion.d
 		shift
 	fi
 
@@ -203,14 +200,13 @@ do_disable() {
 	for bc in $@ ; do
 		local file target=${bc}
 
-		is_number "${target}" && \
-			target=${targets[$(( ${target} - 1 ))]}
+		is_number "${target}" && target=${targets[target-1]}
 
-		[[ -z "${target}" ]] && \
-			die -q "Target \"${bc}\" doesn't appear to be valid!"
+		[[ -z "${target}" ]] \
+			&& die -q "Target \"${bc}\" doesn't appear to be valid!"
 
 		bc=${target}
-		file="${bcdir}/${bc}"
+		file=${bcdir}/${bc}
 
 		# ignore any unrecognized options
 		[[ ${bc} == --* ]] && continue

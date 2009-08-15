@@ -8,6 +8,7 @@ trunk:
 
     New features:
     - New 'highlight_marker' utility function for highlighting of list entries.
+    - Prefix support (bug #274760).
 
 1.1.2:
     New features:

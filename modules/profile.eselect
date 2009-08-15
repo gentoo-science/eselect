@@ -13,13 +13,13 @@ VERSION=$(svn_date_to_version "${SVN_DATE}")
 # get a list of valid profiles
 find_targets() {
 	local arch p portdir=${1}
-	[[ -n "${portdir}" ]] || portdir=$(portageq portdir)
+	[[ -n ${portdir} ]] || portdir=$(portageq portdir)
 
 	arch=$(arch)
-	[[ -z "${arch}" ]] && return 1
+	[[ -z ${arch} ]] && return 1
 
 	for p in $(sed -n -e "s|^${arch}[[:space:]]\+\([^[:space:]]\+\).*$|\1|p" \
-		${ROOT}/${portdir}/profiles/profiles.desc)
+		"${ROOT}${portdir}/profiles/profiles.desc")
 	do
 		echo ${p}
 	done
@@ -27,7 +27,7 @@ find_targets() {
 
 # remove make.profile symlink
 remove_symlink() {
-	rm "${ROOT}/etc/make.profile"
+	rm "${EROOT}/etc/make.profile"
 }
 
 # set the make.profile symlink
@@ -35,20 +35,21 @@ set_symlink() {
 	local portdir=$(portageq portdir) target=${1} targets
 	if is_number "${target}" ; then
 		targets=( $(find_targets "${portdir}") )
-		[[ -z "${targets}" ]] && die -q "Failed to get a list of valid profiles"
+		[[ -z ${targets} ]] && die -q "Failed to get a list of valid profiles"
 		target=${targets[$(( ${target} - 1 ))]}
-	elif [[ -n "${target}" && -d "${ROOT}/${portdir}/profiles/${target}" ]]
+	elif [[ -n ${target} && -d ${ROOT}${portdir}/profiles/${target} ]]
 	then
 		local arch parch
 
 		# if the profile was explicitly specified (rather than a number)
 		# double check and make sure it's valid
 		arch=$(arch)
-		[[ -z "${arch}" && ${2} != "--force" ]] && return 1
+		[[ -z ${arch} && ${2} != "--force" ]] && return 1
 
 		# do a reverse lookup and find the arch associated with ${target}
-		parch=$(sed -n -e "s|^\([[:alnum:]]\+\)[[:space:]].*${target}[[:space:]].*$|\1|p" \
-			${ROOT}/${portdir}/profiles/profiles.desc)
+		parch=$(sed -n -e \
+			"s|^\([[:alnum:]]\+\)[[:space:]].*${target}[[:space:]].*$|\1|p" \
+			"${ROOT}${portdir}/profiles/profiles.desc")
 
 		if [[ ${arch} != ${parch} && ${2} != "--force" ]] ; then
 			die -q "${target} is not a valid profile for ${arch}"
@@ -57,17 +58,17 @@ set_symlink() {
 
 	if [[ -z ${target} ]] ; then
 		die -q "Target \"${1}\" doesn't appear to be valid!"
-	elif [[ -d "${ROOT}/${portdir}/profiles/${target}" ]] ; then
+	elif [[ -d ${ROOT}${portdir}/profiles/${target} ]] ; then
 		# we must call remove_symlink() here instead of calling
 		# it from do_set(), since if the link is removed, we
 		# cannot determine $ARCH in find_targets()
-		if [[ -L "${ROOT}/etc/make.profile" ]] ; then
-			remove_symlink || \
-				die -q "Couldn't remove current make.profile symlink"
+		if [[ -L ${EROOT}/etc/make.profile ]] ; then
+			remove_symlink \
+				|| die -q "Couldn't remove current make.profile symlink"
 		fi
 
-		pushd "${ROOT}/etc" 1>/dev/null
-		ln -s "../${portdir}/profiles/${target}" "make.profile"
+		pushd "${EROOT}/etc" 1>/dev/null
+		ln -s "..${portdir#"${EPREFIX}"}/profiles/${target}" make.profile
 		popd 1>/dev/null
 	else
 		die -q "Target \"${1}\" doesn't appear to be valid!"
@@ -82,10 +83,10 @@ describe_show() {
 
 do_show() {
 	write_list_start "Current make.profile symlink:"
-	if [[ -L "${ROOT}/etc/make.profile" ]] ; then
+	if [[ -L ${EROOT}/etc/make.profile ]] ; then
 		local link=$(canonicalise "${ROOT}/etc/make.profile")
 		local portdir=$(portageq portdir)
-		local profiledir=$(canonicalise "${ROOT}/${portdir}/profiles")
+		local profiledir=$(canonicalise "${ROOT}${portdir}/profiles")
 		link=${link##${profiledir}/}
 		write_kv_list_entry "${link}" ""
 	else
@@ -103,11 +104,11 @@ do_list() {
 	local portdir profiledir active targets
 	targets=( $(find_targets) )
 
-	[[ -z "${targets}" ]] && die -q "Failed to get a list of valid profiles"
+	[[ -z ${targets} ]] && die -q "Failed to get a list of valid profiles"
 
 	portdir=$(portageq portdir)
-	profiledir=$(canonicalise "${ROOT}/${portdir}/profiles")
-	active=$(canonicalise "${ROOT}/etc/make.profile")
+	profiledir=$(canonicalise "${ROOT}${portdir}/profiles")
+	active=$(canonicalise "${EROOT}/etc/make.profile")
 	active=${active##${profiledir}/}
 	if [[ -n ${targets[@]} ]] ; then
 		local i
@@ -145,9 +146,9 @@ do_set() {
 
 	if [[ -z ${1} ]] ; then
 		die -q "You didn't tell me what to set the symlink to"
-	elif [[ -e "${ROOT}/etc/make.profile" ]] &&
-		[[ ! -L "${ROOT}/etc/make.profile" ]] ; then
-		die -q "${ROOT}/etc/make.profile isn't a symlink"
+	elif [[ -e ${EROOT}/etc/make.profile ]] &&
+		[[ ! -L ${EROOT}/etc/make.profile ]] ; then
+		die -q "${EROOT}/etc/make.profile isn't a symlink"
 	else
 		set_symlink "${1}" ${force} || die -q "Couldn't set a new symlink"
 	fi
