@@ -1,5 +1,8 @@
 2009-08-15  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/news.eselect: Renamed from news-tng.eselect.
+	* man/news.eselect.5: Renamed from news-tng.eselect.5 and updated.
+
 	* configure.ac: Add support for Gentoo Alt/Prefix, define EPREFIX.
 	* bin/Makefile.am (dosed): Substitute EPREFIX variable.
 	* bin/eselect.in (EPREFIX, EROOT): New variables.
