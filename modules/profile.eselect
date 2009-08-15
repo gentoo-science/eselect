@@ -66,10 +66,8 @@ set_symlink() {
 			remove_symlink \
 				|| die -q "Couldn't remove current make.profile symlink"
 		fi
-
-		pushd "${EROOT}/etc" 1>/dev/null
-		ln -s "..${portdir#"${EPREFIX}"}/profiles/${target}" make.profile
-		popd 1>/dev/null
+		ln -s "..${portdir#"${EPREFIX}"}/profiles/${target}" \
+			"${EROOT}/etc/make.profile"
 	else
 		die -q "Target \"${1}\" doesn't appear to be valid!"
 	fi
