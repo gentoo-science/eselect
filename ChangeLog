@@ -1,3 +1,10 @@
+2009-08-15  Ulrich Mueller  <ulm@gentoo.org>
+
+	* libs/Makefile.am (dosed):
+	* libs/skel.bash.in (find_implems, is_active, switch_implem)
+	(iface_do_show, do_add, do_list, do_show): Revert changes of
+	2009-05-15, as they would collide with proper Prefix support.
+
 2009-08-13  Ulrich Mueller  <ulm@gentoo.org>
 
 	* libs/editor-variable.bash.in (do_list):
