@@ -7,7 +7,7 @@ safe_scripts = \
 		 env.eselect \
 		 kernel.eselect \
 		 modules.eselect \
-		 news-tng.eselect \
+		 news.eselect \
 		 pager.eselect \
 		 profile.eselect \
 		 rc.eselect \
