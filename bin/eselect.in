@@ -44,6 +44,10 @@ ESELECT_KILL_TARGET="$$"
 ESELECT_KNOWN_OPTIONS="no-colour no-color help version"
 ESELECT_OPTIONS=""
 
+# Support variables for Gentoo Alt/Prefix
+EPREFIX="@EPREFIX@"
+EROOT=${ROOT}${EPREFIX}
+
 # Remove all alias definitions. Unset functions and variables that are
 # known to cause trouble.
 "unalias" -a

@@ -65,6 +65,15 @@ AS_CASE([x$withval], xportage,, xpaludis,,
 AC_SUBST(PACKAGE_MANAGER, [$withval])
 AC_MSG_RESULT([$PACKAGE_MANAGER])
 
+# Support for Gentoo Alt/Prefix
+AC_MSG_CHECKING([if target installation is in an offset prefix])
+EPREFIX=""
+AS_CASE([$prefix],
+  [/usr], [],
+  [*/usr], [EPREFIX=`echo "$prefix" | sed 's:/usr$::'`])
+AC_MSG_RESULT([${EPREFIX:-nope}])
+AC_SUBST(EPREFIX)
+
 AC_MSG_CHECKING([whether dodgy modules should be installed])
 AC_ARG_ENABLE(dodgy_modules,
   [AS_HELP_STRING([--enable-dodgy-modules],
