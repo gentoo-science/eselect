@@ -34,5 +34,5 @@ Christian Faulhammer <fauli@gentoo.org>
     Modules:    emacs
 
 Ulrich Mueller <ulm@gentoo.org>
-    Modules:    ctags, editor, emacs, news-tng, pager, visual
+    Modules:    ctags, editor, emacs, news, pager, visual
     Libraries:  editor-variable
