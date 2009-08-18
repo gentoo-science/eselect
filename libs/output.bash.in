@@ -59,7 +59,7 @@ write_warning_msg() {
 # Write a list heading. Args may include text highlighting. If -p is passed,
 # use 'plain' highlighting.
 write_list_start() {
-	local colour="${COLOUR_LIST_HEADER}"
+	local colour=${COLOUR_LIST_HEADER}
 	if [[ ${1} == "-p" ]] ; then
 		colour=
 		shift
@@ -75,8 +75,8 @@ write_list_start() {
 # Args may include text highlighting. If -p is passed, use 'plain'
 # highlighting rather than bold.
 write_kv_list_entry() {
-	local n text left="${COLOUR_LIST_LEFT}" right="${COLOUR_LIST_RIGHT}"
-	local key val lindent rindent ifs_save="${IFS}"
+	local n text left=${COLOUR_LIST_LEFT} right=${COLOUR_LIST_RIGHT}
+	local key val lindent rindent ifs_save=${IFS}
 
 	IFS=$' \t\n'
 
@@ -93,39 +93,31 @@ write_kv_list_entry() {
 
 	echo -n -e "  ${lindent}${left}"
 	echo -n -e "$(apply_text_highlights "${left}" "${key}")"
-	echo -n -e "${COLOUR_NORMAL} "
+	echo -n -e "${COLOUR_NORMAL}"
 
 	text=${key//\%%%??%%%/}
-	n=$(( 25 - ${#text} ))
+	n=$(( 26 + ${#rindent} - ${#lindent} - ${#text} ))
 
 	# if ${n} is less than or equal to zero then we have a long ${key}
 	# that will mess up the formatting of ${val}, so end the line, indent
 	# and let ${val} go on the next line.
 	if [[ ${n} -le 0 ]] ; then
-		n=$(( ${#rindent} + 28 ))
-		echo -n -e "\n$(space ${n})${right}"
-	else
-		space ${n}
-		n=$(( ${n} + 2 + ${#text} ))
-		# ${val} will already be indented by ${lindent} so only use the
-		# difference of ${rindent} and ${lindent} as the right indent
-		if [[ ${#rindent} -eq ${#lindent} ]] ; then
-			n=$(( ${n} + ${#lindent} ))
-		else
-			space $(( ${#rindent} - ${#lindent} ))
-			n=$(( ${n} + ${#rindent} - ${#lindent} ))
-		fi
-		echo -n -e "${right}"
+		echo
+		n=$(( 28 + ${#rindent} ))
 	fi
 
+	space ${n}
+	echo -n -e "${right}"
+	n=$(( 28 + ${#rindent} ))
+
 	local cols=${COLUMNS:-80}
-	local cwords="$(apply_text_highlights "${right}" "${val}")"
+	local cwords=$(apply_text_highlights "${right}" "${val}")
 
 	text=${val//\%%%??%%%/}
 	# only loop if it doesn't fit on the same line
 	if [[ $(( ${n} + ${#text} )) -ge ${cols} ]] ; then
 		local i=0 spc=""
-		rindent="${rindent}$(space 28)"
+		rindent=$(space ${n})
 		cwords=( ${cwords} )
 		for text in ${val} ; do
 			text=${text//\%%%??%%%/}
@@ -145,14 +137,14 @@ write_kv_list_entry() {
 		echo -n -e "${cwords}"
 	fi
 	echo -e "${COLOUR_NORMAL}"
-	IFS="${ifs_save}"
+	IFS=${ifs_save}
 }
 
 # write_numbered_list_entry PUBLIC
 # Write out a numbered list entry with index $1 and text $2. Args may
 # include text highlighting. If -p is passed, use 'plain' highlighting.
 write_numbered_list_entry() {
-	local n left="${COLOUR_LIST_LEFT}" right="${COLOUR_LIST_RIGHT}"
+	local left=${COLOUR_LIST_LEFT} right=${COLOUR_LIST_RIGHT}
 	if [[ ${1} == "-p" ]] ; then
 		left=""
 		right=""
@@ -227,7 +219,7 @@ highlight_marker() {
 # space PUBLIC
 # Write $1 numbers of spaces
 space() {
-	local ret=""
+	local n ret=""
 	for (( n = 1 ; n <= ${1} ; ++n )) ; do
 		ret="${ret} "
 	done

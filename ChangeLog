@@ -1,3 +1,10 @@
+2009-08-18  Ulrich Mueller  <ulm@gentoo.org>
+
+	* libs/output.bash.in (write_kv_list_entry): Fix indentation of
+	second column in output. Simplify the code.
+	(write_numbered_list_entry): Remove unused local declaration.
+	(space): Declare n as local variable.
+
 2009-08-15  Ulrich Mueller  <ulm@gentoo.org>
 
 	* modules/news.eselect: Renamed from news-tng.eselect.
