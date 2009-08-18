@@ -195,13 +195,13 @@ apply_text_highlights() {
 # highlight PUBLIC
 # Highlight all arguments. Text highlighting function.
 highlight() {
-	echo -n -e "%%%HI%%%${*}%%%RE%%%"
+	echo -n "%%%HI%%%${*}%%%RE%%%"
 }
 
 # highlight_warning PUBLIC
 # Highlight all arguments as a warning (red). Text highlighting function.
 highlight_warning() {
-	echo -n -e "%%%WA%%%${*}%%%RE%%%"
+	echo -n "%%%WA%%%${*}%%%RE%%%"
 }
 
 # highlight_marker PUBLIC
@@ -209,7 +209,7 @@ highlight_warning() {
 # (or $2 if set) behind it.
 highlight_marker() {
 	local text=${1} mark=${2-*}
-	echo -n -e "${text}"
+	echo -n "${text}"
 	if [[ -n ${mark} ]]; then
 		echo -n " "
 		highlight "${mark}"

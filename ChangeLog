@@ -4,6 +4,8 @@
 	second column in output. Simplify the code.
 	(write_numbered_list_entry): Remove unused local declaration.
 	(space): Declare n as local variable.
+	(highlight, highlight_warning, highlight_marker): Use plain echo
+	instead of "echo -e".
 
 2009-08-15  Ulrich Mueller  <ulm@gentoo.org>
 
