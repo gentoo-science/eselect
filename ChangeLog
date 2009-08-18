@@ -6,6 +6,11 @@
 	(space): Declare n as local variable.
 	(highlight, highlight_warning, highlight_marker): Use plain echo
 	instead of "echo -e".
+	(write_list_start, write_kv_list_entry)
+	(write_numbered_list_entry): Don't change colours on restore if
+	called with the -p option.
+	(apply_text_highlights): Restore NORMAL_COLOUR if called with an
+	empty first argument.
 
 2009-08-15  Ulrich Mueller  <ulm@gentoo.org>
 

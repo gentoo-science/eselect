@@ -59,14 +59,14 @@ write_warning_msg() {
 # Write a list heading. Args may include text highlighting. If -p is passed,
 # use 'plain' highlighting.
 write_list_start() {
-	local colour=${COLOUR_LIST_HEADER}
+	local colour=${COLOUR_LIST_HEADER} normal=${COLOUR_NORMAL}
 	if [[ ${1} == "-p" ]] ; then
-		colour=
+		colour=; normal=
 		shift
 	fi
 	echo -n -e "${colour}"
 	echo -n -e "$(apply_text_highlights "${colour}" "$*")"
-	echo -n -e "${COLOUR_NORMAL}"
+	echo -n -e "${normal}"
 	echo
 }
 
@@ -75,14 +75,14 @@ write_list_start() {
 # Args may include text highlighting. If -p is passed, use 'plain'
 # highlighting rather than bold.
 write_kv_list_entry() {
-	local n text left=${COLOUR_LIST_LEFT} right=${COLOUR_LIST_RIGHT}
-	local key val lindent rindent ifs_save=${IFS}
+	local n text key val lindent rindent ifs_save=${IFS}
+	local left=${COLOUR_LIST_LEFT} right=${COLOUR_LIST_RIGHT}
+	local normal=${COLOUR_NORMAL}
 
 	IFS=$' \t\n'
 
 	if [[ ${1} == "-p" ]] ; then
-		left=
-		right=
+		left=; right=; normal=
 		shift
 	fi
 
@@ -93,7 +93,7 @@ write_kv_list_entry() {
 
 	echo -n -e "  ${lindent}${left}"
 	echo -n -e "$(apply_text_highlights "${left}" "${key}")"
-	echo -n -e "${COLOUR_NORMAL}"
+	echo -n -e "${normal}"
 
 	text=${key//\%%%??%%%/}
 	n=$(( 26 + ${#rindent} - ${#lindent} - ${#text} ))
@@ -136,7 +136,7 @@ write_kv_list_entry() {
 	else
 		echo -n -e "${cwords}"
 	fi
-	echo -e "${COLOUR_NORMAL}"
+	echo -e "${normal}"
 	IFS=${ifs_save}
 }
 
@@ -145,18 +145,20 @@ write_kv_list_entry() {
 # include text highlighting. If -p is passed, use 'plain' highlighting.
 write_numbered_list_entry() {
 	local left=${COLOUR_LIST_LEFT} right=${COLOUR_LIST_RIGHT}
+	local normal=${COLOUR_NORMAL}
+
 	if [[ ${1} == "-p" ]] ; then
-		left=""
-		right=""
+		left=; right=; normal=
 		shift
 	fi
+
 	echo -n -e "  ${left}"
 	echo -n -e "[$(apply_text_highlights "${left}" "$1")]"
-	echo -n -e "${COLOUR_NORMAL}"
+	echo -n -e "${normal}"
 	space $(( 4 - ${#1} ))
 	echo -n -e "${right}"
 	echo -n -e "$(apply_text_highlights "${right}" "$2")"
-	echo -n -e "${COLOUR_NORMAL}"
+	echo -n -e "${normal}"
 	echo
 }
 
@@ -185,7 +187,7 @@ write_numbered_list() {
 # Apply text highlights. First arg is the 'restore' colour, second arg
 # is the text.
 apply_text_highlights() {
-	local restore=${1} text=${2}
+	local restore=${1:-${COLOUR_NORMAL}} text=${2}
 	text="${text//?%%HI%%%/${COLOUR_HI}}"
 	text="${text//?%%WA%%%/${COLOUR_WARN}}"
 	text="${text//?%%RE%%%/${restore}}"
