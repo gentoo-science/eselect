@@ -38,8 +38,8 @@ nocolours() {
 	COLOUR_LIST_RIGHT=""
 }
 
-# initialise output mode $1
-init_output_mode() {
+# set output mode to $1
+set_output_mode() {
 	ESELECT_OUTPUT_MODE=${1}
 }
 

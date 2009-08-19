@@ -2,7 +2,7 @@
 
 	* bin/eselect.in (ESELECT_KNOWN_OPTIONS): Add "brief" option,
 	which will enable shorter output. Bug 154511.
-	* libs/output.bash.in (init_output_mode): New function.
+	* libs/output.bash.in (set_output_mode): New function.
 	(write_list_start): Suppress all output in "brief" output mode.
 	(write_numbered_list_entry): Suppress numbers in "brief" mode.
 	(highlight_marker): Suppress marker in "brief" mode.

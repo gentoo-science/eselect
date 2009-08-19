@@ -163,7 +163,7 @@ if [[ -z ${action} ]] && [[ -n ${1##--} ]] ; then
 		case ${1##--} in
 			brief)
 				ESELECT_OPTIONS="${ESELECT_OPTIONS} brief"
-				init_output_mode brief
+				set_output_mode brief
 				;;
 			no-colour|no-color)
 				ESELECT_OPTIONS="${ESELECT_OPTIONS} no-colour"
