@@ -38,6 +38,11 @@ nocolours() {
 	COLOUR_LIST_RIGHT=""
 }
 
+# initialise output mode $1
+init_output_mode() {
+	ESELECT_OUTPUT_MODE=${1}
+}
+
 # Determine width of terminal and set COLUMNS variable
 init_columns() {
 	[[ -n ${COLUMNS} ]] || COLUMNS=$(tput cols) || COLUMNS=80
@@ -59,6 +64,7 @@ write_warning_msg() {
 # Write a list heading. Args may include text highlighting. If -p is passed,
 # use 'plain' highlighting.
 write_list_start() {
+	[[ ${ESELECT_OUTPUT_MODE} = brief ]] && return
 	local colour=${COLOUR_LIST_HEADER} normal=${COLOUR_NORMAL}
 	if [[ ${1} == "-p" ]] ; then
 		colour=; normal=
@@ -152,10 +158,13 @@ write_numbered_list_entry() {
 		shift
 	fi
 
-	echo -n -e "  ${left}"
-	echo -n -e "[$(apply_text_highlights "${left}" "$1")]"
-	echo -n -e "${normal}"
-	space $(( 4 - ${#1} ))
+	if [[ ${ESELECT_OUTPUT_MODE} != brief ]]; then
+		echo -n -e "  ${left}"
+		echo -n -e "[$(apply_text_highlights "${left}" "$1")]"
+		echo -n -e "${normal}"
+		space $(( 4 - ${#1} ))
+	fi
+
 	echo -n -e "${right}"
 	echo -n -e "$(apply_text_highlights "${right}" "$2")"
 	echo -n -e "${normal}"
@@ -212,7 +221,7 @@ highlight_warning() {
 highlight_marker() {
 	local text=${1} mark=${2-*}
 	echo -n "${text}"
-	if [[ -n ${mark} ]]; then
+	if [[ -n ${mark} && ${ESELECT_OUTPUT_MODE} != brief ]]; then
 		echo -n " "
 		highlight "${mark}"
 	fi

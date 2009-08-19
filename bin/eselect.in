@@ -41,7 +41,7 @@ ESELECT_BINARY_NAME="${0}"
 ESELECT_KILL_TARGET="$$"
 
 # Global options
-ESELECT_KNOWN_OPTIONS="no-colour no-color help version"
+ESELECT_KNOWN_OPTIONS="brief help no-color no-colour version"
 ESELECT_OPTIONS=""
 
 # Support variables for Gentoo Alt/Prefix
@@ -111,6 +111,7 @@ ec_do_version() {
 # Display all recognized global options
 ec_do_list-options() {
 	write_list_start "Global options:"
+	#write_kv_list_entry "--brief"    "Make output shorter (experimental)"
 	write_kv_list_entry "--no-color,--no-colour"    "Disable coloured output"
 }
 
@@ -160,8 +161,12 @@ if [[ -z ${action} ]] && [[ -n ${1##--} ]] ; then
 		has ${1##--} ${ESELECT_KNOWN_OPTIONS} || \
 			die -q "Unknown option ${1}!"
 		case ${1##--} in
+			brief)
+				ESELECT_OPTIONS="${ESELECT_OPTIONS} brief"
+				init_output_mode brief
+				;;
 			no-colour|no-color)
-				ESELECT_OPTIONS="${ESELECT_OPTIONS} NOCOLOUR"
+				ESELECT_OPTIONS="${ESELECT_OPTIONS} no-colour"
 				nocolours
 				;;
 			help|version)

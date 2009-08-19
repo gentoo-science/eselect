@@ -1,3 +1,12 @@
+2009-08-19  Ulrich Mueller  <ulm@gentoo.org>
+
+	* bin/eselect.in (ESELECT_KNOWN_OPTIONS): Add "brief" option,
+	which will enable shorter output. Bug 154511.
+	* libs/output.bash.in (init_output_mode): New function.
+	(write_list_start): Suppress all output in "brief" output mode.
+	(write_numbered_list_entry): Suppress numbers in "brief" mode.
+	(highlight_marker): Suppress marker in "brief" mode.
+
 2009-08-18  Ulrich Mueller  <ulm@gentoo.org>
 
 	* libs/output.bash.in (write_kv_list_entry): Fix indentation of
