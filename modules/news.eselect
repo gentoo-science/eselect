@@ -240,9 +240,9 @@ do_read() {
 
 	while [[ $# -gt 0 ]]; do
 		case ${1##--} in
-		mbox) format=mbox ;;
-		raw) format=raw ;;
-		*) break ;;
+			mbox) format=mbox ;;
+			raw) format=raw ;;
+			*) break ;;
 		esac
 		shift
 	done
