@@ -1,13 +1,13 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
-trunk:
+1.2_rc1:
     Bug fixes:
     - Fixed bug #280598: POSIX compliant basename and dirname functions.
 
     New features:
-    - New 'highlight_marker' utility function for highlighting of list entries.
     - Global option --brief for shorter output (experimental) (bug #154511).
+    - 'highlight_marker' utility function for highlighting of list entries.
     - Prefix support (bug #274760).
 
 1.1.3:

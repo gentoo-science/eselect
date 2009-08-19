@@ -1,5 +1,8 @@
 2009-08-19  Ulrich Mueller  <ulm@gentoo.org>
 
+	* configure.ac: Update version to 1.2_rc1.
+	* Tagged 1.2_rc1 release candidate.
+
 	* bin/eselect.in (ESELECT_KNOWN_OPTIONS): Add --brief option,
 	which will enable shorter output. Bug 154511.
 	(ec_do_help): Reset output mode to default.
