@@ -194,7 +194,8 @@ do_list() {
 				"${posted}$(space $((12 - ${#posted})))(read)    ${title}"
 		fi
 	done
-	[[ $# -eq 0 ]] && write_kv_list_entry "(none found)" ""
+	[[ $# -eq 0 && ${ESELECT_OUTPUT_MODE} != brief]] \
+		&& write_kv_list_entry "(none found)" ""
 }
 
 ### count action

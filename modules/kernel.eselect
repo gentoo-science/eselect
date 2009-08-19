@@ -91,7 +91,7 @@ do_list() {
 				&& targets[i]=$(highlight_marker "${targets[i]}")
 		done
 		write_numbered_list "${targets[@]}"
-	else
+	elif [[ ${ESELECT_OUTPUT_MODE} != brief ]]; then
 		write_kv_list_entry "(none found)" ""
 	fi
 }

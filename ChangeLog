@@ -9,6 +9,10 @@
 	(highlight_marker): Suppress marker in "brief" mode.
 	* libs/default.eselect.in (do_usage, do_help): Reset output mode
 	to default.
+	* modules/bashcomp.eselect (do_list):
+	* modules/kernel.eselect (do_list):
+	* modules/news.eselect (do_list): Suppress "none found" messages
+	in brief output mode.
 
 2009-08-18  Ulrich Mueller  <ulm@gentoo.org>
 
