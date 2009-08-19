@@ -1,6 +1,6 @@
 2009-08-19  Ulrich Mueller  <ulm@gentoo.org>
 
-	* bin/eselect.in (ESELECT_KNOWN_OPTIONS): Add "brief" option,
+	* bin/eselect.in (ESELECT_KNOWN_OPTIONS): Add --brief option,
 	which will enable shorter output. Bug 154511.
 	(ec_do_help): Reset output mode to default.
 	* libs/output.bash.in (set_output_mode): New function.
@@ -14,6 +14,7 @@
 	* modules/kernel.eselect (do_list):
 	* modules/news.eselect (do_list): Suppress "none found" messages
 	in brief output mode.
+	* man/eselect.1: Document the --brief option.
 
 2009-08-18  Ulrich Mueller  <ulm@gentoo.org>
 
