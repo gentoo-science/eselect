@@ -91,6 +91,7 @@ ec_do_usage() {
 # ec_do_help
 # Display eselect help
 ec_do_help() {
+	set_output_mode default
 	ec_do_usage
 	echo
 	ec_do_list-options

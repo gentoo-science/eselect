@@ -2,10 +2,13 @@
 
 	* bin/eselect.in (ESELECT_KNOWN_OPTIONS): Add "brief" option,
 	which will enable shorter output. Bug 154511.
+	(ec_do_help): Reset output mode to default.
 	* libs/output.bash.in (set_output_mode): New function.
 	(write_list_start): Suppress all output in "brief" output mode.
 	(write_numbered_list_entry): Suppress numbers in "brief" mode.
 	(highlight_marker): Suppress marker in "brief" mode.
+	* libs/default.eselect.in (do_usage, do_help): Reset output mode
+	to default.
 
 2009-08-18  Ulrich Mueller  <ulm@gentoo.org>
 
