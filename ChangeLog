@@ -9,6 +9,7 @@
 	(highlight_marker): Suppress marker in "brief" mode.
 	* libs/default.eselect.in (do_usage, do_help): Reset output mode
 	to default.
+	* libs/editor-variable.bash.in (do_list):
 	* modules/bashcomp.eselect (do_list):
 	* modules/kernel.eselect (do_list):
 	* modules/news.eselect (do_list): Suppress "none found" messages

@@ -91,7 +91,9 @@ do_list() {
 	done
 	write_numbered_list "${targets[@]}"
 
-	if [[ ${EDITOR_LIST} != *:* ]]; then
+	if [[ ${ESELECT_OUTPUT_MODE} = brief ]]; then
+		:
+	elif [[ ${EDITOR_LIST} != *:* ]]; then
 		write_numbered_list_entry " " "(free form)"
 	elif [[ ${#targets[@]} -eq 0 ]]; then
 		write_kv_list_entry "(none found)" ""
