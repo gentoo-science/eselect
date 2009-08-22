@@ -1,3 +1,7 @@
+2009-08-22  Ulrich Mueller  <ulm@gentoo.org>
+
+	* modules/news.eselect (do_list): Output read/unread tag first.
+
 2009-08-19  Ulrich Mueller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2_rc1.
