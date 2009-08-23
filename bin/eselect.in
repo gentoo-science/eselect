@@ -41,7 +41,6 @@ ESELECT_BINARY_NAME="${0}"
 ESELECT_KILL_TARGET="$$"
 
 # Global options
-ESELECT_KNOWN_OPTIONS="brief help no-color no-colour version"
 ESELECT_OPTIONS=""
 
 # Support variables for Gentoo Alt/Prefix
@@ -159,8 +158,6 @@ fi
 
 if [[ -z ${action} ]] && [[ -n ${1##--} ]] ; then
 	while [[ ${1##--} != ${1} ]] ; do
-		has ${1##--} ${ESELECT_KNOWN_OPTIONS} || \
-			die -q "Unknown option ${1}!"
 		case ${1##--} in
 			brief)
 				ESELECT_OPTIONS="${ESELECT_OPTIONS} brief"
@@ -172,6 +169,9 @@ if [[ -z ${action} ]] && [[ -n ${1##--} ]] ; then
 				;;
 			help|version)
 				action=${1##--}
+				;;
+			*)
+				die -q "Unknown option ${1}"
 				;;
 		esac
 		shift

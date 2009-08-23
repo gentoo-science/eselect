@@ -1,5 +1,8 @@
 2009-08-22  Ulrich Mueller  <ulm@gentoo.org>
 
+	* bin/eselect.in (ESELECT_KNOWN_OPTIONS): Remove variable, as
+	there is a case statement for all possible options anyway.
+
 	* modules/news.eselect (do_list): Output read/unread tag first.
 
 2009-08-19  Ulrich Mueller  <ulm@gentoo.org>
