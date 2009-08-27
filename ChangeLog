@@ -1,3 +1,8 @@
+2009-08-27  Ulrich Mueller  <ulm@gentoo.org>
+
+	* configure.ac: Update version to 1.2.
+	* Tagged 1.2 release.
+
 2009-08-22  Ulrich Mueller  <ulm@gentoo.org>
 
 	* bin/eselect.in (ESELECT_KNOWN_OPTIONS): Remove variable, as

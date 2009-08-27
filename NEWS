@@ -1,7 +1,7 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
-1.2_rc1:
+1.2:
     Bug fixes:
     - Fixed bug #280598: POSIX compliant basename and dirname functions.
 
