@@ -1,5 +1,6 @@
 #!@BASH@
-# Copyright (c) 2005-2009 Gentoo Foundation                 -*-eselect-*-
+# -*-eselect-*-  vim: ft=eselect
+# Copyright (c) 2005-2009 Gentoo Foundation
 # $Id$
 # This file is part of the 'eselect' tools framework.
 #
@@ -191,5 +192,3 @@ if [[ -n ${action} ]] ; then
 else
 	ec_do_help
 fi
-
-# vim: set ft=eselect :

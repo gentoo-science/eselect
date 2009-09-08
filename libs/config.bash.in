@@ -1,4 +1,5 @@
-# Copyright (c) 2005-2009 Gentoo Foundation                 -*-eselect-*-
+# -*-eselect-*-  vim: ft=eselect
+# Copyright (c) 2005-2009 Gentoo Foundation
 # $Id$
 # This file is part of the 'eselect' tools framework.
 #
@@ -117,5 +118,3 @@ append_config() {
 		store_config ${configfile} ${key} ${newvalue[@]}
 	fi
 }
-
-# vim: set ft=eselect :

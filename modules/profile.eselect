@@ -1,3 +1,4 @@
+# -*-eselect-*-  vim: ft=eselect
 # Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
@@ -151,5 +152,3 @@ do_set() {
 		set_symlink "${1}" ${force} || die -q "Couldn't set a new symlink"
 	fi
 }
-
-# vim: set ft=eselect :

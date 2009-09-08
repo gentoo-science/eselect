@@ -1,3 +1,4 @@
+# -*-eselect-*-  vim: ft=eselect
 # Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
@@ -111,5 +112,3 @@ do_has() {
 # 			|| die -q "Failed to install module file"
 # 	fi
 # }
-
-# vim: ts=4 sw=4 noet fdm=marker

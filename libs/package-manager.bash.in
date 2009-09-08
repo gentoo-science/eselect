@@ -1,4 +1,5 @@
-# Copyright (c) 2005-2009 Gentoo Foundation                 -*-eselect-*-
+# -*-eselect-*-  vim: ft=eselect
+# Copyright (c) 2005-2009 Gentoo Foundation
 # $Id$
 # This file is part of the 'eselect' tools framework.
 #
@@ -155,5 +156,3 @@ get_news_dir_name() {
 	local name=${1%::*} repo=${1##*::}
 	echo "$(get_repo_news_dir "${repo}")/${name}"
 }
-
-# vim: set ft=eselect :

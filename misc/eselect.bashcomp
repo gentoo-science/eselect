@@ -1,3 +1,4 @@
+# -*- mode: sh; indent-tabs-mode: nil; -*-  vim: set ft=sh tw=80 sw=4 et :
 # Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
@@ -43,10 +44,3 @@ _eselect() {
 }
 
 complete -F _eselect eselect
-
-# Local Variables:
-# mode: sh
-# indent-tabs-mode: nil
-# End:
-
-# vim: set ft=sh tw=80 sw=4 et :

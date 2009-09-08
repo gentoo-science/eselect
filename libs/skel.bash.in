@@ -1,4 +1,5 @@
-# Copyright (c) 1999-2009 Gentoo Foundation                 -*-eselect-*-
+# -*-eselect-*-  vim: ft=eselect
+# Copyright (c) 1999-2009 Gentoo Foundation
 # $Id$
 # This file is part of the 'eselect' tools framework.
 #
@@ -307,5 +308,3 @@ do_add() {
 		die -q "Installing ${2} as ${PREFIX}/etc/env.d/${IFACE}/${1}/${3} failed!"
 	fi
 }
-
-# vim: set ft=eselect :
