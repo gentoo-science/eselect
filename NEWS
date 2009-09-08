@@ -1,6 +1,10 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+trunk:
+    Bug fixes:
+    - Fixed bug #283932: Make parsing of files in env.d more robust.
+
 1.2:
     Bug fixes:
     - Fixed bug #280598: POSIX compliant basename and dirname functions.
