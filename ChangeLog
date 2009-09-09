@@ -1,5 +1,8 @@
 2009-09-08  Ulrich Mueller  <ulm@gentoo.org>
 
+	* configure.ac: Update version to 1.2.1.
+	* Tagged 1.2.1 release.
+
 	* modules/env.eselect (create_profile_env): Ignore leading
 	"export" in env files, fixes bug 283932. Accept only valid shell
 	identifiers as variable names.
