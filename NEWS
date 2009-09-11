@@ -93,14 +93,10 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
 
 1.0.7:
     Bug fixes:
-    - Fixed bug in modules/opengl.eselect: Fix when ROOT != /.
     - Fixed bug #151701: Generate {SPACE,COLON}_SEPARATED vars in update.
     - Fixed bug #152318: Fix env.eselect for envvar values containing '='.
     - Fixed bug #152662: Fixed new die() function on *BSD.
     - Updated developer documentation.
-
-    Removed modules:
-    - java.eselect is now superseded by java-{vm,nsplugin}.eselect.
 
 1.0.6:
     Bug fixes:

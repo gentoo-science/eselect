@@ -1,6 +1,6 @@
 Ciaran McCreesh <ciaranm@gentoo.org>
     Main code
-    Modules:    config, cow, kernel, vi
+    Modules:    config, cow, kernel
     Libraries:  core, output
 
 Danny van Dyk <kugelfang@gentoo.org>
@@ -11,28 +11,9 @@ Danny van Dyk <kugelfang@gentoo.org>
 Aaron Walker <ka0ttic@gentoo.org>
     Modules:    bashcomp, profile
 
-Tom Martin <slarti@gentoo.org>
-    Modules:    mailer
-
-Jeremy Huddleston <eradicator@gentoo.org>
-    Modules:    compiler, opengl
-
-Michael Kohl <citizen428@gentoo.org>
-    Modules:    ruby
-
-Tobias Scherbaum <dertobi123@gentoo.org>
-    Modules:    oracle
-
 Donnie Berkholz <dberkholz@gentoo.org>
-    Modules:    blas, cblas, lapack
     Libraries:  skel
 
-Timothy Redaelli <drizzt@gentoo.org>
-    Modules:    whois
-
-Christian Faulhammer <fauli@gentoo.org>
-    Modules:    emacs
-
 Ulrich Mueller <ulm@gentoo.org>
-    Modules:    ctags, editor, emacs, news, pager, visual
+    Modules:    editor, news, pager, visual
     Libraries:  editor-variable
