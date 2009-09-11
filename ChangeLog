@@ -142,7 +142,7 @@
 	* libs/editor-variable.bash.in (do_set): Output a message
 	reminding the user to source /etc/profile.
 	* man/editor.eselect.5, man/visual.eselect.5, man/pager.eselect.5:
-	* man/package-manager.eselect.5: Update man pages accordingly.
+	Update man pages accordingly.
 
 2009-06-06  Ulrich Mueller  <ulm@gentoo.org>
 
@@ -166,10 +166,6 @@
 	* man/rc.eselect.5: Document new option for "show" action.
 
 2009-06-04  Ulrich Mueller  <ulm@gentoo.org>
-
-	* modules/package-manager.eselect: New module, managing the
-	PACKAGE_MANAGER environment variable.
-	* man/package-manager.eselect.5: New man page.
 
 	* libs/package-manager.bash.in (package_manager): Test if selected
 	package manager exists, and fall back to Portage if not. Rename
