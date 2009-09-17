@@ -1,5 +1,9 @@
 2009-09-17  Ulrich Mueller  <ulm@gentoo.org>
 
+	* libs/manip.bash.in (svn_date_to_version): Remove both	hyphens
+	and slashes from the date string, so that the function works for
+	CVS date strings too.
+
 	* libs/package-manager.bash.in (get_news_dir_name):
 	Remove deprecated and undocumented function.
 

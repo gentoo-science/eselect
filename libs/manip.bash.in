@@ -16,13 +16,12 @@
 # eselect.  If not, see <http://www.gnu.org/licenses/>.
 
 # svn_date_to_version PUBLIC
-# Turn an svn date string into a nice version number, for those of us who
-# are too lazy to manually update VERSION in modules. Safe to use in global
-# scope.
+# Turn an SVN or CVS date string into a nice version number, for those
+# of us who are too lazy to manually update VERSION in modules. Safe to
+# use in global scope.
 svn_date_to_version() {
 	local s=${1}
 	s=${s#* }
 	s=${s%% *}
-	s=${s//-}
-	echo "${s}"
+	echo "${s//[-\/]}"
 }
