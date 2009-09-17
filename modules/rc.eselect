@@ -214,7 +214,8 @@ do_list() {
 	local dir file item
 	if [[ -n ${1} ]] && [[ -d ${EROOT}/etc/runlevels/${1} ]] ; then
 		dir=${EROOT}/etc/runlevels/${1}
-		write_list_start "Init scripts to be started by runlevel $(highlight ${1})"
+		write_list_start \
+			"Init scripts to be started by runlevel $(highlight ${1})"
 	elif [[ -z ${1} ]] ; then
 		dir=${EROOT}/etc/init.d
 		write_list_start "Available init scripts"
