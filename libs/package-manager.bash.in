@@ -149,10 +149,3 @@ get_repo_news_dir() {
 		*) die "Unknown package manager: \"${manager}\"" ;;
 	esac
 }
-
-# get_news_dir_name DEPRECATED
-get_news_dir_name() {
-	[[ $# -eq 1 ]] || die "get_news_dir_name expects exactly one argument"
-	local name=${1%::*} repo=${1##*::}
-	echo "$(get_repo_news_dir "${repo}")/${name}"
-}

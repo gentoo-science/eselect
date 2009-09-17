@@ -1,3 +1,8 @@
+2009-09-17  Ulrich Mueller  <ulm@gentoo.org>
+
+	* libs/package-manager.bash.in (get_news_dir_name):
+	Remove deprecated and undocumented function.
+
 2009-09-08  Ulrich Mueller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.1.
