@@ -1,3 +1,13 @@
+2009-09-18  Ulrich Mueller  <ulm@gentoo.org>
+
+	* modules/modules.eselect (do_list): Add support for brief output
+	mode. For reasons of speed, don't source any modules in this case.
+	* libs/default.eselect.in (do_usage): Don't reset output mode.
+	* misc/eselect.bashcomp (_eselect): If called with one parameter,
+	call "eselect --brief modules list" which should be much faster.
+	* bin/eselect.in: Don't accept parameters for built-in actions,
+	otherwise completion for "eselect help" won't work properly.
+
 2009-09-17  Ulrich Mueller  <ulm@gentoo.org>
 
 	* libs/manip.bash.in (svn_date_to_version): Remove both hyphens

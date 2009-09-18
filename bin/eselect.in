@@ -185,7 +185,8 @@ fi
 
 if [[ -n ${action} ]] ; then
 	if is_function "ec_do_${action}" ; then
-		ec_do_${action} "$@"
+		[[ $# -gt 0 ]] && die -q "Too many parameters"
+		ec_do_${action}
 	else
 		do_action "${action}" "$@"
 	fi
