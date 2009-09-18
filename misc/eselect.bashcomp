@@ -11,7 +11,7 @@ _eselect() {
     local options="--brief --no-colour"
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
-    sedcmd='s/^  \([[:alnum:]-][[:alnum:]_-]*\)[[:space:],].*$/\1/p'
+    sedcmd2='s/^  \([[:alnum:]-][[:alnum:]_-]*\)[[:space:],].*$/\1/p'
     sedcmd3='s/^  \[[[:digit:]][[:digit:]]*\] *\([[:graph:]]*\).*$/\1/p'
 
     set - "${COMP_WORDS[@]:1}"
@@ -27,8 +27,8 @@ _eselect() {
     case $# in
         1) possibles="${options} $(eselect --brief modules list 2>/dev/null)"
             ;;
-        2) possibles=$(eselect "$1" usage 2>/dev/null \
-            | sed -n -e "${sedcmd}") ;;
+        2) possibles=$(eselect --brief "$1" usage 2>/dev/null \
+            | sed -n -e "${sedcmd2}") ;;
         3)
             case $2 in
                 set|enable|disable)
