@@ -24,7 +24,6 @@ describe_usage() {
 }
 
 do_usage() {
-	set_output_mode default
 	show_usage_message
 }
 

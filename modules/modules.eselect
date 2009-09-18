@@ -23,13 +23,8 @@ do_list() {
 	[[ $# -gt 0 ]] && die -q "Too many parameters"
 
 	local path file module name desc
+	local -a extra_modules
 
-	write_list_start "Built-in modules:"
-	write_kv_list_entry "help"			"Display a help message"
-	write_kv_list_entry "usage"			"Display a usage message"
-	write_kv_list_entry "version"		"Display version information"
-
-	extra_modules=()
 	for path in "${ESELECT_MODULES_PATH[@]}" ; do
 		[[ -d ${path} ]] || continue
 		for file in "${path}"/*.eselect ; do
@@ -38,17 +33,33 @@ do_list() {
 		done
 	done
 
-	if [[ ${#extra_modules[@]} -gt 0 ]] ; then
-		echo
-		write_list_start "Extra modules:"
+	if [[ ${ESELECT_OUTPUT_MODE} = brief ]]; then
+		# This is mainly intended for bash completion
+		echo "help"
+		echo "usage"
+		echo "version"
 		for module in "${extra_modules[@]}" ; do
 			name=${module##*/}
-			name=${name%%.eselect}
-			desc=$(ESELECT_MODULE_NAME=${name} \
-				load_config "${module}" DESCRIPTION)
-			desc=${desc:-No description available}
-			write_kv_list_entry "${name}" "${desc}"
+			echo "${name%%.eselect}"
 		done
+	else
+		write_list_start "Built-in modules:"
+		write_kv_list_entry "help"			"Display a help message"
+		write_kv_list_entry "usage"			"Display a usage message"
+		write_kv_list_entry "version"		"Display version information"
+
+		if [[ ${#extra_modules[@]} -gt 0 ]] ; then
+			echo
+			write_list_start "Extra modules:"
+			for module in "${extra_modules[@]}" ; do
+				name=${module##*/}
+				name=${name%%.eselect}
+				desc=$(ESELECT_MODULE_NAME=${name} \
+					load_config "${module}" DESCRIPTION)
+				desc=${desc:-No description available}
+				write_kv_list_entry "${name}" "${desc}"
+			done
+		fi
 	fi
 }
 

@@ -8,6 +8,7 @@
 
 _eselect() {
     local cur sedcmd sedcmd3 possibles
+    local options="--brief --no-color --no-colour"
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     sedcmd='s/^  \([[:alnum:]-][[:alnum:]_-]*\)[[:space:],].*$/\1/p'
@@ -24,8 +25,8 @@ _eselect() {
     done
 
     case $# in
-        1) possibles=$(eselect help 2>/dev/null \
-            | sed -n -e "${sedcmd}") ;;
+        1) possibles="${options} $(eselect --brief modules list 2>/dev/null)"
+            ;;
         2) possibles=$(eselect "$1" usage 2>/dev/null \
             | sed -n -e "${sedcmd}") ;;
         3)
