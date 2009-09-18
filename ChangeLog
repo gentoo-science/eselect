@@ -1,6 +1,6 @@
 2009-09-17  Ulrich Mueller  <ulm@gentoo.org>
 
-	* libs/manip.bash.in (svn_date_to_version): Remove both	hyphens
+	* libs/manip.bash.in (svn_date_to_version): Remove both hyphens
 	and slashes from the date string, so that the function works for
 	CVS date strings too.
 
