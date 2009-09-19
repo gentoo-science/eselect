@@ -82,19 +82,14 @@ describe_list() {
 }
 
 do_list() {
-	local targets=( $(find_targets) )
+	local i targets=( $(find_targets) )
 	write_list_start "Available kernel symlink targets:"
-	if [[ ${#targets[@]} -gt 0 ]] ; then
-		local i
-		for (( i = 0; i < ${#targets[@]}; i++ )) ; do
-			[[ ${targets[i]} = \
-				$(basename "$(canonicalise "${EROOT}/usr/src/linux")") ]] \
-				&& targets[i]=$(highlight_marker "${targets[i]}")
-		done
-		write_numbered_list "${targets[@]}"
-	elif [[ ${ESELECT_OUTPUT_MODE} != brief ]]; then
-		write_kv_list_entry "(none found)" ""
-	fi
+	for (( i = 0; i < ${#targets[@]}; i++ )) ; do
+		[[ ${targets[i]} = \
+			$(basename "$(canonicalise "${EROOT}/usr/src/linux")") ]] \
+			&& targets[i]=$(highlight_marker "${targets[i]}")
+	done
+	write_numbered_list -m "(none found)" "${targets[@]}"
 }
 
 ### set action ###

@@ -1,5 +1,13 @@
 2009-09-18  Ulrich Mueller  <ulm@gentoo.org>
 
+	* libs/output.bash.in (write_numbered_list): New -m option.
+	It is used to specify a negative report message that is output for
+	an empty list.
+	* doc/developer-guide.txt: Document it.
+	* modules/bashcomp.eselect (do_list):
+	* modules/kernel.eselect (do_list): Call write_numbered_list with
+	option -m, which simplifies the code.
+
 	* modules/modules.eselect (do_list): Add support for brief output
 	mode. For reasons of speed, don't source any modules in this case.
 	* libs/default.eselect.in (do_usage): Don't reset output mode.

@@ -47,7 +47,7 @@ describe_list_options() {
 }
 
 do_list() {
-	local opts
+	local opts i
 	targets=( $(find_targets) )
 	write_list_start "Available completions:"
 
@@ -56,17 +56,11 @@ do_list() {
 		shift
 	fi
 
-	if [[ -n "${targets[@]}" ]] ; then
-		for (( n = 0 ; n < ${#targets[@]} ; ++n )) ; do
-			is_enabled ${opts:-} ${targets[n]} \
-				&& targets[n]=$(highlight_marker "${targets[n]}")
-		done
-		write_numbered_list "${targets[@]}"
-	elif [[ ${ESELECT_OUTPUT_MODE} != brief ]]; then
-		write_kv_list_entry "(none found)" ""
-	fi
-
-	return 0
+	for (( i = 0; i < ${#targets[@]}; i++ )) ; do
+		is_enabled ${opts:-} ${targets[i]} \
+			&& targets[i]=$(highlight_marker "${targets[i]}")
+	done
+	write_numbered_list -m "(none found)" "${targets[@]}"
 }
 
 ### enable action ###

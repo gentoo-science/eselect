@@ -168,20 +168,28 @@ write_numbered_list_entry() {
 
 	echo -n -e "${right}"
 	echo -n -e "$(apply_text_highlights "${right}" "$2")"
-	echo -n -e "${normal}"
-	echo
+	echo -e "${normal}"
 }
 
 # write_numbered_list PUBLIC
 # Write out a numbered list. Args may include text highlighting.
+# If called with the -m option and an empty list, output a negative report.
 write_numbered_list() {
-	local n=1 p=
-	if [[ ${1} == "-p" ]] ; then
-		p="-p"
+	local n=1 m p
+	while [[ $1 == -* ]]; do
+		case $1 in
+			"-m") shift; m=$1 ;;
+			"-p") p="-p" ;;
+			"--") shift; break ;;
+		esac
 		shift
+	done
+
+	if [[ $# -eq 0 && -n ${m} && ${ESELECT_OUTPUT_MODE} != brief ]]; then
+		write_kv_list_entry ${p} "${m}" ""
 	fi
 
-	while [[ ${#@} -gt 0 ]] ; do
+	while [[ $# -gt 0 ]] ; do
 		item=${1}
 		shift
 		if [[ ${item##*\\} == "" ]] ; then
