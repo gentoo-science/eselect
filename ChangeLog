@@ -1,3 +1,8 @@
+2009-09-20  Ulrich Mueller  <ulm@gentoo.org>
+
+	* configure.ac: Update version to 1.2.2.
+	* Tagged 1.2.2 release.
+
 2009-09-18  Ulrich Mueller  <ulm@gentoo.org>
 
 	* libs/output.bash.in (write_numbered_list): New -m option.
