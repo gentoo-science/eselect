@@ -315,7 +315,7 @@ These are implemented in ``libs/tests.bash``.
 The ``has`` Function
 ,,,,,,,,,,,,,,,,,,,,
 
-The ``has`` utility function is like portage's ``hasq``. It returns true if and
+The ``has`` utility function is like Portage's ``hasq``. It returns true if and
 only if the first parameter is equal to any of the remaining parameters.
 
 The ``is_function`` Function
