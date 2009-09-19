@@ -116,7 +116,7 @@ are ``DESCRIPTION`` and ``VERSION`` variables globally which are used by
 .. Warning:: In ebuilds, global scope code can cause problems. In eselect
   modules, global scope code is **absolutely forbidden**. Your module *will* be
   sourced for tasks other than running your actions. For example, if
-  ``eselect list-modules`` is executed, your module will be sourced to obtain
+  ``eselect modules list`` is executed, your module will be sourced to obtain
   the description. Any code being run here would be a very bad thing.
 
 Unlike ebuilds, the function names are not fixed. Any function whose name starts
@@ -187,8 +187,8 @@ The following categories of function are available by default:
 * Package-Manager Functions
 * Test Functions
 
-To use any of the other functions, you have first to ``inherit`` the corresponding
-library file. (cf: `The ``inherit`` Function`_)
+To use any of the other functions, you have first to ``inherit`` the
+corresponding library file. (cf: `The ``inherit`` Function`_)
 
 General Utility Functions
 -------------------------
@@ -228,7 +228,7 @@ global scope of your module.
 The ``sed`` Function
 ,,,,,,,,,,,,,,,,,,,,
 
-The ``sed`` function is a wrapper around GNU sed.
+The ``sed`` function is a wrapper around GNU ``sed``.
 
 Output Utility Functions
 ------------------------
@@ -350,7 +350,8 @@ The ``dirname`` function is a transparent bash-only replacement for the external
 The ``canonicalise`` Function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
-The ``canonicalise`` function is a wrapper to either GNU readlink or realpath.
+The ``canonicalise`` function is a wrapper to either GNU ``readlink -f``
+or ``realpath``.
 
 Manipulation Functions
 ----------------------
@@ -428,14 +429,14 @@ back to a ``uname -m`` and ``uname -s`` based lookup-table.
 The ``envvar`` Function
 ,,,,,,,,,,,,,,,,,,,,,,,,,
 
-The ``envvar`` function retrieves the contents of a configuration-environemnt
+The ``envvar`` function retrieves the contents of a configuration-environment
 variable for a given package. The syntax is ``envvar ${package-name}
 ${var-name}``.
 
 The ``best_version`` Function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
-The ``best_version`` Function returns the highest available version for a
+The ``best_version`` function returns the highest available version for a
 given package dep atom.
 
 The ``has_version`` Function
