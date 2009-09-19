@@ -188,7 +188,7 @@ The following categories of function are available by default:
 * Test Functions
 
 To use any of the other functions, you have first to ``inherit`` the
-corresponding library file. (cf: `The ``inherit`` Function`_)
+corresponding library file. (cf: `The inherit Function`_)
 
 General Utility Functions
 -------------------------
