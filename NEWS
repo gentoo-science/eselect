@@ -1,6 +1,11 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.2.2:
+    New features:
+    - Faster bash completion.
+    - write_numbered_list can output a negative report with the -m option.
+
 1.2.1:
     Bug fixes:
     - Fixed bug #283932: Make parsing of files in env.d more robust.
