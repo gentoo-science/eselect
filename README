@@ -28,5 +28,3 @@ Style Notes
 * Public functions don't get the ``ec_`` prefix, private functions do.
 * eval is evil, so we disabled it.
 * Absolute paths to executables are not portable, so don't use them.
-
- vim: set tw=78 ft=glep :

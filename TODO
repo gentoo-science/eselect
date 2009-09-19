@@ -19,5 +19,3 @@ Possible Ideas
 * --interactive/--ask : We could make this a global option and PUBLIC, for th
   modules to decide whether an action can be performed. (ciaranm doesn't like
   this idea)
-
-vim: set tw=78 ft=glep :
