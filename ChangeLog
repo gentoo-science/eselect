@@ -1,5 +1,8 @@
 2009-09-20  Ulrich Mueller  <ulm@gentoo.org>
 
+	* configure.ac: Update version to 1.2.3.
+	* Tagged 1.2.3 release.
+
 	* libs/package-manager.bash.in (arch): Add case patterns for
 	recognition of arm, hppa, m68k, ppc64, s390, and sh. Patch by
 	Raúl Porcel <armin76@gentoo.org> in bug 285762.
