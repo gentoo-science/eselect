@@ -1,5 +1,9 @@
 2009-09-20  Ulrich Mueller  <ulm@gentoo.org>
 
+	* libs/package-manager.bash.in (arch): Add case patterns for
+	recognition of arm, hppa, m68k, ppc64, s390, and sh. Patch by
+	Raúl Porcel <armin76@gentoo.org> in bug 285762.
+
 	* doc/developer-guide.txt:
 	* doc/release-guide.txt:
 	* doc/user-guide.txt: Update documentation for eselect 1.2.

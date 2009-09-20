@@ -57,12 +57,16 @@ arch() {
 
 		ret=$(uname -m)
 		case ${ret} in
-			alpha|ia64|ppc) ;;
+			alpha|ia64|m68k|ppc|ppc64) ;;
+			arm*) ret=arm ;;
 			i?86) ret=x86 ;;
 			mips*) ret=mips ;;
+			parisc*) ret=hppa ;;
+			"Power Macintosh") ret=ppc ;;
+			s390*) ret=s390 ;;
+			sh*) ret=sh ;;
 			sparc*) ret=sparc ;;
 			x86_64) ret=amd64 ;;
-			"Power Macintosh") ret=ppc ;;
 			*) write_warning_msg \
 				"Unknown architecture. Please submit a bug including the output of 'uname -m'"
 				return 1
