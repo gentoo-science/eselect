@@ -13,6 +13,7 @@
 	Add a "local variables" block for Emacs. Reformat.
 	* doc/overview.txt: Remove, because it is redundant with
 	user-guide.txt (see also ChangeLog entry of 2005-06-13).
+	* doc/Makefile.am (doc_files): Remove overview from list.
 
 	* configure.ac: Update version to 1.2.2.
 	* Tagged 1.2.2 release.
