@@ -8,71 +8,80 @@ A Brief Overview
 Introduction
 ------------
 
-eselect is a tool for administration and configuration on Gentoo systems. It
-_will_ modify the system's behaviour and should be used with care by the system
-administrator. eselect is a modular framework for writing configuration
-utilities. It consists of:
+eselect is a tool for administration and configuration on Gentoo
+systems. It _will_ modify the system's behaviour and should be used with
+care by the system administrator. eselect is a modular framework for
+writing configuration utilities. It consists of:
 
 * A main program named ``eselect``.
 * Various modules (``*.eselect`` files) which carry out different tasks.
-* Several libraries which help ensure consistent behaviour and simplify the
-  creation of new modules.
+* Several libraries which help ensure consistent behaviour and simplify
+  the creation of new modules.
 
 A module provides several actions. Actions typically either display some
-information (``list`` and ``show`` actions are common) or update the system
-somehow (for example, ``set`` and ``update``). Each module also provides
-``help`` and ``usage`` actions which explain how to use the module.
+information (``list`` and ``show`` actions are common) or update the
+system somehow (for example, ``set`` and ``update``). Each module also
+provides ``help`` and ``usage`` actions which explain how to use the
+module.
 
 Some modules install symlinks to the main program. eselect handles these
-intelligently -- for example, it realises that ``profile-config list`` should be
-treated as if the user had run ``eselect profile list``.
+intelligently -- for example, it realises that ``profile-config list``
+should be treated as if the user had run ``eselect profile list``.
 
 Advantages for End Users and System Administrators
 --------------------------------------------------
 
-For system administrators and end users, tools written as eselect modules offer
-several advantages over the traditional 'write each tool from scratch' approach:
+For system administrators and end users, tools written as eselect
+modules offer several advantages over the traditional 'write each tool
+from scratch' approach:
 
-Consistent UI
-  eselect modules provide a consistent user interface. Thanks
-  to eselect's action framework, there is no longer any need to remember or
-  look up dozens of ``-x`` style switches for each tool. The output format
-  used by modules is also standardised.
+Consistent user interface
+    eselect modules provide a consistent user interface. Thanks to
+    eselect's action framework, there is no longer any need to remember
+    or look up dozens of ``-x`` style switches for each tool. The output
+    format used by modules is also standardised.
+
 Consistent help format
-  All eselect modules provide easily accessible help documentation via the
-  ``help`` and ``usage`` actions.
+    All eselect modules provide easily accessible help documentation via
+    the ``help`` and ``usage`` actions.
+
 Consistent tool naming
-  There is no need to remember dozens of ``foo-config`` and ``update-blah``
-  names. To see a list of available tools, simply run ``eselect`` with no
-  arguments. Of course the foo-config style are still available (via symlinks)
-  if you prefer them.
+    There is no need to remember dozens of ``foo-config`` and
+    ``update-blah`` names. To see a list of available tools, simply run
+    ``eselect`` with no arguments. Of course, the ``foo-config`` style
+    names are still available (via symlinks) if you prefer them.
+
 Guaranteed support for ``$ROOT``
-  For those of you using $ROOT, you will not have to worry about whether a
-  particular tool can handle it. Support for ``$ROOT`` is required for all
-  eselect modules.
+    For those of you using ``$ROOT``, you will not have to worry about
+    whether a particular tool can handle it. Support for ``$ROOT`` is
+    required for all eselect modules.
 
 Advantages for Developers and Package Maintainers
 -------------------------------------------------
 
-Writing your tool as an eselect module rather than starting from scratch gives
-you various benefits:
+Writing your tool as an eselect module rather than starting from scratch
+gives you various benefits:
 
 Faster development time
-  Much of the work has already been done for you. eselect provides a series
-  of libraries for common tasks, and the main ``eselect`` program handles
-  most of the hard work for you. All you need to do is provide the actions and
-  any domain specific functions you require.
+    Much of the work has already been done for you. eselect provides a
+    series of libraries for common tasks, and the main ``eselect``
+    program handles most of the hard work for you. All you need to do is
+    provide the actions and any domain-specific functions you require.
+
 Automatic actions
-  The ``help`` and ``usage`` actions are automatically generated from your
-  actions, so there is no need to spend time worrying about keeping these
-  written up to date.
+    The ``help`` and ``usage`` actions are automatically generated from
+    your actions, so there is no need to spend time worrying about
+    keeping these written up to date.
+
 Easy, consistent behaviour
-  Because most of the input, output and command line handling is split off
-  into library functions, writing a 'standard' module which behaves
-  consistently with other tools is very simple.
+    Because most of the input, output and command line handling is split
+    off into library functions, writing a 'standard' module which
+    behaves consistently with other tools is very simple.
+
 Familiar format
-  For Gentoo developers, the eselect module format will be very familiar -- it
-  is a ``bash`` file with a structure that is quite similar to ebuilds.
+    For Gentoo developers, the eselect module format will be very
+    familiar -- it is a ``bash`` file with a structure that is quite
+    similar to ebuilds.
 
 Using eselect
 =============
@@ -82,35 +91,35 @@ Usage
 
 eselect should be called as shown below: ::
 
-	eselect [<global-options>] <module> <action> <options>
+        eselect [<global-options>] <module> <action> <options>
 
-eselect features consistently named actions among most of its modules. There
-is only one global option as of now; --no-colour, which asks eselect to stop
-showing colored output. The following are standard action names -- each module
-may provide a subset of these actions:
+eselect features consistently named actions among most of its modules.
+There is only one global option as of now; --no-colour, which asks
+eselect to stop showing colored output. The following are standard
+action names -- each module may provide a subset of these actions:
 
 help
-  Print the modules help screen.
+    Print the modules help screen.
 usage
-  Print information on how to invoke the modules actions.
+    Print information on how to invoke the modules actions.
 version
-  Print the modules version and other useful information.
+    Print the modules version and other useful information.
 list
-  Prints a set of selectable options.
+    Print a set of selectable options.
 show
-  Prints the currently active configuration(s).
+    Print the currently active configuration(s).
 set
-  Select one of the options offered by ``list``.
+    Select one of the options offered by ``list``.
 enable
-  Enable one of the module specific features.
+    Enable one of the module specific features.
 disable
-  Disable one of the module specific features.
+    Disable one of the module specific features.
 update
-  Like ``set``, but automatically selects an option rather than taking a
-  parameter.
+    Like ``set``, but automatically selects an option rather than taking
+    a parameter.
 scan
-  Gather information about the system and store it for future usage by the
-  module.
+    Gather information about the system and store it for future usage by
+    the module.
 
 A typical session will look like the following for most modules: ::
 
@@ -126,4 +135,10 @@ A typical session will look like the following for most modules: ::
 
 You can usually set items either by name or by number.
 
-.. vim: set ft=glep tw=80 sw=4 et spell spelllang=en : ..
+.. Local Variables:
+.. mode: rst
+.. fill-column: 72
+.. indent-tabs-mode: nil
+.. End:
+
+.. vim: set ft=glep tw=72 sw=4 et spell spelllang=en :

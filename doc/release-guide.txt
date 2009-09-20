@@ -1,16 +1,16 @@
 eselect Release Guide
 ======================
 
-.. Note:: This guide is intended for people who do ``eselect`` releases. It is
-  probably of no interest to the rest of you.
+.. Note:: This guide is intended for people who do ``eselect`` releases.
+  It is probably of no interest to the rest of you.
 
 Update version in configure.ac.
 
-Make sure ChangeLog is tidy.  Add ChangeLog entry for updating configure.ac
-and tagging the release.
+Make sure ChangeLog is tidy. Add ChangeLog entry for updating
+configure.ac and tagging the release.
 
-Update NEWS file with a summary of changes mentioned in ChangeLog since the
-last release.
+Update NEWS file with a summary of changes mentioned in ChangeLog since
+the last release.
 
 Do a test run in trunk/. ::
 
@@ -43,4 +43,10 @@ Sign it (there may be a dist-sign target in the future). ::
 
     $ gpg --armor --detach-sign ${P}.tar.bz2
 
-.. vim: set ft=glep tw=80 sw=4 et spell spelllang=en : ..
+.. Local Variables:
+.. mode: rst
+.. fill-column: 72
+.. indent-tabs-mode: nil
+.. End:
+
+.. vim: set ft=glep tw=72 sw=4 et spell spelllang=en :
