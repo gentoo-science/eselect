@@ -1,5 +1,5 @@
 eselect Release Guide
-======================
+=====================
 
 .. Note:: This guide is intended for people who do ``eselect`` releases.
   It is probably of no interest to the rest of you.

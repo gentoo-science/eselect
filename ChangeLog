@@ -1,5 +1,12 @@
 2009-09-20  Ulrich Mueller  <ulm@gentoo.org>
 
+	* doc/developer-guide.txt:
+	* doc/release-guide.txt:
+	* doc/user-guide.txt: Update documentation for eselect 1.2.
+	Add a "local variables" block for Emacs. Reformat.
+	* doc/overview.txt: Remove, because it is redundant with
+	user-guide.txt (see also ChangeLog entry of 2005-06-13).
+
 	* configure.ac: Update version to 1.2.2.
 	* Tagged 1.2.2 release.
 

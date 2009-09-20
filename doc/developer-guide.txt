@@ -1,12 +1,12 @@
-============================
+===========================
 eselect Developer Reference
-============================
+===========================
 
 Introduction
 ============
 
 About eselect
---------------
+-------------
 
 eselect is a framework for simplifying and introducing consistency to
 the various Gentoo ``foo-config`` and ``update-blah`` tools. It is an
@@ -439,7 +439,7 @@ current system. If the package manager cannot provide this information,
 lookup-table.
 
 The ``envvar`` Function
-,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``envvar`` function retrieves the contents of a
 configuration-environment variable for a given package. The syntax is
