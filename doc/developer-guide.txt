@@ -180,12 +180,12 @@ The following categories of function are available by default:
 
 * General Utility Functions
 * Output Utility Functions
-* Manipulation Functions
+* Test Functions
 * Path-Manipulation Functions
+* Manipulation Functions
 * Configuration Functions
 * Multilib Functions
 * Package-Manager Functions
-* Test Functions
 
 To use any of the other functions, you have first to ``inherit`` the
 corresponding library file. (cf: `The inherit Function`_)
