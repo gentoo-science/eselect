@@ -1132,6 +1132,7 @@
 	doing the release on berlios.
 
 2005-06-15 Shyam Mani <fox2mike@gentoo.org>
+
 	* doc/developer-guide.txt: Removed redundant sections and fixed up a
 	bit of RST. This will be the version that initial GuideXML will sync
 	with.
@@ -1153,6 +1154,7 @@
 	* Tagged 0.9.4 release.
 
 2005-06-13 Shyam Mani <fox2mike@gentoo.org>
+
 	* doc/overview.txt: Removed, since it is obsolete.
 	* doc/user-guide.txt: Updated with info which was in overview.
 
