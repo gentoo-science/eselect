@@ -224,11 +224,11 @@ describe_read() {
 }
 
 describe_read_options() {
+	echo "--mbox : Output in mbox format"
+	echo "--raw : Output in raw format"
 	echo "new : Read unread news items (default)"
 	echo "all : Read all news items"
 	echo "item : Number of item (from 'list' action)"
-	echo "--mbox : Output in mbox format"
-	echo "--raw : Output in raw format"
 }
 
 describe_read_parameters() {
