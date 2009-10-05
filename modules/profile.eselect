@@ -83,7 +83,7 @@ describe_show() {
 do_show() {
 	write_list_start "Current make.profile symlink:"
 	if [[ -L ${EROOT}/etc/make.profile ]] ; then
-		local link=$(canonicalise "${ROOT}/etc/make.profile")
+		local link=$(canonicalise "${EROOT}/etc/make.profile")
 		local portdir=$(portageq portdir)
 		local profiledir=$(canonicalise "${ROOT}${portdir}/profiles")
 		link=${link##${profiledir}/}
