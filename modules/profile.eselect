@@ -33,15 +33,14 @@ remove_symlink() {
 
 # set the make.profile symlink
 set_symlink() {
-	local portdir=$(portageq portdir) target=${1} targets
+	local portdir=$(portageq portdir) target=${1} targets arch parch
+
 	if is_number "${target}" ; then
 		targets=( $(find_targets "${portdir}") )
 		[[ -z ${targets} ]] && die -q "Failed to get a list of valid profiles"
-		target=${targets[$(( ${target} - 1 ))]}
+		target=${targets[target - 1]}
 	elif [[ -n ${target} && -d ${ROOT}${portdir}/profiles/${target} ]]
 	then
-		local arch parch
-
 		# if the profile was explicitly specified (rather than a number)
 		# double check and make sure it's valid
 		arch=$(arch)
