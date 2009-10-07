@@ -19,10 +19,10 @@
 colours() {
 	COLOUR_NORMAL=$(tput sgr0)
 	COLOUR_BOLD=$(tput bold)
-	COLOUR_HI=$(tput setaf 4)${COLOUR_BOLD}
-	COLOUR_WARN=$(tput setaf 1)${COLOUR_BOLD}
+	COLOUR_HI=$(tput setaf 4)${COLOUR_BOLD} # blue
+	COLOUR_WARN=$(tput setaf 1)${COLOUR_BOLD} # red
 	COLOUR_ERROR=${COLOUR_WARN}
-	COLOUR_LIST_HEADER=$(tput setaf 2)${COLOUR_BOLD}
+	COLOUR_LIST_HEADER=$(tput setaf 2)${COLOUR_BOLD} # green
 	COLOUR_LIST_LEFT=${COLOUR_BOLD}
 	COLOUR_LIST_RIGHT=${COLOUR_NORMAL}
 }
