@@ -1,6 +1,10 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.2.4:
+    Bug fixes:
+    - Fixed bug #287730: Relative filename for symlink in profile module.
+
 1.2.3:
     Bug fixes:
     - Fixed bug #285762: Add several architectures to arch() function.

@@ -362,6 +362,13 @@ The ``canonicalise`` Function
 The ``canonicalise`` function is a wrapper to either GNU ``readlink -f``
 or ``realpath``.
 
+The ``relative_name`` Function
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+The ``relative_name`` function converts a path name (passed as its first
+argument) to be relative to a directory (second argument). This can be
+used to generate a relative symlink from absolute paths.
+
 Manipulation Functions
 ----------------------
 

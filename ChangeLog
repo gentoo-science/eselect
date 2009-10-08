@@ -1,7 +1,9 @@
 2009-10-05  Ulrich Mueller  <ulm@gentoo.org>
 
-	* modules/profile.eselect (do_show): Use EROOT instead of ROOT,
-	bug 287730.
+	* libs/path-manipulation.bash.in (relative_name): New function.
+	* doc/developer-guide.txt: Document it.
+	* modules/profile.eselect (do_show): Use EROOT instead of ROOT.
+	(set_symlink): Use relative_name(). Fixes bug 287730.
 
 2009-09-20  Ulrich Mueller  <ulm@gentoo.org>
 
