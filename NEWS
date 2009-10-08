@@ -5,6 +5,10 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
     Bug fixes:
     - Fixed bug #287730: Relative filename for symlink in profile module.
 
+    New features:
+    - Improved handling of removed news items in the news module.
+    - New relative_name() function in path-manipulation library.
+
 1.2.3:
     Bug fixes:
     - Fixed bug #285762: Add several architectures to arch() function.
