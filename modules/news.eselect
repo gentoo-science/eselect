@@ -131,7 +131,7 @@ mail_header() {
 	# "date -d" is not portable, therefore we do manual processing
 	if [[ ${posted} == +([0-9])-+([0-9])-+([0-9]) ]]; then
 		year=${posted%%-*}
-		month=${posted#*-*(0)}; month=${month%%-*}
+		month=${posted#*-}; month=${month%%-*}
 		day=${posted##*-}
 	fi
 	wd=$(day_of_week "${year}" "${month}" "${day}")
@@ -148,11 +148,11 @@ mail_header() {
 		&& name=$(rfc2047_encode "${name}")
 	[[ ${title} != *([[:ascii:]]) ]] && title=$(rfc2047_encode "${title}")
 
-	echo "From ${addr} ${wd} ${mname[month]} ${day} ${time} ${year}"
+	echo "From ${addr} ${wd} ${mname[${month##*(0)}]} ${day} ${time} ${year}"
 	echo "From: ${name}${name+ }<${addr}>"
 	#echo "Reply-To: DO NOT REPLY <devnull@localhost.invalid>"
 	echo "Subject: ${title}"
-	echo "Date: ${wd}, ${day} ${mname[month]} ${year} ${time} +0000"
+	echo "Date: ${wd}, ${day} ${mname[${month##*(0)}]} ${year} ${time} +0000"
 	echo "Message-Id: <glep42-${item}@gentoo.org>"
 	echo "MIME-Version: 1.0"
 	echo "Content-Type: text/plain; charset=UTF-8"
