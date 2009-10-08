@@ -176,10 +176,12 @@ do_list() {
 		stat=${item%%/*}; item=${item#*/}
 		repo=${item%%/*}; item=${item#*/}
 		find_repo_dir "${repo}"
-		header=$(read_item "${dir}" "${item}" header)
-		IFS=$'\n'
 		title="(${item} - no title)"
-		posted="(no date) "
+		posted=${item:0:10}
+		[[ ${posted} == +([0-9])-+([0-9])-+([0-9]) ]] || posted="(no date) "
+		header=$(read_item "${dir}" "${item}" header) \
+			|| title="(${item} - removed?)"
+		IFS=$'\n'
 		for line in ${header}; do
 			case "${line%%:*}" in
 				Title) title=${line##*([^:]):*([[:space:]])} ;;
@@ -270,31 +272,31 @@ do_read() {
 		repo=${item%%/*}; item=${item#*/}
 		find_repo_dir "${repo}"
 		case ${format} in
-			raw)
-				read_item "${dir}" "${item}"
-				;;
-			cooked)
-				write_list_start "${item}"
-				header=$(read_item "${dir}" "${item}" header)
-				IFS=$'\n'
-				for line in ${header}; do
-					case "${line%%:*}" in
-						Title)
-							write_kv_list_entry "${line%%:*}" \
-								"$(highlight "${line##*([^:]):*([[:space:]])}")"
-							;;
-						Author|Translator|Posted|Revision)
-							write_kv_list_entry "${line%%:*}" \
-								"${line##*([^:]):*([[:space:]])}"
-							;;
-					esac
-				done
-				IFS=${ifs_save}
-				echo
-				read_item "${dir}" "${item}" body
-				;;
-			mbox)
-				header=$(read_item "${dir}" "${item}" header)
+		raw)
+			read_item "${dir}" "${item}"
+			;;
+		cooked)
+			write_list_start "${item}"
+			header=$(read_item "${dir}" "${item}" header)
+			IFS=$'\n'
+			for line in ${header}; do
+				case "${line%%:*}" in
+					Title)
+						write_kv_list_entry "${line%%:*}" \
+							"$(highlight "${line##*([^:]):*([[:space:]])}")"
+						;;
+					Author|Translator|Posted|Revision)
+						write_kv_list_entry "${line%%:*}" \
+							"${line##*([^:]):*([[:space:]])}"
+						;;
+				esac
+			done
+			IFS=${ifs_save}
+			echo
+			read_item "${dir}" "${item}" body
+			;;
+		mbox)
+			if header=$(read_item "${dir}" "${item}" header); then
 				author=""; title=""; posted=""
 				IFS=$'\n'
 				for line in ${header}; do
@@ -315,9 +317,13 @@ do_read() {
 				IFS=${ifs_save}
 				echo
 				read_item "${dir}" "${item}" body | sed 's/^>*From />&/;$q'
-				;;
+			else
+				false
+			fi
+			;;
 		esac
-		[[ $? -ne 0 ]] && write_error_msg "Error reading item \"${item}\""
+		[[ $? -ne 0 ]] \
+			&& write_warning_msg "News item \"${item}\" no longer exists"
 		echo
 
 		[[ ${stat} = unread ]] || continue

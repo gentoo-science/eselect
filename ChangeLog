@@ -1,3 +1,12 @@
+2009-10-08  Ulrich Mueller  <ulm@gentoo.org>
+
+	* modules/news.eselect (do_read): Improve handling of removed news
+	items: Display only a warning message instead of an error if an
+	item's file doesn't exist.
+	(do_list): Take default date from item name. Assume that the item
+	has been removed if we cannot read its header.
+	(mail_header): Really remove leading zeros in numeric month.
+
 2009-10-05  Ulrich Mueller  <ulm@gentoo.org>
 
 	* libs/path-manipulation.bash.in (relative_name): New function.
