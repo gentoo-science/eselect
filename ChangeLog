@@ -5,7 +5,7 @@
 	item's file doesn't exist.
 	(do_list): Take default date from item name. Assume that the item
 	has been removed if we cannot read its header.
-	(mail_header): Really remove leading zeros in numeric month.
+	(mail_header): Really remove leading zeros from numeric month.
 
 2009-10-05  Ulrich Mueller  <ulm@gentoo.org>
 
