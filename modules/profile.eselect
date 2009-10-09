@@ -69,6 +69,12 @@ set_symlink() {
 		ln -s "$(relative_name \
 			"${ROOT}${portdir}" "${EROOT}/etc")/profiles/${target}" \
 			"${EROOT}/etc/make.profile"
+		# check if the resulting symlink is sane
+		if [[ $(canonicalise "${EROOT}/etc/make.profile") \
+			!= "$(canonicalise "${EROOT}")"/* ]]; then
+			write_warning_msg \
+				"Strange path. Check ${EROOT}/etc/make.profile symlink"
+		fi
 	else
 		die -q "Target \"${1}\" doesn't appear to be valid!"
 	fi

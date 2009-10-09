@@ -3,6 +3,10 @@
 	* configure.ac: Update version to 1.2.4.
 	* Tagged 1.2.4 release.
 
+	* modules/profile.eselect (set_symlink): Output a warning message
+	if the target of the symlink is outside of EROOT. Suggested by
+	Jeremy Olexa <darkside@gentoo.org>.
+
 	* modules/news.eselect (do_read): Improve handling of removed news
 	items: Display only a warning message instead of an error if an
 	item's file doesn't exist.
