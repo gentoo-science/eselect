@@ -94,9 +94,9 @@ ec_do_help() {
 	set_output_mode default
 	ec_do_usage
 	echo
-	ec_do_list-options
+	ec_do_list_options
 	echo
-	ec_do_list-modules
+	ec_do_list_modules
 }
 
 # ec_do_version
