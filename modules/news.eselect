@@ -258,7 +258,9 @@ do_read() {
 			seq="${seq} ${i}"
 		done
 		set -- ${seq}
-		[[ $# -eq 0 && ${format} = cooked ]] && echo "No news is good news."
+		[[ $# -eq 0 && ${format} = cooked \
+			&& ${ESELECT_OUTPUT_MODE} != brief ]] \
+			&& echo "No news is good news."
 	fi
 
 	for i in "$@"; do

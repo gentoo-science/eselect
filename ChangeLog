@@ -1,3 +1,8 @@
+2009-10-11  Ulrich Mueller  <ulm@gentoo.org>
+
+	* modules/news.eselect (do_read): Suppress "no news" message in
+	brief output mode, bug 288527.
+
 2009-10-08  Ulrich Mueller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.4.
