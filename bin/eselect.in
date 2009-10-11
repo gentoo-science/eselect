@@ -108,17 +108,17 @@ ec_do_version() {
 	echo "Distributed under the terms of the GNU General Public License v2."
 }
 
-# ec_do_list-options
+# ec_do_list_options
 # Display all recognized global options
-ec_do_list-options() {
+ec_do_list_options() {
 	write_list_start "Global options:"
 	#write_kv_list_entry "--brief"    "Make output shorter (experimental)"
 	write_kv_list_entry "--no-color,--no-colour"    "Disable coloured output"
 }
 
-# ec_do_list-modules
+# ec_do_list_modules
 # Display all available eselect modules DEPRECATED
-ec_do_list-modules() {
+ec_do_list_modules() {
 	do_action modules list "$@"
 }
 
@@ -184,9 +184,9 @@ if [[ -z ${action} ]] && [[ -n ${1##--} ]] ; then
 fi
 
 if [[ -n ${action} ]] ; then
-	if is_function "ec_do_${action}" ; then
+	if is_function "ec_do_${action//-/_}" ; then
 		[[ $# -gt 0 ]] && die -q "Too many parameters"
-		ec_do_${action}
+		ec_do_${action//-/_}
 	else
 		do_action "${action}" "$@"
 	fi

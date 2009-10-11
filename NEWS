@@ -1,6 +1,10 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+trunk:
+    Bug fixes:
+    - Fixed bug #280191: Don't use hyphens in identifiers.
+
 1.2.4:
     Bug fixes:
     - Fixed bug #287730: Relative filename for symlink in profile module.
