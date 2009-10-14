@@ -2,7 +2,7 @@
 
 	* bin/eselect.in (ec_do_list_options, ec_do_list_modules):
 	Renamed from ec_do_list-* to prevent invalid identifier errors in
-	POSIX mode, bug 280191. Substiture underscore for hyphen in call.
+	POSIX mode, bug 280191. Substitute underscore for hyphen in call.
 	(ec_do_help): Fix call for ec_do_list_*.
 
 	* modules/news.eselect (do_read): Suppress "no news" message in
