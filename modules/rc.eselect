@@ -248,9 +248,6 @@ describe_show_options() {
 do_show() {
 	local runlevel all unused n x
 
-	# core.bash redefines eval; unset it because OpenRC's
-	# functions.sh needs the bash builtin
-	unset -f eval
 	source_rc_functions
 
 	if [[ $# -eq 0 ]]; then

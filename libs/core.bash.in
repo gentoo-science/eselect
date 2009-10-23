@@ -103,11 +103,6 @@ inherit() {
 	done
 }
 
-# make eval not work, because it's evil
-eval() {
-	die "Don't use eval. Find another way."
-}
-
 # GNU sed wrapper (real path to GNU sed determined by configure)
 sed() {
 	@SED@ "$@"

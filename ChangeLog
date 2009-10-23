@@ -1,5 +1,10 @@
 2009-10-11  Ulrich Mueller  <ulm@gentoo.org>
 
+	* libs/core.bash.in (eval): Don't redefine the eval builtin,
+	because it is needed in the rc module. Fixes bug 224507.
+	* modules/rc.eselect (do_show): Remove workaround for eval.
+	* README: Update style notes.
+
 	* bin/eselect.in (ec_do_list_options, ec_do_list_modules):
 	Renamed from ec_do_list-* to prevent invalid identifier errors in
 	POSIX mode, bug 280191. Substitute underscore for hyphen in call.
