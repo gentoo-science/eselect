@@ -1,9 +1,10 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
-trunk:
+1.2.5:
     Bug fixes:
     - Fixed bug #280191: Don't use hyphens in identifiers.
+    - Fixed bug #288527: Suppress 'no news' message in news module.
 
 1.2.4:
     Bug fixes:
