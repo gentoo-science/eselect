@@ -1,3 +1,8 @@
+2009-11-04  Ulrich Mueller  <ulm@gentoo.org>
+
+	* configure.ac: Update version to 1.2.5.
+	* Tagged 1.2.5 release.
+
 2009-10-11  Ulrich Mueller  <ulm@gentoo.org>
 
 	* libs/core.bash.in (eval): Don't redefine the eval builtin,
