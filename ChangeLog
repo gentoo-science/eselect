@@ -1,3 +1,13 @@
+2009-11-05  Ulrich Mueller  <ulm@gentoo.org>
+
+	* libs/output.bash.in (is_output_mode): New function.
+	(write_list_start, write_numbered_list_entry, write_numbered_list)
+	(highlight_marker): Use it.
+	* libs/editor-variable.bash.in (do_list):
+	* modules/news.eselect (do_list, do_read):
+	* modules/modules.eselect (do_list): Use it.
+	* doc/developer-guide.txt: Document is_output_mode function.
+
 2009-11-04  Ulrich Mueller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.5.

@@ -44,6 +44,12 @@ set_output_mode() {
 	ESELECT_OUTPUT_MODE=${1}
 }
 
+# is_output_mode PUBLIC
+# test if $1 is the current output mode
+is_output_mode() {
+	[[ ${ESELECT_OUTPUT_MODE} = ${1} ]]
+}
+
 # Determine width of terminal and set COLUMNS variable
 init_columns() {
 	[[ -n ${COLUMNS} ]] || COLUMNS=$(tput cols) || COLUMNS=80
@@ -65,7 +71,7 @@ write_warning_msg() {
 # Write a list heading. Args may include text highlighting. If -p is passed,
 # use 'plain' highlighting.
 write_list_start() {
-	[[ ${ESELECT_OUTPUT_MODE} = brief ]] && return
+	is_output_mode brief && return
 	local colour=${COLOUR_LIST_HEADER} normal=${COLOUR_NORMAL}
 	if [[ ${1} == "-p" ]] ; then
 		colour=; normal=
@@ -159,7 +165,7 @@ write_numbered_list_entry() {
 		shift
 	fi
 
-	if [[ ${ESELECT_OUTPUT_MODE} != brief ]]; then
+	if ! is_output_mode brief; then
 		echo -n -e "  ${left}"
 		echo -n -e "[$(apply_text_highlights "${left}" "$1")]"
 		echo -n -e "${normal}"
@@ -185,7 +191,7 @@ write_numbered_list() {
 		shift
 	done
 
-	if [[ $# -eq 0 && -n ${m} && ${ESELECT_OUTPUT_MODE} != brief ]]; then
+	if [[ $# -eq 0 && -n ${m} ]] && ! is_output_mode brief; then
 		write_kv_list_entry ${p} "${m}" ""
 	fi
 
@@ -230,7 +236,7 @@ highlight_warning() {
 highlight_marker() {
 	local text=${1} mark=${2-*}
 	echo -n "${text}"
-	if [[ -n ${mark} && ${ESELECT_OUTPUT_MODE} != brief ]]; then
+	if [[ -n ${mark} ]] && ! is_output_mode brief; then
 		echo -n " "
 		highlight "${mark}"
 	fi

@@ -197,7 +197,7 @@ do_list() {
 				"read    ${posted}$(space $((12 - ${#posted})))${title}"
 		fi
 	done
-	[[ $# -eq 0 && ${ESELECT_OUTPUT_MODE} != brief ]] \
+	[[ $# -eq 0 ]] && ! is_output_mode brief \
 		&& write_kv_list_entry "(none found)" ""
 }
 
@@ -258,8 +258,7 @@ do_read() {
 			seq="${seq} ${i}"
 		done
 		set -- ${seq}
-		[[ $# -eq 0 && ${format} = cooked \
-			&& ${ESELECT_OUTPUT_MODE} != brief ]] \
+		[[ $# -eq 0 && ${format} = cooked ]] && ! is_output_mode brief \
 			&& echo "No news is good news."
 	fi
 

@@ -92,7 +92,7 @@ do_list() {
 	done
 	write_numbered_list "${targets[@]}"
 
-	if [[ ${ESELECT_OUTPUT_MODE} = brief ]]; then
+	if is_output_mode brief; then
 		:
 	elif [[ ${EDITOR_LIST} != *:* ]]; then
 		write_numbered_list_entry " " "(free form)"

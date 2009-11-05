@@ -33,7 +33,7 @@ do_list() {
 		done
 	done
 
-	if [[ ${ESELECT_OUTPUT_MODE} = brief ]]; then
+	if is_output_mode brief; then
 		# This is mainly intended for bash completion
 		echo "help"
 		echo "usage"

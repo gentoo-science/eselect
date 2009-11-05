@@ -309,6 +309,14 @@ behind the entry. A typical invocation might look like: ::
             && targets[i]=$(highlight_marker "${targets[i]}")
     done
 
+The ``is_output_mode`` Function
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+The ``is_output_mode`` function returns true if and only if its
+parameter is equal to eselect's output mode. Currently, only the default
+and ``brief`` output modes are defined, the latter corresponding to the
+``--brief`` option.
+
 The ``space`` Function
 ,,,,,,,,,,,,,,,,,,,,,,
 
