@@ -270,11 +270,11 @@ should be used. The first parameter is the key, the second the value.
 The ``write_numbered_list`` function is a wrapper around
 ``write_numbered_list_entry`` that handles the numbering automatically.
 Each parameter passed is displayed as a numbered list item, the first
-with index 1, the second with index 2 and so on. The -m option can be
-used to specify a negative report message that is output for an empty
+with index 1, the second with index 2 and so on. The ``-m`` option can
+be used to specify a negative report message that is output for an empty
 list.
 
-If -p is passed as the first argument to these functions, 'plain'
+If ``-p`` is passed as the first argument to these functions, 'plain'
 highlighting is used.
 
 The ``highlight`` Function
