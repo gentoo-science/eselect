@@ -1,5 +1,7 @@
 2009-11-05  Ulrich Mueller  <ulm@gentoo.org>
 
+	* bin/eselect.in (ec_do_list_options): Mention "--brief" option.
+
 	* libs/output.bash.in (is_output_mode): New function.
 	(write_list_start, write_numbered_list_entry, write_numbered_list)
 	(highlight_marker): Use it.

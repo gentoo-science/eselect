@@ -112,7 +112,7 @@ ec_do_version() {
 # Display all recognized global options
 ec_do_list_options() {
 	write_list_start "Global options:"
-	#write_kv_list_entry "--brief"    "Make output shorter (experimental)"
+	write_kv_list_entry "--brief"    "Make output shorter"
 	write_kv_list_entry "--no-color,--no-colour"    "Disable coloured output"
 }
 
