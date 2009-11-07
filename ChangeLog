@@ -1,5 +1,8 @@
 2009-11-05  Ulrich Mueller  <ulm@gentoo.org>
 
+	* configure.ac: Update version to 1.2.6.
+	* Tagged 1.2.6 release.
+
 	* bin/eselect.in (ec_do_list_options): Mention "--brief" option.
 
 	* libs/output.bash.in (is_output_mode): New function.

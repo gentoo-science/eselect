@@ -1,6 +1,10 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.2.6:
+    New features:
+    - New is_output_mode() function in output library (bug #292100).
+
 1.2.5:
     Bug fixes:
     - Fixed bug #280191: Don't use hyphens in identifiers.
