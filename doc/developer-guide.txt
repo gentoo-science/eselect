@@ -34,14 +34,15 @@ standard ``help``, ``usage`` and ``version`` actions, and is installed
 to ``$(datadir)/eselect/modules/`` ::
 
 
+    # -*-eselect-*-  vim: ft=eselect
     # Copyright 1999-2005 Gentoo Foundation
     # Distributed under the terms of the GNU General Public License v2
     # $Id: $
 
     DESCRIPTION="Do things to a cow"
     MAINTAINER="ciaranm@gentoo.org"
-    SVN_DATE='$Date: 2005-10-16 19:31:47 +0100 (Sun, 16 Oct 2005) $'
-    VERSION=$(svn_date_to_version "${SVN_DATE}" )
+    SVN_DATE='$Date: $'
+    VERSION=$(svn_date_to_version "${SVN_DATE}")
 
     ### moo action
 
@@ -390,7 +391,7 @@ keeping track of ``VERSION``. It is safe to use in global scope.
 The canonical usage is as follows: ::
 
     SVN_DATE='$Date: $'
-    VERSION=$(svn_date_to_version "${SVN_DATE}" )
+    VERSION=$(svn_date_to_version "${SVN_DATE}")
 
 Then turn on SVN keyword expansion for the module: ::
 
