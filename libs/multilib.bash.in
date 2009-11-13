@@ -20,18 +20,19 @@ ES_VALID_MULTILIB_DIRS="lib lib32 lib64"
 # list_libdirs PUBLIC
 # Returns a space separated list of libdirs available on this machine
 list_libdirs() {
-	local dir libdirs
-	libdirs=""
+	local dir
+	local -a libdirs
+
 	for dir in ${ES_VALID_MULTILIB_DIRS} ; do
 		if grep -q "^/${dir}\(\|/\)$" "${EROOT}/etc/ld.so.conf" &> /dev/null
 		then
 			libdirs=( ${libdirs[@]} ${dir} )
 		fi
 	done
-	if [[ -z ${libdirs[@]} ]] ; then
+	if [[ ${#libdirs[@]} -eq 0 ]]; then
 		# Broken or non-existing ld.so.conf
 		libdirs=( "${EROOT}"/lib* )
-		libdirs=( ${libdirs[@]/\/lib/lib} )
+		libdirs=( "${libdirs[@]##"${EROOT}"*(/)}" )
 	fi
 	echo "${libdirs[@]}"
 }

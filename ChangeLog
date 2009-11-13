@@ -1,3 +1,8 @@
+2009-11-13  Ulrich Mueller  <ulm@gentoo.org>
+
+	* libs/multilib.bash.in (list_libdirs): Handle ROOT properly,
+	fixes bug 289095.
+
 2009-11-05  Ulrich Mueller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.6.
