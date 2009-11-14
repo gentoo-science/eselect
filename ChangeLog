@@ -1,5 +1,8 @@
 2009-11-13  Ulrich Mueller  <ulm@gentoo.org>
 
+	* configure.ac: Update version to 1.2.7.
+	* Tagged 1.2.7 release.
+
 	* libs/multilib.bash.in (list_libdirs): Handle ROOT properly,
 	fixes bug 289095.
 
