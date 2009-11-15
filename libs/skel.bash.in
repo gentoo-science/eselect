@@ -293,7 +293,7 @@ do_add() {
 
 	# If $D is set, we're adding from portage so we want to respect sandbox.
 	# Otherwise, respect the ROOT variable.
-	local prefix=${D:-${EROOT}}
+	local prefix=${D:-${ROOT}}${EPREFIX}
 
 	# Create directory if necessary
 	if [[ ! -e ${prefix}/etc/env.d/${IFACE}/${1} ]]; then

@@ -1,3 +1,9 @@
+2009-11-15  Ulrich Mueller  <ulm@gentoo.org>
+
+	* libs/skel.bash.in (do_add): Respect EPREFIX also when called
+	from within an ebuild environment. Patch from Fabian Groffen
+	<grobian@gentoo.org> in bug 293317.
+
 2009-11-13  Ulrich Mueller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.7.
