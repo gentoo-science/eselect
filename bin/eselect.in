@@ -44,7 +44,7 @@ ESELECT_KILL_TARGET="$$"
 # Global options
 ESELECT_OPTIONS=""
 
-# Support variables for Gentoo Alt/Prefix
+# Support variables for Gentoo Prefix
 EPREFIX="@EPREFIX@"
 EROOT="${ROOT}${EPREFIX}"
 
