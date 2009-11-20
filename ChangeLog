@@ -1,3 +1,8 @@
+2009-11-20  Ulrich Mueller  <ulm@gentoo.org>
+
+	* configure.ac: Update version to 1.2.8.
+	* Tagged 1.2.8 release.
+
 2009-11-15  Ulrich Mueller  <ulm@gentoo.org>
 
 	* libs/skel.bash.in (do_add): Respect EPREFIX also when called
