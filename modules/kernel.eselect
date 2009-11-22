@@ -12,7 +12,7 @@ VERSION=$(svn_date_to_version "${SVN_DATE}")
 sort_kernel_versions() {
 	local vsort="sort --version-sort"
 	# Test if our sort supports the --version-sort option
-	# (it should since the kernel module is Linux specific)
+	# (should be GNU sort, since the kernel module is GNU/Linux specific)
 	${vsort} </dev/null &>/dev/null || vsort=sort
 
 	# We sort kernel versions as follows:
