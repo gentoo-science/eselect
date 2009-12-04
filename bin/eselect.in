@@ -67,10 +67,10 @@ inherit manip output path-manipulation tests
 # it, don't ask...
 trap 'echo "exiting" >&2; exit 250' 15
 
-# ec_find_module foo
+# es_find_module foo
 # Find and echo the filename of the foo module. If there's no foo module,
 # die.
-ec_find_module() {
+es_find_module() {
 	local modname="$1" modpath="" modfile=""
 	[[ -z ${modname} ]] && die "Usage: ${FUNCNAME} <module>"
 	for modpath in "${ESELECT_MODULES_PATH[@]}" ; do
@@ -82,43 +82,43 @@ ec_find_module() {
 	echo ${modfile}
 }
 
-# ec_do_usage
+# es_do_usage
 # Display eselect usage
-ec_do_usage() {
+es_do_usage() {
 	echo "Usage: eselect <global options> <module name> <module options>"
 }
 
-# ec_do_help
+# es_do_help
 # Display eselect help
-ec_do_help() {
+es_do_help() {
 	set_output_mode default
-	ec_do_usage
+	es_do_usage
 	echo
-	ec_do_list_options
+	es_do_list_options
 	echo
-	ec_do_list_modules
+	es_do_list_modules
 }
 
-# ec_do_version
+# es_do_version
 # Display eselect version
-ec_do_version() {
+es_do_version() {
 	echo "eselect ${ESELECT_VERSION}"
 	echo
 	echo "Copyright (c) 2005-2009 Gentoo Foundation."
 	echo "Distributed under the terms of the GNU General Public License v2."
 }
 
-# ec_do_list_options
+# es_do_list_options
 # Display all recognized global options
-ec_do_list_options() {
+es_do_list_options() {
 	write_list_start "Global options:"
 	write_kv_list_entry "--brief"    "Make output shorter"
 	write_kv_list_entry "--no-color,--no-colour"    "Disable coloured output"
 }
 
-# ec_do_list_modules
+# es_do_list_modules
 # Display all available eselect modules DEPRECATED
-ec_do_list_modules() {
+es_do_list_modules() {
 	do_action modules list "$@"
 }
 
@@ -184,12 +184,12 @@ if [[ -z ${action} ]] && [[ -n ${1##--} ]] ; then
 fi
 
 if [[ -n ${action} ]] ; then
-	if is_function "ec_do_${action//-/_}" ; then
+	if is_function "es_do_${action//-/_}" ; then
 		[[ $# -gt 0 ]] && die -q "Too many parameters"
-		ec_do_${action//-/_}
+		es_do_${action//-/_}
 	else
 		do_action "${action}" "$@"
 	fi
 else
-	ec_do_help
+	es_do_help
 fi

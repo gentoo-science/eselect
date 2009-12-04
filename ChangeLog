@@ -22,7 +22,7 @@
 	* configure.ac: Update version to 1.2.6.
 	* Tagged 1.2.6 release.
 
-	* bin/eselect.in (ec_do_list_options): Mention "--brief" option.
+	* bin/eselect.in (es_do_list_options): Mention "--brief" option.
 
 	* libs/output.bash.in (is_output_mode): New function.
 	(write_list_start, write_numbered_list_entry, write_numbered_list)
@@ -44,10 +44,10 @@
 	* modules/rc.eselect (do_show): Remove workaround for eval.
 	* README: Update style notes.
 
-	* bin/eselect.in (ec_do_list_options, ec_do_list_modules):
-	Renamed from ec_do_list-* to prevent invalid identifier errors in
+	* bin/eselect.in (es_do_list_options, es_do_list_modules):
+	Renamed from es_do_list-* to prevent invalid identifier errors in
 	POSIX mode, bug 280191. Substitute underscore for hyphen in call.
-	(ec_do_help): Fix call for ec_do_list_*.
+	(es_do_help): Fix call for es_do_list_*.
 
 	* modules/news.eselect (do_read): Suppress "no news" message in
 	brief output mode, bug 288527.
@@ -150,7 +150,7 @@
 
 	* bin/eselect.in (ESELECT_KNOWN_OPTIONS): Add --brief option,
 	which will enable shorter output. Bug 154511.
-	(ec_do_help): Reset output mode to default.
+	(es_do_help): Reset output mode to default.
 	* libs/output.bash.in (set_output_mode): New function.
 	(write_list_start): Suppress all output in "brief" output mode.
 	(write_numbered_list_entry): Suppress numbers in "brief" mode.
@@ -553,7 +553,7 @@
 	* libs/core.bash.in (die): Eliminate pgrep call; just kill the
 	main process and exit.
 
-	* bin/eselect.in (ec_do_list-modules): Use do_action for calling
+	* bin/eselect.in (es_do_list-modules): Use do_action for calling
 	the module, not eselect. Quote "$@".
 	(ESELECT_KNOWN_OPTIONS): Treat 'help' and 'version' options as if
 	they were actions. Fixes bug 153890.
@@ -1167,8 +1167,8 @@
 	misaligned value text.
 	* bin/eselect.in: Added missing 'shift' when unrecognized global
 	options are encountered.  Otherwise an infinite loop occurs if a user
-	specifies one.  Also added ec_do_list-options() and updated
-	ec_do_help() to call it.
+	specifies one.  Also added es_do_list-options() and updated
+	es_do_help() to call it.
 	* bin/Makefile.am: Add bashcomp-config to symlinks list.
 	* doc/developer-guide.txt: Fixed headers so that it'll compile.
 	* modules/bashcomp.eselect: Fixed bug if do_list is passed an argument

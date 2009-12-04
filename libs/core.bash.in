@@ -75,7 +75,7 @@ do_action() {
 	[[ ${ESELECT_BINARY_NAME##*/} != ${ESELECT_PROGRAM_NAME} ]] && \
 		ESELECT_COMMAND="${ESELECT_BINARY_NAME##*/}"
 
-	modfile=$( ec_find_module "${action}" )
+	modfile=$( es_find_module "${action}" )
 	(
 		source "$ESELECT_DEFAULT_ACTIONS" 2>/dev/null \
 			|| die "Couldn't source ${ESELECT_DEFAULT_ACTIONS}"
