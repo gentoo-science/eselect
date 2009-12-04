@@ -7,7 +7,6 @@ SUBDIRS = doc man misc bin libs modules
 MAINTAINERCLEANFILES = aclocal.m4 \
 		       configure \
 		       Makefile.in \
-		       config/ \
 		       *.html
 
 EXTRA_DIST = autogen.bash \
@@ -19,3 +18,6 @@ html: $(foreach f, $(doc_files), $(f).html)
 
 %.html: %
 	@RST2HTML@ < $? > $@
+
+maintainer-clean-local:
+	-rm -rf config

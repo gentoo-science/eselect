@@ -87,10 +87,11 @@ AC_SUBST(DODGY_MODULES)
 AC_MSG_RESULT(${DODGY_MODULES:-nope})
 AM_CONDITIONAL([DODGY_MODULES], test "x$DODGY_MODULES" = "xyes")
 
-AC_OUTPUT(Makefile
-	  doc/Makefile
-	  man/Makefile
-	  misc/Makefile
-	  bin/Makefile
-	  libs/Makefile
-	  modules/Makefile)
+AC_CONFIG_FILES(Makefile
+		doc/Makefile
+		man/Makefile
+		misc/Makefile
+		bin/Makefile
+		libs/Makefile
+		modules/Makefile)
+AC_OUTPUT

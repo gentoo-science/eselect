@@ -1,5 +1,12 @@
 2009-12-04  Ulrich Mueller  <ulm@gentoo.org>
 
+	* Makefile.am (MAINTAINERCLEANFILES): Remove config dir, since
+	only simple files are allowed here.
+	(maintainer-clean-local): Add rule for cleaning of config dir.
+
+	* configure.ac: AC_OUTPUT with arguments is obsolete, use
+	AC_CONFIG files instead.
+
 	* libs/package-manager.bash.in (envvar, best_version, has_version)
 	(get_repositories, get_repo_news_dir): Error checking was
 	redundant, because package_manager cannot return unknown values.
