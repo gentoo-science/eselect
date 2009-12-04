@@ -95,12 +95,10 @@ arch() {
 # for package $1.
 envvar() {
 	[[ $# -eq 2 ]] || die "envvar expects exactly 2 arguments"
-	local manager=$(package_manager)
-	case ${manager} in
+	case $(package_manager) in
 		# portage does not support per-package envvar lookup
 		portage) portageq envvar "$2" ;;
 		paludis) run_paludis --environment-variable "$1" "$2" ;;
-		*) die "Unknown package manager: \"${manager}\"" ;;
 	esac
 }
 
@@ -108,11 +106,9 @@ envvar() {
 # Return true if package $1 is available in ${ROOT}
 best_version() {
 	[[ $# -eq 1 ]] || die "best_version expects exactly one argument"
-	local manager=$(package_manager)
-	case ${manager} in
+	case $(package_manager) in
 		portage) portageq best_version "${ROOT:-/}" "$1" ;;
 		paludis) run_paludis --best-version "$1" ;;
-		*) die "Unknown package manager: \"${manager}\"" ;;
 	esac
 }
 
@@ -120,22 +116,18 @@ best_version() {
 # Return true if package $1 is available in ${ROOT}
 has_version() {
 	[[ $# -eq 1 ]] || die "has_version expects exactly one argument"
-	local manager=$(package_manager)
-	case ${manager} in
+	case $(package_manager) in
 		portage) portageq has_version "${ROOT:-/}" "$1" ;;
 		paludis) run_paludis --has-version "$1" ;;
-		*) die "Unknown package manager: \"${manager}\"" ;;
 	esac
 }
 
 # get_repositories
 # return list of repositories known to the package manager
 get_repositories() {
-	local manager=$(package_manager)
-	case ${manager} in
+	case $(package_manager) in
 		portage) portageq get_repos "${ROOT:-/}" ;;
 		paludis) run_paludis --list-repositories | cut -d' ' -f 2 ;;
-		*) die "Unknown package manager: \"${manager}\"" ;;
 	esac
 }
 
@@ -144,12 +136,10 @@ get_repositories() {
 get_repo_news_dir() {
 	[[ $# -eq 1 ]] || die "get_repo_news_dir expects exactly one argument"
 	local repo=$1
-	local manager=$(package_manager)
-	case ${manager} in
+	case $(package_manager) in
 		portage)
 			echo "$(portageq get_repo_path \
 				"${ROOT:-/}" "${repo}")/metadata/news" ;;
 		paludis) run_paludis --configuration-variable ${repo} newsdir ;;
-		*) die "Unknown package manager: \"${manager}\"" ;;
 	esac
 }
