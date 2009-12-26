@@ -61,6 +61,7 @@ dirname() {
 	echo "${path:-/}"
 }
 
+# Wrapper function for either GNU "readlink -f" or "realpath".
 canonicalise() {
 	@CANONICALISE@ "$@"
 }
