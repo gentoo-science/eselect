@@ -1,6 +1,10 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+trunk:
+    Bug fixes:
+    - Fixed bug #298789: Exclude LDPATH from profile.env in env module.
+
 1.2.8:
     Bug fixes:
     - Fixed bug #293317: Use EPREFIX in skel library when called from ebuild.
