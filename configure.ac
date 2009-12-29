@@ -65,7 +65,7 @@ AS_CASE([x$withval], xportage,, xpaludis,,
 AC_SUBST(PACKAGE_MANAGER, [$withval])
 AC_MSG_RESULT([$PACKAGE_MANAGER])
 
-# Support for Gentoo Alt/Prefix
+# Support for Gentoo Prefix
 AC_MSG_CHECKING([if target installation is in an offset prefix])
 EPREFIX=""
 AS_CASE([$prefix],
