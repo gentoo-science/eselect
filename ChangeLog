@@ -1,3 +1,8 @@
+2009-12-29  Ulrich Mueller  <ulm@gentoo.org>
+
+	* modules/env.eselect (PATH_CLASS): Fix a typo, ADA_OBJECT_PATH
+	should be ADA_OBJECTS_PATH.
+
 2009-12-28  Ulrich Mueller  <ulm@gentoo.org>
 
 	* modules/env.eselect (create_profile_env): Exclude LDPATH from
