@@ -3,6 +3,7 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
 
 trunk:
     Bug fixes:
+    - Fixed bug #298742: The env module was not whitespace safe.
     - Fixed bug #298789: Exclude LDPATH from profile.env in env module.
 
 1.2.8:

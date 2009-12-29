@@ -2,6 +2,10 @@
 
 	* modules/env.eselect (create_profile_env): Exclude LDPATH from
 	profile.env, fixes bug 298789.
+	(is_envfile, update_envvar_classes, create_profile_env)
+	(create_ld_so_conf, create_prelink_conf, need_links)
+	(update_ldcache, do_update): Fix quoting and other modifications
+	to make it whitespace safe, bug 298742.
 
 2009-12-04  Ulrich Mueller  <ulm@gentoo.org>
 
