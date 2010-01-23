@@ -155,7 +155,7 @@ do_set() {
 
 	# update profile
 	do_action env update noldconfig
-	echo "Run \"source /etc/profile\" to update the variable in your shell."
+	echo "Run \". /etc/profile\" to update the variable in your shell."
 }
 
 ### update action ###
