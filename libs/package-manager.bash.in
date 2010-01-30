@@ -143,3 +143,17 @@ get_repo_news_dir() {
 		paludis) run_paludis --configuration-variable ${repo} newsdir ;;
 	esac
 }
+
+# env_update
+# Run env-update command, if available with the package manager
+# If $1 is non-zero: also run ldconfig to update /etc/ld.so.cache
+env_update() {
+	local args
+	case $(package_manager) in
+		portage)
+			[[ $1 -eq 0 ]] && args="--no-ldconfig"
+			"@ENV_UPDATE@" ${args}
+			;;
+		paludis) return 127 ;;
+	esac
+}

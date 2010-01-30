@@ -23,6 +23,7 @@ if test x$SED = "x" ; then
 fi
 
 AC_PATH_PROG(PORTAGEQ, portageq, /usr/bin/portageq)
+AC_PATH_PROG(ENV_UPDATE, env-update, /usr/sbin/env-update, [$PATH:/usr/sbin])
 
 AC_PATH_PROG(READLINK, greadlink)
 if test x$READLINK = "x" ; then

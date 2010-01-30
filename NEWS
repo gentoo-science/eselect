@@ -1,6 +1,10 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+trunk:
+    New features:
+    - The env module calls the package manager's env-update, if available.
+
 1.2.9:
     Bug fixes:
     - Fixed bug #298742: The env module was not whitespace safe.
