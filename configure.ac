@@ -22,8 +22,10 @@ if test x$SED = "x" ; then
     AC_MSG_ERROR([GNU sed is required])
 fi
 
-AC_PATH_PROG(PORTAGEQ, portageq, /usr/bin/portageq, [/usr/bin:/bin:$PATH])
-AC_PATH_PROG(ENV_UPDATE, env-update, /usr/sbin/env-update, [$PATH:/usr/sbin])
+AC_PATH_PROG(PORTAGEQ, portageq, /usr/bin/portageq,
+  [$prefix/bin:/usr/bin:/bin:$PATH])
+AC_PATH_PROG(ENV_UPDATE, env-update, /usr/sbin/env-update,
+  [$PATH:$prefix/sbin:/usr/sbin])
 
 AC_PATH_PROG(READLINK, greadlink)
 if test x$READLINK = "x" ; then
