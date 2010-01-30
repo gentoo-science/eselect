@@ -57,14 +57,6 @@ if test x$RST2HTML = "x" ; then
     AC_PATH_PROG(RST2HTML, rst2html.py)
 fi
 
-AC_MSG_CHECKING([what package manager we shall use])
-AC_ARG_WITH(pm, [AS_HELP_STRING([--with-pm=PM], [use package manager PM])],
-  [], [withval=portage])
-AS_CASE([x$withval], xportage,, xpaludis,,
-  [AC_MSG_ERROR([package manager "$withval" not known])])
-AC_SUBST(PACKAGE_MANAGER, [$withval])
-AC_MSG_RESULT([$PACKAGE_MANAGER])
-
 # Support for Gentoo Prefix
 AC_MSG_CHECKING([if target installation is in an offset prefix])
 EPREFIX=""

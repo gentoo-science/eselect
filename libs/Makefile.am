@@ -28,7 +28,6 @@ EXTRA_DIST = \
 
 dosed = @SED@ \
 	-e 's,\@SED\@,@SED@,g' \
-	-e 's,\@PACKAGE_MANAGER\@,@PACKAGE_MANAGER@,g' \
 	-e 's,\@PORTAGEQ\@,@PORTAGEQ@,g' \
 	-e 's,\@CANONICALISE\@,@CANONICALISE@,g'
 

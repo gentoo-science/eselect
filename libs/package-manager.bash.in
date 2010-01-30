@@ -19,7 +19,7 @@
 # Return the package manager we're going to use.
 package_manager() {
 	local pm
-	case ${PACKAGE_MANAGER:-@PACKAGE_MANAGER@} in
+	case ${PACKAGE_MANAGER} in
 		portage)
 			pm=portage ;;
 		paludis)

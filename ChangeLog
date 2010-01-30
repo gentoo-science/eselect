@@ -1,3 +1,10 @@
+2010-01-30  Ulrich Mueller  <ulm@gentoo.org>
+
+	* configure.ac: Remove --with-pm configure option.
+	* libs/Makefile.am (dosed): Don't substitute PACKAGE_MANAGER.
+	* libs/package-manager.bash.in (package_manager): Don't hardcode
+	a default, use environment variable at run time only.
+
 2009-12-31  Ulrich Mueller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.9.
