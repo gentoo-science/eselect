@@ -1,3 +1,8 @@
+2010-02-05  Ulrich Mueller  <ulm@gentoo.org>
+
+	* configure.ac: Update version to 1.2.10.
+	* Tagged 1.2.10 release.
+
 2010-01-30  Ulrich Mueller  <ulm@gentoo.org>
 
 	* configure.ac: Test for env-update program.
