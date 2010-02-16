@@ -105,7 +105,7 @@ es_do_version() {
 	echo "eselect ${ESELECT_VERSION}"
 	echo
 	echo "Copyright (c) 2005-2010 Gentoo Foundation."
-	echo "Distributed under the terms of the GNU General Public License v2."
+	echo "Distributed under the terms of the GNU GPL version 2 or later."
 }
 
 # es_do_list_options
