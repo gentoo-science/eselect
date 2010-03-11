@@ -1,3 +1,8 @@
+2010-03-11  Ulrich Mueller  <ulm@gentoo.org>
+
+	* modules/editor.eselect (EDITOR_LIST):
+	* modules/visual.eselect (EDITOR_LIST): Remove pico.
+
 2010-02-05  Ulrich Mueller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.10.

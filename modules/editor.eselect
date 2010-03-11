@@ -10,7 +10,6 @@ EDITOR_LIST="/bin/nano
 	/bin/ed
 	/usr/bin/emacs
 	/usr/bin/ex
-	/usr/bin/pico
 	/usr/bin/vi
 	/usr/bin/xemacs
 	/usr/bin/zile"
