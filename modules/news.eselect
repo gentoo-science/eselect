@@ -227,6 +227,7 @@ describe_read() {
 
 describe_read_options() {
 	echo "--mbox : Output in mbox format"
+	echo "--quiet : Suppress output, only change status"
 	echo "--raw : Output in raw format"
 	echo "new : Read unread news items (default)"
 	echo "all : Read all news items"
@@ -245,6 +246,7 @@ do_read() {
 	while [[ $# -gt 0 ]]; do
 		case ${1##--} in
 			mbox) format=mbox ;;
+			quiet|silent) format=null ;;
 			raw) format=raw ;;
 			*) break ;;
 		esac
@@ -322,10 +324,13 @@ do_read() {
 				false
 			fi
 			;;
+		null)
+			true
+			;;
 		esac
 		[[ $? -ne 0 ]] \
 			&& write_warning_msg "News item \"${item}\" no longer exists"
-		echo
+		[[ ${format} != null ]] && echo
 
 		[[ ${stat} = unread ]] || continue
 		# move from "unread" to "read"

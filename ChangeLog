@@ -1,3 +1,10 @@
+2010-03-21  Ulrich Mueller  <ulm@gentoo.org>
+
+	* modules/news.eselect (do_read): Add --quiet (synonym --silent)
+	option to suppress output.
+	(describe_read_options): Update.
+	* man/news.eselect.5: Document --quiet option.
+
 2010-03-11  Ulrich Mueller  <ulm@gentoo.org>
 
 	* modules/editor.eselect (EDITOR_LIST):
