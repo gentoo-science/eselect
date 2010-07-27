@@ -1,6 +1,10 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.2.11:
+    New features:
+    - New --quiet option in news module.
+
 1.2.10:
     New features:
     - The env module calls the package manager's env-update, if available.
