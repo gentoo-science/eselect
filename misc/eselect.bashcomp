@@ -7,7 +7,7 @@
 # Author: Aaron Walker <ka0ttic@gentoo.org>
 
 _eselect() {
-    local cur sedcmd sedcmd3 possibles
+    local cur sedcmd2 sedcmd3 possibles
     local options="--brief --no-colour"
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"

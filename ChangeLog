@@ -1,3 +1,7 @@
+2010-08-26  Ulrich Mueller  <ulm@gentoo.org>
+
+	* misc/eselect.bashcomp: Fix typo in local variables definition.
+
 2010-07-27  Ulrich Mueller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.11.
