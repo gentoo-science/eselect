@@ -15,7 +15,7 @@ NEWS_DIR="${EPREFIX}/var/lib/gentoo/news"
 # read list of news items
 # list of parameters may contain "unread" or "read"
 # returns one item per line: status/repository/name
-# sort order: 1. "unread" before "read", 2. by repository
+# sort order: by item name (i.e. effectively by date)
 find_items() {
 	local stat repos=$(get_repositories) repo file item
 	for stat in "$@"; do
@@ -26,7 +26,7 @@ find_items() {
 				echo "${stat}/${repo}/${item}"
 			done
 		done
-	done
+	done | sort -t / -k 3
 }
 
 # write list of items to file
@@ -256,7 +256,7 @@ do_read() {
 	# expand special values "new" and "all"
 	if [[ $# -eq 0 || $1 = new || $1 = all ]]; then
 		for (( i = 1; i <= n; i++ )); do
-			[[ $1 = all || ${items[i-1]%%/*} = unread ]] || break
+			[[ $1 = all || ${items[i-1]%%/*} = unread ]] || continue
 			seq="${seq} ${i}"
 		done
 		set -- ${seq}

@@ -1,6 +1,10 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+trunk:
+    New features:
+    - The news module now sorts the items by their date (bug #344655).
+
 1.2.11:
     New features:
     - New --quiet option in news module.

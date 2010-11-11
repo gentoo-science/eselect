@@ -1,5 +1,10 @@
 2010-11-11  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/news.eselect (find_items): Sort items by their name,
+	i.e. effectively by date. Bug 344655.
+	(do_read): Don't exit the loop if the first read item is met.
+	* man/news.eselect.5: Update.
+
 	* modules/news.eselect (find_items, write_item_list): Add missing
 	local variable declaration.
 
