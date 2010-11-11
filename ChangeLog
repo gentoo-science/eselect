@@ -1,3 +1,8 @@
+2010-11-11  Ulrich Mueller  <ulm@gentoo.org>
+
+	* modules/news.eselect (find_items, write_item_list): Add missing
+	local variable declaration.
+
 2010-08-26  Ulrich Mueller  <ulm@gentoo.org>
 
 	* misc/eselect.bashcomp: Fix typo in local variables definition.
