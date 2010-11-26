@@ -20,10 +20,8 @@
 package_manager() {
 	local pm
 	case ${PACKAGE_MANAGER} in
-		portage)
-			pm=portage ;;
-		paludis)
-			pm=paludis ;;
+		portage) pm=portage ;;
+		paludis) pm=paludis ;;
 	esac
 	echo "${pm:-portage}"
 }
@@ -137,9 +135,8 @@ get_repo_news_dir() {
 	[[ $# -eq 1 ]] || die "get_repo_news_dir expects exactly one argument"
 	local repo=$1
 	case $(package_manager) in
-		portage)
-			echo "$(portageq get_repo_path \
-				"${ROOT:-/}" "${repo}")/metadata/news" ;;
+		portage) echo "$(portageq get_repo_path \
+			"${ROOT:-/}" "${repo}")/metadata/news" ;;
 		paludis) run_paludis print-repository-metadata ${repo} \
 			--raw-name newsdir --format '%v\n' ;;
 	esac
