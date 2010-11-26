@@ -1,3 +1,10 @@
+2010-11-26  Ulrich Mueller  <ulm@gentoo.org>
+
+	* libs/package-manager.bash.in (package_manager, run_paludis)
+	(envvar, best_version, has_version, get_repositories)
+	(get_repo_news_dir): Use cave rather than paludis. Patch from
+	Ciaran McCreesh <ciaran.mccreesh@googlemail.com> in bug 346837.
+
 2010-11-21  Ulrich Mueller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.12.

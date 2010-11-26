@@ -23,8 +23,7 @@ package_manager() {
 		portage)
 			pm=portage ;;
 		paludis)
-			set -- ${PALUDIS_COMMAND:-paludis}
-			type "$1" &>/dev/null && pm=paludis ;;
+			pm=paludis ;;
 	esac
 	echo "${pm:-portage}"
 }
@@ -36,9 +35,9 @@ portageq() {
 }
 
 # run_paludis PRIVATE
-# Run PALUDIS_COMMAND (defaults to "paludis"). Redirect stderr
+# Run CAVE (defaults to "cave"). Redirect stderr
 run_paludis() {
-	${PALUDIS_COMMAND:-paludis} "$@" 2>/dev/null
+	${CAVE:-cave} "$@" 2>/dev/null
 }
 
 # arch
@@ -98,7 +97,8 @@ envvar() {
 	case $(package_manager) in
 		# portage does not support per-package envvar lookup
 		portage) portageq envvar "$2" ;;
-		paludis) run_paludis --environment-variable "$1" "$2" ;;
+		paludis) run_paludis print-id-environment-variable --best \
+			--variable-name "$2" --format '%v\n' "$1" ;;
 	esac
 }
 
@@ -108,7 +108,7 @@ best_version() {
 	[[ $# -eq 1 ]] || die "best_version expects exactly one argument"
 	case $(package_manager) in
 		portage) portageq best_version "${ROOT:-/}" "$1" ;;
-		paludis) run_paludis --best-version "$1" ;;
+		paludis) run_paludis print-best-version --format name-version "$1" ;;
 	esac
 }
 
@@ -118,7 +118,7 @@ has_version() {
 	[[ $# -eq 1 ]] || die "has_version expects exactly one argument"
 	case $(package_manager) in
 		portage) portageq has_version "${ROOT:-/}" "$1" ;;
-		paludis) run_paludis --has-version "$1" ;;
+		paludis) run_paludis has-version "$1" ;;
 	esac
 }
 
@@ -127,7 +127,7 @@ has_version() {
 get_repositories() {
 	case $(package_manager) in
 		portage) portageq get_repos "${ROOT:-/}" ;;
-		paludis) run_paludis --list-repositories | cut -d' ' -f 2 ;;
+		paludis) run_paludis print-repositories ;;
 	esac
 }
 
@@ -140,7 +140,8 @@ get_repo_news_dir() {
 		portage)
 			echo "$(portageq get_repo_path \
 				"${ROOT:-/}" "${repo}")/metadata/news" ;;
-		paludis) run_paludis --configuration-variable ${repo} newsdir ;;
+		paludis) run_paludis print-repository-metadata ${repo} \
+			--raw-name newsdir --format '%v\n' ;;
 	esac
 }
 
