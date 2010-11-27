@@ -1,3 +1,8 @@
+2010-11-27  Ulrich Mueller  <ulm@gentoo.org>
+
+	* configure.ac: Update version to 1.2.13.
+	* Tagged 1.2.13 release.
+
 2010-11-26  Ulrich Mueller  <ulm@gentoo.org>
 
 	* libs/package-manager.bash.in (package_manager, run_paludis)
