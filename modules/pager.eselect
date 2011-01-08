@@ -1,6 +1,6 @@
 # -*-eselect-*-  vim: ft=eselect
-# Copyright 2009-2010 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
+# Copyright 2009-2011 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2 or later
 # $Id$
 
 EDITOR_VAR="PAGER"
