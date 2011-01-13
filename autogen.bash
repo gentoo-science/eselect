@@ -31,12 +31,12 @@ get() {
 }
 
 run mkdir -p config
-run $(get libtoolize 1.5 ) --copy --force --automake
+run $(get libtoolize) --copy --force --automake
 rm -f config.cache
 
-run $(get aclocal 1.9 )
-# run $(get autoheader 2.59 )
-WANT_AUTOCONF=2.5 run $(get autoconf 2.60 2.59 )
-WANT_AUTOMAKE=1.9 run $(get automake 1.9 ) -a --copy
+run $(get aclocal 1.11)
+# run $(get autoheader 2.59)
+WANT_AUTOCONF=2.5 run $(get autoconf 2.68 2.67 2.65)
+WANT_AUTOMAKE=1.11 run $(get automake 1.11) -a -c -W no-portability
 
 echo "Success. Now run ./configure --help"

@@ -2,7 +2,7 @@ AC_INIT(eselect, 1.2.13, eselect@gentoo.org, eselect)
 AC_PREREQ(2.59)
 AC_CONFIG_SRCDIR(bin/eselect.in)
 AC_CONFIG_AUX_DIR(config)
-AM_INIT_AUTOMAKE(1.9)
+AM_INIT_AUTOMAKE
 
 test x$prefix = "xNONE" && prefix="$ac_default_prefix"
 test x$datadir = "xNONE" && datadir="$ac_default_datadir"

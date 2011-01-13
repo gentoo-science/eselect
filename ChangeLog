@@ -1,5 +1,8 @@
 2011-01-13  Ulrich Mueller  <ulm@gentoo.org>
 
+	* autogen.bash:
+	* configure.ac: Update for automake 1.11 and autoconf 2.68.
+
 	* modules/locale.eselect: New module, manages the LANG variable.
 	Contributed by Matsuu Takuto <matsuu@gentoo.org> in bug 351363.
 	* modules/Makefile.am (safe_scripts): Add the new file.
