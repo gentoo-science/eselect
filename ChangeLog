@@ -1,3 +1,8 @@
+2011-01-13  Ulrich Mueller  <ulm@gentoo.org>
+
+	* modules/news.eselect (NEWS_DIR, find_items, write_item_list):
+	Prefix NEWS_DIR with EROOT instead of separate EPREFIX and ROOT.
+
 2010-11-27  Ulrich Mueller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.13.

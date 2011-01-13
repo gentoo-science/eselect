@@ -10,7 +10,7 @@ MAINTAINER="ulm@gentoo.org"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}")
 
-NEWS_DIR="${EPREFIX}/var/lib/gentoo/news"
+NEWS_DIR="/var/lib/gentoo/news"
 
 # read list of news items
 # list of parameters may contain "unread" or "read"
@@ -20,7 +20,7 @@ find_items() {
 	local stat repos=$(get_repositories) repo file item
 	for stat in "$@"; do
 		for repo in ${repos}; do
-			file="${ROOT}${NEWS_DIR}/news-${repo}.${stat}"
+			file="${EROOT}${NEWS_DIR}/news-${repo}.${stat}"
 			[[ -f ${file} ]] || continue
 			for item in $(<"${file}"); do
 				echo "${stat}/${repo}/${item}"
@@ -40,7 +40,7 @@ write_item_list() {
 		item=${item#*/}
 		[[ ${item%%/*} = ${repo} ]] && update="${update} ${item#*/}"
 	done
-	file="${ROOT}${NEWS_DIR}/news-${repo}.${stat}"
+	file="${EROOT}${NEWS_DIR}/news-${repo}.${stat}"
 	for item in ${update}; do
 		echo "${item}"
 	done >"${file}"
