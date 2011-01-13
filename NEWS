@@ -1,6 +1,9 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+    New features:
+    - Module locale.eselect for the LANG environment variable (bug #351363).
+
 1.2.13:
     Bug fixes:
     - Fixed bug #346837: Use cave rather than paludis.

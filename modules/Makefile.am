@@ -6,6 +6,7 @@ safe_scripts = \
 		 editor.eselect \
 		 env.eselect \
 		 kernel.eselect \
+		 locale.eselect \
 		 modules.eselect \
 		 news.eselect \
 		 pager.eselect \

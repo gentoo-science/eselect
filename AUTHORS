@@ -17,3 +17,6 @@ Donnie Berkholz <dberkholz@gentoo.org>
 Ulrich Mueller <ulm@gentoo.org>
     Modules:    editor, news, pager, visual
     Libraries:  editor-variable
+
+Matsuu Takuto <matsuu@gentoo.org>
+    Modules:    locale

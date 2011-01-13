@@ -1,5 +1,9 @@
 2011-01-13  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/locale.eselect: New module, manages the LANG variable.
+	Contributed by Matsuu Takuto <matsuu@gentoo.org> in bug 351363.
+	* modules/Makefile.am (safe_scripts): Add the new file.
+
 	* modules/news.eselect (NEWS_DIR, find_items, write_item_list):
 	Prefix NEWS_DIR with EROOT instead of separate EPREFIX and ROOT.
 
