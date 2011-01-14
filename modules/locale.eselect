@@ -10,7 +10,8 @@ MAINTAINER="matsuu@gentoo.org"
 SVN_DATE='$Date$'
 VERSION=$(svn_date_to_version "${SVN_DATE}")
 
-LOCALE_ENVFILE="/etc/env.d/99locale"
+# file name as documented in http://www.gentoo.org/doc/en/utf-8.xml
+LOCALE_ENVFILE="/etc/env.d/02locale"
 
 locale_list() {
 	"${EROOT}/usr/bin/locale" -a

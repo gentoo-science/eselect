@@ -1,3 +1,8 @@
+2011-01-14  Ulrich Mueller  <ulm@gentoo.org>
+
+	* modules/locale.eselect (LOCALE_ENVFILE): Rename file to agree
+	with documentation in <http://www.gentoo.org/doc/en/utf-8.xml>.
+
 2011-01-13  Ulrich Mueller  <ulm@gentoo.org>
 
 	* autogen.bash:
