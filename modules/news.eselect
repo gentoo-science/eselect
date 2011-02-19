@@ -36,9 +36,9 @@ find_items() {
 write_item_list() {
 	local stat=$1 repo=$2 file item update
 	for item in "${items[@]}"; do
-		[[ ${item%%/*} = ${stat} ]] || continue
+		[[ ${item%%/*} = "${stat}" ]] || continue
 		item=${item#*/}
-		[[ ${item%%/*} = ${repo} ]] && update="${update} ${item#*/}"
+		[[ ${item%%/*} = "${repo}" ]] && update="${update} ${item#*/}"
 	done
 	file="${EROOT}${NEWS_DIR}/news-${repo}.${stat}"
 	for item in ${update}; do
@@ -79,7 +79,7 @@ read_item() {
 find_repo_dir() {
 	local repo=$1 i
 	for (( i = 0; i < ${#repos[@]}; i++ )); do
-		[[ ${repos[i]} = ${repo} ]] && break
+		[[ ${repos[i]} = "${repo}" ]] && break
 	done
 	if [[ ${i} -eq ${#repos[@]} ]]; then
 		repos[i]=${repo}

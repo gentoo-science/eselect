@@ -78,7 +78,7 @@ do_list() {
 	for (( i = 0; i < ${#targets[@]}; i = i + 1 )); do
 		targets[i]="${targets[i]}"
 		# display a star to indicate the currently chosen version
-		[[ ${targets[i]} = ${cur} ]] \
+		[[ ${targets[i]} = "${cur}" ]] \
 			&& targets[i]=$(highlight_marker "${targets[i]}")
 	done
 	write_numbered_list "${targets[@]}"

@@ -73,7 +73,7 @@ relative_name() {
 	while [[ -n ${dir} ]]; do
 		c=${dir%%/*}
 		dir=${dir##"${c}"*(/)}
-		if [[ ${path%%/*} = ${c} ]]; then
+		if [[ ${path%%/*} = "${c}" ]]; then
 			path=${path##"${c}"*(/)}
 		else
 			path=..${path:+/}${path}
