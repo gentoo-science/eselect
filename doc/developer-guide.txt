@@ -35,8 +35,8 @@ to ``$(datadir)/eselect/modules/`` ::
 
 
     # -*-eselect-*-  vim: ft=eselect
-    # Copyright 1999-2011 Gentoo Foundation
-    # Distributed under the terms of the GNU General Public License v2
+    # Copyright 2005-2011 Gentoo Foundation
+    # Distributed under the terms of the GNU GPL v2 or later
     # $Id: $
 
     DESCRIPTION="Do things to a cow"
@@ -133,6 +133,10 @@ functions are optional.
 
 .. Note:: If eselect is invoked as ``cow-config`` or ``cow-update`` (for
   example, via a symlink), it will automatically select the cow module.
+
+All modules contributed to eselect should have a header indicating
+copyright. This must be an exact copy of the header in the above
+example (except for the years, of course).
 
 Standard Action Names
 ---------------------

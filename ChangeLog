@@ -1,3 +1,8 @@
+2011-03-10  Ulrich Mueller  <ulm@gentoo.org>
+
+	* doc/developer-guide.txt: Contributed modules should have a
+	standard header. Eselect is distributed under GPL v2 or later.
+
 2011-01-14  Ulrich Mueller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.14.
