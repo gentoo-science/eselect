@@ -61,7 +61,7 @@ write_item_list() {
 read_item() {
 	local dir=$1 item=$2 what=$3 file lang command=""
 	for lang in $(accepted_languages); do
-		file="${ROOT}${dir}/${item}/${item}.${lang}.txt"
+		file="${dir}/${item}/${item}.${lang}.txt"
 		[[ -f "${file}" ]] || continue
 		case "${what}" in
 			header) command="/^$/Q" ;;

@@ -1,5 +1,8 @@
 2011-03-10  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/news.eselect (read_item): Don't precede news item dir
+	with ${ROOT}, fixes bug 358185.
+
 	* doc/developer-guide.txt: Contributed modules should have a
 	standard header. Eselect is distributed under GPL v2 or later.
 
