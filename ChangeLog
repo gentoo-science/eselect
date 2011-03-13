@@ -1,3 +1,13 @@
+2011-03-13  Ulrich Mueller  <ulm@gentoo.org>
+
+	* modules/profile.eselect: Support make.profile in both the /etc
+	and the	/etc/portage directory.
+	(DESCRIPTION): Don't mention explicit path.
+	(get_symlink_location): New function, sets MAKE_PROFILE variable.
+	(do_show, do_set): Call get_symlink_location.
+	(remove_symlink, set_symlink, do_show, do_set): Use MAKE_PROFILE
+	instead of hardcoded path.
+
 2011-03-10  Ulrich Mueller  <ulm@gentoo.org>
 
 	* modules/news.eselect (read_item): Don't precede news item dir
