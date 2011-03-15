@@ -1,3 +1,8 @@
+2011-03-15  Ulrich Mueller  <ulm@gentoo.org>
+
+	* configure.ac: Update version to 1.2.15.
+	* Tagged 1.2.15 release.
+
 2011-03-13  Ulrich Mueller  <ulm@gentoo.org>
 
 	* modules/profile.eselect: Support make.profile in both the /etc
