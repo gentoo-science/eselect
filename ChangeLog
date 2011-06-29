@@ -1,3 +1,8 @@
+2011-06-29  Michał Górny  <mgorny@gentoo.org>
+
+	* modules/env.eselect (update_ldcache): Call ldconfig with '-X' to
+	not update symlinks, bug 373343.
+
 2011-06-25  Brian Harring  <ferringb@gentoo.org>
 
 	* libs/package-manager.bash.in (package_manager, envvar)
