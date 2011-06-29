@@ -1,6 +1,9 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+    New features:
+    - Support for pkgcore (bug #304011).
+
 1.2.15:
     Bug fixes:
     - Fixed bug #358185: ROOT handling in news module.

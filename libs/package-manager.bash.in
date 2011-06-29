@@ -21,6 +21,7 @@ package_manager() {
 	local pm
 	case ${PACKAGE_MANAGER} in
 		portage) pm=portage ;;
+		pkgcore) pm=pkgcore ;;
 		paludis) pm=paludis ;;
 	esac
 	echo "${pm:-portage}"
@@ -95,6 +96,7 @@ envvar() {
 	case $(package_manager) in
 		# portage does not support per-package envvar lookup
 		portage) portageq envvar "$2" ;;
+		pkgcore) pinspect portageq envvar "$2" ;;
 		paludis) run_paludis print-id-environment-variable --best \
 			--variable-name "$2" --format '%v\n' "$1" ;;
 	esac
@@ -106,6 +108,7 @@ best_version() {
 	[[ $# -eq 1 ]] || die "best_version expects exactly one argument"
 	case $(package_manager) in
 		portage) portageq best_version "${ROOT:-/}" "$1" ;;
+		pkgcore) pinspect portageq best_version "${ROOT:-/}" "$1" ;;
 		paludis) run_paludis print-best-version --format name-version "$1" ;;
 	esac
 }
@@ -116,6 +119,7 @@ has_version() {
 	[[ $# -eq 1 ]] || die "has_version expects exactly one argument"
 	case $(package_manager) in
 		portage) portageq has_version "${ROOT:-/}" "$1" ;;
+		pkgcore) pinspect portageq has_version "${ROOT:-/}" "$1" ;;
 		paludis) run_paludis has-version "$1" ;;
 	esac
 }
@@ -125,6 +129,7 @@ has_version() {
 get_repositories() {
 	case $(package_manager) in
 		portage) portageq get_repos "${ROOT:-/}" ;;
+		pkgcore) pinspect portageq get_repositories ;;
 		paludis) run_paludis print-repositories ;;
 	esac
 }
@@ -137,6 +142,7 @@ get_repo_news_dir() {
 	case $(package_manager) in
 		portage) echo "$(portageq get_repo_path \
 			"${ROOT:-/}" "${repo}")/metadata/news" ;;
+		pkgcore) pinspect portageq get_repo_news_path "${repo}" ;;
 		paludis) run_paludis print-repository-metadata ${repo} \
 			--raw-name newsdir --format '%v\n' ;;
 	esac
@@ -146,12 +152,11 @@ get_repo_news_dir() {
 # Run env-update command, if available with the package manager
 # If $1 is non-zero: also run ldconfig to update /etc/ld.so.cache
 env_update() {
-	local args
+	local noldconfig
+	[[ $1 -ne 0 ]] || noldconfig=y
 	case $(package_manager) in
-		portage)
-			[[ $1 -eq 0 ]] && args="--no-ldconfig"
-			"@ENV_UPDATE@" ${args}
-			;;
+		portage) "@ENV_UPDATE@" ${noldconfig:+--no-ldconfig} ;;
+		pkgcore) pmaint env-update ${noldconfig:+--skip-ldconfig} ;;
 		paludis) return 127 ;;
 	esac
 }

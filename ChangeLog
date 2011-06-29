@@ -1,3 +1,9 @@
+2011-06-25  Brian Harring <ferringb@gentoo.org>
+
+	* libs/package-manager.bash.in (package_manager, envvar)
+	(best_version, has_version, get_repositories, get_repo_news_dir)
+	(env_update): Add pkgcore support, bug 304011.
+
 2011-05-02  Ulrich Mueller  <ulm@gentoo.org>
 
 	* bin/Makefile.am (install-symlink-%): Make relative symlinks.
