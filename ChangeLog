@@ -1,4 +1,4 @@
-2011-06-25  Brian Harring <ferringb@gentoo.org>
+2011-06-25  Brian Harring  <ferringb@gentoo.org>
 
 	* libs/package-manager.bash.in (package_manager, envvar)
 	(best_version, has_version, get_repositories, get_repo_news_dir)
