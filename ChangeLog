@@ -1,5 +1,10 @@
 2011-08-28  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/bashcomp.eselect: Code cleaned up.
+	(find_targets): Simplified.
+	(do_enable): Don't search for completion files in current working
+	directory, bug 363481. Create a relative symlink.
+
 	* doc/developer-guide.txt: Replace the example by a simplified
 	version of the kernel module. Mention ROOT, EPREFIX, and EROOT
 	variables, bug 380731.
