@@ -1,5 +1,9 @@
 2011-08-28  Ulrich Mueller  <ulm@gentoo.org>
 
+	* doc/developer-guide.txt: Replace the example by a simplified
+	version of the kernel module. Mention ROOT, EPREFIX, and EROOT
+	variables, bug 380731.
+
 	* modules/kernel.eselect: Clean up coding style.
 
 2011-07-07  Ulrich Mueller  <ulm@gentoo.org>
