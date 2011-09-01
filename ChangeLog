@@ -1,5 +1,10 @@
 2011-08-28  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/profile.eselect (find_targets, set_symlink, do_show)
+	(do_list): Support profiles in overlays, bug 265264. Thanks to
+	<mishanq@gmail.com> and <lashzcore@gmail.com> for sending patches.
+	(get_repos, get_repo_path): New functions.
+
 	* modules/bashcomp.eselect: Code cleaned up.
 	(find_targets): Simplified.
 	(do_enable): Don't search for completion files in current working

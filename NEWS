@@ -5,6 +5,9 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
     - Fixed bug #363481: Don't search for completion files in current working
       directory in bashcomp module.
 
+    New features:
+    - The profile module supports profiles in overlays (bug #265264).
+
 1.2.16:
     New features:
     - Support for pkgcore (bug #304011).
