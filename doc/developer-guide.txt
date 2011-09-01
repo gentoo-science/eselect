@@ -30,7 +30,7 @@ A Simple Module
 
 It's easiest to illustrate by example. Here's a simplified version of
 the ``kernel.eselect`` module. It has three actions, ``show``, ``list``,
-and ``set``, plus the standard ``help``, ``usage`` and ``version``
+and ``set``, plus the standard ``help``, ``usage``, and ``version``
 actions, and is installed to ``$(datadir)/eselect/modules/`` ::
 
     # -*-eselect-*-  vim: ft=eselect
