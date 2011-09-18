@@ -53,7 +53,7 @@ show_usage_message() {
 				continue
 				;;
 			?*)
-				local desc="" ifs_save="${IFS}" action_text line
+				local desc="" ifs_save="${IFS}" action_text line options
 				is_function "describe_${action}" && desc=$(describe_${action})
 
 				if is_function "describe_${action}_parameters"; then
@@ -65,8 +65,9 @@ show_usage_message() {
 				write_kv_list_entry "${action_text}" "${desc:-(no description)}"
 
 				if is_function "describe_${action}_options"; then
+					options=$(describe_${action}_options)
 					IFS=$'\n'
-					for line in $(describe_${action}_options); do
+					for line in ${options}; do
 						write_kv_list_entry -p \
 							"  ${line%%*( ):*}" \
 							"  ${line##+([^:]):*( )}"

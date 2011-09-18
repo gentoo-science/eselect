@@ -1,3 +1,8 @@
+2011-09-18  Ulrich Mueller  <ulm@gentoo.org>
+
+	* libs/default.eselect.in (show_usage_message): Don't set IFS when
+	calling describe_*_options. Fixes bug 382693.
+
 2011-09-04  Ulrich Mueller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.17.
