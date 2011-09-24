@@ -3,11 +3,6 @@
 	* libs/default.eselect.in (show_usage_message): Don't set IFS when
 	calling describe_*_options. Fixes bug 382693.
 
-2011-09-04  Ulrich Mueller  <ulm@gentoo.org>
-
-	* configure.ac: Update version to 1.2.17.
-	* Tagged 1.2.17 release.
-
 2011-08-28  Ulrich Mueller  <ulm@gentoo.org>
 
 	* modules/profile.eselect (find_targets, set_symlink, do_show)
