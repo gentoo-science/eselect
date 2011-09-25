@@ -1,5 +1,8 @@
 2011-09-25  Ulrich Mueller  <ulm@gentoo.org>
 
+	* modules/editor.eselect (EDITOR_LIST):
+	* modules/visual.eselect (EDITOR_LIST): Remove zile, bug 384451.
+
 	* configure.ac: Remove --enable-dodgy-modules configure option.
 	* modules/Makefile.am: Simplify.
 

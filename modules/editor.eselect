@@ -11,8 +11,7 @@ EDITOR_LIST="/bin/nano
 	/usr/bin/emacs
 	/usr/bin/ex
 	/usr/bin/vi
-	/usr/bin/xemacs
-	/usr/bin/zile"
+	/usr/bin/xemacs"
 
 inherit editor-variable
 

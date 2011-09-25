@@ -9,8 +9,7 @@ EDITOR_ENVFILE="/etc/env.d/99editor"
 EDITOR_LIST="/bin/nano
 	/usr/bin/emacs
 	/usr/bin/vi
-	/usr/bin/xemacs
-	/usr/bin/zile"
+	/usr/bin/xemacs"
 
 inherit editor-variable
 
