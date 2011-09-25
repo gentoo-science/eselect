@@ -1,6 +1,6 @@
 modulesdir=$(datadir)/$(PACKAGE_NAME)/modules/
 
-safe_scripts = \
+modules_DATA = \
 		 bashcomp.eselect \
 		 binutils.eselect \
 		 editor.eselect \
@@ -14,20 +14,7 @@ safe_scripts = \
 		 rc.eselect \
 		 visual.eselect
 
-dodgy_scripts = \
-		 config.eselect \
+EXTRA_DIST = \
 		 cow.eselect
-
-if DODGY_MODULES
-
-modules_DATA=$(safe_scripts) $(dodgy_scripts)
-
-else
-
-modules_DATA=$(safe_scripts)
-
-endif
-
-EXTRA_DIST = $(safe_scripts) $(dodgy_scripts)
 
 MAINTAINERCLEANFILES = Makefile.in

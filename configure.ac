@@ -69,19 +69,6 @@ AS_CASE([$prefix],
 AC_MSG_RESULT([${EPREFIX:-nope}])
 AC_SUBST(EPREFIX)
 
-AC_MSG_CHECKING([whether dodgy modules should be installed])
-AC_ARG_ENABLE(dodgy_modules,
-  [AS_HELP_STRING([--enable-dodgy-modules],
-    [enable experimental and incomplete modules])]
-  if test x$enableval = "xyes" ; then
-      DODGY_MODULES="yes"
-  else
-      DODGY_MODULES="no"
-  fi)
-AC_SUBST(DODGY_MODULES)
-AC_MSG_RESULT(${DODGY_MODULES:-nope})
-AM_CONDITIONAL([DODGY_MODULES], test "x$DODGY_MODULES" = "xyes")
-
 AC_CONFIG_FILES(Makefile
 		doc/Makefile
 		man/Makefile
