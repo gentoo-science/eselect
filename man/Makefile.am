@@ -1,14 +1,15 @@
-man_MANS = eselect.1 \
-	   bashcomp.eselect.5 \
-	   binutils.eselect.5 \
-	   editor.eselect.5 \
-	   env.eselect.5 \
-	   kernel.eselect.5 \
-	   news.eselect.5 \
-	   pager.eselect.5 \
-	   profile.eselect.5 \
-	   rc.eselect.5 \
-	   visual.eselect.5
+man_MANS = \
+	eselect.1 \
+	bashcomp.eselect.5 \
+	binutils.eselect.5 \
+	editor.eselect.5 \
+	env.eselect.5 \
+	kernel.eselect.5 \
+	news.eselect.5 \
+	pager.eselect.5 \
+	profile.eselect.5 \
+	rc.eselect.5 \
+	visual.eselect.5
 
 EXTRA_DIST = $(man_MANS)
 MAINTAINERCLEANFILES = Makefile.in
