@@ -14,7 +14,7 @@ modules_DATA = \
 		 rc.eselect \
 		 visual.eselect
 
-EXTRA_DIST = \
+EXTRA_DIST = $(modules_DATA) \
 		 cow.eselect
 
 MAINTAINERCLEANFILES = Makefile.in
