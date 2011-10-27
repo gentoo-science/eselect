@@ -2,7 +2,7 @@
 .\" Distributed under the terms of the GNU General Public License v2 or later
 .\" $Id$
 .\"
-.TH news.eselect 5 "November 2010" "Gentoo Linux" eselect
+.TH news.eselect 5 "October 2011" "Gentoo Linux" eselect
 .SH NAME
 news.eselect \- The GLEP 42 newsreader module for Gentoo's eselect
 .SH SYNOPSIS
@@ -29,15 +29,17 @@ that care for the individual administrative tasks.
 .SH ACTION: LIST
 .B eselect news list
 .br
-List all Gentoo news items.
+List all relevant Gentoo news items.  Unread items are flagged by an
+.B N
+next to their date. 
 
 # eselect news list
 .br
 News items:
 .br
-  [1]   read    2009-04-06  Migration from teTeX to TeXLive
-  [2]   read    2009-04-06  Migration to X.org Server 1.5
-  [3]   unread  2009-04-18  Generation 1 Java Setup Deprecated
+  [1]      2009-04-06  Migration from teTeX to TeXLive
+  [2]      2009-04-06  Migration to X.org Server 1.5
+  [3]   N  2009-04-18  Generation 1 Java Setup Deprecated
 .SH ACTION: READ
 .B eselect news read
 .RB [ \-\-mbox | \-\-quiet | \-\-raw ]

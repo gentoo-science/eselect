@@ -3,6 +3,7 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
 
     New features:
     - The profile module supports profiles in overlays (bug #265264).
+    - Changed output formatting in news module (bug #388233).
 
 1.2.18:
     Bug fixes:

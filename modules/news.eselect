@@ -167,6 +167,7 @@ describe_list() {
 
 do_list() {
 	local item stat repo dir header line title posted i=1
+	local cols=${COLUMNS:-80}
 	local ifs_save=${IFS-$' \t\n'}
 	local -a repos dirs
 
@@ -189,13 +190,17 @@ do_list() {
 			esac
 		done
 		IFS=${ifs_save}
+		[[ ${repo} != gentoo ]] && title="[${repo}] ${title}"
+		line="${posted}$(space $((10 - ${#posted})))  ${title}"
+		# truncate the line if it is too long
+		(( 11 + ${#line} >= cols && cols >= 72 )) \
+			&& line="${line:0:cols-15}..."
 		if [[ ${stat} = unread ]]; then
-			write_numbered_list_entry $((i++)) "$(highlight \
-				"unread  ${posted}$(space $((12 - ${#posted})))${title}")"
+			write_numbered_list_entry ${i} "$(highlight "N  ${line}")"
 		else
-			write_numbered_list_entry $((i++)) \
-				"read    ${posted}$(space $((12 - ${#posted})))${title}"
+			write_numbered_list_entry ${i} "   ${line}"
 		fi
+		(( i++ ))
 	done
 	[[ $# -eq 0 ]] && ! is_output_mode brief \
 		&& write_kv_list_entry "(none found)" ""

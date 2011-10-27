@@ -1,3 +1,10 @@
+2011-10-27  Ulrich Mueller  <ulm@gentoo.org>
+
+	* modules/news.eselect (do_list): Display read/unread flags as one
+	char only, in order to save some space. Show repository name in
+	front of title. Bug 388233.
+	* man/news.eselect.5: Update accordingly.
+
 2011-09-25  Ulrich Mueller  <ulm@gentoo.org>
 
 	* modules/editor.eselect (EDITOR_LIST):
