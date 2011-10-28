@@ -41,9 +41,6 @@ ESELECT_PROGRAM_NAME="eselect"
 ESELECT_BINARY_NAME="$0"
 ESELECT_KILL_TARGET="$$"
 
-# Global options
-ESELECT_OPTIONS=""
-
 # Support variables for Gentoo Prefix
 EPREFIX="@EPREFIX@"
 EROOT="${ROOT}${EPREFIX}"
@@ -112,8 +109,9 @@ es_do_version() {
 # Display all recognized global options
 es_do_list_options() {
 	write_list_start "Global options:"
-	write_kv_list_entry "--brief"    "Make output shorter"
-	write_kv_list_entry "--no-color,--no-colour"    "Disable coloured output"
+	write_kv_list_entry "--brief" "Make output shorter"
+	write_kv_list_entry "--colour=<yes|no|auto>" \
+		"Enable or disable colour output (default 'auto')"
 }
 
 # es_do_list_modules
@@ -123,14 +121,6 @@ es_do_list_modules() {
 }
 
 ### main code ###
-
-# enable colour output and get width of terminal iff stdout is a tty
-if [[ -t 1 ]]; then
-	colours
-	init_columns
-else
-	nocolours
-fi
 
 # figure out what the action is. we need to know whether we're
 # invoked as a something-config/something-update.
@@ -161,12 +151,19 @@ if [[ -z ${action} ]] && [[ -n ${1##--} ]]; then
 	while [[ ${1##--} != "$1" ]]; do
 		case ${1##--} in
 			brief)
-				ESELECT_OPTIONS="${ESELECT_OPTIONS} brief"
 				set_output_mode brief
 				;;
-			no-colour|no-color)
-				ESELECT_OPTIONS="${ESELECT_OPTIONS} no-colour"
-				nocolours
+			colour=*|color=*|colour|color)
+				# accept all arguments that are valid for ls or emerge
+				case ${1#*=} in
+					yes|y|always|force|$1) colour=yes ;;
+					no|n|never|none) colour=no ;;
+					auto|tty|if-tty) colour="" ;;
+					*) die -q "Invalid argument for ${1%%=*} option" ;;
+				esac
+				;;
+			no-colour|no-color)	# legacy option
+				colour=no
 				;;
 			help|version)
 				action=${1##--}
@@ -182,6 +179,15 @@ if [[ -z ${action} ]] && [[ -n ${1##--} ]]; then
 		shift
 	fi
 fi
+
+# enable colour output and get width of terminal iff stdout is a tty
+if [[ -t 1 ]]; then
+	if [[ ${colour} = no ]]; then nocolours; else colours; fi
+	init_columns
+else
+	if [[ ${colour} = yes ]]; then colours; else nocolours; fi
+fi
+unset colour
 
 if [[ -n ${action} ]]; then
 	if is_function "es_do_${action//-/_}"; then

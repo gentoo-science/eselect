@@ -1,3 +1,13 @@
+2011-10-29  Ulrich Mueller  <ulm@gentoo.org>
+
+	* bin/eselect.in: New option --colour=<yes|no|auto>, similar to
+	the same option in emerge and ls commands. Spelling --color is
+	recognised too.
+	(es_do_list_options): Update accordingly.
+	(ESELECT_OPTIONS): Remove unused global variable.
+	* man/eselect.1: Document the --colour option.
+	* misc/eselect.bashcomp (_eselect): Update.
+
 2011-10-27  Ulrich Mueller  <ulm@gentoo.org>
 
 	* modules/news.eselect (do_list): Display read/unread flags as one
