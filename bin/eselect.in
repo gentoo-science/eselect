@@ -38,7 +38,7 @@ ESELECT_VERSION="@VERSION@"
 ESELECT_PROGRAM_NAME="eselect"
 
 # Invocation information
-ESELECT_BINARY_NAME="${0}"
+ESELECT_BINARY_NAME="$0"
 ESELECT_KILL_TARGET="$$"
 
 # Global options
@@ -73,7 +73,7 @@ trap 'echo "exiting" >&2; exit 250' 15
 es_find_module() {
 	local modname="$1" modpath="" modfile=""
 	[[ -z ${modname} ]] && die "Usage: ${FUNCNAME} <module>"
-	for modpath in "${ESELECT_MODULES_PATH[@]}" ; do
+	for modpath in "${ESELECT_MODULES_PATH[@]}"; do
 		[[ -f ${modpath}/${modname}.eselect ]] && break
 	done
 
@@ -136,20 +136,20 @@ fi
 # invoked as a something-config/something-update.
 action=""
 
-for suffix in config update{,r} tool manager reader ; do
-	if [[ ${0%%-${suffix}} != ${0} ]] ; then
-		action=$(basename "${0}" )
+for suffix in config update{,r} tool manager reader; do
+	if [[ ${0%%-${suffix}} != "$0" ]]; then
+		action=$(basename "$0")
 		action=${action%%-${suffix}}
 		break
 	fi
 done
 unset suffix
 
-if [[ -z ${action} ]] ; then
-	binname=$(basename "${0}" )
-	for prefix in config update{,r} manage 'read' ; do
-		if [[ ${binname##${prefix}-} != ${binname} ]] ; then
-			action=$(basename "${0}" )
+if [[ -z ${action} ]]; then
+	binname=$(basename "$0")
+	for prefix in config update{,r} manage 'read'; do
+		if [[ ${binname##${prefix}-} != ${binname} ]]; then
+			action=$(basename "$0")
 			action=${action##${prefix}-}
 			break
 		fi
@@ -157,8 +157,8 @@ if [[ -z ${action} ]] ; then
 	unset binname prefix
 fi
 
-if [[ -z ${action} ]] && [[ -n ${1##--} ]] ; then
-	while [[ ${1##--} != ${1} ]] ; do
+if [[ -z ${action} ]] && [[ -n ${1##--} ]]; then
+	while [[ ${1##--} != "$1" ]]; do
 		case ${1##--} in
 			brief)
 				ESELECT_OPTIONS="${ESELECT_OPTIONS} brief"
@@ -172,19 +172,19 @@ if [[ -z ${action} ]] && [[ -n ${1##--} ]] ; then
 				action=${1##--}
 				;;
 			*)
-				die -q "Unknown option ${1}"
+				die -q "Unknown option $1"
 				;;
 		esac
 		shift
 	done
 	if [[ -z ${action} ]]; then
-		action=${1}
+		action=$1
 		shift
 	fi
 fi
 
-if [[ -n ${action} ]] ; then
-	if is_function "es_do_${action//-/_}" ; then
+if [[ -n ${action} ]]; then
+	if is_function "es_do_${action//-/_}"; then
 		[[ $# -gt 0 ]] && die -q "Too many parameters"
 		es_do_${action//-/_}
 	else
