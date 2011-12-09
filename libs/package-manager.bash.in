@@ -107,7 +107,7 @@ envvar() {
 best_version() {
 	[[ $# -eq 1 ]] || die "best_version expects exactly one argument"
 	case $(package_manager) in
-		portage) portageq best_version "${ROOT:-/}" "$1" ;;
+		portage) portageq best_version "${EROOT:-/}" "$1" ;;
 		pkgcore) pinspect portageq best_version "${ROOT:-/}" "$1" ;;
 		paludis) run_paludis print-best-version --format name-version "$1" ;;
 	esac
@@ -118,7 +118,7 @@ best_version() {
 has_version() {
 	[[ $# -eq 1 ]] || die "has_version expects exactly one argument"
 	case $(package_manager) in
-		portage) portageq has_version "${ROOT:-/}" "$1" ;;
+		portage) portageq has_version "${EROOT:-/}" "$1" ;;
 		pkgcore) pinspect portageq has_version "${ROOT:-/}" "$1" ;;
 		paludis) run_paludis has-version "$1" ;;
 	esac
@@ -128,7 +128,7 @@ has_version() {
 # return list of repositories known to the package manager
 get_repositories() {
 	case $(package_manager) in
-		portage) portageq get_repos "${ROOT:-/}" ;;
+		portage) portageq get_repos "${EROOT:-/}" ;;
 		pkgcore) pinspect portageq get_repositories ;;
 		paludis) run_paludis print-repositories ;;
 	esac
@@ -141,7 +141,7 @@ get_repo_news_dir() {
 	local repo=$1
 	case $(package_manager) in
 		portage) echo "$(portageq get_repo_path \
-			"${ROOT:-/}" "${repo}")/metadata/news" ;;
+			"${EROOT:-/}" "${repo}")/metadata/news" ;;
 		pkgcore) pinspect portageq get_repo_news_path "${repo}" ;;
 		paludis) run_paludis print-repository-metadata ${repo} \
 			--raw-name newsdir --format '%v\n' ;;

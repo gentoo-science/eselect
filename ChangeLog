@@ -1,3 +1,11 @@
+2011-12-09  Zac Medico  <zmedico@gentoo.org>
+
+	* libs/package-manager.bash.in (best_version, has_version)
+	(get_repositories, get_repo_news_dir): portageq uses EROOT,
+	bug 394187. This fixes "eselect news" for compatibility with
+	>=sys-apps/portage-2.2.01.19833 (prefix branch), as well as
+	mainline portage when installed in a prefix.
+
 2011-10-29  Ulrich Mueller  <ulm@gentoo.org>
 
 	* bin/eselect.in: New option --colour=<yes|no|auto>, similar to
