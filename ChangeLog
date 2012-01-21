@@ -6,7 +6,7 @@
 	>=sys-apps/portage-2.2.01.19833 (prefix branch), as well as
 	mainline portage when installed in a prefix.
 
-2011-10-29  Ulrich Mueller  <ulm@gentoo.org>
+2011-10-29  Ulrich Müller  <ulm@gentoo.org>
 
 	* bin/eselect.in: New option --colour=<yes|no|auto>, similar to
 	the same option in emerge and ls commands. Spelling --color is
@@ -16,14 +16,14 @@
 	* man/eselect.1: Document the --colour option.
 	* misc/eselect.bashcomp (_eselect): Update.
 
-2011-10-27  Ulrich Mueller  <ulm@gentoo.org>
+2011-10-27  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/news.eselect (do_list): Display read/unread flags as one
 	char only, in order to save some space. Show repository name in
 	front of title. Bug 388233.
 	* man/news.eselect.5: Update accordingly.
 
-2011-09-25  Ulrich Mueller  <ulm@gentoo.org>
+2011-09-25  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/editor.eselect (EDITOR_LIST):
 	* modules/visual.eselect (EDITOR_LIST): Remove zile, bug 384451.
@@ -31,12 +31,12 @@
 	* configure.ac: Remove --enable-dodgy-modules configure option.
 	* modules/Makefile.am: Simplify.
 
-2011-09-18  Ulrich Mueller  <ulm@gentoo.org>
+2011-09-18  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/default.eselect.in (show_usage_message): Don't set IFS when
 	calling describe_*_options. Fixes bug 382693.
 
-2011-08-28  Ulrich Mueller  <ulm@gentoo.org>
+2011-08-28  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/profile.eselect (find_targets, set_symlink, do_show)
 	(do_list): Support profiles in overlays, bug 265264. Thanks to
@@ -54,12 +54,12 @@
 
 	* modules/kernel.eselect: Clean up coding style.
 
-2011-07-07  Ulrich Mueller  <ulm@gentoo.org>
+2011-07-07  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.16.
 	* Tagged 1.2.16 release.
 
-2011-06-29  Ulrich Mueller  <ulm@gentoo.org>
+2011-06-29  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/env.eselect (update_ldcache): Call ldconfig only for
 	Linux/GNU and BSD systems.
@@ -75,17 +75,17 @@
 	(best_version, has_version, get_repositories, get_repo_news_dir)
 	(env_update): Add pkgcore support, bug 304011.
 
-2011-05-02  Ulrich Mueller  <ulm@gentoo.org>
+2011-05-02  Ulrich Müller  <ulm@gentoo.org>
 
 	* bin/Makefile.am (install-symlink-%): Make relative symlinks.
 	Thanks to Fabian Groffen.
 
-2011-03-15  Ulrich Mueller  <ulm@gentoo.org>
+2011-03-15  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.15.
 	* Tagged 1.2.15 release.
 
-2011-03-13  Ulrich Mueller  <ulm@gentoo.org>
+2011-03-13  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/profile.eselect: Support make.profile in both the /etc
 	and the	/etc/portage directory.
@@ -95,7 +95,7 @@
 	(remove_symlink, set_symlink, do_show, do_set): Use MAKE_PROFILE
 	instead of hardcoded path.
 
-2011-03-10  Ulrich Mueller  <ulm@gentoo.org>
+2011-03-10  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/news.eselect (read_item): Don't precede news item dir
 	with ${ROOT}, fixes bug 358185.
@@ -103,7 +103,7 @@
 	* doc/developer-guide.txt: Contributed modules should have a
 	standard header. Eselect is distributed under GPL v2 or later.
 
-2011-01-14  Ulrich Mueller  <ulm@gentoo.org>
+2011-01-14  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.14.
 	* Tagged 1.2.14 release.
@@ -111,7 +111,7 @@
 	* modules/locale.eselect (LOCALE_ENVFILE): Rename file to agree
 	with documentation in <http://www.gentoo.org/doc/en/utf-8.xml>.
 
-2011-01-13  Ulrich Mueller  <ulm@gentoo.org>
+2011-01-13  Ulrich Müller  <ulm@gentoo.org>
 
 	* autogen.bash:
 	* configure.ac: Update for automake 1.11 and autoconf 2.68.
@@ -123,24 +123,24 @@
 	* modules/news.eselect (NEWS_DIR, find_items, write_item_list):
 	Prefix NEWS_DIR with EROOT instead of separate EPREFIX and ROOT.
 
-2010-11-27  Ulrich Mueller  <ulm@gentoo.org>
+2010-11-27  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.13.
 	* Tagged 1.2.13 release.
 
-2010-11-26  Ulrich Mueller  <ulm@gentoo.org>
+2010-11-26  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/package-manager.bash.in (package_manager, run_paludis)
 	(envvar, best_version, has_version, get_repositories)
 	(get_repo_news_dir): Use cave rather than paludis. Patch from
 	Ciaran McCreesh <ciaran.mccreesh@googlemail.com> in bug 346837.
 
-2010-11-21  Ulrich Mueller  <ulm@gentoo.org>
+2010-11-21  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.12.
 	* Tagged 1.2.12 release.
 
-2010-11-11  Ulrich Mueller  <ulm@gentoo.org>
+2010-11-11  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/news.eselect (find_items): Sort items by their name,
 	i.e. effectively by date. Bug 344655.
@@ -150,33 +150,33 @@
 	* modules/news.eselect (find_items, write_item_list): Add missing
 	local variable declaration.
 
-2010-08-26  Ulrich Mueller  <ulm@gentoo.org>
+2010-08-26  Ulrich Müller  <ulm@gentoo.org>
 
 	* misc/eselect.bashcomp: Fix typo in local variables definition.
 
-2010-07-27  Ulrich Mueller  <ulm@gentoo.org>
+2010-07-27  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.11.
 	* Tagged 1.2.11 release.
 
-2010-03-21  Ulrich Mueller  <ulm@gentoo.org>
+2010-03-21  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/news.eselect (do_read): Add --quiet (synonym --silent)
 	option to suppress output.
 	(describe_read_options): Update.
 	* man/news.eselect.5: Document --quiet option.
 
-2010-03-11  Ulrich Mueller  <ulm@gentoo.org>
+2010-03-11  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/editor.eselect (EDITOR_LIST):
 	* modules/visual.eselect (EDITOR_LIST): Remove pico.
 
-2010-02-05  Ulrich Mueller  <ulm@gentoo.org>
+2010-02-05  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.10.
 	* Tagged 1.2.10 release.
 
-2010-01-30  Ulrich Mueller  <ulm@gentoo.org>
+2010-01-30  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Test for env-update program.
 	* libs/Makefile.am (dosed): Substitute ENV_UPDATE.
@@ -188,12 +188,12 @@
 	* libs/package-manager.bash.in (package_manager): Don't hardcode
 	a default, use environment variable at run time only.
 
-2009-12-31  Ulrich Mueller  <ulm@gentoo.org>
+2009-12-31  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.9.
 	* Tagged 1.2.9 release.
 
-2009-12-29  Ulrich Mueller  <ulm@gentoo.org>
+2009-12-29  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/env.eselect (do_update): Remove the "makelinks" option.
 	The logic of this was always wrong, and mtime caching breaks with
@@ -204,7 +204,7 @@
 	* modules/env.eselect (PATH_CLASS): Fix a typo, ADA_OBJECT_PATH
 	should be ADA_OBJECTS_PATH.
 
-2009-12-28  Ulrich Mueller  <ulm@gentoo.org>
+2009-12-28  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/env.eselect (create_profile_env): Exclude LDPATH from
 	profile.env, fixes bug 298789.
@@ -213,7 +213,7 @@
 	(update_ldcache, do_update): Fix quoting and other modifications
 	to make it whitespace safe, bug 298742.
 
-2009-12-04  Ulrich Mueller  <ulm@gentoo.org>
+2009-12-04  Ulrich Müller  <ulm@gentoo.org>
 
 	* Makefile.am (MAINTAINERCLEANFILES): Remove config dir, since
 	only simple files are allowed here.
@@ -226,18 +226,18 @@
 	(get_repositories, get_repo_news_dir): Error checking was
 	redundant, because package_manager cannot return unknown values.
 
-2009-11-20  Ulrich Mueller  <ulm@gentoo.org>
+2009-11-20  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.8.
 	* Tagged 1.2.8 release.
 
-2009-11-15  Ulrich Mueller  <ulm@gentoo.org>
+2009-11-15  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/skel.bash.in (do_add): Respect EPREFIX also when called
 	from within an ebuild environment. Patch from Fabian Groffen
 	<grobian@gentoo.org> in bug 293317.
 
-2009-11-13  Ulrich Mueller  <ulm@gentoo.org>
+2009-11-13  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.7.
 	* Tagged 1.2.7 release.
@@ -245,7 +245,7 @@
 	* libs/multilib.bash.in (list_libdirs): Handle ROOT properly,
 	fixes bug 289095.
 
-2009-11-05  Ulrich Mueller  <ulm@gentoo.org>
+2009-11-05  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.6.
 	* Tagged 1.2.6 release.
@@ -260,12 +260,12 @@
 	* modules/modules.eselect (do_list): Use it.
 	* doc/developer-guide.txt: Document is_output_mode function.
 
-2009-11-04  Ulrich Mueller  <ulm@gentoo.org>
+2009-11-04  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.5.
 	* Tagged 1.2.5 release.
 
-2009-10-11  Ulrich Mueller  <ulm@gentoo.org>
+2009-10-11  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/core.bash.in (eval): Don't redefine the eval builtin,
 	because it is needed in the rc module. Fixes bug 224507.
@@ -280,7 +280,7 @@
 	* modules/news.eselect (do_read): Suppress "no news" message in
 	brief output mode, bug 288527.
 
-2009-10-08  Ulrich Mueller  <ulm@gentoo.org>
+2009-10-08  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.4.
 	* Tagged 1.2.4 release.
@@ -296,14 +296,14 @@
 	has been removed if we cannot read its header.
 	(mail_header): Really remove leading zeros from numeric month.
 
-2009-10-05  Ulrich Mueller  <ulm@gentoo.org>
+2009-10-05  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/path-manipulation.bash.in (relative_name): New function.
 	* doc/developer-guide.txt: Document it.
 	* modules/profile.eselect (do_show): Use EROOT instead of ROOT.
 	(set_symlink): Use relative_name(). Fixes bug 287730.
 
-2009-09-20  Ulrich Mueller  <ulm@gentoo.org>
+2009-09-20  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.3.
 	* Tagged 1.2.3 release.
@@ -323,7 +323,7 @@
 	* configure.ac: Update version to 1.2.2.
 	* Tagged 1.2.2 release.
 
-2009-09-18  Ulrich Mueller  <ulm@gentoo.org>
+2009-09-18  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/output.bash.in (write_numbered_list): New -m option.
 	It is used to specify a negative report message that is output for
@@ -341,7 +341,7 @@
 	* bin/eselect.in: Don't accept parameters for built-in actions,
 	otherwise completion for "eselect help" won't work properly.
 
-2009-09-17  Ulrich Mueller  <ulm@gentoo.org>
+2009-09-17  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/manip.bash.in (svn_date_to_version): Remove both hyphens
 	and slashes from the date string, so that the function works for
@@ -350,7 +350,7 @@
 	* libs/package-manager.bash.in (get_news_dir_name):
 	Remove deprecated and undocumented function.
 
-2009-09-08  Ulrich Mueller  <ulm@gentoo.org>
+2009-09-08  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.1.
 	* Tagged 1.2.1 release.
@@ -359,19 +359,19 @@
 	"export" in env files, fixes bug 283932. Accept only valid shell
 	identifiers as variable names.
 
-2009-08-27  Ulrich Mueller  <ulm@gentoo.org>
+2009-08-27  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2.
 	* Tagged 1.2 release.
 
-2009-08-22  Ulrich Mueller  <ulm@gentoo.org>
+2009-08-22  Ulrich Müller  <ulm@gentoo.org>
 
 	* bin/eselect.in (ESELECT_KNOWN_OPTIONS): Remove variable, as
 	there is a case statement for all possible options anyway.
 
 	* modules/news.eselect (do_list): Output read/unread tag first.
 
-2009-08-19  Ulrich Mueller  <ulm@gentoo.org>
+2009-08-19  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.2_rc1.
 	* Tagged 1.2_rc1 release candidate.
@@ -392,7 +392,7 @@
 	in brief output mode.
 	* man/eselect.1: Document the --brief option.
 
-2009-08-18  Ulrich Mueller  <ulm@gentoo.org>
+2009-08-18  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/output.bash.in (write_kv_list_entry): Fix indentation of
 	second column in output. Simplify the code.
@@ -406,7 +406,7 @@
 	(apply_text_highlights): Restore NORMAL_COLOUR if called with an
 	empty first argument.
 
-2009-08-15  Ulrich Mueller  <ulm@gentoo.org>
+2009-08-15  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/news.eselect: Renamed from news-tng.eselect.
 	* modules/Makefile.am (safe_scripts): Update.
@@ -444,7 +444,7 @@
 	(iface_do_show, do_add, do_list, do_show): Revert changes of
 	2009-05-15, as they would collide with proper Prefix support.
 
-2009-08-13  Ulrich Mueller  <ulm@gentoo.org>
+2009-08-13  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/editor-variable.bash.in (do_list):
 	* libs/skel.bash.in (iface_do_list):
@@ -461,42 +461,42 @@
 	* libs/path-manipulation.bash.in (basename, dirname): Implement
 	functions in a POSIX compliant way. Fixes bug 280598.
 
-2009-08-10  Ulrich Mueller  <ulm@gentoo.org>
+2009-08-10  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/news-tng.eselect (do_list): Align columns in output.
 
-2009-08-08  Ulrich Mueller  <ulm@gentoo.org>
+2009-08-08  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/bashcomp.eselect (do_enable): Create global directory
 	with proper permissions. Fixes bug 279662.
 	(describe_enable_options, describe_disable_options): List --global
 	option before parameter. Fixes bug 279664.
 
-2009-07-03  Ulrich Mueller  <ulm@gentoo.org>
+2009-07-03  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/news-tng.eselect (do_list, do_read): Ignore all
 	whitespace after the colon in header lines.
 
-2009-06-27  Ulrich Mueller  <ulm@gentoo.org>
+2009-06-27  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.1.2.
 	* Tagged 1.1.2 release.
 
-2009-06-20  Ulrich Mueller  <ulm@gentoo.org>
+2009-06-20  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/news-tng.eselect (do_read): Support mbox output format.
 	(day_of_week, rfc2047_encode, mail_header): New functions.
 	(describe_read_options): Add the new --mbox option.
 	* man/news-tng.eselect.5: Update man page.
 
-2009-06-07  Ulrich Mueller  <ulm@gentoo.org>
+2009-06-07  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/editor-variable.bash.in (do_set): Output a message
 	reminding the user to source /etc/profile.
 	* man/editor.eselect.5, man/visual.eselect.5, man/pager.eselect.5:
 	Update man pages accordingly.
 
-2009-06-06  Ulrich Mueller  <ulm@gentoo.org>
+2009-06-06  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.1.1.
 	* Tagged 1.1.1 release.
@@ -504,7 +504,7 @@
 	* modules/kernel.eselect (sort_kernel_versions): New function.
 	(find_targets): Sort kernel versions properly. Fixes bug 207889.
 
-2009-06-05  Ulrich Mueller  <ulm@gentoo.org>
+2009-06-05  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/rc.eselect (is_script): Symlinks are implicitly
 	resolved, so no need to canonicalise.
@@ -517,7 +517,7 @@
 	(describe_show_options): Document new option.
 	* man/rc.eselect.5: Document new option for "show" action.
 
-2009-06-04  Ulrich Mueller  <ulm@gentoo.org>
+2009-06-04  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/package-manager.bash.in (package_manager): Test if selected
 	package manager exists, and fall back to Portage if not. Rename
@@ -527,7 +527,7 @@
 	"name:/path/to/binary" syntax for items.
 	(find_targets, do_list, do_set, do_update): Update accordingly.
 
-2009-05-27  Ulrich Mueller  <ulm@gentoo.org>
+2009-05-27  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.1.
 	* Tagged 1.1 release.
@@ -537,7 +537,7 @@
 	* libs/default.eselect.in (do_usage): Show usage message only:
 	our output may be parsed, e.g. by the bash-completion module.
 
-2009-05-23  Ulrich Mueller  <ulm@gentoo.org>
+2009-05-23  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/package-manager.bash.in (package_manager): Avoid hyphen in
 	function identifier.
@@ -547,12 +547,12 @@
 	regular expressions for sed. Add completion for "set", "enable",
 	and "disable" subactions.
 
-2009-05-21  Ulrich Mueller  <ulm@gentoo.org>
+2009-05-21  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.1_rc3.
 	* Tagged 1.1_rc3 release candidate.
 
-2009-05-19  Ulrich Mueller  <ulm@gentoo.org>
+2009-05-19  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/news-tng.eselect (do_read): Output a message if there
 	are no news items to read.
@@ -580,17 +580,17 @@
 
 	* README: Use consistent indentation for all source files.
 
-2009-05-18  Ulrich Mueller  <ulm@gentoo.org>
+2009-05-18  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.1_rc1.
 	* Tagged 1.1_rc1 release candidate.
 
-2009-05-16  Ulrich Mueller  <ulm@gentoo.org>
+2009-05-16  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/kernel.eselect: Fix quoting, simplify syntax for array
 	arguments, declare local variables, and other stylistic tweaks.
 
-2009-05-15  Ulrich Mueller  <ulm@gentoo.org>
+2009-05-15  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/package-manager.bash.in (envvar, best_version, has_version)
 	(get_repositories, get_repo_news_dir): Directly call package
@@ -617,7 +617,7 @@
 	* libs/package-manager.bash.in (arch): Add case patterns for
 	ppc-macos. Taken from patch in Prefix overlay.
 
-2009-05-05  Ulrich Mueller  <ulm@gentoo.org>
+2009-05-05  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/news-tng.eselect (do_list): Display fallback values if
 	title or date of a news item are not available.
@@ -635,11 +635,11 @@
 	This way, stty must be called only once, and not for each row when
 	outputting a table.
 
-2009-05-01  Ulrich Mueller  <ulm@gentoo.org>
+2009-05-01  Ulrich Müller  <ulm@gentoo.org>
 
 	* doc/developer-guide.txt: Update documentation.
 
-2009-04-30  Ulrich Mueller  <ulm@gentoo.org>
+2009-04-30  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/news-tng.eselect (find_items): Use space-separated list
 	for "repos", instead of an array.
@@ -652,7 +652,7 @@
 	* modules/Makefile.am (safe_scripts):
 	* man/Makefile.am (man_MANS): Update Makefiles accordingly.
 
-2009-04-28  Ulrich Mueller  <ulm@gentoo.org>
+2009-04-28  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/mailer.eselect (do_list): Highlight selected target,
 	patch by Karl Hakimian <t4y68ds02@sneakemail.com> in 220473.
@@ -666,7 +666,7 @@
 	manager chosen at configure time. Overriding is possible by
 	environment variable ESELECT_PACKAGE_MANAGER.
 
-2009-04-27  Ulrich Mueller  <ulm@gentoo.org>
+2009-04-27  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/package-manager.bash.in (get_repositories): In the Portage
 	case, use "portageq get_repos".
@@ -682,7 +682,7 @@
 	* libs/portage.bash.in (portageq): Expand "$@" not $*.
 	(portage_get_repo_name, portage_get_repository): No longer needed.
 
-2009-04-25  Ulrich Mueller  <ulm@gentoo.org>
+2009-04-25  Ulrich Müller  <ulm@gentoo.org>
 
 	* man/binutils.eselect.5:
 	* man/mailer.eselect.5:
@@ -700,7 +700,7 @@
 	* libs/Makefile.am (dosed): Remove Paludis substitution, it is
 	unused since the change of 2008-01-28.
 
-2009-04-23  Ulrich Mueller  <ulm@gentoo.org>
+2009-04-23  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/package-manager.bash.in (package-manager):
 	Rename ESELECT_PACKAGE_MANAGER_CACHE to ESELECT_PACKAGE_MANAGER
@@ -726,7 +726,7 @@
 	* man/rc.eselect.5: Fix usage of bold and italic text. Fix title.
 	Use man macros instead of low-level roff formatting.
 
-2009-04-21  Ulrich Mueller  <ulm@gentoo.org>
+2009-04-21  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/core.bash.in (do_action): Call "shift" twice instead of
 	"shift 2" since there may be only one parameter.
@@ -740,7 +740,7 @@
 	extra subshell; do_action already calls us from one.
 	(describe_show_options): Document it.
 
-2009-04-20  Ulrich Mueller  <ulm@gentoo.org>
+2009-04-20  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/tests.bash.in (has): Quote $@ in order to expand positional
 	parameters correctly.
@@ -766,7 +766,7 @@
 	* modules/Makefile.am (safe_scripts):
 	* man/Makefile.am (man_MANS): Add the new files.
 
-2009-04-18  Ulrich Mueller  <ulm@gentoo.org>
+2009-04-18  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/rc.eselect (do_delete): Don't die if the script is no
 	longer in /etc/init.d/. Fixes bug 156866.
@@ -776,7 +776,7 @@
 	* bin/eselect.in: Remove all alias definitions. Unset functions
 	and variables that are known to cause trouble. Fixes bug 155814.
 
-2009-04-17  Ulrich Mueller  <ulm@gentoo.org>
+2009-04-17  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/core.bash.in (die): Eliminate pgrep call; just kill the
 	main process and exit.
@@ -800,7 +800,7 @@
 	* modules/env.eselect (is_envfile): Define POSIXLY_CORRECT for
 	'file' in order to dereference symbolic links. Bug 240402.
 
-2009-04-16  Ulrich Mueller  <ulm@gentoo.org>
+2009-04-16  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/output.bash.in (write_kv_list_entry): Fix logic for
 	insertion of spaces between words, bug 260464.
@@ -814,7 +814,7 @@
 	* libs/core.bash.in (die): Suppress error messages from pgrep
 	and kill, bugs 174354 and 264734.
 
-2009-04-15  Ulrich Mueller  <ulm@gentoo.org>
+2009-04-15  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/rc.eselect (do_add): Don't symlink into ROOT. Patch by
 	Matthijs Kooijman in bug 204937.
@@ -822,7 +822,7 @@
 	* libs/output.bash.in (get_column_width): Don't call stty if
 	standard output is not a terminal. Bug 198461.
 
-2009-04-14  Ulrich Mueller  <ulm@gentoo.org>
+2009-04-14  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/output.bash.in (write_list_start): Add quotes to prevent
 	globbing, fixes bug 232874.
@@ -830,7 +830,7 @@
 	* bin/eselect.in (ESELECT_DATA_PATH): Remove trailing slant,
 	fixes bug 203114.
 
-2009-04-13  Ulrich Mueller  <ulm@gentoo.org>
+2009-04-13  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/output.bash.in (COLOUR_NORMAL, COLOUR_BOLD, COLOUR_HI)
 	(COLOUR_WARN, COLOUR_ERROR, COLOUR_LIST_HEADER)
@@ -849,7 +849,7 @@
 	* modules/profile.eselect (set_symlink): Allow parent profiles
 	to be selectable, patch by Thomas Bellman in bug 248470.
 
-2008-06-01  Ulrich Mueller  <ulm@gentoo.org>
+2008-06-01  Ulrich Müller  <ulm@gentoo.org>
 
 	* man/binutils.eselect.5: Fix typo, bug 172636.
 
