@@ -1,6 +1,6 @@
 # -*-eselect-*-  vim: ft=eselect
-# Copyright 1999-2011 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
+# Copyright 2006-2012 Gentoo Foundation
+# Distributed under the terms of the GNU GPL version 2 or later
 # $Id$
 
 DESCRIPTION="A module for querying modules. By default, it lists all available modules"
