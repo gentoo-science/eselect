@@ -1,4 +1,4 @@
-AUTOMAKE_OPTIONS = dist-bzip2 no-dist-gzip
+AUTOMAKE_OPTIONS = dist-xz no-dist-gzip
 
 doc_files = README TODO
 export symlinks := kernel-config profile-config rc-config bashcomp-config

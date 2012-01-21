@@ -17,7 +17,7 @@ Do a test run in trunk/. ::
     $ ./autogen.bash
     $ ./configure
     $ make dist
-    $ mv ${P}.tar.bz2 ${DISTDIR}
+    $ mv ${P}.tar.xz ${DISTDIR}
 
 Test with an ebuild and make sure everything builds and everything that
 should be included in the tarball is.
@@ -41,7 +41,7 @@ Build the final tarball. ::
 
 Sign it (there may be a dist-sign target in the future). ::
 
-    $ gpg --armor --detach-sign ${P}.tar.bz2
+    $ gpg --armor --detach-sign ${P}.tar.xz
 
 .. Local Variables:
 .. mode: rst

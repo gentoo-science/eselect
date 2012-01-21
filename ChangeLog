@@ -1,5 +1,8 @@
 2012-01-21  Ulrich Müller  <ulm@gentoo.org>
 
+	* Makefile.am (AUTOMAKE_OPTIONS): Replace dist-bzip2 by dist-xz.
+	* doc/release-guide.txt: Update.
+
 	* configure.ac: Update version to 1.3.
 	* Tagged 1.3 release.
 
