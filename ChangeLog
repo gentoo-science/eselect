@@ -1,5 +1,8 @@
 2012-01-21  Ulrich Müller  <ulm@gentoo.org>
 
+	* doc/user-guide.txt: Document --brief and --colour options.
+	Don't mention deprecated --no-colour option any more.
+
 	* Makefile.am (AUTOMAKE_OPTIONS): Replace dist-bzip2 by dist-xz.
 	* doc/release-guide.txt: Update.
 

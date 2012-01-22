@@ -94,8 +94,9 @@ eselect should be called as shown below: ::
         eselect [<global-options>] <module> <action> <options>
 
 eselect features consistently named actions among most of its modules.
-There is only one global option as of now; --no-colour, which asks
-eselect to stop showing colored output. The following are standard
+There are only two global options as of now; --brief, which makes
+eselect's output shorter (e.g., to use it as input for other programs);
+and --colour, which controls coloured output. The following are standard
 action names -- each module may provide a subset of these actions:
 
 help
