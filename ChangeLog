@@ -1,3 +1,9 @@
+2012-02-02  Ulrich Müller  <ulm@gentoo.org>
+
+	* libs/multilib.bash.in (ES_VALID_MULTILIB_DIRS): Add libx32.
+	(list_libdirs): Scan filesystem for available libdirs, instead of
+	parsing /etc/ld.so.conf, bug 401843.
+
 2012-01-21  Ulrich Müller  <ulm@gentoo.org>
 
 	* doc/user-guide.txt: Document --brief and --colour options.

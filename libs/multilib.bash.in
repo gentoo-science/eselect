@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License along with
 # eselect.  If not, see <http://www.gnu.org/licenses/>.
 
-ES_VALID_MULTILIB_DIRS="lib lib32 lib64"
+ES_VALID_MULTILIB_DIRS="lib lib32 lib64 libx32"
 
 # list_libdirs PUBLIC
 # Returns a space separated list of libdirs available on this machine
@@ -23,16 +23,8 @@ list_libdirs() {
 	local dir
 	local -a libdirs
 
-	for dir in ${ES_VALID_MULTILIB_DIRS} ; do
-		if grep -q "^/${dir}\(\|/\)$" "${EROOT}/etc/ld.so.conf" &> /dev/null
-		then
-			libdirs=( ${libdirs[@]} ${dir} )
-		fi
+	for dir in ${ES_VALID_MULTILIB_DIRS}; do
+		[[ -d ${EROOT}/${dir} ]] && libdirs[${#libdirs[@]}]=${dir}
 	done
-	if [[ ${#libdirs[@]} -eq 0 ]]; then
-		# Broken or non-existing ld.so.conf
-		libdirs=( "${EROOT}"/lib* )
-		libdirs=( "${libdirs[@]##"${EROOT}"*(/)}" )
-	fi
 	echo "${libdirs[@]}"
 }
