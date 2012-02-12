@@ -33,7 +33,7 @@ get_symlink_location() {
 get_repos() {
 	# sort: DEFAULT_REPO first, then alphabetical order
 	portageq get_repos "${ROOT:-/}" \
-		| sed "s/[[:space:]]\+/\n/g;s/\b${DEFAULT_REPO}\b/ &/" \
+		| sed "s/[[:space:]]\+/\n/g;s/^${DEFAULT_REPO}\$/ &/gm" \
 		| LC_ALL=C sort
 	[[ -z ${PIPESTATUS[@]#0} ]]
 }

@@ -1,3 +1,9 @@
+2012-02-12  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/profile.eselect (get_repos): Fix regular expression
+	for overlays, bug 403215. Thanks to Sergei Trofimovich
+	<slyfox@gentoo.org>.
+
 2012-02-02  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/multilib.bash.in (ES_VALID_MULTILIB_DIRS): Add libx32.
