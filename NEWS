@@ -1,6 +1,7 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.3.1:
     Bug fixes:
     - Fixed bug #401843: New method to determine available libdirs.
     - Fixed bug #403215: Regular expression for overlays in profile module.
