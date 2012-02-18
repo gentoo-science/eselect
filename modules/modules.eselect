@@ -3,12 +3,12 @@
 # Distributed under the terms of the GNU GPL version 2 or later
 # $Id$
 
-DESCRIPTION="A module for querying modules. By default, it lists all available modules"
+inherit config
+
+DESCRIPTION="Query eselect modules"
 MAINTAINER="eselect@gentoo.org"
 
 DEFAULT_ACTION="list"
-
-inherit config
 
 ### list action
 

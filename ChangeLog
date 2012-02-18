@@ -1,5 +1,8 @@
 2012-02-18  Ulrich Müller  <ulm@gentoo.org>
 
+	* modules/modules.eselect (DESCRIPTION, MAINTAINER): Move behind
+	inherit command and update description.
+
 	* libs/default.eselect.in (do_version): Show version of eselect;
 	show version of the module if it is available.
 	(VERSION): Set default version to empty string.
