@@ -7,8 +7,6 @@ inherit config
 
 DESCRIPTION="Manage /etc/init.d scripts in runlevels"
 MAINTAINER="eselect@gentoo.org"
-SVN_DATE='$Date$'
-VERSION=$(svn_date_to_version "${SVN_DATE}")
 
 # source_rc_functions PRIVATE
 # API for OpenRC or baselayout-1

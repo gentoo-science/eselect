@@ -5,8 +5,6 @@
 
 DESCRIPTION="Manage the /usr/src/linux symlink"
 MAINTAINER="eselect@gentoo.org"
-SVN_DATE='$Date$'
-VERSION=$(svn_date_to_version "${SVN_DATE}")
 
 # sort function for kernel versions, to be used in a pipe
 sort_kernel_versions() {

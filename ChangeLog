@@ -1,3 +1,24 @@
+2012-02-18  Ulrich Müller  <ulm@gentoo.org>
+
+	* libs/default.eselect.in (do_version): Show version of eselect;
+	show version of the module if it is available.
+	(VERSION): Set default version to empty string.
+	* modules/bashcomp.eselect (VERSION):
+	* modules/binutils.eselect (VERSION):
+	* modules/config.eselect (VERSION):
+	* modules/cow.eselect (VERSION):
+	* modules/editor.eselect (VERSION):
+	* modules/env.eselect (VERSION):
+	* modules/kernel.eselect (VERSION):
+	* modules/locale.eselect (VERSION):
+	* modules/modules.eselect (VERSION):
+	* modules/news.eselect (VERSION):
+	* modules/pager.eselect (VERSION):
+	* modules/profile.eselect (VERSION):
+	* modules/rc.eselect (VERSION):
+	* modules/visual.eselect (VERSION): Don't assign an extra version
+	for modules that are part of eselect proper.
+
 2012-02-12  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.3.1.

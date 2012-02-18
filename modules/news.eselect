@@ -7,8 +7,6 @@ inherit package-manager
 
 DESCRIPTION="Read Gentoo (\"GLEP 42\") news items"
 MAINTAINER="ulm@gentoo.org"
-SVN_DATE='$Date$'
-VERSION=$(svn_date_to_version "${SVN_DATE}")
 
 NEWS_DIR="/var/lib/gentoo/news"
 

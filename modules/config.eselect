@@ -7,8 +7,6 @@ inherit portage
 
 DESCRIPTION="Handle configuration file merges"
 MAINTAINER="eselect@gentoo.org"
-SVN_DATE='$Date$'
-VERSION=$(svn_date_to_version "${SVN_DATE}" )
 
 show_extra_help_text() {
 	cat <<ENDOFTEXT

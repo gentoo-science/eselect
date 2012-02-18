@@ -7,8 +7,6 @@ inherit config
 
 DESCRIPTION="Manage the LANG environment variable"
 MAINTAINER="matsuu@gentoo.org"
-SVN_DATE='$Date$'
-VERSION=$(svn_date_to_version "${SVN_DATE}")
 
 # file name as documented in http://www.gentoo.org/doc/en/utf-8.xml
 LOCALE_ENVFILE="/etc/env.d/02locale"

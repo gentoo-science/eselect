@@ -5,8 +5,6 @@
 
 DESCRIPTION="A module for querying modules. By default, it lists all available modules"
 MAINTAINER="eselect@gentoo.org"
-SVN_DATE='$Date$'
-VERSION=$(svn_date_to_version "${SVN_DATE}" )
 
 DEFAULT_ACTION="list"
 

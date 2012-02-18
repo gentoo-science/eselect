@@ -7,8 +7,6 @@ inherit config package-manager
 
 DESCRIPTION="Manage installed versions of sys-devel/binutils"
 MAINTAINER="eselect@gentoo.org"
-SVN_DATE='$Date$'
-VERSION=$(svn_date_to_version "${SVN_DATE}" )
 
 BINUTILS_ENVFILE=${EROOT}/etc/env.d/05binutils
 

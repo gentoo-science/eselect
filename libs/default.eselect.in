@@ -16,7 +16,7 @@
 # eselect.  If not, see <http://www.gnu.org/licenses/>.
 
 DESCRIPTION="No description available"
-VERSION="No version available"
+VERSION=""
 DEFAULT_ACTION="usage"
 
 describe_usage() {
@@ -85,7 +85,9 @@ describe_version() {
 }
 
 do_version() {
-	echo "Version ${VERSION}"
+	[[ -n ${ESELECT_MODULE_NAME} && -n ${VERSION} ]] \
+		&& echo "${ESELECT_MODULE_NAME}.eselect ${VERSION}"
+	echo "${ESELECT_PROGRAM_NAME} ${ESELECT_VERSION}"
 }
 
 describe_help() {
