@@ -1,7 +1,6 @@
 # -*-eselect-*-  vim: ft=eselect
 # Copyright 2009-2012 Gentoo Foundation
 # Distributed under the terms of the GNU GPL version 2 or later
-# $Id$
 
 EDITOR_VAR="VISUAL"
 EDITOR_ENVFILE="/etc/env.d/99editor"
