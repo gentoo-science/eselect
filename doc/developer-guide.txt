@@ -36,12 +36,10 @@ actions, and is installed to ``$(datadir)/eselect/modules/`` ::
     # -*-eselect-*-  vim: ft=eselect
     # Copyright 2005-2012 Gentoo Foundation
     # Distributed under the terms of the GNU GPL version 2 or later
-    # $Id: $
 
     DESCRIPTION="Manage the /usr/src/linux symlink"
     MAINTAINER="eselect@gentoo.org"
-    SVN_DATE='$Date: $'
-    VERSION=$(svn_date_to_version "${SVN_DATE}")
+    VERSION="20120307"
 
     # find a list of kernel symlink targets
     find_targets() {
@@ -420,7 +418,8 @@ These are implemented in ``libs/manip.bash``.
 The ``svn_date_to_version`` Function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
-The ``svn_date_to_version`` function can be used instead of manually
+If your module is kept in a CVS or subversion repository, then the
+``svn_date_to_version`` function can be used instead of manually
 keeping track of ``VERSION``. It is safe to use in global scope.
 The canonical usage is as follows: ::
 
