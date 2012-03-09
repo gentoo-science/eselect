@@ -12,7 +12,7 @@ configure.ac and tagging the release.
 Update NEWS file with a summary of changes mentioned in ChangeLog since
 the last release.
 
-Do a test run in trunk/. ::
+Do a test run in master. ::
 
     $ ./autogen.bash
     $ ./configure
@@ -29,12 +29,11 @@ Commit any changes you may have made in the previous steps.
 Tag release. ::
 
     $ make maintainer-clean
-    $ svn copy trunk tags/release-${PV}
-    $ svn commit -m "Tagged ${PV} release."
+    $ git tag --sign -m "Tagged ${PV} release." eselect-${PV}
+    $ git push
 
 Build the final tarball. ::
 
-    $ cd tags/release-${PV}
     $ ./autogen.bash
     $ ./configure
     $ make dist

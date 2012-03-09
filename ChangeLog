@@ -1,5 +1,8 @@
 2012-03-07  Ulrich Müller  <ulm@gentoo.org>
 
+	* doc/release-guide.txt: Update to reflect the transition from
+	subversion to git.
+
 	* doc/developer-guide.txt: Remove subversion keywords and don't
 	use svn_date_to_version function in example module.
 
