@@ -1,3 +1,8 @@
+2012-06-27  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/binutils.eselect (find_targets): Properly quote
+	variables to prevent false globbing, bug 423525.
+
 2012-03-07  Ulrich Müller  <ulm@gentoo.org>
 
 	* doc/release-guide.txt: Update to reflect the transition from

@@ -12,17 +12,17 @@ BINUTILS_ENVFILE=${EROOT}/etc/env.d/05binutils
 # find_targets [patterns]
 # find all possible targets [that match one of ${@}]
 find_targets() {
-	local args=${@} targets
-	[[ -z ${args[@]} ]] && args='-*'
-	for item in ${args} ; do
+	local item targets
+	[[ $# -eq 0 ]] && set -- "-*"
+	for item; do
 		item=${item%%-[1-9]*}
-		[[ ${item:0:1} == '-' ]] || item=-${item}
-		for file in "${EROOT}"/etc/env.d/binutils/config${item} ; do
+		[[ ${item:0:1} == "-" ]] || item=-${item}
+		for file in "${EROOT}"/etc/env.d/binutils/config${item}; do
 			[[ -f ${file} ]] || continue
-			targets=(${targets[@]} "${file##*/config-}")
+			targets=("${targets[@]}" "${file##*/config-}")
 		done
 	done
-	echo ${targets[@]}
+	echo "${targets[@]}"
 }
 
 # find_versions
