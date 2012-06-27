@@ -12,7 +12,9 @@ BINUTILS_ENVFILE=${EROOT}/etc/env.d/05binutils
 # find_targets [patterns]
 # find all possible targets [that match one of ${@}]
 find_targets() {
-	local item targets
+	local item file
+	local -a targets
+
 	[[ $# -eq 0 ]] && set -- "-*"
 	for item; do
 		item=${item%%-[1-9]*}
@@ -28,8 +30,9 @@ find_targets() {
 # find_versions
 # find all installed version of installed binutils
 find_versions() {
+	local target file last_versions_count
 	local -a versions
-	local last_versions_count
+
 	for target in $(find_targets) ; do
 		last_version_count=${#versions[@]}
 		for file in "${EROOT}"/etc/env.d/binutils/${target}-* ; do
@@ -45,6 +48,7 @@ find_versions() {
 # is_active $target $version
 # returns true if $version is currently used
 is_active() {
+	local current
 	[[ ${#@} -eq 2 ]] || die "Need exactly 2 arguments!"
 	current=$(load_config "${EROOT}/etc/env.d/binutils/config-${1}" CURRENT)
 	[[ ${current} == ${2} ]]
