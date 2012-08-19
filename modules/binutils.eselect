@@ -130,7 +130,7 @@ switch_profile() {
 
 	# Update the environment
 	if [[ ${target} == ${chost} ]] ; then
-		datapath=${EPREFIX}/usr/share/binutils-date/${target}/${version}
+		datapath=${EPREFIX}/usr/share/binutils-data/${target}/${version}
 		[[ -d ${datapath}/man ]] \
 			&& store_config ${BINUTILS_ENVFILE} MANPATH "${datapath}/man"
 		[[ -d ${datapath}/info ]] \
