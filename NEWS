@@ -5,6 +5,9 @@ ChangeLog file for a more detailed listing of changes/bug fixes.
     - Fixed bug #423525: Prevent false globbing in binutils module.
     - Fixed bug #431898: Fix typo in data path of binutils module.
 
+    New features:
+    - Prefer new location /etc/portage/make.profile in profile module.
+
 1.3.1:
     Bug fixes:
     - Fixed bug #401843: New method to determine available libdirs.
