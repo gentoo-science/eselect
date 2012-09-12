@@ -1,3 +1,10 @@
+2012-09-12  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/profile.eselect (get_symlink_location): When both
+	/etc/make.profile and /etc/portage/make.profile exist, prefer the
+	latter. This follows the change of the default location in Portage
+	and in stages.
+
 2012-08-19  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/binutils.eselect (switch_profile): Fix typo in

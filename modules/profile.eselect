@@ -15,14 +15,14 @@ get_symlink_location() {
 	local oldloc=${EROOT%/}/etc/make.profile
 	local newloc=${EROOT%/}/etc/portage/make.profile
 
+	MAKE_PROFILE=${newloc}
 	if [[ -e ${oldloc} ]]; then
-		MAKE_PROFILE=${oldloc}
 		if [[ -e ${newloc} ]]; then
 			write_warning_msg "Both ${oldloc} and ${newloc} exist."
 			write_warning_msg "Using ${MAKE_PROFILE} for now."
+		else
+			MAKE_PROFILE=${oldloc}
 		fi
-	else
-		MAKE_PROFILE=${newloc}
 	fi
 }
 
