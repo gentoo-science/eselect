@@ -19,7 +19,7 @@ get_symlink_location() {
 	if [[ -e ${oldloc} ]]; then
 		if [[ -e ${newloc} ]]; then
 			write_warning_msg "Both ${oldloc} and ${newloc} exist."
-			write_warning_msg "Using ${MAKE_PROFILE} for now."
+			write_warning_msg "Using ${MAKE_PROFILE}."
 		else
 			MAKE_PROFILE=${oldloc}
 		fi
