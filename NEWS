@@ -1,6 +1,7 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.3.2:
     Bug fixes:
     - Fixed bug #423525: Prevent false globbing in binutils module.
     - Fixed bug #431898: Fix typo in data path of binutils module.
