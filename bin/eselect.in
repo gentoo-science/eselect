@@ -43,7 +43,7 @@ ESELECT_KILL_TARGET="$$"
 
 # Support variables for Gentoo Prefix
 EPREFIX="@EPREFIX@"
-EROOT="${ROOT%/}${EPREFIX}"
+EROOT="${ROOT%${EPREFIX:+/}}${EPREFIX}"
 
 # Remove all alias definitions. Unset functions and variables that are
 # known to cause trouble.
