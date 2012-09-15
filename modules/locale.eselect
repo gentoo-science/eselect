@@ -125,5 +125,6 @@ do_set() {
 
 	# update profile
 	do_action env update noldconfig
-	echo "Run \". /etc/profile\" to update the variable in your shell."
+	[[ ${ROOT:-/} = / ]] && echo \
+		"Run \". ${EROOT}/etc/profile\" to update the variable in your shell."
 }

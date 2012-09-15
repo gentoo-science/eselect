@@ -1,5 +1,9 @@
 2012-09-15  Ulrich Müller  <ulm@gentoo.org>
 
+	* libs/editor-variable.bash.in (do_set):
+	* modules/locale.eselect (do_set): Output message only if ROOT
+	is /, and prefix /etc/profile with EROOT, bug 429960.
+
 	* bin/eselect.in (EROOT): Remove trailing slash from ROOT only
 	if EPREFIX is set. This guarantees that EROOT is equal to ROOT
 	for empty EPREFIX.
