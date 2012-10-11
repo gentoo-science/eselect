@@ -55,7 +55,7 @@ arch() {
 
 		ret=$(uname -m)
 		case ${ret} in
-			alpha|ia64|m68k|ppc|ppc64) ;;
+			alpha|amd64|ia64|m68k|ppc|ppc64) ;;
 			arm*) ret=arm ;;
 			i?86) ret=x86 ;;
 			mips*) ret=mips ;;

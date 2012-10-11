@@ -1,3 +1,10 @@
+2012-10-11  Ulrich Müller  <ulm@gentoo.org>
+
+	* libs/package-manager.bash.in (arch): Add amd64 as case label.
+	* modules/profile.eselect (set_symlink): Include underscore and
+	hyphen in regexp, because both are allowed in keyword names,
+	bug 437986. Thanks to Yuta Satoh <nigoro.gentoo@0x100.com>.
+
 2012-09-15  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/editor-variable.bash.in (do_set):
