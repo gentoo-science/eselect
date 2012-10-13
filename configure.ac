@@ -17,8 +17,17 @@ if test x$BASH = x; then
     AC_MSG_ERROR([bash is required])
 fi
 
-ES_PROG_GNU_SED
+# AC_PROG_SED doesn't work here, because on Gentoo FreeBSD systems it
+# is confused by a wrapper script that is in the PATH at build time.
+AC_PATH_PROGS(SED, [gsed sed])
 if test x$SED = x; then
+    AC_MSG_ERROR([sed is required])
+fi
+AC_MSG_CHECKING([whether $SED is GNU sed])
+if $SED 'v4.0' </dev/null >/dev/null 2>&1; then
+    AC_MSG_RESULT(yes)
+else
+    AC_MSG_RESULT(no)
     AC_MSG_ERROR([GNU sed is required])
 fi
 
@@ -29,36 +38,32 @@ AC_PATH_PROG(ENV_UPDATE, env-update, /usr/sbin/env-update,
 
 AC_PATH_PROG(READLINK, greadlink)
 if test x$READLINK = x; then
-    AC_CHECK_PROG(READLINK, readlink -f ., yes, no, [$PATH])
-    if test x$READLINK = xyes; then
-        AC_PATH_PROG(READLINK, readlink)
+    AC_PATH_PROG(READLINK, readlink)
+    if test x$READLINK != x; then
+        AC_MSG_CHECKING([whether readlink supports -f])
+        if $READLINK -f . >/dev/null 2>&1; then
+            AC_MSG_RESULT(yes)
+        else
+            AC_MSG_RESULT(no)
+            READLINK=""
+        fi
     fi
-
-    CANONICALISE_TEST=`$READLINK -f . > /dev/null 2>&1`
-    if ! test x$? = x0; then
-        unset READLINK
-    fi
-
     if test x$READLINK = x; then
         AC_PATH_PROG(REALPATH, realpath)
-        if test x$REALPATH = x; then
-            AC_MSG_ERROR([Either GNU readlink or realpath is required])
-        fi
     fi
 fi
 if test x$READLINK != x; then
     CANONICALISE="$READLINK -f"
-else
+elif test x$REALPATH != x; then
     CANONICALISE="$REALPATH"
+else
+    AC_MSG_ERROR([Either GNU readlink or realpath is required])
 fi
 AC_SUBST(CANONICALISE)
 
 # Gentoo uses rst2html.py but most other
-# distro's/OS's install it w/o the .py extension
-AC_PATH_PROG(RST2HTML, rst2html)
-if test x$RST2HTML = x; then
-    AC_PATH_PROG(RST2HTML, rst2html.py)
-fi
+# distros install it w/o the .py extension
+AC_PATH_PROGS(RST2HTML, [rst2html rst2html.py])
 
 # Support for Gentoo Prefix
 AC_MSG_CHECKING([if target installation is in an offset prefix])

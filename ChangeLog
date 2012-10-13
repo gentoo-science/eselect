@@ -1,3 +1,11 @@
+2012-10-13  Ulrich Müller  <ulm@gentoo.org>
+
+	* configure.ac (SED): Replace broken ES_PROG_GNU_SED code by
+	a straightforward check for gsed or sed, bug 438112.
+	(READLINK, REALPATH): Simplify logic and add output messages.
+	(RST2HTML): Simplify.
+	* acinclude.m4: File removed.
+
 2012-10-11  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/package-manager.bash.in (arch): Add amd64 as case label.
