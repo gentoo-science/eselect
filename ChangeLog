@@ -1,5 +1,9 @@
 2012-10-13  Ulrich Müller  <ulm@gentoo.org>
 
+	* autogen.bash: Update to automake 1.12. This gets rid of the
+	"scan_file() called too early to check prototype" error that
+	occured with aclocal-1.11.
+
 	* configure.ac (SED): Replace broken ES_PROG_GNU_SED code by
 	a straightforward check for gsed or sed, bug 438112.
 	(READLINK, REALPATH): Simplify logic and add output messages.
