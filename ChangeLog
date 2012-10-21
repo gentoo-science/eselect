@@ -1,3 +1,8 @@
+2012-10-21  Ulrich Müller  <ulm@gentoo.org>
+
+	* configure.ac: Update version to 1.3.3.
+	* Tagged 1.3.3 release.
+
 2012-10-13  Ulrich Müller  <ulm@gentoo.org>
 
 	* autogen.bash: Update to automake 1.12. This gets rid of the
