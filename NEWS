@@ -1,6 +1,13 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.3.3:
+    Bug fixes:
+    - Fixed bug #429960: Warn about sourcing /etc/profile only if ROOT is /.
+    - Fixed bug #437986: Recognise amd64 as hardware name; allow hyphens and
+      underscores in profile names, to account for FreeBSD in profile module.
+    - Fixed bug #438112: More robust detection of GNU sed in configure.
+
 1.3.2:
     Bug fixes:
     - Fixed bug #423525: Prevent false globbing in binutils module.
