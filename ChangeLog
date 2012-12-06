@@ -1,3 +1,9 @@
+2012-12-06  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/profile.eselect (get_repos, get_repo_path): Use EROOT
+	to make it work in Prefix, fixes bug 444620. Thanks to Greg Turner
+	<gmturner007@ameritech.net> for bug report and patch.
+
 2012-10-21  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.3.3.
