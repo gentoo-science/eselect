@@ -1,5 +1,5 @@
 # -*- mode: sh; indent-tabs-mode: nil; -*-  vim: set ft=sh tw=80 sw=4 et :
-# Copyright 2005-2012 Gentoo Foundation
+# Copyright 2005-2013 Gentoo Foundation
 # Distributed under the terms of the GNU GPL version 2 or later
 
 # bash command-line completion for eselect
