@@ -1,3 +1,14 @@
+2013-01-05  Ulrich Müller  <ulm@gentoo.org>
+
+	* libs/package-manager.bash.in (arch): Complete rewrite of the
+	fallback code if there is no make.profile symlink. It now relies
+	on bash variables HOSTTYPE and OSTYPE which are derived from the
+	standard GNU triplet. The previous implementation had used uname
+	which would query the kernel, while we need the userland. This
+	fixes a problem on ppc with 64 bit kernel and 32 bit userland.
+	Thanks to Brent Baude <ranger@gentoo.org> and Raúl Porcel
+	<armin76@gentoo.org> for the suggestion.
+
 2012-12-06  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/profile.eselect (get_repos, get_repo_path): Use EROOT

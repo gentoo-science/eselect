@@ -42,7 +42,7 @@ run_paludis() {
 # arch
 # Return the architecture we're running on...
 arch() {
-	local ret=$(envvar sys-devel/gcc ARCH) suffix
+	local ret=$(envvar sys-devel/gcc ARCH)
 
 	# $arch will be null if there's no current make.profile symlink.
 	# We cannot get a list of valid profiles without it.
@@ -54,39 +54,75 @@ arch() {
 			return 1
 		fi
 
-		ret=$(uname -m)
-		case ${ret} in
-			alpha|amd64|ia64|m68k|ppc|ppc64) ;;
-			arm*) ret=arm ;;
-			i?86) ret=x86 ;;
-			mips*) ret=mips ;;
-			parisc*) ret=hppa ;;
-			"Power Macintosh") ret=ppc ;;
-			s390*) ret=s390 ;;
-			sh*) ret=sh ;;
-			sparc*) ret=sparc ;;
-			x86_64) ret=amd64 ;;
-			*) write_warning_msg \
-				"Unknown architecture. Please submit a bug including the output of 'uname -m'"
+		# Try to determine arch from HOSTTYPE and OSTYPE, which are
+		# derived from the GNU triplet (at build time of bash)
+		case ${HOSTTYPE} in
+			alpha*) 	ret=alpha	;;
+			arm*)   	ret=arm 	;;
+			hppa*)  	ret=hppa	;;
+			i?86)   	ret=x86 	;;
+			ia64)   	ret=ia64	;;
+			m68k)   	ret=m68k	;;
+			mips*)  	ret=mips	;;
+			powerpc)	ret=ppc 	;;
+			powerpc64)	ret=ppc64	;;
+			s390*)  	ret=s390	;;
+			sh*)    	ret=sh  	;;
+			sparc)  	ret=sparc	;;
+			sparc64)	ret=sparc64	;;
+			x86_64) 	ret=amd64	;;
+			*)
+				write_warning_msg \
+					"Unknown architecture \"${HOSTTYPE}\"." \
+					"Please submit a bug report."
 				return 1
 				;;
 		esac
 
-		case $(uname -s) in
-			Linux) ;;
-			FreeBSD) suffix="-fbsd" ;;
-			NetBSD) suffix="-nbsd" ;;
-			OpenBSD) suffix="-obsd" ;;
-			DragonFly) suffix="-dfly" ;;
-			Darwin) suffix="-macos" ;;
-			*) write_warning_msg \
-				"Unknown OS. Please submit a bug including the output of 'uname -s'"
-				return 1
-				;;
-		esac
+		if [[ -z ${EPREFIX} ]]; then
+			case ${OSTYPE} in
+				linux*) 	;;
+				dragonfly*)	ret+="-dfly"	;;
+				freebsd*)	ret+="-fbsd"	;;
+				netbsd*)	ret+="-nbsd"	;;
+				openbsd*)	ret+="-obsd"	;;
+				*)
+					write_warning_msg \
+						"Unknown OS \"${OSTYPE}\"." \
+						"Please submit a bug report."
+					return 1
+					;;
+			esac
+		else
+			# Prefix architectures
+			if [[ ${ret} = amd64 && ${OSTYPE} != linux* ]]; then
+				# amd64 is sometimes called x64 on Prefix
+				ret=x64
+			fi
+			case ${OSTYPE} in
+				aix*)   	ret+="-aix" 	;;
+				cygwin*)	ret+="-cygwin"	;;
+				darwin*)	ret+="-macos"	;;
+				freebsd*)	ret+="-freebsd"	;;
+				hpux*)  	ret+="-hpux"	;;
+				interix*)	ret+="-interix"	;;
+				linux*) 	ret+="-linux"	;;
+				mint*)  	ret+="-mint"	;;
+				netbsd*)	ret+="-netbsd"	;;
+				openbsd*)	ret+="-openbsd"	;;
+				solaris*)	ret+="-solaris"	;;
+				winnt*) 	ret+="-winnt"	;;
+				*)
+					write_warning_msg \
+						"Unknown OS \"${OSTYPE}\"." \
+						"Please submit a bug report."
+					return 1
+					;;
+			esac
+		fi
 	fi
 
-	echo ${ret}${suffix}
+	echo "${ret}"
 }
 
 # envvar
