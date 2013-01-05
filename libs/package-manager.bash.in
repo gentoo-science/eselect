@@ -44,12 +44,13 @@ run_paludis() {
 arch() {
 	local ret=$(envvar sys-devel/gcc ARCH) suffix
 
-	# $arch will be null if there's no current make.profile symlink
-	# we cannot get a list of valid profiles without it.
-	if [[ -z ${ret} ]] ; then
-
-		if [[ -n ${ROOT} && ${ROOT} != "/" ]] ; then
-			write_warning_msg "Failed to determine \${ARCH}. Is your make.profile symlink valid?"
+	# $arch will be null if there's no current make.profile symlink.
+	# We cannot get a list of valid profiles without it.
+	if [[ -z ${ret} ]]; then
+		if [[ -n ${ROOT} && ${ROOT} != "/" ]]; then
+			write_warning_msg \
+				"Failed to determine \${ARCH}." \
+				"Is your make.profile symlink valid?"
 			return 1
 		fi
 
