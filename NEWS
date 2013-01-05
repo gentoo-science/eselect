@@ -1,6 +1,11 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.3.4:
+    Bug fixes:
+    - Fixed bug #444620: Make profile module work in Prefix.
+    - Fixed arch() function: Query bash (i.e. userland) instead of kernel.
+
 1.3.3:
     Bug fixes:
     - Fixed bug #429960: Warn about sourcing /etc/profile only if ROOT is /.
