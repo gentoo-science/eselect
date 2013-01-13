@@ -18,7 +18,7 @@
 # check_do function args
 # Check that function exists, and call it with args.
 check_do() {
-	local function="${1}"
+	local function=$1
 	shift
 	if is_function "${function}" ; then
 		${function} "$@"
@@ -33,27 +33,27 @@ die() {
 	local item funcname="" sourcefile="" lineno="" n e s="yes"
 
 	# do we have a working write_error_msg?
-	if is_function "write_error_msg" ; then
+	if is_function "write_error_msg"; then
 		e="write_error_msg"
 	else
 		e="echo"
 	fi
 
 	# quiet?
-	if [[ ${1} == "-q" ]] ; then
+	if [[ $1 == "-q" ]]; then
 		s=""
 		shift
 	fi
 
 	$e "${@:-(no message)}"
 
-	if [[ -n "${s}" ]] ; then
-		echo "Call stack:" 1>&2
-		for (( n = 1 ; n < ${#FUNCNAME[@]} ; ++n )) ; do
-			funcname=${FUNCNAME[${n}]}
-			sourcefile=$(basename ${BASH_SOURCE[${n}]})
-			lineno=${BASH_LINENO[$(( n - 1 ))]}
-			echo "    * ${funcname} (${sourcefile}:${lineno})" 1>&2
+	if [[ -n ${s} ]]; then
+		echo "Call stack:" >&2
+		for (( n = 1; n < ${#FUNCNAME[@]}; ++n )); do
+			funcname=${FUNCNAME[n]}
+			sourcefile=$(basename ${BASH_SOURCE[n]})
+			lineno=${BASH_LINENO[n-1]}
+			echo "    * ${funcname} (${sourcefile}:${lineno})" >&2
 		done
 	fi
 
@@ -72,8 +72,8 @@ do_action() {
 	ESELECT_MODULE_NAME="${action}"
 	ESELECT_COMMAND="${ESELECT_PROGRAM_NAME} ${ESELECT_MODULE_NAME}"
 
-	[[ ${ESELECT_BINARY_NAME##*/} != ${ESELECT_PROGRAM_NAME} ]] && \
-		ESELECT_COMMAND="${ESELECT_BINARY_NAME##*/}"
+	[[ ${ESELECT_BINARY_NAME##*/} != "${ESELECT_PROGRAM_NAME}" ]] \
+		&& ESELECT_COMMAND="${ESELECT_BINARY_NAME##*/}"
 
 	modfile=$( es_find_module "${action}" )
 	(
@@ -81,7 +81,7 @@ do_action() {
 			|| die "Couldn't source ${ESELECT_DEFAULT_ACTIONS}"
 		source "${modfile}" 2>/dev/null \
 			|| die "Couldn't source ${modfile}"
-		if [[ -z ${subaction} ]] ; then
+		if [[ -z ${subaction} ]]; then
 			check_do "do_${DEFAULT_ACTION:-usage}" "$@"
 		else
 			is_function "do_${subaction}" \
@@ -96,7 +96,7 @@ do_action() {
 inherit() {
 	local x
 	for x in "$@"; do
-		[[ -e "${ESELECT_CORE_PATH}/${x}.bash" ]] \
+		[[ -e ${ESELECT_CORE_PATH}/${x}.bash ]] \
 			|| die "Couldn't find ${x}.bash"
 		source "${ESELECT_CORE_PATH}/${x}.bash" \
 			|| die "Couldn't source ${x}.bash"
