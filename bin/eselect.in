@@ -55,6 +55,11 @@ IFS=$' \t\n'
 shopt -s extglob
 shopt -s expand_aliases
 
+# Save stderr file descriptor
+# exec {ESELECT_STDERR}>&2		# >=bash-4.1
+exec 3>&2
+ESELECT_STDERR=3
+
 # Load core functions
 source "${ESELECT_CORE_PATH}/core.bash" || exit 255
 # Load necessary functions for the main script

@@ -32,6 +32,9 @@ check_do() {
 die() {
 	local item funcname="" sourcefile="" lineno="" n e s="yes"
 
+	# Restore stderr if it was redirected
+	exec 2>&${ESELECT_STDERR}
+
 	# do we have a working write_error_msg?
 	if is_function "write_error_msg"; then
 		e="write_error_msg"
@@ -45,7 +48,7 @@ die() {
 		shift
 	fi
 
-	$e "${@:-(no message)}"
+	$e "${@:-(no message)}" >&2
 
 	if [[ -n ${s} ]]; then
 		echo "Call stack:" >&2

@@ -1,3 +1,10 @@
+2013-01-13  Ulrich Müller  <ulm@gentoo.org>
+
+	* bin/eselect.in (ESELECT_STDERR): Save stderr file descriptor.
+	* libs/core.bash.in (die): Restore stderr, otherwise there would
+	be no output if die was called while stderr is redirected.
+	Fixes bug 451150. Thanks to Michał Górny <mgorny@gentoo.org>.
+
 2013-01-06  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.3.4.
