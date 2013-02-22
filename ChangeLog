@@ -1,3 +1,8 @@
+2013-02-22  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/profile.eselect (get_symlink_location):
+	Create profile symlink below PORTAGE_CONFIGROOT, bug 453006.
+
 2013-01-13  Ulrich Müller  <ulm@gentoo.org>
 
 	* bin/eselect.in (ESELECT_STDERR): Save stderr file descriptor.

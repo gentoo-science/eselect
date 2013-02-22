@@ -12,8 +12,9 @@ DEFAULT_REPO="gentoo"
 
 # get location of make.profile symlink
 get_symlink_location() {
-	local oldloc=${EROOT%/}/etc/make.profile
-	local newloc=${EROOT%/}/etc/portage/make.profile
+	local root=${PORTAGE_CONFIGROOT-${EROOT}}
+	local oldloc=${root%/}/etc/make.profile
+	local newloc=${root%/}/etc/portage/make.profile
 
 	MAKE_PROFILE=${newloc}
 	if [[ -e ${oldloc} ]]; then
