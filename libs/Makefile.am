@@ -1,6 +1,7 @@
 eselectlibsdir = $(datadir)/$(PACKAGE_NAME)/libs/
 
 eselectlibs_DATA = \
+	alternatives.bash \
 	config.bash \
 	core.bash \
 	default.eselect \
@@ -14,6 +15,7 @@ eselectlibs_DATA = \
 	tests.bash
 
 EXTRA_DIST = \
+	alternatives.bash.in \
 	config.bash.in \
 	core.bash.in \
 	default.eselect.in \
@@ -31,7 +33,8 @@ dosed = @SED@ \
 	-e 's%\@PORTAGEQ\@%@PORTAGEQ@%g' \
 	-e 's%\@ENV_UPDATE\@%@ENV_UPDATE@%g' \
 	-e 's%\@CANONICALISE\@%@CANONICALISE@%g' \
-	-e 's%\@libdir\@%@libdir@%g'
+	-e 's%\@libdir\@%@libdir@%g' \
+	-e 's%\@sysconfdir\@%@sysconfdir@%g'
 
 %.bash : %.bash.in
 	@$(dosed) $< > $@
