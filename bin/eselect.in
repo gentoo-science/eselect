@@ -22,10 +22,15 @@ ESELECT_DATA_PATH="@DATADIR@/eselect"
 # Where are modules installed by default?
 ESELECT_DEFAULT_MODULES_PATH="${ESELECT_DATA_PATH}/modules"
 
+# Where are auto-generated modules placed? (e.g. from alternatives-2.eclass)
+ESELECT_AUTO_GENERATED_MODULES_PATH="${ESELECT_DEFAULT_MODULES_PATH}/auto"
+
 # Look in these places for modules
-ESELECT_MODULES_PATH=( \
-	"${HOME}/.eselect/modules" \
-	"${ESELECT_DEFAULT_MODULES_PATH}" )
+ESELECT_MODULES_PATH=(
+	"${HOME}/.eselect/modules"
+	"${ESELECT_DEFAULT_MODULES_PATH}"
+	"${ESELECT_AUTO_GENERATED_MODULES_PATH}"
+)
 
 # Look in this place for libraries
 ESELECT_CORE_PATH="${ESELECT_DATA_PATH}/libs"
