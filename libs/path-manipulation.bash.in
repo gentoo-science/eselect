@@ -67,7 +67,8 @@ canonicalise() {
 }
 
 # relative_name
-# Convert filename $1 to be relative to directory $2 (both must exist).
+# Convert filename $1 to be relative to directory $2.
+# For both paths, all but the last component must exist.
 relative_name() {
 	local path=$(canonicalise "$1") dir=$(canonicalise "$2") c
 	while [[ -n ${dir} ]]; do
