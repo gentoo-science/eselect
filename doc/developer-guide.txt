@@ -189,6 +189,8 @@ list
     available modules.
 set
     Used to set a new provider or a symlink.
+unset
+    Used to unset the current provider, or to remove a symlink.
 enable
     Used to enable an optional feature.
 disable
