@@ -9,7 +9,7 @@ Danny van Dyk <kugelfang@gentoo.org>
     Libraries:  config, multilib
 
 Aaron Walker <ka0ttic@gentoo.org>
-    Modules:    bashcomp, profile
+    Modules:    profile
 
 Donnie Berkholz <dberkholz@gentoo.org>
     Libraries:  skel

@@ -1,3 +1,9 @@
+2013-07-16  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/bashcomp.eselect: Remove, bug 476992.
+	* modules/Makefile.am (modules_DATA): Remove bashcomp.eselect.
+	* Makefile.am (symlinks): Don't install bashcomp-config symlink.
+
 2013-07-14  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/kernel.eselect (find_targets, set_symlink, do_show):

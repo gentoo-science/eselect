@@ -1,7 +1,7 @@
 AUTOMAKE_OPTIONS = dist-xz no-dist-gzip
 
 doc_files = README TODO
-export symlinks := kernel-config profile-config rc-config bashcomp-config
+export symlinks := kernel-config profile-config rc-config
 
 SUBDIRS = doc man misc bin libs modules
 MAINTAINERCLEANFILES = \

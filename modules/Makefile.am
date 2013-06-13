@@ -1,7 +1,6 @@
 modulesdir=$(datadir)/$(PACKAGE_NAME)/modules/
 
 modules_DATA = \
-	bashcomp.eselect \
 	binutils.eselect \
 	editor.eselect \
 	env.eselect \
