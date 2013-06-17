@@ -44,6 +44,19 @@ run_paludis() {
 arch() {
 	local ret=$(envvar sys-devel/gcc ARCH)
 
+	if [[ -n ${EPREFIX} && -n ${ret} && ${ret%-*} = "${ret}" ]]; then
+		# prefix/linux profiles lie about their ARCH
+		case $(envvar sys-devel/gcc KERNEL) in
+			linux) ret+="-linux" ;;
+			*)
+				write_warning_msg \
+					"Failed to determine \${ARCH}." \
+					"Please submit a bug report."
+				return 1
+				;;
+		esac
+	fi
+
 	# $arch will be null if there's no current make.profile symlink.
 	# We cannot get a list of valid profiles without it.
 	if [[ -z ${ret} ]]; then
