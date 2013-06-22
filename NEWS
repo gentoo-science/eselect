@@ -1,6 +1,14 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.3.5:
+    Bug fixes:
+    - Fixed bug #451150: Restore stderr in die() for proper error output.
+    - Fixed bug #473542: Workaround for ARCH in prefix/linux profiles.
+
+    New features:
+    - Honour PORTAGE_CONFIGROOT in profile module (bug #453006).
+
 1.3.4:
     Bug fixes:
     - Fixed bug #444620: Make profile module work in Prefix.
