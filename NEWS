@@ -1,6 +1,13 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.3.6:
+    Bug fixes:
+    - Fixed bug #475284: Workaround for bash crashing on Darwin.
+
+    New features:
+    - eselect-mode for Emacs.
+
 1.3.5:
     Bug fixes:
     - Fixed bug #451150: Restore stderr in die() for proper error output.
