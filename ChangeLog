@@ -1,3 +1,10 @@
+2013-07-06  Ulrich Müller  <ulm@gentoo.org>
+
+	* bin/eselect.in: Save stderr only in bash 4.1 or later, where
+	automatically assigned file descriptors are available. Using a
+	fixed descriptor makes bash crash on Darwin, bug 475284.
+	* libs/core.bash.in (die): Test for saved file descriptor.
+
 2013-07-04  Ulrich Müller  <ulm@gentoo.org>
 
 	* misc/eselect-mode.el: New file, editing mode for Emacs,
