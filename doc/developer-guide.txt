@@ -486,8 +486,8 @@ The ``arch`` Function
 
 The ``arch`` function returns the correct value of ${ARCH} for the
 current system. If the package manager cannot provide this information,
-``arch`` falls back to a ``uname -m`` and ``uname -s`` based
-lookup-table.
+``arch`` falls back to a lookup-table based on the ``HOSTTYPE`` and
+``OSTYPE`` bash variables.
 
 The ``envvar`` Function
 ,,,,,,,,,,,,,,,,,,,,,,,
