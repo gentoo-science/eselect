@@ -1,5 +1,9 @@
 2013-07-09  Ulrich Müller  <ulm@gentoo.org>
 
+	* doc/developer-guide.txt:
+	* libs/skel.bash.in: Move skel.bash documentation to the library
+	itself.
+
 	* doc/developer-guide.txt: Update description of the "arch"
 	function.
 

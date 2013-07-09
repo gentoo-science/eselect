@@ -15,21 +15,35 @@
 # You should have received a copy of the GNU General Public License along with
 # eselect.  If not, see <http://www.gnu.org/licenses/>.
 
-# To use this library, you must set MODULE and IFACE.
-# MODULE is the name you use to refer to whatever it is that you're selecting
-# in help text and so forth.
-# IFACE is the subdirectory of /etc/env.d/ that eselect config files are stored
-# in for these packages.
+# This library provides for a simple eselect module to switch between
+# implementations of anything that installs to a "lib*" directory (i.e.,
+# lib, lib32, lib64). This will satisfy the requirements for most cases
+# in which one must switch between providers of a certain library or any
+# package installing a library.
 #
-# There is a file installed at /etc/env.d/$IFACE/$libdir/config containing the
-# CURRENT variable, which is set to the current eselect setting. Also, each
-# implementation installs a single file at /etc/env.d/$IFACE/$libdir/$implem.
-# This file contains a list of symlinks to be created in "source destination"
-# format. You must use relative symlinks. In other words, "source" must be
-# relative to "destination" but "destination" must be absolute. You may have
-# comments in the symlink map file -- any line containing a '#' is considered
-# a comment. One caveat about the symlink map -- instead of using "lib" or
-# "lib64" etc, you must use @LIBDIR@.
+# Creating a simple module:
+# To use this library, all you need to do is create an eselect module
+# containing settings for the MODULE and IFACE variables. The MODULE
+# variable is the name used to refer to the implementations being
+# switched in help text. The IFACE variable indicates the subdirectory
+# of /etc/env.d/ in which eselect config files for these implementations
+# will be stored.
+#
+# Each package must install a symlink map using the "add" action.
+# The map must use relative symlinks, one source-destination mapping per
+# line in the form "source destination". The source must be relative
+# to the destination, not absolute. In other words, "source" must be
+# relative to "destination" but "destination" must be absolute. One
+# caveat about the symlink map - instead of using "lib" or "lib64" etc.,
+# you must use @LIBDIR@. The "skel.bash" library detects the proper
+# library directory at runtime.
+
+# There is a file installed at /etc/env.d/$IFACE/$libdir/config
+# containing the CURRENT variable, which is set to the current eselect
+# setting. Also, each implementation installs a single file at
+# /etc/env.d/$IFACE/$libdir/$implem containing the symlink map. You may
+# have comments in the symlink map file - any line containing a '#' is
+# considered a comment.
 
 inherit config multilib tests
 
