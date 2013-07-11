@@ -18,6 +18,10 @@ eselect is Copyright (c) 2005-2013 Gentoo Foundation. This code is
 distributed under the terms of the GNU General Public License version 2
 or later.
 
+The documentation in the ``doc/`` directory is dual-licensed. It can be
+distributed either under the above terms, or (at your option) under the
+Creative Commons Attribution-ShareAlike 2.5 License.
+
 Style Notes
 -----------
 
