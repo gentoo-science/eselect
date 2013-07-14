@@ -1,3 +1,9 @@
+2013-07-14  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/kernel.eselect (find_targets, set_symlink, do_show):
+	Consider target trees as valid only if they contain a Makefile,
+	bug 460328. Thanks to C.J. Wijtmans <cj.wijtmans@gmail.com>.
+
 2013-07-11  Ulrich Müller  <ulm@gentoo.org>
 
 	* doc/user-guide.txt:
