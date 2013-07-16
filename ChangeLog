@@ -1,5 +1,8 @@
 2013-07-16  Ulrich Müller  <ulm@gentoo.org>
 
+	* configure.ac: Update version to 1.3.7.
+	* Tagged 1.3.7 release.
+
 	* modules/bashcomp.eselect: Remove, bug 476992.
 	* modules/Makefile.am (modules_DATA): Remove bashcomp.eselect.
 	* Makefile.am (symlinks): Don't install bashcomp-config symlink.
