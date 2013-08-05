@@ -1,6 +1,5 @@
 man_MANS = \
 	eselect.1 \
-	bashcomp.eselect.5 \
 	binutils.eselect.5 \
 	editor.eselect.5 \
 	env.eselect.5 \
