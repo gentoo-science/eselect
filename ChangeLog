@@ -1,3 +1,13 @@
+2013-08-06  Ulrich Müller  <ulm@gentoo.org>
+
+	* libs/config.bash.in (store_config):
+	* libs/default.eselect.in (show_usage_message):
+	* libs/editor-variable.bash.in (do_set):
+	* libs/output.bash.in (write_kv_list_entry):
+	* modules/env.eselect (create_profile_env, create_prelink_conf):
+	* modules/news.eselect (do_list, do_read):
+	Declare IFS as local variable.
+
 2013-08-05  Ulrich Müller  <ulm@gentoo.org>
 
 	* man/bashcomp.eselect.5: Remove stale man page.

@@ -53,7 +53,7 @@ show_usage_message() {
 				continue
 				;;
 			?*)
-				local desc="" ifs_save="${IFS}" action_text line options
+				local desc="" action_text line options
 				is_function "describe_${action}" && desc=$(describe_${action})
 
 				if is_function "describe_${action}_parameters"; then
@@ -66,13 +66,13 @@ show_usage_message() {
 
 				if is_function "describe_${action}_options"; then
 					options=$(describe_${action}_options)
-					IFS=$'\n'
+					local ifs_save=${IFS} IFS=$'\n'
 					for line in ${options}; do
 						write_kv_list_entry -p \
 							"  ${line%%*( ):*}" \
 							"  ${line##+([^:]):*( )}"
 					done
-					IFS="${ifs_save}"
+					IFS=${ifs_save}
 				fi
 				;;
 		esac

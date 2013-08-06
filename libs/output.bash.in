@@ -88,11 +88,10 @@ write_list_start() {
 # Args may include text highlighting. If -p is passed, use 'plain'
 # highlighting rather than bold.
 write_kv_list_entry() {
-	local n text key val lindent rindent ifs_save=${IFS}
+	local n text key val lindent rindent
 	local left=${COLOUR_LIST_LEFT} right=${COLOUR_LIST_RIGHT}
 	local normal=${COLOUR_NORMAL}
-
-	IFS=$' \t\n'
+	local IFS=$' \t\n'
 
 	if [[ ${1} == "-p" ]] ; then
 		left=; right=; normal=
@@ -150,7 +149,6 @@ write_kv_list_entry() {
 		echo -n -e "${cwords}"
 	fi
 	echo -e "${normal}"
-	IFS=${ifs_save}
 }
 
 # write_numbered_list_entry PUBLIC

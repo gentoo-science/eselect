@@ -55,8 +55,7 @@ store_config() {
 
 	(
 		# parse the names of all settings in the file
-		local ifs_save=${IFS-$' \t\n'}
-		IFS=$'\n'
+		local ifs_save=${IFS} IFS=$'\n'
 		for line in ${content} ; do
 			[[ ${line/=/} != ${line} ]] || continue
 			line=${line/=*/}

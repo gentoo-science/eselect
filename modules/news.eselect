@@ -164,8 +164,7 @@ describe_list() {
 
 do_list() {
 	local item stat repo dir header line title posted i=1
-	local cols=${COLUMNS:-80}
-	local ifs_save=${IFS-$' \t\n'}
+	local cols=${COLUMNS:-80} ifs_save=${IFS}
 	local -a repos dirs
 
 	set -- $(find_items unread read)
@@ -179,7 +178,7 @@ do_list() {
 		[[ ${posted} == +([0-9])-+([0-9])-+([0-9]) ]] || posted="(no date) "
 		header=$(read_item "${dir}" "${item}" header) \
 			|| title="(${item} - removed?)"
-		IFS=$'\n'
+		local IFS=$'\n'
 		for line in ${header}; do
 			case "${line%%:*}" in
 				Title) title=${line##*([^:]):*([[:space:]])} ;;
@@ -242,7 +241,7 @@ describe_read_parameters() {
 
 do_read() {
 	local -a items=( $(find_items unread read) ) repos dirs
-	local n=${#items[@]} format=cooked ifs_save=${IFS-$' \t\n'}
+	local n=${#items[@]} format=cooked ifs_save=${IFS}
 	local item repo stat dir header line i seq repos_upd author title posted
 
 	while [[ $# -gt 0 ]]; do
@@ -283,7 +282,7 @@ do_read() {
 		cooked)
 			write_list_start "${item}"
 			header=$(read_item "${dir}" "${item}" header)
-			IFS=$'\n'
+			local IFS=$'\n'
 			for line in ${header}; do
 				case "${line%%:*}" in
 					Title)
@@ -303,7 +302,7 @@ do_read() {
 		mbox)
 			if header=$(read_item "${dir}" "${item}" header); then
 				author=""; title=""; posted=""
-				IFS=$'\n'
+				local IFS=$'\n'
 				for line in ${header}; do
 					case "${line%%:*}" in
 						Author) : ${author:=${line##*([^:]):*([[:space:]])}} ;;
