@@ -1,3 +1,9 @@
+2013-08-08  Ulrich Müller  <ulm@gentoo.org>
+
+	* configure.ac: Check whether we are building from git;
+	include git revision in EXTRAVERSION if we do.
+	* bin/Makefile.am (dosed): Append EXTRAVERSION to VERSION.
+
 2013-08-06  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/config.bash.in (store_config):
