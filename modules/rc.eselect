@@ -8,16 +8,11 @@ DESCRIPTION="Manage /etc/init.d scripts in runlevels"
 MAINTAINER="eselect@gentoo.org"
 
 # source_rc_functions PRIVATE
-# API for OpenRC or baselayout-1
+# API for OpenRC
 source_rc_functions() {
 	[[ ${RC_GOT_FUNCTIONS} = yes ]] && return
 	source "${EPREFIX}/etc/init.d/functions.sh" \
 		|| die "Failed to source functions.sh"
-	# baselayout-1 compatibility
-	if [[ -e ${svclib}/sh/rc-services.sh ]]; then
-		source "${svclib}/sh/rc-services.sh" \
-			|| die "Failed to source rc-services.sh"
-	fi
 }
 
 # get_runlevel PRIVATE

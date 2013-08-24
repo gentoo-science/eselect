@@ -1,3 +1,8 @@
+2013-08-24  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/rc.eselect (source_rc_functions): Drop baselayout-1
+	compatibility code.
+
 2013-08-08  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Check whether we are building from git;
