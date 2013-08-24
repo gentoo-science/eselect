@@ -1,5 +1,7 @@
 2013-08-24  Ulrich Müller  <ulm@gentoo.org>
 
+	* man/Makefile.am (install-symlink-%): Use relative symlinks.
+
 	* modules/rc.eselect (source_rc_functions): Drop baselayout-1
 	compatibility code.
 
