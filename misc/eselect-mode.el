@@ -66,7 +66,7 @@
 
 (defvar eselect-mode-keywords-package-manager
   '(("arch" "envvar" "best_version" "has_version" "get_repositories"
-     "get_repo_news_dir")
+     "get_repo_news_dir" "env_update")
     font-lock-type-face))
 
 (defun eselect-mode-make-keywords-list (keywords-list face
