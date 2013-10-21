@@ -70,21 +70,6 @@ inherit manip output path-manipulation tests
 # it, don't ask...
 trap 'echo "exiting" >&2; exit 250' 15
 
-# es_find_module foo
-# Find and echo the filename of the foo module. If there's no foo module,
-# die.
-es_find_module() {
-	local modname="$1" modpath="" modfile=""
-	[[ -z ${modname} ]] && die "Usage: ${FUNCNAME} <module>"
-	for modpath in "${ESELECT_MODULES_PATH[@]}"; do
-		[[ -f ${modpath}/${modname}.eselect ]] && break
-	done
-
-	modfile="${modpath}/${modname}.eselect"
-	[[ -r ${modfile} ]] || die -q "Can't load module ${modname}"
-	echo ${modfile}
-}
-
 # es_do_usage
 # Display eselect usage
 es_do_usage() {

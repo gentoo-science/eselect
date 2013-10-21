@@ -65,6 +65,19 @@ die() {
 	exit 249
 }
 
+# find_module module PRIVATE
+# Find module and echo its filename. Die if module doesn't exist.
+find_module() {
+	local modname=$1 modpath
+	for modpath in "${ESELECT_MODULES_PATH[@]}"; do
+		if [[ -f ${modpath}/${modname}.eselect ]]; then
+			echo "${modpath}/${modname}.eselect"
+			return
+		fi
+	done
+	die -q "Can't load module ${modname}"
+}
+
 # do_action action args...
 # Load and do 'action' with the specified args
 do_action() {
@@ -78,7 +91,7 @@ do_action() {
 	[[ ${ESELECT_BINARY_NAME##*/} != "${ESELECT_PROGRAM_NAME}" ]] \
 		&& ESELECT_COMMAND="${ESELECT_BINARY_NAME##*/}"
 
-	modfile=$( es_find_module "${action}" )
+	modfile=$(find_module "${action}")
 	(
 		source "$ESELECT_DEFAULT_ACTIONS" 2>/dev/null \
 			|| die "Couldn't source ${ESELECT_DEFAULT_ACTIONS}"

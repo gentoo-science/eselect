@@ -1,3 +1,8 @@
+2013-10-21  Ulrich Müller  <ulm@gentoo.org>
+
+	* bin/eselect.in (es_find_module): Move function to core library.
+	* libs/core.bash.in (find_module): Rename and simplify.
+
 2013-09-18  Ulrich Müller  <ulm@gentoo.org>
 
 	* misc/eselect-mode.el (eselect-mode-keywords-package-manager):
