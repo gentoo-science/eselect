@@ -153,9 +153,6 @@ if [[ -z ${action} ]] && [[ -n ${1##--} ]]; then
 					*) die -q "Invalid argument for ${1%%=*} option" ;;
 				esac
 				;;
-			no-colour|no-color)	# legacy option
-				colour=no
-				;;
 			help|version)
 				action=${1##--}
 				;;

@@ -1,5 +1,8 @@
 2013-10-21  Ulrich Müller  <ulm@gentoo.org>
 
+	* bin/eselect.in: Remove legacy --no-colour option.
+	Option --colour=no or --colour=never should be used instead.
+
 	* bin/eselect.in (es_find_module): Move function to core library.
 	* libs/core.bash.in (find_module): Rename and simplify.
 
