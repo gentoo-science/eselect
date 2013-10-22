@@ -1,3 +1,9 @@
+2013-10-22  Ulrich Müller  <ulm@gentoo.org>
+
+	* bin/eselect.in (es_do_list_options, es_do_list_modules):
+	Remove deprecated functions.
+	(es_do_help): Move code for listing options and modules to here.
+
 2013-10-21  Ulrich Müller  <ulm@gentoo.org>
 
 	* bin/eselect.in: Remove legacy --no-colour option.

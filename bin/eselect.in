@@ -82,9 +82,14 @@ es_do_help() {
 	set_output_mode default
 	es_do_usage
 	echo
-	es_do_list_options
+	# display all recognized global options
+	write_list_start "Global options:"
+	write_kv_list_entry "--brief" "Make output shorter"
+	write_kv_list_entry "--colour=<yes|no|auto>" \
+		"Enable or disable colour output (default 'auto')"
 	echo
-	es_do_list_modules
+	# display all available eselect modules
+	do_action modules list
 }
 
 # es_do_version
@@ -94,21 +99,6 @@ es_do_version() {
 	echo
 	echo "Copyright (c) 2005-2013 Gentoo Foundation."
 	echo "Distributed under the terms of the GNU GPL version 2 or later."
-}
-
-# es_do_list_options
-# Display all recognized global options
-es_do_list_options() {
-	write_list_start "Global options:"
-	write_kv_list_entry "--brief" "Make output shorter"
-	write_kv_list_entry "--colour=<yes|no|auto>" \
-		"Enable or disable colour output (default 'auto')"
-}
-
-# es_do_list_modules
-# Display all available eselect modules DEPRECATED
-es_do_list_modules() {
-	do_action modules list "$@"
 }
 
 ### main code ###
@@ -178,9 +168,9 @@ fi
 unset colour
 
 if [[ -n ${action} ]]; then
-	if is_function "es_do_${action//-/_}"; then
+	if is_function "es_do_${action}"; then
 		[[ $# -gt 0 ]] && die -q "Too many parameters"
-		es_do_${action//-/_}
+		es_do_${action}
 	else
 		do_action "${action}" "$@"
 	fi
