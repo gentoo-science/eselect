@@ -34,8 +34,8 @@ ESELECT_CORE_PATH="${ESELECT_DATA_PATH}/libs"
 ESELECT_DEFAULT_ACTIONS="${ESELECT_CORE_PATH}/default.eselect"
 
 # Our program name and version
-ESELECT_VERSION="@VERSION@"
 ESELECT_PROGRAM_NAME="eselect"
+ESELECT_VERSION="@VERSION@"
 
 # Invocation information
 ESELECT_BINARY_NAME="$0"
@@ -106,7 +106,6 @@ es_do_version() {
 # figure out what the action is. we need to know whether we're
 # invoked as a something-config/something-update.
 action=""
-
 for suffix in config update{,r} tool manager reader; do
 	if [[ ${0%%-${suffix}} != "$0" ]]; then
 		action=$(basename "$0")
