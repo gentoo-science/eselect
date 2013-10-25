@@ -159,10 +159,10 @@ fi
 
 # enable colour output and get width of terminal iff stdout is a tty
 if [[ -t 1 ]]; then
-	if [[ ${colour} = no ]]; then nocolours; else colours; fi
+	colours ${colour:-yes}
 	init_columns
 else
-	if [[ ${colour} = yes ]]; then colours; else nocolours; fi
+	colours ${colour:-no}
 fi
 unset colour
 

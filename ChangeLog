@@ -1,3 +1,10 @@
+2013-10-25  Ulrich Müller  <ulm@gentoo.org>
+
+	* libs/output.bash.in (colours): Accept an argument and handle
+	both enabling and disabling of colour output.
+	(nocolours): Remove function.
+	* bin/eselect.in: Call 'colours' with appropriate argument.
+
 2013-10-22  Ulrich Müller  <ulm@gentoo.org>
 
 	* bin/eselect.in (es_do_list_options, es_do_list_modules):

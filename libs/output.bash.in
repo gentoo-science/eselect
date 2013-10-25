@@ -15,28 +15,27 @@
 # You should have received a copy of the GNU General Public License along with
 # eselect.  If not, see <http://www.gnu.org/licenses/>.
 
-# Colours
 colours() {
-	COLOUR_NORMAL=$(tput sgr0)
-	COLOUR_BOLD=$(tput bold)
-	COLOUR_HI=$(tput setaf 4)${COLOUR_BOLD} # blue
-	COLOUR_WARN=$(tput setaf 1)${COLOUR_BOLD} # red
-	COLOUR_ERROR=${COLOUR_WARN}
-	COLOUR_LIST_HEADER=$(tput setaf 2)${COLOUR_BOLD} # green
-	COLOUR_LIST_LEFT=${COLOUR_BOLD}
-	COLOUR_LIST_RIGHT=${COLOUR_NORMAL}
-}
-
-# disable all colours
-nocolours() {
-	COLOUR_NORMAL=""
-	COLOUR_BOLD=""
-	COLOUR_HI=""
-	COLOUR_WARN=""
-	COLOUR_ERROR=""
-	COLOUR_LIST_HEADER=""
-	COLOUR_LIST_LEFT=""
-	COLOUR_LIST_RIGHT=""
+	if [[ $1 != n* ]]; then
+		COLOUR_NORMAL=$(tput sgr0)
+		COLOUR_BOLD=$(tput bold)
+		COLOUR_HI=$(tput setaf 4)${COLOUR_BOLD} # blue
+		COLOUR_WARN=$(tput setaf 1)${COLOUR_BOLD} # red
+		COLOUR_ERROR=${COLOUR_WARN}
+		COLOUR_LIST_HEADER=$(tput setaf 2)${COLOUR_BOLD} # green
+		COLOUR_LIST_LEFT=${COLOUR_BOLD}
+		COLOUR_LIST_RIGHT=${COLOUR_NORMAL}
+	else
+		# disable all colours
+		COLOUR_NORMAL=""
+		COLOUR_BOLD=""
+		COLOUR_HI=""
+		COLOUR_WARN=""
+		COLOUR_ERROR=""
+		COLOUR_LIST_HEADER=""
+		COLOUR_LIST_LEFT=""
+		COLOUR_LIST_RIGHT=""
+	fi
 }
 
 # set output mode to $1
