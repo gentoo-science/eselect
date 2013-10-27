@@ -1,3 +1,7 @@
+2013-10-27  Ulrich Müller  <ulm@gentoo.org>
+
+	* autogen.bash: Update for aclocal 1.14.
+
 2013-10-25  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/output.bash.in (colours): Accept an argument and handle
