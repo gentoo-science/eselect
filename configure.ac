@@ -78,11 +78,11 @@ AC_SUBST(EPREFIX)
 AC_MSG_CHECKING([whether building from git])
 EXTRAVERSION=""
 if test -d ${GIT_DIR:-.git}; then
-    AC_MSG_RESULT(yes)
     GITREV=`git rev-parse --short HEAD`
     if test x$GITREV != x; then
         EXTRAVERSION="-git-$GITREV"
     fi
+    AC_MSG_RESULT([yes${GITREV:+, at revision $GITREV}])
 else
     AC_MSG_RESULT(no)
 fi
