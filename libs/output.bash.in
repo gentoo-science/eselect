@@ -40,13 +40,13 @@ colours() {
 
 # set output mode to $1
 set_output_mode() {
-	ESELECT_OUTPUT_MODE=${1}
+	ESELECT_OUTPUT_MODE=$1
 }
 
 # is_output_mode PUBLIC
 # test if $1 is the current output mode
 is_output_mode() {
-	[[ ${ESELECT_OUTPUT_MODE} = ${1} ]]
+	[[ ${ESELECT_OUTPUT_MODE} = $1 ]]
 }
 
 # Determine width of terminal and set COLUMNS variable
@@ -72,7 +72,7 @@ write_warning_msg() {
 write_list_start() {
 	is_output_mode brief && return
 	local colour=${COLOUR_LIST_HEADER} normal=${COLOUR_NORMAL}
-	if [[ ${1} == "-p" ]] ; then
+	if [[ $1 == "-p" ]]; then
 		colour=; normal=
 		shift
 	fi
@@ -92,7 +92,7 @@ write_kv_list_entry() {
 	local normal=${COLOUR_NORMAL}
 	local IFS=$' \t\n'
 
-	if [[ ${1} == "-p" ]] ; then
+	if [[ $1 == "-p" ]]; then
 		left=; right=; normal=
 		shift
 	fi
@@ -112,7 +112,7 @@ write_kv_list_entry() {
 	# if ${n} is less than or equal to zero then we have a long ${key}
 	# that will mess up the formatting of ${val}, so end the line, indent
 	# and let ${val} go on the next line.
-	if [[ ${n} -le 0 ]] ; then
+	if [[ ${n} -le 0 ]]; then
 		echo
 		n=$(( 28 + ${#rindent} ))
 	fi
@@ -126,14 +126,14 @@ write_kv_list_entry() {
 
 	text=${val//\%%%??%%%/}
 	# only loop if it doesn't fit on the same line
-	if [[ $(( ${n} + ${#text} )) -ge ${cols} ]] ; then
+	if [[ $(( ${n} + ${#text} )) -ge ${cols} ]]; then
 		local i=0 spc=""
 		rindent=$(space ${n})
 		cwords=( ${cwords} )
-		for text in ${val} ; do
+		for text in ${val}; do
 			text=${text//\%%%??%%%/}
 			# put the word on the same line if it fits
-			if [[ $(( ${n} + ${#spc} + ${#text} )) -lt ${cols} ]] ; then
+			if [[ $(( ${n} + ${#spc} + ${#text} )) -lt ${cols} ]]; then
 				echo -n -e "${spc}${cwords[i]}"
 				n=$(( ${n} + ${#spc} + ${#text} ))
 			# otherwise, start a new line and indent
@@ -157,7 +157,7 @@ write_numbered_list_entry() {
 	local left=${COLOUR_LIST_LEFT} right=${COLOUR_LIST_RIGHT}
 	local normal=${COLOUR_NORMAL}
 
-	if [[ ${1} == "-p" ]] ; then
+	if [[ $1 == "-p" ]]; then
 		left=; right=; normal=
 		shift
 	fi
@@ -192,11 +192,11 @@ write_numbered_list() {
 		write_kv_list_entry ${p} "${m}" ""
 	fi
 
-	while [[ $# -gt 0 ]] ; do
-		item=${1}
+	while [[ $# -gt 0 ]]; do
+		item=$1
 		shift
-		if [[ ${item##*\\} == "" ]] ; then
-			item="${item%\\} ${1}"
+		if [[ ${item##*\\} == "" ]]; then
+			item="${item%\\} $1"
 			shift
 		fi
 		write_numbered_list_entry ${p} "${n}" "${item}"
@@ -208,7 +208,7 @@ write_numbered_list() {
 # Apply text highlights. First arg is the 'restore' colour, second arg
 # is the text.
 apply_text_highlights() {
-	local restore=${1:-${COLOUR_NORMAL}} text=${2}
+	local restore=${1:-${COLOUR_NORMAL}} text=$2
 	text="${text//?%%HI%%%/${COLOUR_HI}}"
 	text="${text//?%%WA%%%/${COLOUR_WARN}}"
 	text="${text//?%%RE%%%/${restore}}"
@@ -231,7 +231,7 @@ highlight_warning() {
 # Mark list entry $1 as active/selected by placing a highlighted star
 # (or $2 if set) behind it.
 highlight_marker() {
-	local text=${1} mark=${2-*}
+	local text=$1 mark=${2-*}
 	echo -n "${text}"
 	if [[ -n ${mark} ]] && ! is_output_mode brief; then
 		echo -n " "
@@ -243,7 +243,7 @@ highlight_marker() {
 # Write $1 numbers of spaces
 space() {
 	local n ret=""
-	for (( n = 1 ; n <= ${1} ; ++n )) ; do
+	for (( n = 1; n <= $1; ++n )); do
 		ret="${ret} "
 	done
 	echo -n "${ret}"
