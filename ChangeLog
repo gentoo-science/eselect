@@ -1,3 +1,7 @@
+2013-11-10  Ulrich Müller  <ulm@gentoo.org>
+
+	* libs/output.bash.in (space): Implement more efficiently.
+
 2013-10-27  Ulrich Müller  <ulm@gentoo.org>
 
 	* autogen.bash: Update for aclocal 1.14.

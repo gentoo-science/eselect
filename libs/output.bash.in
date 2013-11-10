@@ -242,9 +242,8 @@ highlight_marker() {
 # space PUBLIC
 # Write $1 numbers of spaces
 space() {
-	local n ret=""
-	for (( n = 1; n <= $1; ++n )); do
-		ret="${ret} "
+	local n=$1
+	while (( n-- > 0 )); do
+		echo -n " "
 	done
-	echo -n "${ret}"
 }
