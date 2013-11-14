@@ -79,7 +79,6 @@ es_do_usage() {
 # es_do_help
 # Display eselect help
 es_do_help() {
-	set_output_mode default
 	es_do_usage
 	echo
 	# display all recognized global options

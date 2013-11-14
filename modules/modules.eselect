@@ -15,12 +15,20 @@ describe_list() {
 	echo "List all available modules"
 }
 
+describe_list_options() {
+	echo "--only-names : Output names of modules only"
+}
+
 # List all installed modules
 do_list() {
-	[[ $# -gt 0 ]] && die -q "Too many parameters"
-
-	local path file module name desc
+	local only_names path file module name desc
 	local -a extra_modules
+
+	if [[ ${1#--} = only-names ]]; then
+		only_names=1
+		shift
+	fi
+	[[ $# -gt 0 ]] && die -q "Too many parameters"
 
 	for path in "${ESELECT_MODULES_PATH[@]}" ; do
 		[[ -d ${path} ]] || continue
@@ -30,7 +38,7 @@ do_list() {
 		done
 	done
 
-	if is_output_mode brief; then
+	if [[ -n ${only_names} ]]; then
 		# This is mainly intended for bash completion
 		echo "help"
 		echo "usage"

@@ -1,5 +1,14 @@
 2013-11-15  Ulrich Müller  <ulm@gentoo.org>
 
+	* modules/modules.eselect (do_list): New local option --only-names
+	will output names of modules only, without their description.
+	This replaces the previous brief output mode behaviour and is
+	mainly intended for bash completion.
+	(describe_list_options): New function, documents --only-names.
+	* bin/eselect.in (es_do_help): Don't force default output mode.
+	* misc/eselect.bashcomp (_eselect): Call "eselect modules list"
+	with --only-names option.
+
 	* misc/eselect.bashcomp (_eselect): Suggest possible completions
 	also for an empty list of words, i.e. when the user has not typed
 	any parameters yet.
