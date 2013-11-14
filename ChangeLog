@@ -1,3 +1,8 @@
+2013-11-14  Michael Marineau  <mike@marineau.org>
+
+	* modules/profile.eselect (set_symlink): Silence profile symlink
+	warning when using --force, bug 491216.
+
 2013-11-10  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/output.bash.in (space): Implement more efficiently.

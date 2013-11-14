@@ -122,6 +122,7 @@ set_symlink() {
 		|| die -q "Couldn't set new ${MAKE_PROFILE} symlink"
 	# check if the resulting symlink is sane
 	[[ $(canonicalise "${MAKE_PROFILE}") != "$(canonicalise "${EROOT}")"/* ]] \
+		&& [[ -z ${force} ]] \
 		&& write_warning_msg "Strange path. Check ${MAKE_PROFILE} symlink"
 
 	return 0
