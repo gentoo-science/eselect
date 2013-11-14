@@ -90,6 +90,7 @@ write_kv_list_entry() {
 	local n text key val lindent rindent
 	local left=${COLOUR_LIST_LEFT} right=${COLOUR_LIST_RIGHT}
 	local normal=${COLOUR_NORMAL}
+	local cols=${COLUMNS:-80}
 	local IFS=$' \t\n'
 
 	if [[ $1 == "-p" ]]; then
@@ -117,19 +118,15 @@ write_kv_list_entry() {
 		n=$(( 28 + ${#rindent} ))
 	fi
 
-	space ${n}
-	echo -n -e "${right}"
+	echo -n -e "$(space ${n})${right}"
 	n=$(( 28 + ${#rindent} ))
-
-	local cols=${COLUMNS:-80}
-	local cwords=$(apply_text_highlights "${right}" "${val}")
 
 	text=${val//\%%%??%%%/}
 	# only loop if it doesn't fit on the same line
 	if [[ $(( ${n} + ${#text} )) -ge ${cols} ]]; then
 		local i=0 spc=""
 		rindent=$(space ${n})
-		cwords=( ${cwords} )
+		local cwords=( $(apply_text_highlights "${right}" "${val}") )
 		for text in ${val}; do
 			text=${text//\%%%??%%%/}
 			# put the word on the same line if it fits
@@ -141,11 +138,11 @@ write_kv_list_entry() {
 				echo -n -e "\n${rindent}${cwords[i]}"
 				n=$(( ${#rindent} + ${#text} ))
 			fi
-			i=$(( ${i} + 1 ))
+			(( i++ ))
 			spc=" "
 		done
 	else
-		echo -n -e "${cwords}"
+		echo -n -e "$(apply_text_highlights "${right}" "${val}")"
 	fi
 	echo -e "${normal}"
 }
