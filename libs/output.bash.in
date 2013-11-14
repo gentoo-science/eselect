@@ -112,10 +112,15 @@ write_kv_list_entry() {
 
 	# if ${n} is less than or equal to zero then we have a long ${key}
 	# that will mess up the formatting of ${val}, so end the line, indent
-	# and let ${val} go on the next line.
+	# and let ${val} go on the next line. Don't start a new line when
+	# in brief output mode, in order to keep the output easily parsable.
 	if [[ ${n} -le 0 ]]; then
-		echo
-		n=$(( 28 + ${#rindent} ))
+		if is_output_mode brief; then
+			n=1
+		else
+			echo
+			n=$(( 28 + ${#rindent} ))
+		fi
 	fi
 
 	echo -n -e "$(space ${n})${right}"
@@ -123,7 +128,7 @@ write_kv_list_entry() {
 
 	text=${val//\%%%??%%%/}
 	# only loop if it doesn't fit on the same line
-	if [[ $(( ${n} + ${#text} )) -ge ${cols} ]]; then
+	if [[ $(( ${n} + ${#text} )) -ge ${cols} ]] && ! is_output_mode brief; then
 		local i=0 spc=""
 		rindent=$(space ${n})
 		local cwords=( $(apply_text_highlights "${right}" "${val}") )

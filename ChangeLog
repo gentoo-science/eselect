@@ -1,5 +1,9 @@
 2013-11-15  Ulrich Müller  <ulm@gentoo.org>
 
+	* libs/output.bash.in (write_kv_list_entry): Suppress wrapping
+	of lines in brief output mode, in order to make automatic parsing
+	easier. Bug 490882.
+
 	* modules/modules.eselect (do_list): New local option --only-names
 	will output names of modules only, without their description.
 	This replaces the previous brief output mode behaviour and is
