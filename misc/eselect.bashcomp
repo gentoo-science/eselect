@@ -4,6 +4,7 @@
 
 # bash command-line completion for eselect
 # Author: Aaron Walker <ka0ttic@gentoo.org>
+# Maintainer: <eselect@gentoo.org>
 
 _eselect() {
     local cur sedcmd2 sedcmd3 possibles
