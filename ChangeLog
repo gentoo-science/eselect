@@ -1,3 +1,9 @@
+2013-11-15  Ulrich Müller  <ulm@gentoo.org>
+
+	* misc/eselect.bashcomp (_eselect): Suggest possible completions
+	also for an empty list of words, i.e. when the user has not typed
+	any parameters yet.
+
 2013-11-14  Michael Marineau  <mike@marineau.org>
 
 	* modules/profile.eselect (set_symlink): Silence profile symlink

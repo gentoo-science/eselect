@@ -13,18 +13,18 @@ _eselect() {
     sedcmd2='s/^  \([[:alnum:]-][[:alnum:]_-]*\)[[:space:],].*$/\1/p'
     sedcmd3='s/^  \[[[:digit:]][[:digit:]]*\] *\([[:graph:]]*\).*$/\1/p'
 
-    set - "${COMP_WORDS[@]:1}"
+    set -- "${COMP_WORDS[@]:1}"
     # skip global options
     while [[ $# -gt 1 && $1 == -* ]]; do
         shift
     done
     # skip any subaction options
     while [[ $# -gt 3 && $3 == -* ]]; do
-        set - "${@:1:2}" "${@:4}"
+        set -- "${@:1:2}" "${@:4}"
     done
 
     case $# in
-        1) possibles="${options} $(eselect --brief modules list 2>/dev/null)"
+        0|1) possibles="${options} $(eselect --brief modules list 2>/dev/null)"
             ;;
         2) possibles=$(eselect --brief "$1" usage 2>/dev/null \
             | sed -n -e "${sedcmd2}") ;;
