@@ -95,7 +95,6 @@ describe_help() {
 }
 
 do_help() {
-	set_output_mode default
 	echo "${DESCRIPTION}"
 	show_usage_message
 	if is_function show_extra_help_text; then
