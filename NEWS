@@ -1,6 +1,19 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.4:
+    Bug fixes:
+    - Fixed bug #460328: Don't warn about symlink path when using --force
+      in profile module.
+
+    New features:
+    - In brief output mode, suppress line wrapping within lists (bug #490882).
+    - Don't disable brief output mode in help action and modules list.
+    - New option --only-names for 'eselect modules list'.
+    - Removed deprecated list-modules and list-options global actions.
+    - Removed deprecated --no-colour global option.
+    - Suggest bash completions also for 'eselect' without any parameters yet.
+
 1.3.8:
     Bug fixes:
     - Don't install man page for removed bashcomp module.
