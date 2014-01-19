@@ -70,6 +70,7 @@ arch() {
 		# Try to determine arch from HOSTTYPE and OSTYPE, which are
 		# derived from the GNU triplet (at build time of bash)
 		case ${HOSTTYPE} in
+			aarch64*)  	ret=arm64 	;;
 			alpha*) 	ret=alpha	;;
 			arm*)   	ret=arm 	;;
 			hppa*)  	ret=hppa	;;
