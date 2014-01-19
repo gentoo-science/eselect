@@ -1,6 +1,6 @@
 ;;; eselect-mode.el --- edit eselect files
 
-;; Copyright (c) 2006-2013 Gentoo Foundation
+;; Copyright (c) 2006-2014 Gentoo Foundation
 
 ;; Author: Matthew Kennedy <mkennedy@gentoo.org>
 ;;	Diego Pettenò <flameeyes@gentoo.org>
