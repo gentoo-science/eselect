@@ -75,6 +75,21 @@ inherit manip output path-manipulation tests
 # it, don't ask...
 trap 'echo "exiting" >&2; exit 250' 15
 
+# es_find_module foo
+# Find and echo the filename of the foo module. If there's no foo module,
+# die.
+es_find_module() {
+    local modname="$1" modpath="" modfile=""
+    [[ -z ${modname} ]] && die "Usage: ${FUNCNAME} <module>"
+    for modpath in "${ESELECT_MODULES_PATH[@]}" ; do
+        [[ -f ${modpath}/${modname}.eselect ]] && break
+    done
+
+    modfile="${modpath}/${modname}.eselect"
+    [[ -r ${modfile} ]] || die -q "Can't load module ${modname}"
+    echo ${modfile}
+}
+
 # es_do_usage
 # Display eselect usage
 es_do_usage() {
@@ -86,14 +101,10 @@ es_do_usage() {
 es_do_help() {
 	es_do_usage
 	echo
-	# display all recognized global options
-	write_list_start "Global options:"
-	write_kv_list_entry "--brief" "Make output shorter"
-	write_kv_list_entry "--colour=<yes|no|auto>" \
-		"Enable or disable colour output (default 'auto')"
+	es_do_list-options
 	echo
 	# display all available eselect modules
-	do_action modules list
+    es_do_list-modules
 }
 
 # es_do_version
@@ -103,6 +114,113 @@ es_do_version() {
 	echo
 	echo "Copyright (c) 2005-2015 Gentoo Foundation."
 	echo "Distributed under the terms of the GNU GPL version 2 or later."
+}
+
+# es_do_list-options
+# Display all recognized global options
+es_do_list-options() {
+    write_list_start "Global options:"
+    write_kv_list_entry "--debug"                   "Debug eselect (enable set -x)"
+    write_kv_list_entry "--no-color,--no-colour"    "Disable coloured output"
+}
+
+# es_do_list-modules
+# Display all available eselect modules DEPRECATED
+es_do_list-modules() {
+    do_action modules list $@
+}
+
+### print-* actions, for use with bash_completion and zsh-completion ###
+
+# es_do_print-modules
+#
+# Display all availble eselect modules in a way that's useful to bash
+# completion / zsh completion
+es_do_print-modules() {
+    local ret=1 path module group groupname want_descriptions
+
+    while [[ -n $@ ]]; do
+        case "${1}" in
+            --descriptions)
+                want_descriptions='yes' ;;
+            --group)
+                groupname=${2}
+                [[ -z "$groupname" ]] && die -q "Required option (group name) missing."
+                shift ;;
+        esac
+        shift
+    done
+
+    if [[ ${groupname} == Built-in || -z ${groupname} ]]; then
+        for module in help usage version print-{modules,actions,options}; do
+            echo "${module}"
+        done
+        [[ ${groupname} == Built-in ]] && return 0
+    fi
+
+    # TODO: factor this out in modules.eselect's do_list()
+    for path in "${ESELECT_MODULES_PATH[@]}" ; do
+        [[ -d "${path}" ]] || continue
+        for file in "${path}"/*.eselect ; do
+            [[ -f "${file}" ]] || continue
+            if [[ -n "${groupname}" ]]; then
+                group=$(load_config "${file}" ESELECT_MODULE_GROUP)
+                [[ "${groupname}" == "${group}" ||
+                    ( "${groupname}" == Extra && -z "${group}" ) ]] || continue
+            fi
+            module="${file##*/}"
+            module="${module%%.eselect}"
+            echo "${module}${want_descriptions:+:$(load_config "${file}" DESCRIPTION)}"
+            ret=0
+        done
+    done
+    return $ret
+}
+
+# es_do_print-actions
+#
+# Display all available actions for the given module.
+es_do_print-actions() {
+    local modfile="$(es_find_module "${1}")" actions action want_descriptions
+    [[ "${2}" == "--descriptions" ]] && want_descriptions='yes'
+    (
+        source "${modfile}" 2>/dev/null \
+            || die "Couldn't source ${modfile}"
+        actions=( $(declare -F \
+            | sed -n -e 's/^declare\s\+-f\s\+do_//p' \
+            | egrep -v '^(action|help|usage|version)$' \
+            | sort ) )
+        for action in "${actions[@]}" ; do
+            echo "${action}${want_descriptions:+:$(describe_${action})}"
+        done
+    )
+}
+
+# es_do_print-options
+#
+# Display all available options for the given module and action
+es_do_print-options() {
+    local modfile action want_descriptions
+
+    [[ "${1}" == "--descriptions" ]] && want_descriptions='yes' && shift
+
+    if [[ -z ${1} ]]; then
+        echo "--debug${want_descriptions:+:Debug eselect (enable set -x)}"
+        echo "--no-color${want_descriptions:+:Disable coloured output}"
+        echo "--no-colour${want_descriptions:+:Disable coloured output}"
+    elif [[ -n ${2} ]]; then
+        modfile="$(es_find_module "${1}")"
+        action=${2}
+        shift 2
+        (
+            source "${modfile}" 2>/dev/null \
+                || die "Couldn't source ${modfile}"
+            is_function options_${action} || return 1
+            options_${action} ${want_descriptions:+--descriptions} "$@" || return 2
+        )
+    else
+        die "Usage: ${FUNCNAME} [--descriptions] [<module> <action>]"
+    fi
 }
 
 ### main code ###
@@ -131,6 +249,7 @@ if [[ -z ${action} ]]; then
 	unset binname prefix
 fi
 
+<<<<<<< HEAD
 # parse global options
 while [[ ${1##--} != "$1" ]]; do
 	case ${1##--} in
@@ -165,6 +284,40 @@ done
 if [[ -z ${action} && $# -gt 0 ]]; then
 	action=$1
 	shift
+=======
+if [[ -z ${action} ]] && [[ -n ${1##--} ]]; then
+	while [[ ${1##--} != "$1" ]]; do
+		case ${1##--} in
+			brief)
+				set_output_mode brief
+				;;
+			colour=*|color=*|colour|color)
+				# accept all arguments that are valid for ls or emerge
+				case ${1#*=} in
+					yes|y|always|force|$1) colour=yes ;;
+					no|n|never|none) colour=no ;;
+					auto|tty|if-tty) colour="" ;;
+					*) die -q "Invalid argument for ${1%%=*} option" ;;
+				esac
+				;;
+            debug)
+                set -x
+                shift
+                ;;
+			help|version)
+				action=${1##--}
+				;;
+			*)
+				die -q "Unknown option $1"
+				;;
+		esac
+		shift
+	done
+	if [[ -z ${action} ]]; then
+		action=$1
+		shift
+	fi
+>>>>>>> added debug option, find_module routine
 fi
 
 # enable colour output and get width of terminal iff stdout is a tty
