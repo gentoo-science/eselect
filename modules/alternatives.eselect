@@ -1,0 +1,49 @@
+# Copyright 2008 Mike Kelly
+# Copyright 2009, 2013 David Leverton
+# Copyright 2010 Bo Ørsted Andresen
+# Distributed under the terms of the GNU General Public License v2
+
+inherit alternatives-common
+
+DESCRIPTION="Maintain Alternatives symlinks"
+VERSION="20131029"
+MAINTAINER="bicatali@gentoo.org"
+
+show_extra_help_text() {
+    cat <<ENDOFTEXT
+This module is intended for internal use when a package is installed,
+updated or removed. For alternatives for which it is likely that
+users will need control over which provider is selected, there will be
+a separate eselect module installed to do so.
+ENDOFTEXT
+}
+
+### update action ###
+
+# all functions implemented in alternatives-common.bash as defined for
+# both "eselect alternatives" and individual modules
+
+describe_update() {
+    alternatives_describe_update
+}
+
+describe_update_parameters() {
+    echo "<alternative> $(alternatives_describe_update_parameters)"
+}
+
+describe_update_options() {
+    echo "<alternative> : the name of the alternative to set a provider for"
+    alternatives_describe_update_options
+}
+
+do_update() {
+    local ALTERNATIVE=$1
+    shift
+    [[ -z "${ALTERNATIVE}" ]] && die -q "Missing required parameter 'alternative'"
+    alternatives_do_update "$@"
+}
+
+options_update() {
+    alternatives_options_update
+}
+
