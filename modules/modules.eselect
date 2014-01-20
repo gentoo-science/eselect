@@ -90,41 +90,74 @@ do_has() {
 }
 
 ### add action
-# *** Commented out. Do we really want to have an eselect module that is
-# *** installing other modules in a system directory? Also, this should
-# *** go together with a "remove" action.
 
-# describe_add() {
-# 	echo "Install the given module file somewhere that eselect can find it."
-# 	echo "By default, install to \$HOME/.eselect/modules/, unless running as "
-# 	echo "root. Then, install to ${ESELECT_DATA_PATH}/modules/."
-# }
+describe_add() {
+	echo "Install the given module file somewhere that eselect can find it"
+ 	echo "By default, install to \$HOME/.eselect/modules/, unless running as "
+ 	echo "root. Then, install to ${ESELECT_DATA_PATH}/modules/."
+}
 
-# describe_add_parameters() {
-# 	echo "<module_file>"
-# }
+describe_add_parameters() {
+ 	echo "<module_file>"
+}
 
-# do_add() {
-# 	local local_path="${ROOT}${HOME}/.eselect/modules/" module_file
-# 	local force_default=0
-#
-# 	if [[ $1 = "--force-default-location" ]] ; then
-# 		force_default=1
-# 		shift
-# 	fi
-# 	module_file=$1
-#
-# 	[[ -z ${module_file} ]] && die -q "Required option (module file) missing"
-#
-# 	# TODO: Don't install the module "somewhere", depending on write access.
-# 	# Add an option to control if it goes to the user's or to the system dir.
-# 	if ! cp "${module_file}" "${ESELECT_DEFAULT_MODULES_PATH}" &> /dev/null ; then
-# 		[[ ${force_default} == 1 ]] \
-# 			&& die -q "Failed to install module file to default modules path"
-#
-# 		mkdir -p "${local_path}" \
-# 			|| die -q "Failed to create module install directory"
-# 		cp "${module_file}" "${local_path}" \
-# 			|| die -q "Failed to install module file"
-# 	fi
-# }
+do_add() {
+ 	local local_path="${ROOT}${HOME}/.eselect/modules/" module_file
+ 	local force_default=0
+
+ 	if [[ $1 = "--force-default-location" ]] ; then
+ 		force_default=1
+ 		shift
+ 	fi
+ 	module_file=$1
+
+ 	[[ -z ${module_file} ]] && die -q "Required option (module file) missing"
+
+ 	# TODO: Don't install the module "somewhere", depending on write access.
+ 	# Add an option to control if it goes to the user's or to the system dir.
+ 	if ! cp "${module_file}" "${ESELECT_DEFAULT_MODULES_PATH}" &> /dev/null ; then
+ 		[[ ${force_default} == 1 ]] \
+ 			&& die -q "Failed to install module file to default modules path"
+
+ 		mkdir -p "${local_path}" \
+ 			|| die -q "Failed to create module install directory"
+ 		cp "${module_file}" "${local_path}" \
+ 			|| die -q "Failed to install module file"
+ 	fi
+}
+
+### remove action
+
+describe_remove() {
+	echo "Remove the given module name"
+ 	echo "By default, it will remove from \$HOME/.eselect/modules/, unless running as "
+ 	echo "root. Then, remove from ${ESELECT_DATA_PATH}/modules/."
+}
+
+describe_remove_parameters() {
+ 	echo "<module>"
+}
+
+do_remove() {
+ 	local local_path="${ROOT}${HOME}/.eselect/modules/" module_name
+ 	local force_default=0
+
+ 	if [[ $1 = "--force-default-location" ]] ; then
+ 		force_default=1
+ 		shift
+ 	fi
+ 	module_name=$1
+
+ 	[[ -z ${module_name} ]] && die -q "Required option (module name) missing"
+
+ 	# TODO: Don't install the module "somewhere", depending on write access.
+ 	# Add an option to control if it goes to the user's or to the system dir.
+ 	if ! rm "${ESELECT_DEFAULT_MODULES_PATH}"/${module_name}.eselect &> /dev/null ; then
+ 		[[ ${force_default} == 1 ]] \
+ 			&& die -q "Failed to remove module ${module_name} from default modules path"
+
+ 		rm "${module_file}" "${local_path}"/${module_name}.eselect \
+ 			|| die -q "Failed to remove module ${module_name}"
+ 	fi
+}
+

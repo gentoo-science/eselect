@@ -1,7 +1,8 @@
 eselectlibsdir = $(datadir)/$(PACKAGE_NAME)/libs/
 
-eselectlibs_DATA = \
+eselectlibs_DATA = 
 	alternatives.bash \
+	alternatives-common.bash \
 	config.bash \
 	core.bash \
 	default.eselect \
@@ -16,6 +17,7 @@ eselectlibs_DATA = \
 
 EXTRA_DIST = \
 	alternatives.bash.in \
+	alternatives-common.bash.in \
 	config.bash.in \
 	core.bash.in \
 	default.eselect.in \
