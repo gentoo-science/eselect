@@ -1,6 +1,6 @@
 eselectlibsdir = $(datadir)/$(PACKAGE_NAME)/libs/
 
-eselectlibs_DATA = 
+eselectlibs_DATA = \
 	alternatives.bash \
 	alternatives-common.bash \
 	config.bash \
