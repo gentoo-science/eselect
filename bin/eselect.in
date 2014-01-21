@@ -302,7 +302,6 @@ if [[ -z ${action} ]] && [[ -n ${1##--} ]]; then
 				;;
             debug)
                 set -x
-                shift
                 ;;
 			help|version)
 				action=${1##--}
