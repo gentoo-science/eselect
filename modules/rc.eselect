@@ -64,6 +64,7 @@ find_unused_scripts() {
 # output list entry for script $1 and show its status
 show_script_status() {
 	local script=${1} status=unknown x
+	local PATH=/lib/rc/bin:${PATH} # path to service_* commands
 
 	for x in stopping starting inactive started stopped; do
 		if service_${x} ${script}; then
