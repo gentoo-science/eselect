@@ -7,22 +7,11 @@ inherit config
 DESCRIPTION="Manage /etc/init.d scripts in runlevels"
 MAINTAINER="eselect@gentoo.org"
 
-# source_rc_functions PRIVATE
-# API for OpenRC
-source_rc_functions() {
-	[[ ${RC_GOT_FUNCTIONS} = yes ]] && return
-	source "${EPREFIX}/etc/init.d/functions.sh" \
-		|| die "Failed to source functions.sh"
-}
-
 # get_runlevel PRIVATE
 # determine the current runlevel
-# this is only functional if source_rc_functions has been called before
 get_runlevel() {
-	if type rc_runlevel &>/dev/null; then
-		rc_runlevel || die "rc_runlevel failed"
-	elif [[ -n ${SOFTLEVEL} ]]; then
-		echo "${SOFTLEVEL}"
+	if type rc-status &>/dev/null; then
+		rc-status -r || die "rc_status failed"
 	else
 		die "Cannot determine runlevel"
 	fi
@@ -239,8 +228,6 @@ describe_show_options() {
 
 do_show() {
 	local runlevel all unused n x
-
-	source_rc_functions
 
 	if [[ $# -eq 0 ]]; then
 		set -- "$(get_runlevel)"

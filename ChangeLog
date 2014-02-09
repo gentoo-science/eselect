@@ -1,3 +1,11 @@
+2014-02-09  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/rc.eselect (get_runlevel): Call "rc-status -r" directly,
+	in order to avoid sourcing functions.sh, bug 373219.
+	Remove baselayout-1 compatibility code.
+	(source_rc_functions): Remove function.
+	(do_show): Don't call source_rc_functions.
+
 2014-01-19  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/package-manager.bash.in (arch): Recognise aarch64*/arm64.
