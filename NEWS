@@ -1,6 +1,11 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.4.1:
+    New features:
+    - Recognise arm64 in package-manager lib.
+    - Do not source functions.sh in rc module (bug #373219).
+
 1.4:
     Bug fixes:
     - Fixed bug #460328: Don't warn about symlink path when using --force
