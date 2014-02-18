@@ -1,3 +1,7 @@
+2014-02-18  Ulrich Müller  <ulm@gentoo.org>
+
+	* man/news.eselect.5: Update URI of GLEP 42.
+
 2014-02-15  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.4.1.
