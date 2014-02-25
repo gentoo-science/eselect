@@ -87,9 +87,14 @@ find_repo_dir() {
 
 # return list of accepted languages
 accepted_languages() {
-	local lc=${LC_ALL:-${LANG}}
-	lc=${lc%%[^[:alpha:]]*}
-	[[ -n ${lc} && ${lc} != en ]] && echo ${lc}
+	local lc lct=${LC_ALL:-${LANG}}
+	lct=${lct%%[^[:alpha:]_]*}	# strip .* @* etc.
+	lc=${lct%%_*}				# strip _<territory>
+	[[ ${lct} != "${lc}" ]] && echo "${lct}"
+	case ${lc} in
+		""|C|POSIX|en) ;;
+		*) echo "${lc}" ;;
+	esac
 	echo en
 }
 

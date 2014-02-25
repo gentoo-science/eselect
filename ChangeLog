@@ -1,3 +1,8 @@
+2014-02-25  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/news.eselect (accepted_languages): Suppress "C"
+	and "POSIX" in output. Support <language>_<territory>.
+
 2014-02-18  Ulrich Müller  <ulm@gentoo.org>
 
 	* man/news.eselect.5: Update URI of GLEP 42.
