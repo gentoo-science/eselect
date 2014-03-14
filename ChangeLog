@@ -1,3 +1,8 @@
+2014-03-14  Ulrich Müller  <ulm@gentoo.org>
+
+	* libs/output.bash.in (write_kv_list_entry): Don't output spurious
+	trailing whitespace if value is an empty string.
+
 2014-02-25  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/news.eselect (accepted_languages): Suppress "C"
