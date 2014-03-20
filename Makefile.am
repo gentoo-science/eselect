@@ -19,7 +19,7 @@ html: $(foreach f, $(doc_files), $(f).html)
 	cd doc && $(MAKE) html
 
 %.html: %
-	@RST2HTML@ < $? > $@
+	@RST2HTML@ --strip-comments < $? > $@
 
 maintainer-clean-local:
 	-rm -rf config

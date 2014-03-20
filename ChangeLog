@@ -1,3 +1,8 @@
+2014-03-20  Ulrich Müller  <ulm@gentoo.org>
+
+	* Makefile.am (%.html): Strip comments from html output, in order
+	to suppress wrong mode information in Emacs local variables.
+
 2014-03-14  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/output.bash.in (write_kv_list_entry): Don't output spurious
