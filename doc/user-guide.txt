@@ -111,13 +111,15 @@ show
     Print the currently active configuration(s).
 set
     Select one of the options offered by ``list``.
+unset
+    Deselect the currently active option.
+update
+    Like ``set``, but automatically selects an option rather than taking
+    a parameter.
 enable
     Enable one of the module specific features.
 disable
     Disable one of the module specific features.
-update
-    Like ``set``, but automatically selects an option rather than taking
-    a parameter.
 scan
     Gather information about the system and store it for future usage by
     the module.

@@ -1,7 +1,11 @@
 2014-03-20  Ulrich Müller  <ulm@gentoo.org>
 
+	* doc/user-guide.txt: Mention the "unset" action also here.
+
 	* doc/developer-guide.txt: Remove duplicate heading, because
 	rst2html --report=info complains about it.
+	Reorder the standard action names to be congruent with the
+	user guide.
 
 	* Makefile.am (%.html): Strip comments from html output, in order
 	to suppress wrong mode information in Emacs local variables.

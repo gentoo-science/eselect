@@ -178,27 +178,27 @@ usage
     Display a usage message. Automatic.
 version
     Display the current version. Automatic.
-show
-    Used to display the current provider of a symlink, or the currently
-    installed module, or the current status.
 list
     Used to display all available providers of a symlink, or all
     available modules.
+show
+    Used to display the current provider of a symlink, or the currently
+    installed module, or the current status.
 set
     Used to set a new provider or a symlink.
 unset
     Used to unset the current provider, or to remove a symlink.
+update
+    Used to automatically select a new provider for a symlink (as
+    opposed to ``set``, which generally takes a parameter manually
+    selecting the provider) or to gather system information that is
+    vital to further actions.
 enable
     Used to enable an optional feature.
 disable
     Used to disable an optional feature.
 scan
     Read information off the current filesystem.
-update
-    Used to automatically select a new provider for a symlink (as
-    opposed to ``set``, which generally takes a parameter manually
-    selecting the provider) or to gather system information that is
-    vital to further actions.
 
 .. Note:: You can override the ``help``, ``usage`` and ``version``
   actions. They are provided by default by ``lib/default.eselect``.
