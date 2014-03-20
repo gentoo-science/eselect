@@ -1,6 +1,7 @@
 2014-03-20  Ulrich Müller  <ulm@gentoo.org>
 
 	* doc/user-guide.txt: Mention the "unset" action also here.
+	Remove redundant "Usage" heading.
 
 	* doc/developer-guide.txt: Remove duplicate heading, because
 	rst2html --report=info complains about it.

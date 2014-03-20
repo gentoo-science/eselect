@@ -86,9 +86,6 @@ Familiar format
 Using eselect
 =============
 
-Usage
------
-
 eselect should be called as shown below: ::
 
         eselect [<global-options>] <module> <action> <options>
