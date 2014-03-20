@@ -2,11 +2,8 @@
 eselect Developer Reference
 ===========================
 
-Introduction
-============
-
 About eselect
--------------
+=============
 
 eselect is a framework for simplifying and introducing consistency to
 the various Gentoo ``foo-config`` and ``update-blah`` tools. It is an
