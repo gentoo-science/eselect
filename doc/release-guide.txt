@@ -42,6 +42,7 @@ Sign it (there may be a dist-sign target in the future). ::
 
     $ gpg --armor --detach-sign ${P}.tar.xz
 
+
 .. Local Variables:
 .. mode: rst
 .. fill-column: 72

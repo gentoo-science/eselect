@@ -520,6 +520,7 @@ The ``get_repo_news_dir`` Function
 The ``get_repo_news_dir`` function returns the directory where to find
 GLEP 42 news items for a given repository.
 
+
 .. Local Variables:
 .. mode: rst
 .. fill-column: 72

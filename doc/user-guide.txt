@@ -136,6 +136,7 @@ A typical session will look like the following for most modules: ::
 
 You can usually set items either by name or by number.
 
+
 .. Local Variables:
 .. mode: rst
 .. fill-column: 72
