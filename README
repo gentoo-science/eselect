@@ -36,3 +36,12 @@ Style Notes
 * Public functions don't get the ``es_`` prefix, private functions do.
 * eval is evil, so don't use it.
 * Absolute paths to executables are not portable, so don't use them.
+
+
+.. Local Variables:
+.. mode: rst
+.. fill-column: 72
+.. indent-tabs-mode: nil
+.. End:
+
+.. vim: set ft=glep tw=72 sw=4 et spell spelllang=en :
