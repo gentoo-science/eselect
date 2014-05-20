@@ -27,10 +27,10 @@ EXTRA_DIST = \
 	tests.bash.in
 
 dosed = @SED@ \
-	-e 's,\@SED\@,@SED@,g' \
-	-e 's,\@PORTAGEQ\@,@PORTAGEQ@,g' \
-	-e 's,\@ENV_UPDATE\@,@ENV_UPDATE@,g' \
-	-e 's,\@CANONICALISE\@,@CANONICALISE@,g'
+	-e 's%\@SED\@%@SED@%g' \
+	-e 's%\@PORTAGEQ\@%@PORTAGEQ@%g' \
+	-e 's%\@ENV_UPDATE\@%@ENV_UPDATE@%g' \
+	-e 's%\@CANONICALISE\@%@CANONICALISE@%g'
 
 %.bash : %.bash.in
 	@$(dosed) $< > $@

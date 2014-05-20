@@ -1,5 +1,9 @@
 2014-05-20  Ulrich Müller  <ulm@gentoo.org>
 
+	* bin/Makefile.am (dosed):
+	* libs/Makefile.am (dosed):
+	* man/Makefile.am (dosed): Use "%" instead of "," as delimiter.
+
 	* configure.ac: Replace "git rev-parse" by "git describe", now
 	that git-r3.eclass supports it (bug 489100).
 

@@ -14,7 +14,7 @@ EXTRA_DIST = $(man_MANS)
 MAINTAINERCLEANFILES = Makefile.in
 
 # turn foo-<suffix> into foo.eselect.5
-dosed = @SED@ -e 's,^\(.*\)-.*,\1\.eselect\.5,'
+dosed = @SED@ -e 's%^\(.*\)-.*%\1\.eselect\.5%'
 
 install-data-local : $(foreach f, $(symlinks), install-symlink-$(f))
 
