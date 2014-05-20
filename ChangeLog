@@ -1,3 +1,8 @@
+2014-05-20  Ulrich Müller  <ulm@gentoo.org>
+
+	* configure.ac: Replace "git rev-parse" by "git describe", now
+	that git-r3.eclass supports it (bug 489100).
+
 2014-03-20  Ulrich Müller  <ulm@gentoo.org>
 
 	* doc/user-guide.txt: Mention the "unset" action also here.
