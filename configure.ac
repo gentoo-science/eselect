@@ -80,7 +80,7 @@ EXTRAVERSION=""
 if test -d ${GIT_DIR:-.git}; then
     COMMIT=`git describe --always HEAD`
     if test x$COMMIT != x; then
-        EXTRAVERSION=" (commit $COMMIT)"
+        EXTRAVERSION=", commit $COMMIT"
     fi
     AC_MSG_RESULT([yes$EXTRAVERSION])
 else
