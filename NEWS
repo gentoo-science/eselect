@@ -1,6 +1,11 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.4.2:
+    Bug fixes:
+    - Fixed bug #511132: Breakage with bash 4.3 in profile module.
+    - Documentation fixes in user and developer guides.
+
 1.4.1:
     New features:
     - Recognise arm64 in package-manager lib.
