@@ -33,7 +33,7 @@ get_repos() {
 	portageq get_repos "${EROOT:-/}" \
 		| sed "s/[[:space:]]\+/\n/g;s/^${DEFAULT_REPO}\$/ &/gm" \
 		| LC_ALL=C sort
-	[[ -z ${PIPESTATUS[@]#0} ]]
+	[[ "${PIPESTATUS[*]}" = "0 0 0" ]]
 }
 
 # get paths for a given list of repositories

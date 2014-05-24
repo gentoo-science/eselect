@@ -1,3 +1,8 @@
+2014-05-24  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/profile.eselect (get_repos): Fix bash 4.3 breakage,
+	bug 511132.
+
 2014-05-20  Ulrich Müller  <ulm@gentoo.org>
 
 	* bin/Makefile.am (dosed):
