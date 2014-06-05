@@ -126,34 +126,40 @@ if [[ -z ${action} ]]; then
 	unset binname prefix
 fi
 
-if [[ -z ${action} ]] && [[ -n ${1##--} ]]; then
-	while [[ ${1##--} != "$1" ]]; do
-		case ${1##--} in
-			brief)
-				set_output_mode brief
-				;;
-			colour=*|color=*|colour|color)
-				# accept all arguments that are valid for ls or emerge
-				case ${1#*=} in
-					yes|y|always|force|$1) colour=yes ;;
-					no|n|never|none) colour=no ;;
-					auto|tty|if-tty) colour="" ;;
-					*) die -q "Invalid argument for ${1%%=*} option" ;;
-				esac
-				;;
-			help|version)
-				action=${1##--}
-				;;
-			*)
-				die -q "Unknown option $1"
-				;;
-		esac
-		shift
-	done
-	if [[ -z ${action} ]]; then
-		action=$1
-		shift
-	fi
+# parse global options
+while [[ ${1##--} != "$1" ]]; do
+	case ${1##--} in
+		brief)
+			set_output_mode brief
+			;;
+		colour=*|color=*|colour|color)
+			# accept all arguments that are valid for ls or emerge
+			case ${1#*=} in
+				yes|y|always|force|$1) colour=yes ;;
+				no|n|never|none) colour=no ;;
+				auto|tty|if-tty) colour="" ;;
+				*) die -q "Invalid argument for ${1%%=*} option" ;;
+			esac
+			;;
+		help|version)
+			[[ -z ${action} ]] || die -q "Too many parameters"
+			action=${1##--}
+			;;
+		"")
+			# -- indicates end of options
+			shift
+			break
+			;;
+		*)
+			die -q "Unknown option $1"
+			;;
+	esac
+	shift
+done
+
+if [[ -z ${action} && $# -gt 0 ]]; then
+	action=$1
+	shift
 fi
 
 # enable colour output and get width of terminal iff stdout is a tty
@@ -167,7 +173,7 @@ unset colour
 
 if [[ -n ${action} ]]; then
 	if is_function "es_do_${action}"; then
-		[[ $# -gt 0 ]] && die -q "Too many parameters"
+		[[ $# -eq 0 ]] || die -q "Too many parameters"
 		es_do_${action}
 	else
 		do_action "${action}" "$@"
