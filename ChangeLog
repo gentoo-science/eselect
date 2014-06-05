@@ -1,5 +1,8 @@
 2014-06-05  Ulrich Müller  <ulm@gentoo.org>
 
+	* misc/eselect.bashcomp (_eselect): Improve handling of options
+	that are followed by an equals sign.
+
 	* bin/eselect.in: Parse global options even if we are invoked
 	as something-config or similar. Respect "--" to indicate end
 	of options.

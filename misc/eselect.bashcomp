@@ -8,7 +8,7 @@
 
 _eselect() {
     local cur sedcmd2 sedcmd3 possibles
-    local options="--brief --color --colour"
+    local options="--brief --color= --colour="
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     sedcmd2='s/^  \([[:alnum:]-][[:alnum:]_-]*\)[[:space:],].*$/\1/p'
@@ -17,6 +17,7 @@ _eselect() {
     set -- "${COMP_WORDS[@]:1}"
     # skip global options
     while [[ $# -gt 1 && $1 == -* ]]; do
+        [[ $2 == "=" ]] && shift 2
         shift
     done
     # skip any subaction options
@@ -38,8 +39,10 @@ _eselect() {
             ;;
     esac
 
-    [[ -n "${possibles}" ]] && \
+    if [[ -n "${possibles}" ]]; then
         COMPREPLY=( $(compgen -W "${possibles}" -- ${cur}) )
+        [[ ${COMPREPLY[0]} == *= ]] && compopt -o nospace
+    fi
 
     return 0
 }
