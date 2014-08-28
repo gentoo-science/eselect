@@ -1,3 +1,13 @@
+2014-08-28  Ulrich Müller  <ulm@gentoo.org>
+
+	* libs/core.bash.in (inherit):
+	* libs/tests.bash.in (has):
+	* modules/config.eselect (generic_handle_one_file, accept_handler)
+	(merge_handler, display_handler):
+	* modules/news.eselect (find_items, do_list, do_read, do_unread):
+	* modules/rc.eselect (run_runscript, do_show): Remove redundant $@
+	in "for" loops throughout.
+
 2014-06-05  Ulrich Müller  <ulm@gentoo.org>
 
 	* misc/eselect.bashcomp (_eselect): Improve handling of options

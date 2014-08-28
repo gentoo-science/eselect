@@ -20,7 +20,7 @@
 has() {
 	local test=${1} item
 	shift
-	for item in "$@" ; do
+	for item; do
 		[[ ${item} == ${test} ]] && return 0
 	done
 	return 1

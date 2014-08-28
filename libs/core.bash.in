@@ -111,7 +111,7 @@ do_action() {
 # Sources a given eselect library file
 inherit() {
 	local x
-	for x in "$@"; do
+	for x; do
 		[[ -e ${ESELECT_CORE_PATH}/${x}.bash ]] \
 			|| die "Couldn't find ${x}.bash"
 		source "${ESELECT_CORE_PATH}/${x}.bash" \

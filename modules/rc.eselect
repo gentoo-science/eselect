@@ -90,7 +90,7 @@ show_script_status() {
 run_runscript() {
 	local command=${1}
 	shift
-	for script in "$@"; do
+	for script; do
 		is_script "${EROOT}/etc/init.d/${script}" \
 			&& /sbin/runscript "${EROOT}/etc/init.d/${script}" "${command}"
 	done
@@ -250,7 +250,7 @@ do_show() {
 		fi
 	fi
 
-	for runlevel in "$@"; do
+	for runlevel; do
 		[[ -n ${runlevel} && -d ${EROOT}/etc/runlevels/${runlevel} ]] \
 			|| die -q "\"${runlevel}\" is no valid runlevel"
 

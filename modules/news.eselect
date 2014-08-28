@@ -15,7 +15,7 @@ NEWS_DIR="/var/lib/gentoo/news"
 # sort order: by item name (i.e. effectively by date)
 find_items() {
 	local stat repos=$(get_repositories) repo file item
-	for stat in "$@"; do
+	for stat; do
 		for repo in ${repos}; do
 			file="${EROOT}${NEWS_DIR}/news-${repo}.${stat}"
 			[[ -f ${file} ]] || continue
@@ -174,7 +174,7 @@ do_list() {
 
 	set -- $(find_items unread read)
 	write_list_start "News items:"
-	for item in "$@"; do
+	for item; do
 		stat=${item%%/*}; item=${item#*/}
 		repo=${item%%/*}; item=${item#*/}
 		find_repo_dir "${repo}"
@@ -270,7 +270,7 @@ do_read() {
 			&& echo "No news is good news."
 	fi
 
-	for i in "$@"; do
+	for i; do
 		if ! is_number "${i}" || [[ ${i} -lt 1 || ${i} -gt ${#items[@]} ]]
 		then
 			write_warning_msg "Bad item number: ${i}"
@@ -378,7 +378,7 @@ do_unread() {
 		set -- ${seq}
 	fi
 
-	for i in "$@"; do
+	for i; do
 		if ! is_number "${i}" || [[ ${i} -lt 1 || ${i} -gt ${#items[@]} ]]
 		then
 			write_warning_msg "Bad item number: ${i}"

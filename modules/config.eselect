@@ -62,7 +62,7 @@ generic_handle_one_file() {
 		local file_raw file
 
 		# for each parameter...
-		for file_raw in "$@" ; do
+		for file_raw; do
 			[[ -z ${file_raw} ]] && continue
 
 			# do we have a number or a name?
@@ -162,7 +162,7 @@ do_accept() {
 
 accept_handler() {
 	local file
-	for file in "$@" ; do
+	for file; do
 		local sfile="${file}" dfile="${file/._cfg????_}"
 		echo "Replacing ${dfile} with ${sfile}..."
 		mv --interactive "${sfile}" "${dfile}"
@@ -201,7 +201,7 @@ do_merge() {
 
 merge_handler() {
 	local file
-	for file in "$@" ; do
+	for file; do
 		local sfile="${file}" dfile="${file/._cfg????_}"
 		echo "Merging ${dfile} with ${sfile}..."
 		merge_prog ${dfile} ${sfile}
@@ -242,7 +242,7 @@ do_display() {
 
 display_handler() {
 	local file
-	for file in "$@" ; do
+	for file; do
 		local sfile="${file}" dfile="${file/._cfg????_}"
 		echo "Proposed changes to ${dfile}:"
 		diff_prog -u ${dfile} ${sfile}
