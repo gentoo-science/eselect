@@ -1,5 +1,10 @@
 2014-08-28  Ulrich Müller  <ulm@gentoo.org>
 
+	* modules/kernel.eselect (find_targets): Changed heuristic for
+	recognising kernel source trees: Check for both Makefile and
+	Kconfig being present, but don't require digits in the directory
+	name any more. Bug 516754.
+
 	* libs/core.bash.in (inherit):
 	* libs/tests.bash.in (has):
 	* modules/config.eselect (generic_handle_one_file, accept_handler)

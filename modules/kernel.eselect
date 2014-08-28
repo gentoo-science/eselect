@@ -28,8 +28,8 @@ sort_kernel_versions() {
 # find a list of kernel symlink targets
 find_targets() {
 	local f
-	for f in "${EROOT}"/usr/src/linux-[[:digit:]]*; do
-		[[ -f ${f}/Makefile ]] && basename "${f}"
+	for f in "${EROOT}"/usr/src/linux-*; do
+		[[ -f ${f}/Makefile && -f ${f}/Kconfig ]] && basename "${f}"
 	done | sort_kernel_versions
 }
 
