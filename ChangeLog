@@ -1,3 +1,8 @@
+2014-09-01  Ulrich Müller  <ulm@gentoo.org>
+
+	* configure.ac: Update version to 1.4.3.
+	* Tagged 1.4.3 release.
+
 2014-08-28  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/kernel.eselect (find_targets): Changed heuristic for
