@@ -1,6 +1,14 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.4.3:
+    Bug fixes:
+    - Recognise kernel directories other than linux-[0-9]* (bug #516754).
+
+    New features:
+    - Improved parsing of global options.
+    - Bash completion for options with an argument.
+
 1.4.2:
     Bug fixes:
     - Fixed bug #511132: Breakage with bash 4.3 in profile module.
