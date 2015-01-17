@@ -78,7 +78,7 @@ AC_SUBST(EPREFIX)
 AC_MSG_CHECKING([whether building from git])
 EXTRAVERSION=""
 if test -d ${GIT_DIR:-.git}; then
-    COMMIT=`git describe --always HEAD`
+    COMMIT=`git describe --long --always HEAD`
     if test x$COMMIT != x; then
         EXTRAVERSION=", git commit $COMMIT"
     fi
