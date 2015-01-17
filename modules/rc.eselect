@@ -37,7 +37,7 @@ is_script() {
 		&& ${file%%.sh} = ${file} \
 		&& ${file%%\~} = ${file} \
 		&& -e ${file} ]] \
-		&& grep "^#\!/sbin/runscript" "${file}" &>/dev/null
+		&& grep '^#!.*/\(runscript\|openrc-run\)' "${file}" &>/dev/null
 }
 
 # find_scripts PRIVATE
@@ -92,7 +92,7 @@ run_runscript() {
 	shift
 	for script; do
 		is_script "${EROOT}/etc/init.d/${script}" \
-			&& /sbin/runscript "${EROOT}/etc/init.d/${script}" "${command}"
+			&& "${EROOT}/etc/init.d/${script}" "${command}"
 	done
 }
 
