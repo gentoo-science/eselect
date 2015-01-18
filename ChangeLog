@@ -1,5 +1,8 @@
 2015-01-18  Ulrich Müller  <ulm@gentoo.org>
 
+	* modules/rc.eselect (is_script): Don't call external programs.
+	Test if script is executable, with a shebang in its first line.
+
 	* configure.ac (EXTRAVERSION): Use "git describe --long".
 
 2015-01-17  Ulrich Müller  <ulm@gentoo.org>

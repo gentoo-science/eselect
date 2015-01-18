@@ -32,12 +32,13 @@ list_runlevels() {
 # is_script PRIVATE
 # check if file $1 is a valid init script
 is_script() {
-	local file=${1}
+	local file=$1 line
 	[[ -n ${file} \
-		&& ${file%%.sh} = ${file} \
-		&& ${file%%\~} = ${file} \
-		&& -e ${file} ]] \
-		&& grep '^#!.*/\(runscript\|openrc-run\)' "${file}" &>/dev/null
+			 && ${file%%.sh} = "${file}" \
+			 && ${file%%\~} = "${file}" \
+			 && -x ${file} ]] \
+		&& read line <"${file}" \
+		&& [[ ${line} =~ ^#!.*(runscript|openrc-run) ]]
 }
 
 # find_scripts PRIVATE
