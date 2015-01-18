@@ -22,9 +22,8 @@ get_runlevel() {
 list_runlevels() {
 	[[ $# -eq 1 ]] || return
 	local x runlevels
-	for x in "${EROOT}"/etc/runlevels/* ; do
-		[[ -d ${x} && -L ${x}/${1} ]] \
-			&& runlevels=(${runlevels[@]} "${x##*/}")
+	for x in "${EROOT}"/etc/runlevels/*; do
+		[[ -d ${x} && -L ${x}/$1 ]] && runlevels=(${runlevels[@]} "${x##*/}")
 	done
 	echo -ne "${runlevels[@]}"
 }
@@ -44,8 +43,8 @@ is_script() {
 # find_scripts PRIVATE
 # browse directory $1 for init scripts and return a list
 find_scripts() {
-	for file in ${1}/* ; do
-		is_script ${file} && echo "${file##*/}"
+	for file in $1/*; do
+		is_script "${file}" && echo "${file##*/}"
 	done
 }
 
@@ -64,7 +63,7 @@ find_unused_scripts() {
 # show_script_status PRIVATE
 # output list entry for script $1 and show its status
 show_script_status() {
-	local script=${1} status=unknown x
+	local script=$1 status=unknown x
 	local PATH=/lib/rc/bin:${PATH} # path to service_* commands
 
 	for x in stopping starting inactive started stopped; do
@@ -89,7 +88,7 @@ show_script_status() {
 # run_runscript PRIVATE
 # run RC_RUNSCRIPT with script $2- and command $1
 run_runscript() {
-	local command=${1}
+	local command=$1
 	shift
 	for script; do
 		is_script "${EROOT}/etc/init.d/${script}" \
@@ -113,20 +112,19 @@ describe_add_options() {
 }
 
 do_add() {
-	[[ $# -gt 0 ]] \
-		|| die -q "Please specify the init script to be added!"
+	[[ $# -gt 0 ]] || die -q "Please specify the init script to be added!"
 	local script=${1##*/}
 	[[ -e ${EROOT}/etc/init.d/${script} ]] \
 		|| die -q "Please specify a valid init script!"
 	shift 1
 	local runlevels=${@:-default}
 	write_list_start "Adding $(highlight ${script}) to following runlevels"
-	for runlevel in ${runlevels} ; do
-		if [[ ! -d ${EROOT}/etc/runlevels/${runlevel} ]] ; then
+	for runlevel in ${runlevels}; do
+		if [[ ! -d ${EROOT}/etc/runlevels/${runlevel} ]]; then
 			write_kv_list_entry ${runlevel} "[invalid]"
 			continue
 		else
-			if [[ -L ${EROOT}/etc/runlevels/${runlevel}/${script} ]] ; then
+			if [[ -L ${EROOT}/etc/runlevels/${runlevel}/${script} ]]; then
 				write_kv_list_entry ${runlevel} "[skipped]"
 			else
 				ln -sf \
@@ -155,20 +153,19 @@ describe_delete_options() {
 }
 
 do_delete() {
-	[[ $# -gt 0 ]] \
-		|| die -q "Please specify the init script to be deleted!"
+	[[ $# -gt 0 ]] || die -q "Please specify the init script to be deleted!"
 	local script=${1##*/}
 	shift 1
 	[[ -e ${EROOT}/etc/init.d/${script} ]] || write_warning_msg \
 		"Init script not found in ${EROOT}/etc/init.d/. Continuing anyway."
 	local runlevels=${@:-default}
 	write_list_start "Deleting $(highlight ${script}) from following runlevels"
-	for runlevel  in ${runlevels} ; do
-		if [[ ! -d ${EROOT}/etc/runlevels/${runlevel} ]] ; then
+	for runlevel in ${runlevels}; do
+		if [[ ! -d ${EROOT}/etc/runlevels/${runlevel} ]]; then
 			write_kv_list_entry ${runlevel} "[invalid]"
 			continue
 		else
-			if [[ -L ${EROOT}/etc/runlevels/${runlevel}/${script} ]] ; then
+			if [[ -L ${EROOT}/etc/runlevels/${runlevel}/${script} ]]; then
 				rm "${EROOT}/etc/runlevels/${runlevel}/${script}" \
 					&& write_kv_list_entry ${runlevel} "[done]" \
 					|| write_kv_list_entry ${runlevel} "[failed]"
@@ -195,18 +192,18 @@ describe_list_options() {
 
 do_list() {
 	local dir file item
-	if [[ -n ${1} ]] && [[ -d ${EROOT}/etc/runlevels/${1} ]] ; then
-		dir=${EROOT}/etc/runlevels/${1}
+	if [[ -n $1 ]] && [[ -d ${EROOT}/etc/runlevels/$1 ]]; then
+		dir=${EROOT}/etc/runlevels/$1
 		write_list_start \
-			"Init scripts to be started by runlevel $(highlight ${1})"
-	elif [[ -z ${1} ]] ; then
+			"Init scripts to be started by runlevel $(highlight $1)"
+	elif [[ -z $1 ]]; then
 		dir=${EROOT}/etc/init.d
 		write_list_start "Available init scripts"
 	else
-		die -q "${1} is no valid runlevel!"
+		die -q "$1 is no valid runlevel!"
 	fi
 
-	for file in $(find_scripts "${dir}") ; do
+	for file in $(find_scripts "${dir}"); do
 		write_kv_list_entry "${file}" \
 			$([[ ${dir##*/} = init.d ]] && list_runlevels "${file}")
 	done
@@ -290,8 +287,7 @@ describe_start_options() {
 }
 
 do_start() {
-	[[ $# -gt 0 ]] \
-		|| die -q "Please specify the init script to be started!"
+	[[ $# -gt 0 ]] || die -q "Please specify the init script to be started!"
 	write_list_start "Starting init script$([[ $# -gt 1 ]] && echo -n 's')"
 	run_runscript start "$@"
 }
@@ -311,8 +307,7 @@ describe_stop_options() {
 }
 
 do_stop() {
-	[[ $# -gt 0 ]] \
-		|| die -q "Please specify the init script to be stopped!"
+	[[ $# -gt 0 ]] || die -q "Please specify the init script to be stopped!"
 	write_list_start "Stopping init script$([[ $# -gt 1 ]] && echo -n 's')"
 	run_runscript stop "$@"
 }
@@ -332,8 +327,7 @@ describe_pause_options() {
 }
 
 do_pause() {
-	[[ $# -gt 0 ]] \
-		|| die -q "Please specify the init script to be paused!"
+	[[ $# -gt 0 ]] || die -q "Please specify the init script to be paused!"
 	write_list_start "Pausing init script$([[ $# -gt 1 ]] && echo -n 's')"
 	run_runscript pause "$@"
 }
@@ -353,8 +347,7 @@ describe_reload_options() {
 }
 
 do_reload() {
-	[[ $# -gt 0 ]] \
-		|| die -q "Please specify the init script to be reloaded!"
+	[[ $# -gt 0 ]] || die -q "Please specify the init script to be reloaded!"
 	write_list_start "Reloading init script$([[ $# -gt 1 ]] && echo -n 's')"
 	run_runscript reload "$@"
 }
@@ -374,8 +367,7 @@ describe_restart_options() {
 }
 
 do_restart() {
-	[[ $# -gt 0 ]] \
-		|| die -q "Please specify the init script to be restarted!"
+	[[ $# -gt 0 ]] || die -q "Please specify the init script to be restarted!"
 	write_list_start "Restarting init script$([[ $# -gt 1 ]] && echo -n 's')"
 	run_runscript restart "$@"
 }
