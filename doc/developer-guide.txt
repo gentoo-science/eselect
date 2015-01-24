@@ -455,7 +455,7 @@ The ``append_config`` Function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``append_config`` function appends an item to an already stored
-value in the modules configuration file. It uses ``load_config`` /
+value in the module's configuration file. It uses ``load_config`` /
 ``store_config`` internally and should be invoked as
 ``append_config filename key item``. Note that the item will not be
 appended if it occurs in the key's value already.

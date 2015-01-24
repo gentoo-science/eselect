@@ -97,11 +97,11 @@ and --colour, which controls coloured output. The following are standard
 action names -- each module may provide a subset of these actions:
 
 help
-    Print the modules help screen.
+    Print the module's help screen.
 usage
-    Print information on how to invoke the modules actions.
+    Print information on how to invoke the module's actions.
 version
-    Print the modules version and other useful information.
+    Print the module's version and other useful information.
 list
     Print a set of selectable options.
 show
