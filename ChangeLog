@@ -1,3 +1,8 @@
+2015-01-24  Ulrich Müller  <ulm@gentoo.org>
+
+	* README: Documentation is now licensed under GPL-2+ or
+	CC-BY-SA-3.0 (was CC-BY-SA-2.5 before).
+
 2015-01-18  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/rc.eselect (is_script): Don't call external programs.
