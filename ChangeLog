@@ -1,5 +1,8 @@
 2015-01-24  Ulrich Müller  <ulm@gentoo.org>
 
+	* configure.ac: Update version to 1.4.4.
+	* Tagged 1.4.4 release.
+
 	* README: Documentation is now licensed under GPL-2+ or
 	CC-BY-SA-3.0 (was CC-BY-SA-2.5 before).
 
