@@ -1,9 +1,16 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.4.4:
+    Bug fixes:
+    - Fixed bug #536822: Recognise 'openrc-run' init scripts in rc module.
+
+    New features:
+    - Documentation is now licensed under GPL-2+ or CC-BY-SA-3.0.
+
 1.4.3:
     Bug fixes:
-    - Recognise kernel directories other than linux-[0-9]* (bug #516754).
+    - Fixed bug #516754: Recognise kernel directories other than linux-[0-9]*.
 
     New features:
     - Improved parsing of global options.
