@@ -123,7 +123,6 @@ es_do_list-options() {
 	write_kv_list_entry "--brief"                   "Make output shorter"
 	write_kv_list_entry "--colour=<yes|no|auto>"    "Enable or disable colour output (default 'auto')"
 	write_kv_list_entry "--debug"                   "Debug eselect (enable set -x)"
-	write_kv_list_entry "--no-color,--no-colour"    "Disable coloured output"
 }
 
 # es_do_list-modules
