@@ -1,4 +1,4 @@
-# Copyright 2010-2014 Gentoo Foundation
+# Copyright 2015 Gentoo Foundation
 # Copyright 2008 Mike Kelly
 # Copyright 2009, 2013 David Leverton
 # Copyright 2010 Bo Ørsted Andresen
@@ -8,112 +8,112 @@ inherit alternatives-common
 
 ### show action ###
 describe_show() {
-    echo "Show the current provider in use for ${ALTERNATIVE}"
+	echo "Show the current provider in use for ${ALTERNATIVE}"
 }
 
 do_show() {
-    [[ -z "${ALTERNATIVE}" ]] && die "Need to set ALTERNATIVE in the eselect module"
-    local current="$(get_current_provider)"
-    if [[ -z "${current}" ]] ; then
-        echo "(none)"
-        return 2
-    fi
-    echo "${current}"
+	[[ -z "${ALTERNATIVE}" ]] && die "Need to set ALTERNATIVE in the eselect module"
+	local current="$(get_current_provider)"
+	if [[ -z "${current}" ]] ; then
+		echo "(none)"
+		return 2
+	fi
+	echo "${current}"
 }
 
 options_show() {
-    :
+	:
 }
 
 ### list action ###
 describe_list() {
-    echo "Lists all available providers for ${ALTERNATIVE}"
+	echo "Lists all available providers for ${ALTERNATIVE}"
 }
 
 do_list() {
-    [[ -z "${ALTERNATIVE}" ]] && die "Need to set ALTERNATIVE in the eselect module"
-    local n cur= providers=( $(get_providers) )
-    write_list_start "Available providers for ${ALTERNATIVE}:"
+	[[ -z "${ALTERNATIVE}" ]] && die "Need to set ALTERNATIVE in the eselect module"
+	local n cur= providers=( $(get_providers) )
+	write_list_start "Available providers for ${ALTERNATIVE}:"
 
-    cur="$(get_current_provider)"
+	cur="$(get_current_provider)"
 
-    if [[ -n "${providers[@]}" ]] ; then
-        for (( n = 0 ; n < ${#providers[@]} ; ++n )) ; do
-            [[ ${cur} ==  "${providers[${n}]}" ]] && \
-                providers[${n}]="${providers[${n}]} $(highlight '*')"
-        done
-        write_numbered_list "${providers[@]}"
-    else
-        write_kv_list_entry "(none found)" ""
-    fi
+	if [[ -n "${providers[@]}" ]] ; then
+		for (( n = 0 ; n < ${#providers[@]} ; ++n )) ; do
+			[[ ${cur} ==  "${providers[${n}]}" ]] && \
+				providers[${n}]="${providers[${n}]} $(highlight '*')"
+		done
+		write_numbered_list "${providers[@]}"
+	else
+		write_kv_list_entry "(none found)" ""
+	fi
 }
 
 options_list() {
-    :
+	:
 }
 
 ### files action ###
 describe_files() {
-    echo "Lists symlinks provided by the currently selected provider"
+	echo "Lists symlinks provided by the currently selected provider"
 }
 
 do_files() {
-    [[ -z "${ALTERNATIVE}" ]] && die "Need to set ALTERNATIVE in the eselect module"
+	[[ -z "${ALTERNATIVE}" ]] && die "Need to set ALTERNATIVE in the eselect module"
 
-    local cur="$(get_current_provider)" p=
-    [[ -n "${cur}" ]] || die -q "No selected provider, hence no symlinks provided"
-    local dieprefix="Could not list symlinks provided for ${ALTERNATIVE}"
+	local cur="$(get_current_provider)" p=
+	[[ -n "${cur}" ]] || die -q "No selected provider, hence no symlinks provided"
+	local dieprefix="Could not list symlinks provided for ${ALTERNATIVE}"
 
-    local errors symlink rootsymlink
-    while read -r -d '' symlink; do
-        rootsymlink="${EROOT%/}${symlink}"
-        rootsymlink=${rootsymlink//+(\/)/\/}
-        echo "${rootsymlink}"
-        if [[ -L ${rootsymlink} ]]; then
-            if [[ ! -e ${rootsymlink} ]]; then
-                write_error_msg "${rootsymlink} is dangling symlink"
-                errors=yes
-            fi
-        elif [[ -d ${rootsymlink} ]]; then
-            write_error_msg "${rootsymlink} is a directory"
-            errors=yes
-        elif [[ -e ${rootsymlink} ]]; then
-            write_error_msg "${rootsymlink} exists but is not a symlink"
-            errors=yes
-        else
-            write_error_msg "${rootsymlink} does not exist"
-            errors=yes
-        fi
-    done <"${ALTERNATIVESDIR}/${ALTERNATIVE}/_current_list"
+	local errors symlink rootsymlink
+	while read -r -d '' symlink; do
+		rootsymlink="${EROOT%/}${symlink}"
+		rootsymlink=${rootsymlink//+(\/)/\/}
+		echo "${rootsymlink}"
+		if [[ -L ${rootsymlink} ]]; then
+			if [[ ! -e ${rootsymlink} ]]; then
+				write_error_msg "${rootsymlink} is dangling symlink"
+				errors=yes
+			fi
+		elif [[ -d ${rootsymlink} ]]; then
+			write_error_msg "${rootsymlink} is a directory"
+			errors=yes
+		elif [[ -e ${rootsymlink} ]]; then
+			write_error_msg "${rootsymlink} exists but is not a symlink"
+			errors=yes
+		else
+			write_error_msg "${rootsymlink} does not exist"
+			errors=yes
+		fi
+	done <"${ALTERNATIVESDIR}/${ALTERNATIVE}/_current_list"
 }
 
 options_files() {
-    :
+	:
 }
 
 ### set action ###
 
 describe_set() {
-    echo "Sets a provider for ${ALTERNATIVE}"
+	echo "Sets a provider for ${ALTERNATIVE}"
 }
 
 describe_set_parameters() {
-    echo "[ --force ] <provider>"
+	echo "[ --force ] <provider>"
 }
 
 describe_set_options() {
-    echo "--force : overwrite or remove existing non-symlink files (but not directories) if necessary"
-    echo "<provider> : the name of the provider to use or the index of the provider preceeded by a dash"
+	echo "--force : overwrite or remove existing non-symlink files (but not directories) if necessary"
+	echo "<provider> : the name of the provider to use or the index of the provider preceeded by a dash"
 }
 
 do_set() {
-    # implementation defined in alternatives-common.bash as needed by do_update
-    alternatives_do_set "$@"
+	# implementation defined in alternatives-common.bash as needed by do_update
+	alternatives_do_set "$@"
 }
 
 options_set() {
-    _options_parameters $FUNCNAME "$@"
-    get_providers
+	_options_parameters $FUNCNAME "$@"
+	get_providers
 }
 
 ### update action ###
@@ -122,128 +122,128 @@ options_set() {
 # both "eselect alternatives" and individual modules
 
 describe_update() {
-    alternatives_describe_update
+	alternatives_describe_update
 }
 
 describe_update_parameters() {
-    alternatives_describe_update_parameters
+	alternatives_describe_update_parameters
 }
 
 describe_update_options() {
-    alternatives_describe_update_options
+	alternatives_describe_update_options
 }
 
 do_update() {
-    alternatives_do_update "$@"
+	alternatives_do_update "$@"
 }
 
 options_update() {
-    alternatives_options_update
+	alternatives_options_update
 }
 
 ### unset action ###
 
 describe_unset() {
-    echo "Unset any symlinks created for the current provider for ${ALTERNATIVE}."
+	echo "Unset any symlinks created for the current provider for ${ALTERNATIVE}."
 }
 
 describe_unset_parameters() {
-    echo "[ --force ]"
+	echo "[ --force ]"
 }
 
 describe_unset_options() {
-    echo "--force : remove existing non-symlink files (but not directories) if necessary"
+	echo "--force : remove existing non-symlink files (but not directories) if necessary"
 }
 
 do_unset() {
-    # implementation defined in alternatives-common.bash as needed by do_update
-    alternatives_do_unset "$@"
+	# implementation defined in alternatives-common.bash as needed by do_update
+	alternatives_do_unset "$@"
 }
 
 options_unset() {
-    _options_parameters $FUNCNAME "$@"
-    get_current_provider
+	_options_parameters $FUNCNAME "$@"
+	get_current_provider
 }
 
 ### script action ###
 
 describe_script() {
-    echo "Output an evalable script fragment to set PATH, LD_LIBRARY_PATH and MANPATH to use the specified provider"
+	echo "Output an evalable script fragment to set PATH, LD_LIBRARY_PATH and MANPATH to use the specified provider"
 }
 
 describe_script_parameters() {
-    echo "[--sh | --csh] [<provider>]"
+	echo "[--sh | --csh] [<provider>]"
 }
 
 describe_script_options() {
-    echo "--sh : use Bourne shell syntax (default)"
-    echo "--csh : use C shell syntax"
-    echo "<provider> : the provider to use or the index of the provider (if not specified, use the system default)"
+	echo "--sh : use Bourne shell syntax (default)"
+	echo "--csh : use C shell syntax"
+	echo "<provider> : the provider to use or the index of the provider (if not specified, use the system default)"
 }
 
 do_script() {
-    [[ -z "${ALTERNATIVE}" ]] && die "Need to set ALTERNATIVE in the eselect module"
-    local syntax=sh provider providers
-    if [[ ${1} == --sh ]]; then
-        shift
-    elif [[ ${1} == --csh ]]; then
-        syntax=csh
-        shift
-    fi
+	[[ -z "${ALTERNATIVE}" ]] && die "Need to set ALTERNATIVE in the eselect module"
+	local syntax=sh provider providers
+	if [[ ${1} == --sh ]]; then
+		shift
+	elif [[ ${1} == --csh ]]; then
+		syntax=csh
+		shift
+	fi
 
-    local idx=${!}
-    if [[ ${idx} == +(-|+|[[:digit:]]) ]]; then
+	local idx=${!}
+	if [[ ${idx} == +(-|+|[[:digit:]]) ]]; then
 	idx=${1#+(-|+)}
-        providers=( $(get_providers) )
-        (( ${idx} <= ${#providers[@]} )) || die -q "The given provider with index (${idx}) does not exist"
-        provider=${providers[${idx}-1]}
-    else
-        provider="${idx}"
-    fi
-    [[ -z "${provider}" ]] && die -q "Missing required parameter 'provider'"
+		providers=( $(get_providers) )
+		(( ${idx} <= ${#providers[@]} )) || die -q "The given provider with index (${idx}) does not exist"
+		provider=${providers[${idx}-1]}
+	else
+		provider="${idx}"
+	fi
+	[[ -z "${provider}" ]] && die -q "Missing required parameter 'provider'"
 
-    if [[ ! -d ${ALTERNATIVESDIR}/${ALTERNATIVE}/${provider} ]] ; then
-        if is_number ${provider} ; then
-            providers=( $(get_providers) )
-            [[ -n ${providers[${idx}-1]} ]] && \
-                die -q "The given provider (${provider}) does not exist"
-        fi
-        die -q "The given provider (${provider}) does not exist"
-    fi
+	if [[ ! -d ${ALTERNATIVESDIR}/${ALTERNATIVE}/${provider} ]] ; then
+		if is_number ${provider} ; then
+			providers=( $(get_providers) )
+			[[ -n ${providers[${idx}-1]} ]] && \
+				die -q "The given provider (${provider}) does not exist"
+		fi
+		die -q "The given provider (${provider}) does not exist"
+	fi
 
-    local variables=( PATH LD_LIBRARY_PATH MANPATH )
-    [[ -n ${!default_*} ]] && local ${!default_*}
-    local default_LD_LIBRARY_PATH=$(grep '^[^#]' "${EROOT%/}"/etc/ld.so.conf | tr '\n' ':')/lib:/usr/lib
-    local default_MANPATH=$(MANPATH= man -C"${EROOT%/}"/etc/man.conf -w)
+	local variables=( PATH LD_LIBRARY_PATH MANPATH )
+	[[ -n ${!default_*} ]] && local ${!default_*}
+	local default_LD_LIBRARY_PATH=$(grep '^[^#]' "${EROOT%/}"/etc/ld.so.conf | tr '\n' ':')/lib:/usr/lib
+	local default_MANPATH=$(MANPATH= man -C"${EROOT%/}"/etc/man.conf -w)
 
-    local var IFS=:
-    for var in "${variables[@]}"; do
-        local defvar=default_${var} path paths=( )
-        for path in ${!var}; do
-            [[ ${path} == ${ALTERNATIVESDIR_ROOTLESS}/${ALTERNATIVE}/* ]] && continue
-            [[ -n ${provider} && -d ${ALTERNATIVESDIR}/${ALTERNATIVE}/${provider}/${path#/} ]] && paths+=( "${ALTERNATIVESDIR_ROOTLESS}/${ALTERNATIVE}/${provider}/${path#/}" )
-            paths+=( "${path}" )
-        done
+	local var IFS=:
+	for var in "${variables[@]}"; do
+		local defvar=default_${var} path paths=( )
+		for path in ${!var}; do
+			[[ ${path} == ${ALTERNATIVESDIR_ROOTLESS}/${ALTERNATIVE}/* ]] && continue
+			[[ -n ${provider} && -d ${ALTERNATIVESDIR}/${ALTERNATIVE}/${provider}/${path#/} ]] && paths+=( "${ALTERNATIVESDIR_ROOTLESS}/${ALTERNATIVE}/${provider}/${path#/}" )
+			paths+=( "${path}" )
+		done
 
-        [[ -n ${provider} ]] && for path in ${!defvar}; do
-            [[ -d ${ALTERNATIVESDIR}/${ALTERNATIVE}/${provider}/${path#/} ]] && paths+=( "${ALTERNATIVESDIR_ROOTLESS}/${ALTERNATIVE}/${provider}/${path#/}" )
-        done
+		[[ -n ${provider} ]] && for path in ${!defvar}; do
+			[[ -d ${ALTERNATIVESDIR}/${ALTERNATIVE}/${provider}/${path#/} ]] && paths+=( "${ALTERNATIVESDIR_ROOTLESS}/${ALTERNATIVE}/${provider}/${path#/}" )
+		done
 
-        local newval=${paths[*]}
-        if [[ ${newval} != ${!var} ]]; then
-            newval=${newval//\'/\'\\\'\'}
-            if [[ ${syntax} == sh ]]; then
-                echo "${var}='${newval}'; export ${var}"
-            else
-                echo "setenv ${var} '${newval}'"
-            fi
-        fi
-    done
+		local newval=${paths[*]}
+		if [[ ${newval} != ${!var} ]]; then
+			newval=${newval//\'/\'\\\'\'}
+			if [[ ${syntax} == sh ]]; then
+				echo "${var}='${newval}'; export ${var}"
+			else
+				echo "setenv ${var} '${newval}'"
+			fi
+		fi
+	done
 }
 
 options_script() {
-    _options_parameters $FUNCNAME "$@"
-    get_providers
+	_options_parameters $FUNCNAME "$@"
+	get_providers
 }
 
 # vim: set ft=eselect sw=4 sts=4 ts=4 et tw=80 :
