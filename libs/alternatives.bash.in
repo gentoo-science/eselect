@@ -193,7 +193,7 @@ do_script() {
 
 	local idx=${!}
 	if [[ ${idx} == +(-|+|[[:digit:]]) ]]; then
-	idx=${1#+(-|+)}
+		idx=${1#+(-|+)}
 		providers=( $(get_providers) )
 		(( ${idx} <= ${#providers[@]} )) || die -q "The given provider with index (${idx}) does not exist"
 		provider=${providers[${idx}-1]}
