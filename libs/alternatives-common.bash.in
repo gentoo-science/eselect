@@ -111,7 +111,7 @@ alternatives_do_set() {
 	fi
 	local idx=${1}
 	if [[ ${1} == +(-|+|[[:digit:]]) ]]; then
-	idx=${1#+(-|+)}
+		idx=${1#+(-|+)}
 		providers=( $(get_providers) )
 		(( ${idx} <= ${#providers[@]} )) || die -q "The given provider with index (${idx}) does not exist"
 		provider=${providers[${idx}-1]}
@@ -125,7 +125,7 @@ alternatives_do_set() {
 		if is_number ${provider} ; then
 			providers=( $(get_providers) )
 			[[ -n ${providers[${idx}-1]} ]] && \
-		die -q "The given provider (${provider}) does not exist"
+				die -q "The given provider (${provider}) does not exist"
 		fi
 		die -q "The given provider (${provider}) does not exist"
 	fi
