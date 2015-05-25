@@ -86,21 +86,21 @@ do_create() {
 		ENDOFTEXT
 	fi
 }
-### remove action ###
+### delete action ###
 
-describe_remove() {
-	echo "Remove an existing alternative"
+describe_delete() {
+	echo "Delete an existing alternative"
 }
 
-describe_remove_parameters() {
+describe_delete_parameters() {
 	echo "<alternative>"
 }
 
-describe_remove_options() {
-	echo "<alternative> : the name of the alternative to remove"
+describe_delete_options() {
+	echo "<alternative> : the name of the alternative to delete"
 }
 
-do_remove() {
+do_delete() {
 	[[ $# == 1 ]] || die "Need exactly one alternative name"
 
 	local auto_dir="${ESELECT_AUTO_GENERATED_MODULES_PATH}"
@@ -109,4 +109,62 @@ do_remove() {
 	if [[ -e "${auto_file}" ]]; then
 		rm "${auto_file}" || die "Failed to remove alternative: ${1}"
 	fi
+}
+
+### add action ###
+
+# all functions implemented in alternatives-common.bash as defined for
+# both "eselect alternatives" and individual modules
+
+describe_add() {
+	alternatives_describe_add
+}
+
+describe_add_parameters() {
+	echo "<alternative> $(alternatives_describe_add_parameters)"
+}
+
+describe_add_options() {
+	echo "<alternative> : the name of the alternative to add a provider for"
+	alternatives_describe_add_options
+}
+
+do_add() {
+	local ALTERNATIVE=$1
+	shift
+	[[ -z "${ALTERNATIVE}" ]] && die -q "Missing required parameter 'alternative'"
+	alternatives_do_add "$@"
+}
+
+options_add() {
+	alternatives_options_add
+}
+
+### remove action ###
+
+# all functions implemented in alternatives-common.bash as defined for
+# both "eselect alternatives" and individual modules
+
+describe_remove() {
+	alternatives_describe_remove
+}
+
+describe_remove_parameters() {
+	echo "<alternative> $(alternatives_describe_remove_parameters)"
+}
+
+describe_remove_options() {
+	echo "<alternative> : the name of the alternative to remove a provider from"
+	alternatives_describe_remove_options
+}
+
+do_remove() {
+	local ALTERNATIVE=$1
+	shift
+	[[ -z "${ALTERNATIVE}" ]] && die -q "Missing required parameter 'alternative'"
+	alternatives_do_remove "$@"
+}
+
+options_remove() {
+	alternatives_options_remove
 }
