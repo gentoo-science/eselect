@@ -48,3 +48,65 @@ options_update() {
 	alternatives_options_update
 }
 
+### create action ###
+
+describe_create() {
+	echo "Create a new alternative"
+}
+
+describe_create_parameters() {
+	echo "<alternative>"
+}
+
+describe_create_options() {
+	echo "<alternative> : the name of the alternative to create"
+}
+
+do_create() {
+	[[ $# == 1 ]] || die "Need exactly one alternative name"
+
+	local auto_dir="${ESELECT_AUTO_GENERATED_MODULES_PATH}"
+	local auto_file="${auto_dir}/${1}.eselect"
+
+	if [[ ! -e "${auto_file}" ]]; then
+		if [[ ! -e "${auto_dir}" ]]; then
+			mkdir -p "${auto_dir}" || die "Failed to create ${auto_dir}"
+		elif [[ ! -d "${auto_dir}" ]]; then
+			die "${auto_dir} exists but is a file"
+		fi
+		cat >> ${auto_file} <<- ENDOFTEXT
+			DESCRIPTION="${DESCRIPTION} for ${1}"
+			VERSION="${VERSION}"
+			MAINTAINER="${MAINTAINER}"
+			ESELECT_MODULE_GROUP="Alternatives"
+
+			ALTERNATIVE="${1}"
+
+			inherit alternatives
+		ENDOFTEXT
+	fi
+}
+### remove action ###
+
+describe_remove() {
+	echo "Remove an existing alternative"
+}
+
+describe_remove_parameters() {
+	echo "<alternative>"
+}
+
+describe_remove_options() {
+	echo "<alternative> : the name of the alternative to remove"
+}
+
+do_remove() {
+	[[ $# == 1 ]] || die "Need exactly one alternative name"
+
+	local auto_dir="${ESELECT_AUTO_GENERATED_MODULES_PATH}"
+	local auto_file="${auto_dir}/${1}.eselect"
+
+	if [[ -e "${auto_file}" ]]; then
+		rm "${auto_file}" || die "Failed to remove alternative: ${1}"
+	fi
+}
