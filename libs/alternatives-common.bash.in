@@ -6,7 +6,7 @@
 
 inherit config output path-manipulation
 
-ALTERNATIVESDIR_ROOTLESS="@sysconfdir@/env.d/alternatives"
+: "${ALTERNATIVESDIR_ROOTLESS:=@sysconfdir@/env.d/alternatives}"
 ALTERNATIVESDIR="${EROOT%/}${ALTERNATIVESDIR_ROOTLESS}"
 
 get_current_provider() {
