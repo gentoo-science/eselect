@@ -116,6 +116,86 @@ options_set() {
 	get_providers
 }
 
+### add action ###
+
+describe_add() {
+	echo "Add an alternative provider for '${ALTERNATIVE}'"
+}
+
+describe_add_parameters() {
+	echo "<provider> <importance> <source> <target> [<source> <target> [...]]"
+}
+
+describe_add_options() {
+	echo "<provider> : the name of the alternative provider for '${ALTERNATIVE}'"
+	echo "<importance> : interger value, representing the importance of the provider"
+	echo "<source> : source of the symlink"
+	echo "<target> : destination for the symlink"
+}
+
+do_add() {
+	(( $# >= 4 )) && (( ($#-2)%2 == 0)) || \
+		die "exactly 2+N*2 arguments where N>=1 required"
+	local provider=${1}
+	local importance=${2}
+	shift 2
+	local index src target ret=0
+	local provider_dir="${ALTERNATIVESDIR}/${ALTERNATIVE}/${provider}"
+
+	# Creating base dir
+	if [[ ! -e "${provider_dir}" ]]; then
+		mkdir -p "${provider_dir}" || die "Failed to create ${provider_dir}"
+	elif [[ ! -d "${provider_dir}" ]]; then
+		die "${provider_dir} exists but is a file"
+	else
+		die "${provider_dir} already present. You need ot remove it before adding it again"
+	fi
+
+	# Make sure importance is a signed integer
+	if [[ -n ${importance} ]] && ! [[ ${importance} =~ ^[0-9]+(\.[0-9]+)*$ ]]; then
+		die "Invalid importance (${importance}) detected"
+	else
+		# Setting importance
+		echo ${importance} > "${provider_dir}/_importance"
+	fi
+
+	# Process source-target pairs
+	while (( $# >= 2 )); do
+		src=${1//+(\/)/\/}; target=${2//+(\/)/\/}
+		if [[ ${src} != /* ]]; then
+			die "Source path must be absolute, but got ${src}"
+		else
+			local reltarget= dir=${provider_dir}${src%/*}
+			while [[ -n ${dir} ]]; do
+				reltarget+=../
+				dir=${dir%/*}
+			done
+
+			reltarget=${reltarget%/}
+			[[ ${target} == /* ]] || reltarget+=${src%/*}/
+			reltarget+=${target}
+			mkdir -p "${provider_dir}${src%/*}" || die "Failed to create ${provider_dir}${src%/*}"
+			ln -sf "${reltarget}" "${provider_dir}${src}" || die "Failed to create symlink"
+			# The -e test will fail if existing symlink points to non-existing target,
+			# so check for -L also.
+			# Say ${ED}/sbin/init exists and links to /bin/systemd (which doesn't exist yet).
+#			if [[ -e ${ED}${src} || -L ${ED}${src} ]]; then
+#				local fulltarget=${target}
+#				[[ ${fulltarget} != /* ]] && fulltarget=${src%/*}/${fulltarget}
+#				if [[ -e ${ED}${fulltarget} || -L ${ED}${fulltarget} ]]; then
+#					die "${src} defined as provider for ${fulltarget}, but both already exist in \${ED}"
+#				else
+#					mv "${ED}${src}" "${ED}${fulltarget}" || die
+#				fi
+#			fi
+		fi
+		shift 2
+	done
+
+	# make sure we have something selected
+	eselect ${provider} show > /dev/null || eselect ${provider} update --best
+}
+
 ### update action ###
 
 # all functions implemented in alternatives-common.bash as defined for
