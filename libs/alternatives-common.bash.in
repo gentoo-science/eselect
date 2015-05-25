@@ -256,9 +256,8 @@ alternatives_do_add() {
 
 	(( $# >= 4 )) && (( ($#-2)%2 == 0)) || \
 		die "exactly 3+N*2 arguments where N>=1 required"
-	local ALTERNATIVE=${1}
-	local provider=${2}
-	local importance=${3}
+	local provider=${1}
+	local importance=${2}
 	shift 2
 	local index src target ret=0
 	local provider_dir="${ALTERNATIVESDIR}/${ALTERNATIVE}/${provider}"
