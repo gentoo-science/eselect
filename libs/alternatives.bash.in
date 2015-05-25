@@ -196,6 +196,34 @@ do_add() {
 	eselect ${provider} show > /dev/null || eselect ${provider} update --best
 }
 
+### remove action ###
+
+describe_remove() {
+	echo "Remove an alternative provider for '${ALTERNATIVE}'"
+}
+
+describe_remove_parameters() {
+	echo "<provider>"
+}
+
+describe_remove_options() {
+	echo "<provider> : the name of the alternative provider for '${ALTERNATIVE}'"
+}
+
+do_remove() {
+	if [[ -d "${ALTERNATIVESDIR}/${ALTERNATIVE}/${provider}" ]]; then
+		rm -r "${ALTERNATIVESDIR}/${ALTERNATIVE}/${provider}" || \
+			die "Failed to remove '${provider}' for '${ALTERNATIVE}'"
+	else
+		einfo "'${provider}' is not a provider for '${ALTERNATIVE}'"
+	fi
+
+#	if no provider is present, remove whole Alternative
+	if ! eselect ${provider} update --best > /dev/null; then
+		eselect alternatives remove ${ALTERNATIVE}
+	fi
+}
+
 ### update action ###
 
 # all functions implemented in alternatives-common.bash as defined for
