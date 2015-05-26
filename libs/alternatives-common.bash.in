@@ -382,6 +382,10 @@ alternatives_do_update() {
 	[[ -n ${best} && -n ${1} && -z ${ignore} ]] && die -q "Cannot specify both --best and a provider"
 
 	if [[ -n ${best} ]] ; then
+		# set best provider
+		: # fall through to "switch to first available" loop below
+	elif [[ $# == "0" ]] && [[ -z ${cur} ]]; then
+		# if nothing is specified
 		: # fall through to "switch to first available" loop below
 	elif [[ ${cur} == ${1} && -z ${ignore} ]]; then
 		# if current provider was just updated, reselect it since it could have changed
