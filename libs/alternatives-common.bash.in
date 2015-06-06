@@ -426,7 +426,7 @@ alternatives_do_update() {
 alternatives_options_update() {
 	_options_parameters ${FUNCNAME#alternatives_} "$@"
 	if [[ -n ${ALTERNATIVE} ]]; then
-	get_providers
+		get_providers
 	else
 		for alt in ${ALTERNATIVESDIR_ROOTLESS}/_*/*/_importance; do
 			echo ${alt} | cut -d/ -f5
