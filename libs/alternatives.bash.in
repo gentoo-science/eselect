@@ -152,12 +152,22 @@ describe_remove_options() {
 }
 
 do_remove() {
+	local ret
 	alternatives_do_remove
 
-#	if no provider is present, remove whole Alternative
-	if ! eselect ${provider} update --best > /dev/null; then
-		eselect alternatives remove ${ALTERNATIVE}
-	fi
+#	if no provider is present, remove whole alternative
+	eselect ${provider} update --best > /dev/null; ret=$?
+	case ret in
+		0)
+			# All good
+			:;;
+		2)
+			# No provider present anymore
+			eselect alternatives remove ${ALTERNATIVE};;
+		*)
+			write_error_msg "Failed to remove ${ALTERNATIVE}"
+			errors=yes
+	esac
 }
 
 ### update action ###
