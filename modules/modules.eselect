@@ -129,7 +129,12 @@ do_has() {
 ### add action
 
 describe_add() {
-    echo "Install a module file to \$HOME/.eselect/modules/, or ${ESELECT_DEFAULT_MODULES_PATH//\/\///}/ when run as root"
+    echo "Install a module file"
+}
+
+describe_add_options() {
+    echo "--default : install as global module (default if root)"
+    echo "--user : install as user's module"
 }
 
 describe_add_parameters() {
@@ -137,28 +142,33 @@ describe_add_parameters() {
 }
 
 do_add() {
-
-    local local_path="${ROOT}${HOME}/.eselect/modules/" module_file
-    local force_default=0
-
-    if [[ $1 = "--force-default-location" ]] ; then
-        force_default=1
-        shift
-    fi
+    local module_file module_path
+    case $1 in
+	--default)
+	    module_path="${ESELECT_DEFAULT_MODULES_PATH}"
+	    shift
+	    ;;
+	--user)
+	    module_path="${ESELECT_USER_MODULES_PATH}"
+	    mkdir -p "${module_path}" || die -q "Failed to create directory ${module_path}"
+	    shift
+	    ;;
+	*) : ;;
+    esac
     module_file=$1
 
-    [[ -z ${module_file} ]] && die -q "Required option (module file) missing"
+    [[ -z ${module_file} ]] && die -q "Required module file missing"
 
-    # TODO: Don't install the module "somewhere", depending on write access.
-    # Add an option to control if it goes to the user's or to the system dir.
-    if ! cp "${module_file}" "${ESELECT_DEFAULT_MODULES_PATH}" &> /dev/null ; then
-        [[ ${force_default} == 1 ]] \
-            && die -q "Failed to install module file to default modules path"
-
-        mkdir -p "${local_path}" \
-            || die -q "Failed to create module install directory"
-        cp "${module_file}" "${local_path}" \
-                       || die -q "Failed to install module file"
+    if [[ -n ${module_path} ]]; then
+	cp "${module_file}" "${module_path}" &> /dev/null || \
+	    die -q "Failed to install module file to ${module_path}"
+    else
+	if ! cp "${module_file}" "${ESELECT_DEFAULT_MODULES_PATH}" &> /dev/null ; then
+	    mkdir -p "${ESELECT_USER_MODULES_PATH}" \
+		|| die -q "Failed to create directory ${ESELECT_USER_MODULES_PATH}"
+	    cp "${module_file}" "${ESELECT_USER_MODULES_PATH}" \
+		|| die -q "Failed to install module file ${module_file}"
+	fi
     fi
 }
 
@@ -166,8 +176,12 @@ do_add() {
 
 describe_remove() {
     echo "Remove the given module name"
-    echo "By default, it will remove from \$HOME/.eselect/modules/, unless running as "
-    echo "root. Then, remove from ${ESELECT_DATA_PATH}/modules/."
+}
+
+describe_remove_options() {
+    echo "--default : remove global module (default if root)"
+    echo "--alternatives : remove generated alternatives module"
+    echo "--user : remove user module"
 }
 
 describe_remove_parameters() {
@@ -175,26 +189,36 @@ describe_remove_parameters() {
 }
 
 do_remove() {
-    local local_path="${ROOT}${HOME}/.eselect/modules/" module_name
-    local force_default=0
-
-    if [[ $1 = "--force-default-location" ]] ; then
-        force_default=1
-        shift
-    fi
+    local module_name module_path ret
+    case $1 in
+	--alternatives)
+	    module_path="${ESELECT_GENERATED_MODULES_PATH}"
+	    shift
+	    ;;
+	--default)
+	    module_path="${ESELECT_DEFAULT_MODULES_PATH}"
+	    shift
+	    ;;
+	--user)
+	    module_path="${ESELECT_USER_MODULES_PATH}"
+	    shift
+			;;
+	*) : ;;
+    esac
     module_name=$1
 
-    [[ -z ${module_name} ]] && die -q "Required option (module name) missing"
+    [[ -z ${module_name} ]] && die -q "Required module name missing"
 
-    # TODO: Don't install the module "somewhere", depending on write access.
-    # Add an option to control if it goes to the user's or to the system dir.
-    if ! rm "${ESELECT_DEFAULT_MODULES_PATH}"/${module_name}.eselect &> /dev/null ; then
-        [[ ${force_default} == 1 ]] \
-            && die -q "Failed to remove module ${module_name} from default modules path"
-
-        rm "${module_file}" "${local_path}"/${module_name}.eselect \
-            || die -q "Failed to remove module ${module_name}"
-       fi
+    if [[ -n ${module_path} ]]; then
+	rm "${module_path}/${module_name}.eselect" &> /dev/null
+	ret=$?
+    else
+	for module_path in "${ESELECT_MODULES_PATH[@]}" ; do
+	    rm "${module_path}/${module_name}.eselect" &> /dev/null
+	    ret=$?
+	done
+    fi
+    [[ ${ret} != 0 ]] && die -q "Failed to remove module ${module_name}"
 }
 
 # vim: set ft=eselect sw=4 sts=4 ts=4 et tw=80 :
