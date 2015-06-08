@@ -4,7 +4,7 @@
 # Copyright 2010 Bo Ørsted Andresen
 # Distributed under the terms of the GNU General Public License v2
 
-inherit config output path-manipulation
+inherit config output path-manipulation tests
 
 : "${ALTERNATIVESDIR_ROOTLESS:=@sysconfdir@/env.d/alternatives}"
 ALTERNATIVESDIR="${EROOT%/}${ALTERNATIVESDIR_ROOTLESS}"
@@ -66,7 +66,7 @@ get_providers() {
 		[[ -d ${p} && ! -L ${p} ]] || continue
 		p=${p##*/}
 
-		[[ -e "${ALTERNATIVESDIR}/${ALTERNATIVE}/${p}/_importance" ]] &&
+		[[ -e "${ALTERNATIVESDIR}/${ALTERNATIVE}/${p}/_importance" ]] && \
 			importance=$(< "${ALTERNATIVESDIR}/${ALTERNATIVE}/${p}/_importance")
 		importance=${importance:-0}
 		[[ "${importance}" =~ ^[0123456789]+(\.[0123456789]+)*$ ]] || die "_importance (${importance}) for ${p} is not a dot-separated list of integers"
@@ -78,6 +78,14 @@ get_providers() {
 	for (( p=${#providers[@]}-1 ; p>=0 ; --p )); do
 		echo "${providers[p]#*:}"
 	done
+}
+
+has_provider() {
+	local provider=${1} item providers=( $(get_providers) )
+	for item in  ${providers[@]}; do
+		[[ ${item} == ${provider} ]] && return 0
+	done
+	return 1
 }
 
 _options_parameters() {

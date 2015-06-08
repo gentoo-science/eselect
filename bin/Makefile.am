@@ -4,6 +4,7 @@ EXTRA_DIST = eselect.in
 dosed = @SED@ -e 's%\@BASH\@%$(BASH)%g' \
 	      -e 's%\@DATADIR\@%$(datadir)%g' \
 	      -e 's%\@EPREFIX\@%$(EPREFIX)%g' \
+	      -e 's%\@LIBEXECDIR\@%$(datadir)%g' \
 	      -e 's%\@VERSION\@%$(VERSION)$(EXTRAVERSION)%g'
 
 % : %.in
