@@ -1,8 +1,21 @@
-# Copyright 2015 Gentoo Foundation
-# Copyright 2008 Mike Kelly
-# Copyright 2009, 2013 David Leverton
-# Copyright 2010 Bo Ørsted Andresen
-# Distributed under the terms of the GNU General Public License v2
+# Copyright (c) 2005-2015 Gentoo Foundation
+# Copyright (c) 2008 Mike Kelly
+# Copyright (c) 2009-2013 David Leverton
+# Copyright (c) 2009-2014 Bo Ørsted Andresen
+#
+# This file is part of the 'eselect' tools framework.
+#
+# eselect is free software: you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 2 of the License, or (at your option) any later
+# version.
+#
+# eselect is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# eselect.  If not, see <http://www.gnu.org/licenses/>.
 
 inherit config output path-manipulation tests
 
