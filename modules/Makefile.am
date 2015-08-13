@@ -2,7 +2,6 @@ modulesdir=$(datadir)/$(PACKAGE_NAME)/modules/
 
 modules_DATA = \
 	alternatives.eselect \
-	binutils.eselect \
 	editor.eselect \
 	env.eselect \
 	kernel.eselect \

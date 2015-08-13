@@ -5,7 +5,7 @@ Ciaran McCreesh <ciaranm@gentoo.org>
 
 Danny van Dyk <kugelfang@gentoo.org>
     Manpages
-    Modules:    binutils, env, rc
+    Modules:    env, rc
     Libraries:  config, multilib
 
 Aaron Walker <ka0ttic@gentoo.org>
