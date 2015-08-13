@@ -1,6 +1,5 @@
 man_MANS = \
 	eselect.1 \
-	binutils.eselect.5 \
 	editor.eselect.5 \
 	env.eselect.5 \
 	kernel.eselect.5 \

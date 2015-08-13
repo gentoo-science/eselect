@@ -1,3 +1,11 @@
+2015-08-13  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/binutils.eselect:
+	* man/binutils.eselect.5: Module removed. This has been converted
+	to a wrapper and moved to the binutils-config package, bug 507870.
+	* modules/Makefile.am (modules_DATA):
+	* man/Makefile.am (man_MANS): Update accordingly.
+
 2015-01-24  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.4.4.
