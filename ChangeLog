@@ -1,5 +1,8 @@
 2015-08-13  Ulrich Müller  <ulm@gentoo.org>
 
+	* configure.ac: Update version to 1.4.5.
+	* Tagged 1.4.5 release.
+
 	* autogen.bash: Update for aclocal 1.15 and automake-1.15.
 
 	* modules/binutils.eselect:
