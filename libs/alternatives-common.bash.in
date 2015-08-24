@@ -20,7 +20,7 @@
 inherit config output path-manipulation tests
 
 : "${ALTERNATIVESDIR_ROOTLESS:=@sysconfdir@/env.d/alternatives}"
-ALTERNATIVESDIR="${EROOT%/}${ALTERNATIVESDIR_ROOTLESS}"
+ALTERNATIVESDIR="${ROOT%/}${ALTERNATIVESDIR_ROOTLESS}"
 
 get_current_provider() {
 	local dieprefix="Could not determine current provider for ${ALTERNATIVE}"
@@ -187,22 +187,22 @@ alternatives_do_set() {
 
 			if ( LC_ALL=C; [[ ${newsymlinks[new_i]} < ${oldsymlinks[old_i]} ]] ); then
 				if [[ ${pass} == check ]]; then
-					if [[ -L ${EROOT%/}${oldsymlinks[old_i]} ]]; then
+					if [[ -L ${ROOT%/}${oldsymlinks[old_i]} ]]; then
 						:
-					elif [[ -d ${EROOT%/}${oldsymlinks[old_i]} ]]; then
-						write_error_msg "Can't remove ${EROOT%/}${oldsymlinks[old_i]}: is a directory${force:+ which is a fatal error that cannot be ignored by --force}"
+					elif [[ -d ${ROOT%/}${oldsymlinks[old_i]} ]]; then
+						write_error_msg "Can't remove ${ROOT%/}${oldsymlinks[old_i]}: is a directory${force:+ which is a fatal error that cannot be ignored by --force}"
 						errors=yes
-					elif [[ -e ${EROOT%/}${oldsymlinks[old_i]} ]]; then
+					elif [[ -e ${ROOT%/}${oldsymlinks[old_i]} ]]; then
 						if [[ -n ${force} ]]; then
-							write_warning_msg "Removing ${EROOT%/}${oldsymlinks[old_i]} due to --force: is not a symlink"
+							write_warning_msg "Removing ${ROOT%/}${oldsymlinks[old_i]} due to --force: is not a symlink"
 						else
-							write_error_msg "Refusing to remove ${EROOT%/}${oldsymlinks[old_i]}: is not a symlink (use --force to override)"
+							write_error_msg "Refusing to remove ${ROOT%/}${oldsymlinks[old_i]}: is not a symlink (use --force to override)"
 							errors=yes
 						fi
 					fi
 
 				elif [[ ${pass} == perform ]]; then
-					rm -f "${EROOT%/}${oldsymlinks[old_i]}" || die "${dieprefix}: rm failed"
+					rm -f "${ROOT%/}${oldsymlinks[old_i]}" || die "${dieprefix}: rm failed"
 				else
 					die "${dieprefix}: unknown \${pass} ${pass}???"
 				fi
@@ -217,23 +217,23 @@ alternatives_do_set() {
 				done
 
 				if [[ ${pass} == check ]]; then
-					if [[ -L ${EROOT%/}${newsymlinks[new_i]} ]]; then
+					if [[ -L ${ROOT%/}${newsymlinks[new_i]} ]]; then
 						:
-					elif [[ -d ${EROOT%/}${newsymlinks[new_i]} ]]; then
-						write_error_msg "Can't overwrite ${EROOT%/}${newsymlinks[new_i]}: is a directory${force:+ which is a fatal error that cannot be ignored by --force}"
+					elif [[ -d ${ROOT%/}${newsymlinks[new_i]} ]]; then
+						write_error_msg "Can't overwrite ${ROOT%/}${newsymlinks[new_i]}: is a directory${force:+ which is a fatal error that cannot be ignored by --force}"
 						errors=yes
-					elif [[ -e ${EROOT%/}${newsymlinks[new_i]} ]]; then
+					elif [[ -e ${ROOT%/}${newsymlinks[new_i]} ]]; then
 						if [[ -n ${force} ]]; then
-							write_warning_msg "Overwriting ${EROOT%/}${newsymlinks[new_i]} due to --force: is not a symlink"
+							write_warning_msg "Overwriting ${ROOT%/}${newsymlinks[new_i]} due to --force: is not a symlink"
 						else
-							write_error_msg "Refusing to overwrite ${EROOT%/}${newsymlinks[new_i]}: is not a symlink (use --force to override)"
+							write_error_msg "Refusing to overwrite ${ROOT%/}${newsymlinks[new_i]}: is not a symlink (use --force to override)"
 							errors=yes
 						fi
 					fi
 
 				elif [[ ${pass} == perform ]]; then
-					mkdir -p "${EROOT%/}${newsymlinks[new_i]%/*}" || die "${dieprefix}: mkdir -p failed"
-					ln -snf "${target#/}" "${EROOT%/}${newsymlinks[new_i]}" || die "${dieprefix}: ln -snf failed"
+					mkdir -p "${ROOT%/}${newsymlinks[new_i]%/*}" || die "${dieprefix}: mkdir -p failed"
+					ln -snf "${target#/}" "${ROOT%/}${newsymlinks[new_i]}" || die "${dieprefix}: ln -snf failed"
 				else
 					die "${dieprefix}: unknown \${pass} ${pass}???"
 				fi
@@ -415,7 +415,7 @@ alternatives_do_update() {
 		# verify existing provider's symlinks
 		local p= bad=0
 		while read -r -d '' p ; do
-			[[ -L "${EROOT%/}${p}" && -e "${EROOT%/}${p}" ]] || (( bad++ ))
+			[[ -L "${ROOT%/}${p}" && -e "${ROOT%/}${p}" ]] || (( bad++ ))
 		done < "${ALTERNATIVESDIR}/${ALTERNATIVE}/_current_list"
 
 		[[ "${bad}" -eq 0 ]] && return 0
@@ -477,22 +477,22 @@ alternatives_do_unset() {
 		while read -r -d '' symlink; do
 			one=true
 			if [[ ${pass} == check ]]; then
-				if [[ -L ${EROOT%/}${symlink} ]]; then
+				if [[ -L ${ROOT%/}${symlink} ]]; then
 					:
-				elif [[ -d ${EROOT%/}${symlink} ]]; then
-					write_error_msg "Can't remove ${EROOT%/}${symlink}: is a directory${force:+ which is a fatal error that cannot be ignored by --force}"
+				elif [[ -d ${ROOT%/}${symlink} ]]; then
+					write_error_msg "Can't remove ${ROOT%/}${symlink}: is a directory${force:+ which is a fatal error that cannot be ignored by --force}"
 					errors=yes
-				elif [[ -e ${EROOT%/}${symlink} ]]; then
+				elif [[ -e ${ROOT%/}${symlink} ]]; then
 					if [[ -n ${force} ]]; then
-						write_warning_msg "Removing ${EROOT%/}${symlink} due to --force: is not a symlink"
+						write_warning_msg "Removing ${ROOT%/}${symlink} due to --force: is not a symlink"
 					else
-						write_error_msg "Refusing to remove ${EROOT%/}${symlink}: is not a symlink (use --force to override)"
+						write_error_msg "Refusing to remove ${ROOT%/}${symlink}: is not a symlink (use --force to override)"
 						errors=yes
 					fi
 				fi
 
 			elif [[ ${pass} == perform ]]; then
-				rm -f "${EROOT%/}${symlink}" || die "${dieprefix}: rm failed"
+				rm -f "${ROOT%/}${symlink}" || die "${dieprefix}: rm failed"
 			else
 				die "${dieprefix}: unknown \${pass} ${pass}???"
 			fi

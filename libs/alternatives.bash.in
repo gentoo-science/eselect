@@ -79,7 +79,7 @@ do_files() {
 
 	local errors symlink rootsymlink
 	while read -r -d '' symlink; do
-		rootsymlink="${EROOT%/}${symlink}"
+		rootsymlink="${ROOT%/}${symlink}"
 		rootsymlink=${rootsymlink//+(\/)/\/}
 		echo "${rootsymlink}"
 		if [[ -L ${rootsymlink} ]]; then
