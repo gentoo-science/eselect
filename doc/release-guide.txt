@@ -1,4 +1,4 @@
-eselect Release Guide
+eselect release guide
 =====================
 
 .. Note:: This guide is intended for people who do ``eselect`` releases.
