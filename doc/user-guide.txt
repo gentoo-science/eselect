@@ -1,8 +1,8 @@
 ==================
-eselect User Guide
+eselect user guide
 ==================
 
-A Brief Overview
+A brief overview
 ================
 
 Introduction
@@ -28,7 +28,7 @@ Some modules install symlinks to the main program. eselect handles these
 intelligently -- for example, it realises that ``profile-config list``
 should be treated as if the user had run ``eselect profile list``.
 
-Advantages for End Users and System Administrators
+Advantages for end users and system administrators
 --------------------------------------------------
 
 For system administrators and end users, tools written as eselect
@@ -56,7 +56,7 @@ Guaranteed support for ``$ROOT``
     whether a particular tool can handle it. Support for ``$ROOT`` is
     required for all eselect modules.
 
-Advantages for Developers and Package Maintainers
+Advantages for developers and package maintainers
 -------------------------------------------------
 
 Writing your tool as an eselect module rather than starting from scratch

@@ -77,8 +77,9 @@ AC_SUBST(EPREFIX)
 # Include extra version information when building from git
 AC_MSG_CHECKING([whether building from git])
 EXTRAVERSION=""
-if test -d ${GIT_DIR:-.git}; then
-    COMMIT=`git describe --long --always HEAD`
+eselect_git_dir=${GIT_DIR:-${srcdir}/.git}
+if test -d "${eselect_git_dir}"; then
+    COMMIT=`GIT_DIR="${eselect_git_dir}" git describe --long --always HEAD`
     if test x$COMMIT != x; then
         EXTRAVERSION=", git commit $COMMIT"
     fi

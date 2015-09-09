@@ -1,3 +1,14 @@
+2015-08-26  Ulrich Müller  <ulm@gentoo.org>
+
+	* doc/developer-guide.txt:
+	* doc/user-guide.txt:
+	* doc/release-guide.txt: Use sentence case in headings.
+
+2015-08-22  Ulrich Müller  <ulm@gentoo.org>
+
+	* configure.ac (EXTRAVERSION): Fix detection of git revision
+	for out-of-tree builds.
+
 2015-08-13  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.4.5.

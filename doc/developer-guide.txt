@@ -1,5 +1,5 @@
 ===========================
-eselect Developer Reference
+eselect developer reference
 ===========================
 
 About eselect
@@ -10,7 +10,7 @@ the various Gentoo ``foo-config`` and ``update-blah`` tools. It is an
 option for developers who don't like reinventing the wheel, not a
 mandatory tool.
 
-Getting Started
+Getting started
 ===============
 
 Introduction
@@ -22,7 +22,7 @@ an existing module, so check to see whether there is something that does
 almost what you need first (symlink handling is a good example of
 something that can be copied rather than reinvented).
 
-A Simple Module
+A simple module
 ---------------
 
 It's easiest to illustrate by example. Here's a simplified version of
@@ -164,7 +164,7 @@ All modules contributed to eselect should have a header indicating
 copyright. This must be an exact copy of the header in the above
 example (except for the years, of course).
 
-Standard Action Names
+Standard action names
 ---------------------
 
 The following list contains suggested allowed names for actions.
@@ -205,7 +205,7 @@ scan
   You should only do this with a good reason. Removing them is not
   a good idea, ``eselect`` assumes that they exist.
 
-Utility Functions
+Utility functions
 =================
 
 eselect provides many utility functions. These are useful for
@@ -215,24 +215,24 @@ output format required, consider implementing one.
 
 The following categories of function are available by default:
 
-* General Utility Functions
-* Output Utility Functions
-* Test Functions
-* Path-Manipulation Functions
-* Manipulation Functions
-* Configuration Functions
-* Multilib Functions
-* Package-Manager Functions
+* General utility functions
+* Output utility functions
+* Test functions
+* Path-manipulation functions
+* Manipulation functions
+* Configuration functions
+* Multilib functions
+* Package-Manager functions
 
 To use any of the other functions, you have first to ``inherit`` the
-corresponding library file. (cf: `The inherit Function`_)
+corresponding library file. (cf: `The inherit function`_)
 
-General Utility Functions
+General utility functions
 -------------------------
 
 These are implemented in ``libs/core.bash``.
 
-The ``die`` Function
+The ``die`` function
 ,,,,,,,,,,,,,,,,,,,,
 
 The ``die`` function (which, unlike its ebuild counterpart, *can* be
@@ -241,7 +241,7 @@ should be invoked as ``die -q "Message to display"``. If the ``-q`` is
 not provided, a stacktrace will be displayed -- this should never happen
 because of user input error, only abnormal conditions.
 
-The ``check_do`` Function
+The ``check_do`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``check_do`` utility function checks that the first parameter is
@@ -249,43 +249,43 @@ a function, and then calls it with any additional parameters as its
 arguments. If the function does not exist, ``die`` is called. Again,
 this is mostly internal.
 
-The ``do_action`` Function
+The ``do_action`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``do_action`` utility function is the correct way to call a utility
 function which is defined in another module. The first parameter is the
 action, additional parameters are passed as arguments.
 
-The ``inherit`` Function
+The ``inherit`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``inherit`` function sources eselect library files based on their
 name. In order to source the file ``libs/foo.bash`` you have to add
 ``inherit foo`` in global scope of your module.
 
-The ``sed`` Function
+The ``sed`` function
 ,,,,,,,,,,,,,,,,,,,,
 
 The ``sed`` function is a wrapper around GNU ``sed``.
 
-Output Utility Functions
+Output utility functions
 ------------------------
 
 These are implemented in ``libs/output.bash``.
 
-The ``write_error_msg`` Function
+The ``write_error_msg`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``write_error_msg`` function displays an error message in the
 standard format. It is similar to ``eerror``.
 
-The ``write_warning_msg`` Function
+The ``write_warning_msg`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``write_warning_msg`` function displays a warning message in the
 standard format. It is similar to ``ewarn``.
 
-The ``write_list_`` Functions
+The ``write_list_`` functions
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 To display a list, the ``write_list_`` family of functions should be
@@ -309,7 +309,7 @@ list.
 If ``-p`` is passed as the first argument to these functions, 'plain'
 highlighting is used.
 
-The ``highlight`` Function
+The ``highlight`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``highlight`` utility function can be used to emphasise some text
@@ -322,13 +322,13 @@ invocation might look like: ::
         "$(highlight Second)" "This is the $(highlight second) entry"
     write_kv_list_entry "Third" "$(highlight The end)"
 
-The ``highlight_warning`` Function
+The ``highlight_warning`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``highlight_warning`` function is like ``highlight``, but for
 warnings. It displays the text in question in red.
 
-The ``highlight_marker`` Function
+The ``highlight_marker`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 To mark a list entry as active/selected, the ``highlight_marker``
@@ -341,7 +341,7 @@ behind the entry. A typical invocation might look like: ::
             && targets[i]=$(highlight_marker "${targets[i]}")
     done
 
-The ``is_output_mode`` Function
+The ``is_output_mode`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``is_output_mode`` function returns true if and only if its
@@ -349,72 +349,72 @@ parameter is equal to eselect's output mode. Currently, only the default
 and ``brief`` output modes are defined, the latter corresponding to the
 ``--brief`` option.
 
-The ``space`` Function
+The ``space`` function
 ,,,,,,,,,,,,,,,,,,,,,,
 
 The ``space`` utility function takes a single integer parameter.
 It displays that many space characters.
 
-Test Functions
+Test functions
 --------------
 
 These are implemented in ``libs/tests.bash``.
 
-The ``has`` Function
+The ``has`` function
 ,,,,,,,,,,,,,,,,,,,,
 
 The ``has`` utility function is like Portage's ``hasq``. It returns true
 if and only if the first parameter is equal to any of the remaining
 parameters.
 
-The ``is_function`` Function
+The ``is_function`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``is_function`` utility function returns true if and only if its
 parameter exists and is a function. This is mostly used internally, but
 may have some use for modules.
 
-The ``is_number`` Function
+The ``is_number`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 Returns true if and only if the parameter is a positive whole number.
 
-Path-Manipulation Functions
+Path-manipulation functions
 ---------------------------
 
 These are implemented in ``libs/path-manipulation``.
 
-The ``basename`` Function
+The ``basename`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``basename`` function is a transparent bash-only replacement for the
 external ``basename`` application.
 
-The ``dirname`` Function
+The ``dirname`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``dirname`` function is a transparent bash-only replacement for the
 external ``dirname`` application.
 
-The ``canonicalise`` Function
+The ``canonicalise`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``canonicalise`` function is a wrapper to either GNU ``readlink -f``
 or ``realpath``.
 
-The ``relative_name`` Function
+The ``relative_name`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``relative_name`` function converts a path name (passed as its first
 argument) to be relative to a directory (second argument). This can be
 used to generate a relative symlink from absolute paths.
 
-Manipulation Functions
+Manipulation functions
 ----------------------
 
 These are implemented in ``libs/manip.bash``.
 
-The ``svn_date_to_version`` Function
+The ``svn_date_to_version`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 If your module is kept in a CVS or subversion repository, then the
@@ -429,12 +429,12 @@ Then turn on SVN keyword expansion for the module: ::
 
     svn propset svn:keywords "Date" modules/foo.eselect
 
-Configuration Functions
+Configuration functions
 -----------------------
 
 These are implemented in ``libs/config.bash``.
 
-The ``store_config`` Function
+The ``store_config`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``store_config`` function saves a key/value pair in a given
@@ -444,14 +444,14 @@ altered manually. Comments in the file will be deleted each time
 ``store_config`` is called. The function is invoked as
 ``store_config filename key value``.
 
-The ``load_config`` Function
+The ``load_config`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``load_config`` function loads a stored value from the module's
 configuration file. It is invoked as ``load_config filename key``
 and prints the associated value.
 
-The ``append_config`` Function
+The ``append_config`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``append_config`` function appends an item to an already stored
@@ -460,12 +460,12 @@ value in the module's configuration file. It uses ``load_config`` /
 ``append_config filename key item``. Note that the item will not be
 appended if it occurs in the key's value already.
 
-Multilib Functions
+Multilib functions
 ------------------
 
 These are implemented in ``libs/multilib.bash``.
 
-The ``list_libdirs`` Function
+The ``list_libdirs`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``list_libdirs`` function returns a set of valid libdirs for the
@@ -473,12 +473,12 @@ used architecture. By default it uses /etc/ld.so.conf to obtain all
 valid libdirs. If this fails due to a missing or broken file, this
 function uses ``uname`` to determine the architecture.
 
-Package-Manager Functions
+Package-manager functions
 -------------------------
 
 These are implemented in ``libs/package-manager.bash``.
 
-The ``arch`` Function
+The ``arch`` function
 ,,,,,,,,,,,,,,,,,,,,,
 
 The ``arch`` function returns the correct value of the ``ARCH`` variable
@@ -486,32 +486,32 @@ for the current system. If the package manager cannot provide this
 information, ``arch`` falls back to a lookup-table based on the
 ``HOSTTYPE`` and ``OSTYPE`` bash variables.
 
-The ``envvar`` Function
+The ``envvar`` function
 ,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``envvar`` function retrieves the contents of a
 configuration-environment variable for a given package. The syntax is
 ``envvar ${package-name} ${var-name}``.
 
-The ``best_version`` Function
+The ``best_version`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``best_version`` function returns the highest available version for
 a given package dep atom.
 
-The ``has_version`` Function
+The ``has_version`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``has_version`` function checks whether a given versioned package
 dep atom is installed.
 
-The ``get_repositories`` Function
+The ``get_repositories`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``get_repositories`` function returns a list of repositories known
 to the package manager.
 
-The ``get_repo_news_dir`` Function
+The ``get_repo_news_dir`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``get_repo_news_dir`` function returns the directory where to find
