@@ -302,7 +302,7 @@ alternatives_do_add() {
 
 	# Process source-target pairs
 	while (( $# >= 2 )); do
-		src=${1//+(\/)/\/}; target=${2//+(\/)/\/}
+		src="${EROOT%/}"${1//+(\/)/\/}; target=${2//+(\/)/\/}
 		if [[ ${src} != /* ]]; then
 			die "Source path must be absolute, but got ${src}"
 		else
