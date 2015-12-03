@@ -20,7 +20,8 @@
 inherit config output path-manipulation tests
 
 : "${ALTERNATIVESDIR_ROOTLESS:=@sysconfdir@/env.d/alternatives}"
-ALTERNATIVESDIR="${EROOT%/}${ALTERNATIVESDIR_ROOTLESS}"
+: "${ALTERNATIVESDIR_ROOT:=${ROOT%/}}"
+ALTERNATIVESDIR="${ALTERNATIVESDIR_ROOT}${ALTERNATIVESDIR_ROOTLESS}"
 
 get_current_provider() {
 	local dieprefix="Could not determine current provider for ${ALTERNATIVE}"
@@ -210,7 +211,7 @@ alternatives_do_set() {
 				old_i+=1
 
 			else
-				local target=${ALTERNATIVESDIR_ROOTLESS#/}/${ALTERNATIVE}/_current${newsymlinks[new_i]} dir=${newsymlinks[new_i]%/*}
+				local target=${ALTERNATIVESDIR_ROOTLESS#${EPREFIX}/}/${ALTERNATIVE}/_current${newsymlinks[new_i]} dir=${newsymlinks[new_i]%/*}
 				while [[ -n ${dir} ]]; do
 					target=../${target}
 					dir=${dir%/*}
@@ -306,7 +307,7 @@ alternatives_do_add() {
 		if [[ ${src} != /* ]]; then
 			die "Source path must be absolute, but got ${src}"
 		else
-			local reltarget= dir=${provider_dir}${src%/*}
+			local reltarget= dir=${provider_dir#${ALTERNATIVESDIR_ROOT}${EPREFIX}}${src%/*}
 			while [[ -n ${dir} ]]; do
 				reltarget+=../
 				dir=${dir%/*}
