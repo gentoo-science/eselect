@@ -55,6 +55,8 @@ IFS=$' \t\n'
 shopt -s extglob
 shopt -s expand_aliases
 
+umask +rx
+
 # Save stderr file descriptor
 if (( BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] >= 1 || BASH_VERSINFO[0] > 4 ))
 then

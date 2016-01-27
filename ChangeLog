@@ -1,3 +1,7 @@
+2016-01-27  Ulrich Müller  <ulm@gentoo.org>
+
+	* bin/eselect.in: Set umask +rx, bug 572348.
+
 2015-08-26  Ulrich Müller  <ulm@gentoo.org>
 
 	* doc/developer-guide.txt:
