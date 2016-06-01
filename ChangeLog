@@ -1,5 +1,7 @@
 2016-06-01  Ulrich Müller  <ulm@gentoo.org>
 
+	* configure.ac: Make testing for git repository more robust.
+
 	* configure.ac: Where possible, use AC_CHECK_PROGS instead of
 	AC_PATH_PROGS, in order to avoid absolute paths, bug 122260.
 	* libs/core.bash.in (sed):
