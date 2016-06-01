@@ -28,9 +28,9 @@ package_manager() {
 }
 
 # portageq
-# Run portageq with safe filename as set by configure. Redirect stderr
+# Run portageq. Redirect stderr
 portageq() {
-	@PORTAGEQ@ "$@" 2>/dev/null
+	command portageq "$@" 2>/dev/null
 }
 
 # run_paludis PRIVATE

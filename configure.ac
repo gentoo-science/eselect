@@ -19,7 +19,7 @@ fi
 
 # AC_PROG_SED doesn't work here, because on Gentoo FreeBSD systems it
 # is confused by a wrapper script that is in the PATH at build time.
-AC_PATH_PROGS(SED, [gsed sed])
+AC_CHECK_PROGS(SED, [gsed sed])
 if test x$SED = x; then
     AC_MSG_ERROR([sed is required])
 fi
@@ -31,26 +31,21 @@ else
     AC_MSG_ERROR([GNU sed is required])
 fi
 
-AC_PATH_PROG(PORTAGEQ, portageq, /usr/bin/portageq,
-  [$prefix/bin:/usr/bin:/bin:$PATH])
 AC_PATH_PROG(ENV_UPDATE, env-update, /usr/sbin/env-update,
   [$PATH:$prefix/sbin:/usr/sbin])
 
-AC_PATH_PROG(READLINK, greadlink)
+AC_CHECK_PROGS(READLINK, [greadlink readlink])
+if test x$READLINK != x; then
+    AC_MSG_CHECKING([whether $READLINK supports -f])
+    if $READLINK -f . >/dev/null 2>&1; then
+        AC_MSG_RESULT(yes)
+    else
+        AC_MSG_RESULT(no)
+        READLINK=""
+    fi
+fi
 if test x$READLINK = x; then
-    AC_PATH_PROG(READLINK, readlink)
-    if test x$READLINK != x; then
-        AC_MSG_CHECKING([whether readlink supports -f])
-        if $READLINK -f . >/dev/null 2>&1; then
-            AC_MSG_RESULT(yes)
-        else
-            AC_MSG_RESULT(no)
-            READLINK=""
-        fi
-    fi
-    if test x$READLINK = x; then
-        AC_PATH_PROG(REALPATH, realpath)
-    fi
+    AC_CHECK_PROGS(REALPATH, realpath)
 fi
 if test x$READLINK != x; then
     CANONICALISE="$READLINK -f"
@@ -63,7 +58,7 @@ AC_SUBST(CANONICALISE)
 
 # Gentoo uses rst2html.py but most other
 # distros install it w/o the .py extension
-AC_PATH_PROGS(RST2HTML, [rst2html rst2html.py])
+AC_CHECK_PROGS(RST2HTML, [rst2html rst2html.py])
 
 # Support for Gentoo Prefix
 AC_MSG_CHECKING([if target installation is in an offset prefix])

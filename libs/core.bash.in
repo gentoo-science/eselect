@@ -119,7 +119,7 @@ inherit() {
 	done
 }
 
-# GNU sed wrapper (real path to GNU sed determined by configure)
+# GNU sed wrapper (sed or gsed, as determined by configure)
 sed() {
-	@SED@ "$@"
+	command @SED@ "$@"
 }
