@@ -1,3 +1,8 @@
+2016-06-16  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/pager.eselect (EDITOR_LIST): Prefer less to more.
+	* man/pager.eselect.5: Update.
+
 2016-06-01  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Make testing for git repository more robust.

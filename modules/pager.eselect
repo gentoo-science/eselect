@@ -4,7 +4,7 @@
 
 EDITOR_VAR="PAGER"
 EDITOR_ENVFILE="/etc/env.d/99pager"
-EDITOR_LIST="/bin/more /usr/bin/less /usr/bin/most"
+EDITOR_LIST="/usr/bin/less /bin/more /usr/bin/most"
 
 inherit editor-variable
 
