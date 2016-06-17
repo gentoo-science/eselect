@@ -1,6 +1,12 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.4.6:
+    Bug fixes:
+    - Fixed bug #122260: Do not call programs by absolute paths.
+    - Fixed bug #572348: Globally set umask +rx.
+    - Prefer less to more in pager module.
+
 1.4.5:
     New features:
     - binutils module removed (bug #507870).
