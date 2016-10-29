@@ -57,9 +57,11 @@ store_config() {
 		# parse the names of all settings in the file
 		local ifs_save=${IFS} IFS=$'\n'
 		for line in ${content} ; do
-			[[ ${line/=/} != ${line} ]] || continue
-			line=${line/=*/}
-			local ${line}=""
+			line=${line##*([[:space:]])}
+			[[ ${line} != "#"* && ${line} == *=* ]] || continue
+			line=${line%%=*}
+			# assignment will fail if ${line} is not a valid identifier
+			local ${line}="" || continue
 			vars=(${vars[@]} ${line})
 		done
 		IFS=${ifs_save}
