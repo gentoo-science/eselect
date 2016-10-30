@@ -1,5 +1,8 @@
 2016-10-30  Ulrich Müller  <ulm@gentoo.org>
 
+	* configure.ac: Update version to 1.4.7.
+	* Tagged 1.4.7 release.
+
 	* libs/config.bash.in (store_config): Ignore comment lines in
 	config files and make parsing more robust, bug 598480.
 
