@@ -34,7 +34,7 @@ Style Notes
   one tab per indent level, with each tab representing 4 places.
 * Avoid lines wider than 79 positions.
 * Public functions don't get the ``es_`` prefix, private functions do.
-* eval is evil, so don't use it.
+* eval is evil, so we disabled it.
 * Absolute paths to executables are not portable, so don't use them.
 
 

@@ -1,3 +1,9 @@
+2016-10-31  Ulrich Müller  <ulm@gentoo.org>
+
+	* libs/core.bash.in (eval): Disable eval again, because the
+	workaround for the rc module (sourcing functions.sh) is no longer
+	needed. See also 2005-05-15 change by ciaranm.
+
 2016-10-30  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.4.7.
