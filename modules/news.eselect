@@ -14,7 +14,10 @@ NEWS_DIR="/var/lib/gentoo/news"
 # returns one item per line: status/repository/name
 # sort order: by item name (i.e. effectively by date)
 find_items() {
-	local stat repos=$(get_repositories) repo file item
+	local stat repos repo file item
+	repos=$(get_repositories) \
+		|| die "Package manager cannot get list of repositories"
+	[[ -n ${repos} ]] || write_warning_msg "No repositories found"
 	for stat; do
 		for repo in ${repos}; do
 			file="${EROOT}${NEWS_DIR}/news-${repo}.${stat}"
@@ -80,7 +83,8 @@ find_repo_dir() {
 	done
 	if [[ ${i} -eq ${#repos[@]} ]]; then
 		repos[i]=${repo}
-		dirs[i]=$(get_repo_news_dir "${repo}")
+		dirs[i]=$(get_repo_news_dir "${repo}") \
+			|| die "Package manager cannot get news dir for repo ${repo}"
 	fi
 	dir=${dirs[i]}
 }
