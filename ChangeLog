@@ -1,5 +1,8 @@
 2016-12-04  Ulrich Müller  <ulm@gentoo.org>
 
+	* libs/package-manager.bash.in (get_repositories)
+	(get_repo_news_dir): Fix pinspect calls, bug 304011.
+
 	* modules/news.eselect (find_items, find_repo_dir): Check return
 	status of package manager calls, bug 601506.
 

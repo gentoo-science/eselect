@@ -180,7 +180,7 @@ has_version() {
 get_repositories() {
 	case $(package_manager) in
 		portage) portageq get_repos "${EROOT:-/}" ;;
-		pkgcore) pinspect portageq get_repositories ;;
+		pkgcore) pinspect portageq get_repos "${ROOT:-/}" ;;
 		paludis) run_paludis print-repositories ;;
 	esac
 }
@@ -193,7 +193,7 @@ get_repo_news_dir() {
 	case $(package_manager) in
 		portage) echo "$(portageq get_repo_path \
 			"${EROOT:-/}" "${repo}")/metadata/news" ;;
-		pkgcore) pinspect portageq get_repo_news_path "${repo}" ;;
+		pkgcore) pinspect portageq get_repo_news_path "${ROOT:-/}" "${repo}" ;;
 		paludis) run_paludis print-repository-metadata ${repo} \
 			--raw-name newsdir --format '%v\n' ;;
 	esac
