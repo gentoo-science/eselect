@@ -1,3 +1,8 @@
+2016-12-10  Ulrich Müller  <ulm@gentoo.org>
+
+	* configure.ac: Update version to 1.4.8.
+	* Tagged 1.4.8 release.
+
 2016-12-04  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/package-manager.bash.in (get_repositories)
