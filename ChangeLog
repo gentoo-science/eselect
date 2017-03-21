@@ -1,3 +1,8 @@
+2017-03-21  Mike Frysinger <vapier@gentoo.org>
+
+	* libs/package-manager.bash.in (arch): Fill out arch matches
+	a bit more.
+
 2016-12-10  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.4.8.
