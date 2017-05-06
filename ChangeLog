@@ -1,3 +1,9 @@
+2017-05-06  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/kernel.eselect (set_symlink):
+	* modules/profile.eselect (set_symlink): Check range of number,
+	bug 617572. Thanks to Takuto Yoshida <otakuto.gentoo@gmail.com>.
+
 2017-03-22  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.4.9.

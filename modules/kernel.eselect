@@ -44,6 +44,8 @@ set_symlink() {
 
 	if is_number "${target}"; then
 		local targets=( $(find_targets) )
+		[[ ${target} -ge 1 && ${target} -le ${#targets[@]} ]] \
+			|| die -q "Number out of range: $1"
 		target=${targets[target-1]}
 	fi
 

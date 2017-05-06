@@ -80,6 +80,8 @@ set_symlink() {
 		targets=( $(find_targets) )
 		[[ ${#targets[@]} -eq 0 ]] \
 			&& die -q "Failed to get a list of valid profiles"
+		[[ ${target} -ge 1 && ${target} -le ${#targets[@]} ]] \
+			|| die -q "Number out of range: $1"
 		target=${targets[target-1]}
 		repo=${target%%::*}; target=${target#*::}
 		repopath=${target%%::*}; target=${target#*::}
