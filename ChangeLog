@@ -1,5 +1,11 @@
 2017-05-06  Ulrich Müller  <ulm@gentoo.org>
 
+	* modules/kernel.eselect (do_set): Don't remove the old symlink
+	before we know that we have a valid new target. Simplify.
+	(set_symlink): Check if the new link target is valid, then remove
+	any old symlink, then set the new one.
+	(remove_symlink): Use rm -f.
+
 	* modules/kernel.eselect (set_symlink):
 	* modules/profile.eselect (set_symlink): Check range of number,
 	bug 617572. Thanks to Takuto Yoshida <otakuto.gentoo@gmail.com>.
