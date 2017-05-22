@@ -1,3 +1,7 @@
+2017-05-22  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/profile.eselect (set_symlink): Fix regex, bug 614008.
+
 2017-05-06  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/kernel.eselect (do_set): Don't remove the old symlink

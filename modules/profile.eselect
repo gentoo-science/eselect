@@ -98,7 +98,7 @@ set_symlink() {
 		repopath=$(get_repo_path "${repo}") || die -q "get_repo_path failed"
 		# do a reverse lookup and find the arch associated with ${target}
 		parch=$(sed -n -e \
-			"s|^\([[:alnum:]_-]\+\)[[:space:]].*${target}[[:space:]].*$|\1|p" \
+			"s|^\([[:alnum:]_-]\+\)[[:space:]]\+${target}[[:space:]].*$|\1|p" \
 			"${repopath}/profiles/profiles.desc")
 		[[ ${arch} != "${parch}" && -z ${force} ]] \
 			&& die -q "${target} is not a valid profile for ${arch}"
