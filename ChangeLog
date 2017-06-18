@@ -1,3 +1,8 @@
+2017-06-18  Ulrich Müller  <ulm@gentoo.org>
+
+	* libs/package-manager.bash.in (arch): Map nios2 to nios2 (as it
+	is called in profiles/arch.list) rather	than nios.
+
 2017-05-22  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/profile.eselect (set_symlink): Fix regex, bug 614008.

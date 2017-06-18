@@ -78,7 +78,7 @@ arch() {
 			ia64*)  	ret=ia64	;;
 			m68k*)  	ret=m68k	;;
 			mips*)  	ret=mips	;;
-			nios2)  	ret=nios	;;
+			nios2)  	ret=nios2	;;
 			or1k|or32*)	ret=openrisc;;
 			powerpc64*)	ret=ppc64	;;
 			powerpc*)	ret=ppc 	;;
