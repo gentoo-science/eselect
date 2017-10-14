@@ -1,3 +1,7 @@
+2017-10-14  Ulrich Müller  <ulm@gentoo.org>
+
+	* man/news.eselect.5: Update URI of GLEP 42.
+
 2017-06-18  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/package-manager.bash.in (arch): Map nios2 to nios2 (as it
