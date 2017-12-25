@@ -14,7 +14,8 @@
 2017-05-06  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/kernel.eselect (do_set): Don't remove the old symlink
-	before we know that we have a valid new target. Simplify.
+	before we know that we have a valid new target, bug 640386.
+	Simplify.
 	(set_symlink): Check if the new link target is valid, then remove
 	any old symlink, then set the new one.
 	(remove_symlink): Use rm -f.
