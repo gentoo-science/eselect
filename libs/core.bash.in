@@ -121,8 +121,7 @@ inherit() {
 
 # make eval not work, because it's evil
 eval() {
-	write_warning_msg "Don't use eval. Find another way."
-	builtin eval "$@"
+	die "Don't use eval. Find another way."
 }
 
 # GNU sed wrapper (sed or gsed, as determined by configure)
