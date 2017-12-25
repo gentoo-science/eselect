@@ -1,6 +1,15 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.4.10:
+    Bug fixes:
+    - Fixed bug #614008: Regex in profile module.
+    - Fixed bug #617572: Check range of number in kernel and profile modules.
+    - Fixed bug #640386: Do not remove the old kernel symlink unless there is
+      a valid new target.
+    - eval() will die rather than emit a warning.
+    - Check for valid news item format.
+
 1.4.9:
     New features:
     - New architectures in package-manager lib.
