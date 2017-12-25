@@ -172,7 +172,7 @@ describe_list() {
 }
 
 do_list() {
-	local item stat repo dir header line title posted i=1
+	local item stat repo dir header line format title posted i=1
 	local cols=${COLUMNS:-80} ifs_save=${IFS}
 	local -a repos dirs
 
@@ -185,16 +185,26 @@ do_list() {
 		title="(${item} - no title)"
 		posted=${item:0:10}
 		[[ ${posted} == +([0-9])-+([0-9])-+([0-9]) ]] || posted="(no date) "
-		header=$(read_item "${dir}" "${item}" header) \
-			|| title="(${item} - removed?)"
-		local IFS=$'\n'
-		for line in ${header}; do
-			case "${line%%:*}" in
-				Title) title=${line##*([^:]):*([[:space:]])} ;;
-				Posted) posted=${line##*([^:]):*([[:space:]])} ;;
+		if header=$(read_item "${dir}" "${item}" header); then
+			local IFS=$'\n'
+			for line in ${header}; do
+				case "${line%%:*}" in
+					Title) title=${line##*([^:]):*([[:space:]])} ;;
+					Posted) posted=${line##*([^:]):*([[:space:]])} ;;
+					News-Item-Format) format=${line##*([^:]):*([[:space:]])} ;;
+				esac
+			done
+			IFS=${ifs_save}
+			case ${format} in
+				1.*|2.*) ;;
+				*)
+					title="(${item} - unknown format ${format})"
+					posted=""
+					;;
 			esac
-		done
-		IFS=${ifs_save}
+		else
+			title="(${item} - removed?)"
+		fi
 		[[ ${repo} != gentoo ]] && title="[${repo}] ${title}"
 		line="${posted}$(space $((10 - ${#posted})))  ${title}"
 		# truncate the line if it is too long

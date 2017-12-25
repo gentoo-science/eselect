@@ -1,5 +1,7 @@
 2017-12-25  Ulrich Müller  <ulm@gentoo.org>
 
+	* modules/news.eselect (do_list): Check for valid news item format.
+
 	* libs/core.bash.in (eval): Make it fatal again, after more than
 	one year of transition time.
 
