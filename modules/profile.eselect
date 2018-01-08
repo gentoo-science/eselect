@@ -42,7 +42,7 @@ get_repo_path() {
 }
 
 # get a list of valid profiles
-# returns a line <repo>::<repo_path>::<profile> for every profile
+# returns a line <repo>::<repo_path>::<profile>::<status> for every profile
 find_targets() {
 	local arch desc repos repo_paths i p
 
@@ -60,7 +60,8 @@ find_targets() {
 		[[ -r ${desc} ]] || continue
 		# parse profiles.desc and find profiles suitable for arch
 		for p in $(sed -n -e \
-			"s|^${arch}[[:space:]]\+\([^[:space:]]\+\).*$|\1|p" "${desc}")
+			"s|^${arch}[[:space:]]\+\([^[:space:]]\+\)[[:space:]]\+\([^[:space:]]\+\).*$|\1::\2|p" \
+			"${desc}")
 		do
 			echo "${repos[i]}::${repo_paths[i]}::${p}"
 		done
@@ -85,6 +86,7 @@ set_symlink() {
 		target=${targets[target-1]}
 		repo=${target%%::*}; target=${target#*::}
 		repopath=${target%%::*}; target=${target#*::}
+		target=${target%%::*}
 	elif [[ -n ${target} ]]; then
 		# if the profile was explicitly specified (rather than a number)
 		# double check and make sure it's valid
@@ -174,7 +176,7 @@ describe_list() {
 }
 
 do_list() {
-	local targets active i target repo repopath
+	local targets active i target repo repopath status disp
 
 	targets=( $(find_targets) )
 	[[ ${#targets[@]} -eq 0 ]] \
@@ -187,13 +189,16 @@ do_list() {
 		target=${targets[i]}
 		repo=${target%%::*}; target=${target#*::}
 		repopath=${target%%::*}; target=${target#*::}
-		if [[ ${repo} == "${DEFAULT_REPO}" ]]; then
-			targets[i]=${target}
-		else
-			targets[i]=${repo}:${target}
+		status=${target#*::}; status=${status%%::*}
+		target=${target%%::*}
+		disp=${target}
+		[[ ${repo} != "${DEFAULT_REPO}" ]] && disp=${repo}:${disp}
+		if ! is_output_mode brief; then
+			disp+=" (${status})"
+			[[ $(canonicalise "${repopath}/profiles/${target}") \
+				== "${active}" ]] && disp=$(highlight_marker "${disp}")
 		fi
-		[[ $(canonicalise "${repopath}/profiles/${target}") == "${active}" ]] \
-			&& targets[i]=$(highlight_marker "${targets[i]}")
+		targets[i]=${disp}
 	done
 	write_list_start "Available profile symlink targets:"
 	write_numbered_list "${targets[@]}"

@@ -1,3 +1,11 @@
+2018-01-08  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/profile.eselect (find_targets): Add a fourth field for
+	the profiles' status to the output.
+	(set_symlink): Account for the change in find_targets.
+	(do_list): Also show the profiles' status, but only in non-brief
+	output mode. Bug 643864.
+
 2017-12-25  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.4.10.
