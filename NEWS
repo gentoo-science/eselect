@@ -1,6 +1,11 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.4.11:
+    New features:
+    - Show profile status in list, and allow setting an experimental profile
+      only with the --force option in profile module (bug #643864).
+
 1.4.10:
     Bug fixes:
     - Fixed bug #614008: Regex in profile module.
