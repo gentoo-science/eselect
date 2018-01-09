@@ -1,3 +1,8 @@
+2018-01-09  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/profile.eselect (set_symlink): Require --force option
+	when selecting an experimental profile.
+
 2018-01-08  Ulrich Müller  <ulm@gentoo.org>
 
 	* modules/profile.eselect (find_targets): Add a fourth field for
