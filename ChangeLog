@@ -1,5 +1,8 @@
 2018-01-09  Ulrich Müller  <ulm@gentoo.org>
 
+	* configure.ac: Update version to 1.4.11.
+	* Tagged 1.4.11 release.
+
 	* modules/profile.eselect (set_symlink): Require --force option
 	when selecting an experimental profile.
 
