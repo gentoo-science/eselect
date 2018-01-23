@@ -1,3 +1,8 @@
+2018-01-23  Ulrich Müller  <ulm@gentoo.org>
+
+	* libs/package-manager.bash.in (arch): Restore sparc64 which was
+	lost in a previous update. Sync with arch.list in the gentoo repo.
+
 2018-01-09  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.4.11.

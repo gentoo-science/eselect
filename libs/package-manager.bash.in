@@ -70,23 +70,23 @@ arch() {
 		# Try to determine arch from HOSTTYPE and OSTYPE, which are
 		# derived from the GNU triplet (at build time of bash)
 		case ${HOSTTYPE} in
-			aarch64*)	ret=arm64		;;
-			alpha*) 	ret=alpha		;;
-			arm*)   	ret=arm 		;;
-			hppa*)  	ret=hppa		;;
-			i?86)   	ret=x86 		;;
-			ia64*)  	ret=ia64		;;
-			m68k*)  	ret=m68k		;;
-			mips*)  	ret=mips		;;
-			nios2)  	ret=nios2		;;
-			or1k|or32*)	ret=openrisc	;;
-			powerpc64*)	ret=ppc64		;;
-			powerpc*)	ret=ppc 		;;
-			riscv*) 	ret=riscv		;;
-			s390*)  	ret=s390		;;
-			sh*)    	ret=sh  		;;
-			sparc*) 	ret=sparc		;;
-			x86_64) 	ret=amd64		;;
+			aarch64*)  	ret=arm64 	;;
+			alpha*) 	ret=alpha	;;
+			arm*)   	ret=arm 	;;
+			hppa*)  	ret=hppa	;;
+			i?86)   	ret=x86 	;;
+			ia64*)  	ret=ia64	;;
+			m68k*)  	ret=m68k	;;
+			mips*)  	ret=mips	;;
+			nios2)  	ret=nios2	;;
+			powerpc64*)	ret=ppc64	;;
+			powerpc*)	ret=ppc 	;;
+			riscv*) 	ret=riscv	;;
+			s390*)  	ret=s390	;;
+			sh*)    	ret=sh  	;;
+			sparc64*) 	ret=sparc64	;;
+			sparc*) 	ret=sparc	;;
+			x86_64) 	ret=amd64	;;
 			*)
 				write_warning_msg \
 					"Unknown architecture \"${HOSTTYPE}\"." \
