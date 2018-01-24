@@ -1,3 +1,8 @@
+2018-01-24  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/rc.eselect (show_script_status): Add /lib64/rc/bin
+	to PATH as well, workaround for bug 645240 until OpenRC is fixed.
+
 2018-01-23  Ulrich Müller  <ulm@gentoo.org>
 
 	* libs/package-manager.bash.in (arch): Restore sparc64 which was
