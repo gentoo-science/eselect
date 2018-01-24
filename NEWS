@@ -1,6 +1,10 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.4.12:
+    Bug fixes:
+    - Workaround for bug #645240: OpenRC commands not in PATH in rc module.
+
 1.4.11:
     New features:
     - Show profile status in list, and allow setting an experimental profile
