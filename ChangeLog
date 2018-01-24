@@ -1,5 +1,8 @@
 2018-01-24  Ulrich Müller  <ulm@gentoo.org>
 
+	* configure.ac: Update version to 1.4.12.
+	* Tagged 1.4.12 release.
+
 	* modules/rc.eselect (show_script_status): Add /lib64/rc/bin
 	to PATH as well, workaround for bug 645240 until OpenRC is fixed.
 
