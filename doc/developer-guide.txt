@@ -503,13 +503,13 @@ The ``best_version`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``best_version`` function returns the highest available version for
-a given package dep atom.
+a given package dependency specification.
 
 The ``has_version`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
-The ``has_version`` function checks whether a given versioned package
-dep atom is installed.
+The ``has_version`` function checks whether a package matching a given
+dependency specification is installed.
 
 The ``get_repositories`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,

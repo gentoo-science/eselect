@@ -1,5 +1,8 @@
 2018-05-29  Ulrich Müller  <ulm@gentoo.org>
 
+	* doc/developer-guide.txt: Replace the term "dep atom" by
+	"package dependency specification".
+
 	* libs/multilib.bash.in (get_libdir): New function.
 	* doc/developer-guide.txt: Describe it.
 	* libs/Makefile.am (dosed): Substitute @libdir@.
