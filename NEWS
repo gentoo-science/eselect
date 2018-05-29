@@ -1,6 +1,10 @@
 This file contains a summary of changes in released versions.  Please read the
 ChangeLog file for a more detailed listing of changes/bug fixes.
 
+1.4.13:
+    New features:
+    - New get_libdir() function in multilib library.
+
 1.4.12:
     Bug fixes:
     - Workaround for bug #645240: OpenRC commands not in PATH in rc module.
