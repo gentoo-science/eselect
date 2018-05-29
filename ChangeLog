@@ -1,5 +1,8 @@
 2018-05-29  Ulrich Müller  <ulm@gentoo.org>
 
+	* configure.ac: Update version to 1.4.13.
+	* Tagged 1.4.13 release.
+
 	* doc/developer-guide.txt: Replace the term "dep atom" by
 	"package dependency specification".
 
