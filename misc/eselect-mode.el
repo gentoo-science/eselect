@@ -61,7 +61,7 @@
     font-lock-type-face))
 
 (defvar eselect-mode-keywords-multilib
-  '(("list_libdirs")
+  '(("list_libdirs" "get_libdir")
     font-lock-type-face))
 
 (defvar eselect-mode-keywords-package-manager

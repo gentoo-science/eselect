@@ -30,7 +30,8 @@ dosed = @SED@ \
 	-e 's%\@SED\@%@SED@%g' \
 	-e 's%\@PORTAGEQ\@%@PORTAGEQ@%g' \
 	-e 's%\@ENV_UPDATE\@%@ENV_UPDATE@%g' \
-	-e 's%\@CANONICALISE\@%@CANONICALISE@%g'
+	-e 's%\@CANONICALISE\@%@CANONICALISE@%g' \
+	-e 's%\@libdir\@%@libdir@%g'
 
 %.bash : %.bash.in
 	@$(dosed) $< > $@

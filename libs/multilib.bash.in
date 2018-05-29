@@ -28,3 +28,10 @@ list_libdirs() {
 	done
 	echo "${libdirs[@]}"
 }
+
+# get_libdir
+# Print the basename of the libdir path
+get_libdir() {
+	local libdir="@libdir@"
+	echo "${libdir##*/}"
+}

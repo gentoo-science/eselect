@@ -1,3 +1,11 @@
+2018-05-29  Ulrich Müller  <ulm@gentoo.org>
+
+	* libs/multilib.bash.in (get_libdir): New function.
+	* doc/developer-guide.txt: Describe it.
+	* libs/Makefile.am (dosed): Substitute @libdir@.
+	* misc/eselect-mode.el (eselect-mode-keywords-multilib):
+	Add get_libdir.
+
 2018-01-24  Ulrich Müller  <ulm@gentoo.org>
 
 	* configure.ac: Update version to 1.4.12.
