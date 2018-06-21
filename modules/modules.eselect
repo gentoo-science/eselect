@@ -1,5 +1,5 @@
 # -*-eselect-*-  vim: ft=eselect
-# Copyright 2006-2015 Gentoo Foundation
+# Copyright 2006-2018 Gentoo Foundation
 # Distributed under the terms of the GNU GPL version 2 or later
 
 inherit config output tests

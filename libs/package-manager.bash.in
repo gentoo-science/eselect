@@ -1,5 +1,5 @@
 # -*-eselect-*-  vim: ft=eselect
-# Copyright (c) 2005-2015 Gentoo Foundation
+# Copyright (c) 2005-2018 Gentoo Foundation
 #
 # This file is part of the 'eselect' tools framework.
 #
@@ -28,9 +28,9 @@ package_manager() {
 }
 
 # portageq
-# Run portageq with safe filename as set by configure. Redirect stderr
+# Run portageq. Redirect stderr
 portageq() {
-	@PORTAGEQ@ "$@" 2>/dev/null
+	command portageq "$@" 2>/dev/null
 }
 
 # run_paludis PRIVATE
@@ -75,15 +75,17 @@ arch() {
 			arm*)   	ret=arm 	;;
 			hppa*)  	ret=hppa	;;
 			i?86)   	ret=x86 	;;
-			ia64)   	ret=ia64	;;
-			m68k)   	ret=m68k	;;
+			ia64*)  	ret=ia64	;;
+			m68k*)  	ret=m68k	;;
 			mips*)  	ret=mips	;;
-			powerpc)	ret=ppc 	;;
-			powerpc64)	ret=ppc64	;;
+			nios2)  	ret=nios2	;;
+			powerpc64*)	ret=ppc64	;;
+			powerpc*)	ret=ppc 	;;
+			riscv*) 	ret=riscv	;;
 			s390*)  	ret=s390	;;
 			sh*)    	ret=sh  	;;
-			sparc)  	ret=sparc	;;
-			sparc64)	ret=sparc64	;;
+			sparc64*) 	ret=sparc64	;;
+			sparc*) 	ret=sparc	;;
 			x86_64) 	ret=amd64	;;
 			*)
 				write_warning_msg \
@@ -180,7 +182,7 @@ has_version() {
 get_repositories() {
 	case $(package_manager) in
 		portage) portageq get_repos "${EROOT:-/}" ;;
-		pkgcore) pinspect portageq get_repositories ;;
+		pkgcore) pinspect portageq get_repos "${ROOT:-/}" ;;
 		paludis) run_paludis print-repositories ;;
 	esac
 }
@@ -193,7 +195,7 @@ get_repo_news_dir() {
 	case $(package_manager) in
 		portage) echo "$(portageq get_repo_path \
 			"${EROOT:-/}" "${repo}")/metadata/news" ;;
-		pkgcore) pinspect portageq get_repo_news_path "${repo}" ;;
+		pkgcore) pinspect portageq get_repo_news_path "${ROOT:-/}" "${repo}" ;;
 		paludis) run_paludis print-repository-metadata ${repo} \
 			--raw-name newsdir --format '%v\n' ;;
 	esac

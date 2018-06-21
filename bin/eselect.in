@@ -1,6 +1,6 @@
 #!@BASH@
 # -*-eselect-*-  vim: ft=eselect
-# Copyright (c) 2005-2015 Gentoo Foundation
+# Copyright (c) 2005-2018 Gentoo Foundation
 #
 # This file is part of the 'eselect' tools framework.
 #
@@ -63,6 +63,8 @@ IFS=$' \t\n'
 shopt -s extglob
 shopt -s expand_aliases
 
+umask +rx
+
 # Save stderr file descriptor
 if (( BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] >= 1 || BASH_VERSINFO[0] > 4 ))
 then
@@ -115,7 +117,7 @@ es_do_help() {
 es_do_version() {
 	echo "eselect ${ESELECT_VERSION}"
 	echo
-	echo "Copyright (c) 2005-2015 Gentoo Foundation."
+	echo "Copyright (c) 2005-2018 Gentoo Foundation."
 	echo "Distributed under the terms of the GNU GPL version 2 or later."
 }
 

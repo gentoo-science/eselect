@@ -35,6 +35,7 @@ dosed = @SED@ \
 	-e 's%\@PORTAGEQ\@%@PORTAGEQ@%g' \
 	-e 's%\@ENV_UPDATE\@%@ENV_UPDATE@%g' \
 	-e 's%\@CANONICALISE\@%@CANONICALISE@%g' \
+	-e 's%\@libdir\@%@libdir@%g' \
 	-e 's%\@sysconfdir\@%@sysconfdir@%g'
 
 %.bash : %.bash.in

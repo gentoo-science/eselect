@@ -1,3 +1,143 @@
+2018-05-29  Ulrich Müller  <ulm@gentoo.org>
+
+	* configure.ac: Update version to 1.4.13.
+	* Tagged 1.4.13 release.
+
+	* doc/developer-guide.txt: Replace the term "dep atom" by
+	"package dependency specification".
+
+	* libs/multilib.bash.in (get_libdir): New function.
+	* doc/developer-guide.txt: Describe it.
+	* libs/Makefile.am (dosed): Substitute @libdir@.
+	* misc/eselect-mode.el (eselect-mode-keywords-multilib):
+	Add get_libdir.
+
+2018-01-24  Ulrich Müller  <ulm@gentoo.org>
+
+	* configure.ac: Update version to 1.4.12.
+	* Tagged 1.4.12 release.
+
+	* modules/rc.eselect (show_script_status): Add /lib64/rc/bin
+	to PATH as well, workaround for bug 645240 until OpenRC is fixed.
+
+2018-01-23  Ulrich Müller  <ulm@gentoo.org>
+
+	* libs/package-manager.bash.in (arch): Restore sparc64 which was
+	lost in a previous update. Sync with arch.list in the gentoo repo.
+
+2018-01-09  Ulrich Müller  <ulm@gentoo.org>
+
+	* configure.ac: Update version to 1.4.11.
+	* Tagged 1.4.11 release.
+
+	* modules/profile.eselect (set_symlink): Require --force option
+	when selecting an experimental profile.
+
+2018-01-08  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/profile.eselect (find_targets): Add a fourth field for
+	the profiles' status to the output.
+	(set_symlink): Account for the change in find_targets.
+	(do_list): Also show the profiles' status, but only in non-brief
+	output mode. Bug 643864.
+
+2017-12-25  Ulrich Müller  <ulm@gentoo.org>
+
+	* configure.ac: Update version to 1.4.10.
+	* Tagged 1.4.10 release.
+
+	* modules/news.eselect (do_list): Check for valid news item format.
+
+	* libs/core.bash.in (eval): Make it fatal again, after more than
+	one year of transition time.
+
+2017-10-14  Ulrich Müller  <ulm@gentoo.org>
+
+	* man/news.eselect.5: Update URI of GLEP 42.
+
+2017-06-18  Ulrich Müller  <ulm@gentoo.org>
+
+	* libs/package-manager.bash.in (arch): Map nios2 to nios2 (as it
+	is called in profiles/arch.list) rather	than nios.
+
+2017-05-22  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/profile.eselect (set_symlink): Fix regex, bug 614008.
+
+2017-05-06  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/kernel.eselect (do_set): Don't remove the old symlink
+	before we know that we have a valid new target, bug 640386.
+	Simplify.
+	(set_symlink): Check if the new link target is valid, then remove
+	any old symlink, then set the new one.
+	(remove_symlink): Use rm -f.
+
+	* modules/kernel.eselect (set_symlink):
+	* modules/profile.eselect (set_symlink): Check range of number,
+	bug 617572. Thanks to Takuto Yoshida <otakuto.gentoo@gmail.com>.
+
+2017-03-22  Ulrich Müller  <ulm@gentoo.org>
+
+	* configure.ac: Update version to 1.4.9.
+	* Tagged 1.4.9 release.
+
+2017-03-21  Mike Frysinger <vapier@gentoo.org>
+
+	* libs/package-manager.bash.in (arch): Fill out arch matches
+	a bit more.
+
+2016-12-10  Ulrich Müller  <ulm@gentoo.org>
+
+	* configure.ac: Update version to 1.4.8.
+	* Tagged 1.4.8 release.
+
+2016-12-04  Ulrich Müller  <ulm@gentoo.org>
+
+	* libs/package-manager.bash.in (get_repositories)
+	(get_repo_news_dir): Fix pinspect calls, bug 304011.
+
+	* modules/news.eselect (find_items, find_repo_dir): Check return
+	status of package manager calls, bug 601506.
+
+2016-10-31  Ulrich Müller  <ulm@gentoo.org>
+
+	* libs/core.bash.in (eval): Disable eval again, because the
+	workaround for the rc module (sourcing functions.sh) is no longer
+	needed. See also 2005-05-15 change by ciaranm.
+
+2016-10-30  Ulrich Müller  <ulm@gentoo.org>
+
+	* configure.ac: Update version to 1.4.7.
+	* Tagged 1.4.7 release.
+
+	* libs/config.bash.in (store_config): Ignore comment lines in
+	config files and make parsing more robust, bug 598480.
+
+2016-06-17  Ulrich Müller  <ulm@gentoo.org>
+
+	* configure.ac: Update version to 1.4.6.
+	* Tagged 1.4.6 release.
+
+2016-06-16  Ulrich Müller  <ulm@gentoo.org>
+
+	* modules/pager.eselect (EDITOR_LIST): Prefer less to more.
+	* man/pager.eselect.5: Update.
+
+2016-06-01  Ulrich Müller  <ulm@gentoo.org>
+
+	* configure.ac: Make testing for git repository more robust.
+
+	* configure.ac: Where possible, use AC_CHECK_PROGS instead of
+	AC_PATH_PROGS, in order to avoid absolute paths, bug 122260.
+	* libs/core.bash.in (sed):
+	* libs/package-manager.bash.in (portageq): Invoke commands with
+	"command" so that they will work without a path.
+
+2016-01-27  Ulrich Müller  <ulm@gentoo.org>
+
+	* bin/eselect.in: Set umask +rx, bug 572348.
+
 2015-08-26  Ulrich Müller  <ulm@gentoo.org>
 
 	* doc/developer-guide.txt:

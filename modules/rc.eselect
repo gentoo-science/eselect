@@ -1,5 +1,5 @@
 # -*-eselect-*-  vim: ft=eselect
-# Copyright 2005-2015 Gentoo Foundation
+# Copyright 2005-2018 Gentoo Foundation
 # Distributed under the terms of the GNU GPL version 2 or later
 
 inherit config
@@ -64,7 +64,7 @@ find_unused_scripts() {
 # output list entry for script $1 and show its status
 show_script_status() {
 	local script=$1 status=unknown x
-	local PATH=/lib/rc/bin:${PATH} # path to service_* commands
+	local PATH=/lib/rc/bin:/lib64/rc/bin:${PATH} # path to service_* commands
 
 	for x in stopping starting inactive started stopped; do
 		if service_${x} ${script}; then

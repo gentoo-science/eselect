@@ -1,6 +1,6 @@
 ;;; eselect-mode.el --- edit eselect files
 
-;; Copyright (c) 2006-2015 Gentoo Foundation
+;; Copyright (c) 2006-2018 Gentoo Foundation
 
 ;; Author: Matthew Kennedy <mkennedy@gentoo.org>
 ;;	Diego Pettenò <flameeyes@gentoo.org>
@@ -61,7 +61,7 @@
     font-lock-type-face))
 
 (defvar eselect-mode-keywords-multilib
-  '(("list_libdirs")
+  '(("list_libdirs" "get_libdir")
     font-lock-type-face))
 
 (defvar eselect-mode-keywords-package-manager

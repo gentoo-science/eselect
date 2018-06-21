@@ -1,5 +1,5 @@
 # -*-eselect-*-  vim: ft=eselect
-# Copyright (c) 2005-2015 Gentoo Foundation
+# Copyright (c) 2005-2018 Gentoo Foundation
 #
 # This file is part of the 'eselect' tools framework.
 #
@@ -27,4 +27,11 @@ list_libdirs() {
 		[[ -d ${EROOT}/${dir} ]] && libdirs[${#libdirs[@]}]=${dir}
 	done
 	echo "${libdirs[@]}"
+}
+
+# get_libdir
+# Print the basename of the libdir path
+get_libdir() {
+	local libdir="@libdir@"
+	echo "${libdir##*/}"
 }

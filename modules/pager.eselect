@@ -1,10 +1,10 @@
 # -*-eselect-*-  vim: ft=eselect
-# Copyright 2009-2015 Gentoo Foundation
+# Copyright 2009-2018 Gentoo Foundation
 # Distributed under the terms of the GNU GPL version 2 or later
 
 EDITOR_VAR="PAGER"
 EDITOR_ENVFILE="/etc/env.d/99pager"
-EDITOR_LIST="/bin/more /usr/bin/less /usr/bin/most"
+EDITOR_LIST="/usr/bin/less /bin/more /usr/bin/most"
 
 inherit editor-variable
 

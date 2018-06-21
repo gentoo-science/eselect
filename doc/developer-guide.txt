@@ -473,6 +473,12 @@ used architecture. By default it uses /etc/ld.so.conf to obtain all
 valid libdirs. If this fails due to a missing or broken file, this
 function uses ``uname`` to determine the architecture.
 
+The ``get_libdir`` function
+,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+The ``get_libdir`` function prints the basename of the libdir path that
+was passed to eselect's configure.
+
 Package-manager functions
 -------------------------
 
@@ -497,13 +503,13 @@ The ``best_version`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The ``best_version`` function returns the highest available version for
-a given package dep atom.
+a given package dependency specification.
 
 The ``has_version`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
-The ``has_version`` function checks whether a given versioned package
-dep atom is installed.
+The ``has_version`` function checks whether a package matching a given
+dependency specification is installed.
 
 The ``get_repositories`` function
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
